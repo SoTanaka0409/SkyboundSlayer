@@ -97,7 +97,7 @@ void Scene3D::Initialize()
   //      VGet(0, 0, -wallWidth),
   //      VGet(-wallDistance, 3000, -wallWidth),
   //      VGet(wallDistance, 0, -wallWidth));
-    dd;
+   
     SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(10000,0,0));
     float scale = 5.0f;
    pSkyBox->SetScale(VGet(scale, scale, scale));
