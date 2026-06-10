@@ -1,0 +1,94 @@
+#include "ColliderManager.h"
+#include "Collider.h"
+#include"Master.h"
+
+// 静的メンバ変数定義
+ColliderManager* ColliderManager::Instance = nullptr;
+
+
+ColliderManager::ColliderManager()
+{
+
+}
+
+ColliderManager::~ColliderManager()
+{
+
+}
+
+// 更新
+void ColliderManager::Update()
+{
+    for (std::list<Collider*>::iterator itr = mColliderList.begin(); itr != mColliderList.end(); itr++)
+    {
+        for (std::list<Collider*>::iterator itr_check = mColliderList.begin(); itr_check != mColliderList.end(); itr_check++)
+        {
+            if (itr == itr_check)
+            {
+                continue;
+            }
+
+            (*itr)->Update((*itr_check));
+        }
+    }
+}
+
+// 描画
+void ColliderManager::Draw()
+{
+    for (auto itr = mColliderList.begin(); itr != mColliderList.end(); itr++)
+    {
+        if (Master::mpDebug->Getdebug())
+        {
+            (*itr)->Draw();
+        }
+    }
+}
+
+// Colliderオブジェクトの追加
+void ColliderManager::AddCollider(Collider* Collider)
+{
+    mColliderList.push_back(Collider);
+}
+
+// Colliderオブジェクトの全削除
+void ColliderManager::DeleteAllCollider()
+{
+    for (auto itr = mColliderList.begin(); itr != mColliderList.end(); /*ここは空っぽなので注意*/)
+    {
+        Collider* temp = *itr;
+
+        // リストから削除
+        itr = mColliderList.erase(itr);
+
+        // オブジェクトそのものを削除
+        delete temp;
+        temp = nullptr;
+    }
+}
+
+// 削除する必要のあるオブジェクトがあれば削除する
+void ColliderManager::DeleteAllColliderIfNeeded()
+{
+    for (auto itr = mColliderList.begin(); itr != mColliderList.end(); /*ここは空っぽなので注意*/)
+    {
+        // 破棄フラグが立っていれば削除する
+        if ((*itr)->IsDeleteFlag())
+        {
+            Collider* temp = *itr;
+
+            // リストから削除
+            // erase() は、削除した itr の次の要素を返却してくれる
+            itr = mColliderList.erase(itr);
+
+            // オブジェクトそのものを削除
+            delete temp;
+            temp = nullptr;
+        }
+        else
+        {
+            // 次の要素へ進める
+            itr++;
+        }
+    }
+}

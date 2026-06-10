@@ -1,0 +1,44 @@
+#pragma once
+
+#include"Dxlib.h"
+#include"Object3D.h"
+
+#include"DrawHp.h"
+#include"Debugh.h"
+#include"EnemyManager.h"
+#include"Enemy.h"
+#include"Collision.h"
+
+class Model;
+
+class EnemyBoss_1 :public Enemy
+{
+public:
+	EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float xp,int money, bool isSeparateAnim);
+
+	~EnemyBoss_1();
+
+	void Draw()override;
+
+	void Update()override;
+
+	//void Move()override;
+	
+
+	void Attack()override;
+
+	void OnTrigger(Collider* collider, Collider* check)override;
+	
+	void DeathEnemy()override;
+	//void DeathEnemy()override;
+
+
+
+private:
+	bool mbMagic;
+	SphereCollider* mpJumpAttackCoiider;
+	//Collision* mpCollision;
+
+	//DrawHp* mpDH;
+
+};

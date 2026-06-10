@@ -1,0 +1,38 @@
+#pragma once
+#include"Dxlib.h"
+#include"Object3D.h"
+
+#include"DrawHp.h"
+#include"Debugh.h"
+#include"EnemyManager.h"
+#include"Enemy.h"
+#include"Collision.h"
+
+class Model;
+
+class Enemy3D :public Enemy
+{
+public:
+	Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,float HitSize,float Serch1,float Serch2,float Serch3,float xp,int money,bool isSeparateAnim);
+
+	~Enemy3D();
+
+	void Draw()override;
+
+	void Update()override;
+
+    //void Move()override;
+	void Attack()override;
+
+	//void DeathEnemy()override;
+	
+	
+
+private:
+	bool mbMagic;
+
+	//Collision* mpCollision;
+
+	//DrawHp* mpDH;
+
+};

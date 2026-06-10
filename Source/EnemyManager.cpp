@@ -1,0 +1,75 @@
+#include"EnemyManager.h"
+#include"Enemy3D.h"
+#include"Enemy3D_AT.h"
+#include"EnemyBoss_1.h"
+
+EnemyManager::EnemyManager()
+
+{
+	
+
+}
+
+EnemyManager::~EnemyManager()
+{
+
+}
+
+void EnemyManager::Draw()
+{
+	
+
+}
+
+void EnemyManager::Update()
+{
+}
+
+
+
+void EnemyManager::NewEnemyList(enemydate date)
+{
+	
+	if (date.tag ==night_stagg1)
+	{
+		
+		for (int i = 0; i < date.Count; i++)
+		{
+			
+			
+			int x =(rand() % (int)date.initPos.x-(int)date.initPos.x/2);//1000を足すのは絶対にショップに近づけさせないため
+			int y = (rand() % (int)date.initPos.y);
+			int z = (rand() % (int)date.initPos.z - (int)date.initPos.z / 2);
+			
+			VECTOR initpos = VGet(x, y,z);
+			mpEneList.push_back( new Enemy3D_AT(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.attack, date.xp,date.money, date.isSeparateAnim));
+		}
+	}
+	if (date.tag == archerl_stage1)
+	{
+		for (int i = 0; i < date.Count; i++)
+		{
+			
+			int x = (rand() % (int)date.initPos.x - (int)date.initPos.x / 2);//1000を足すのは絶対にショップに近づけさせないため
+			int y = (rand() % (int)date.initPos.y);
+			int z = (rand() % (int)date.initPos.z - (int)date.initPos.z / 2);
+			VECTOR initpos = VGet(x, y, z);
+		
+			mpEneList.push_back(new Enemy3D(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.xp,date.money, date.isSeparateAnim));
+		}
+	}
+	if (date.tag == boss_stage1)
+	{
+		mpEneList.push_back(new EnemyBoss_1(date.filename, date.initPos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.xp,date.money, date.isSeparateAnim));
+
+	}
+	if (date.tag == night_Defo)
+	{
+		mpEneList.push_back(new Enemy3D_AT("Resource/Model/T.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, 100, date.money, true));
+	}
+	//増やしていく
+}
+
+
+		
+
