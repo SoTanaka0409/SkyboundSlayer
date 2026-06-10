@@ -1,4 +1,5 @@
 #include"Camera1.h"
+#include"Config.h"
 #include<cmath>
 #include"Master.h"
 #include"ObjectManager.h"
@@ -26,16 +27,16 @@ Camera1::~Camera1()
 
 void Camera1::Initialize()
 {
-	//ƒJƒƒ‰‚ÌƒNƒŠƒbƒsƒ“ƒO‹——£‚Ìİ’è
-	SetCameraNearFar(100.0f, 50000.0f);//100`50000‚Ü‚Å‚Ì‹——£‚ªŒ©‚¦‚é
+	//ã‚«ãƒ¡ãƒ©ã®ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°è·é›¢ã®è¨­å®š
+	SetCameraNearFar(100.0f, Config::CameraFar);//100ï½50000ã¾ã§ã®è·é›¢ãŒè¦‹ãˆã‚‹
 
-	//”wŒiF‚ğİ’èiŠDFj
+	//èƒŒæ™¯è‰²ã‚’è¨­å®šï¼ˆç°è‰²ï¼‰
 	SetBackgroundColor(128, 128, 128);
 
-	//ƒJƒƒ‰‚Ìİ’è‚ğ”½‰f
+	//ã‚«ãƒ¡ãƒ©ã®è¨­å®šã‚’åæ˜ 
 	SetCameraPositionAndTarget_UpVecY(mvPosition, mvLookAtPosition);
 
-	//XVˆ—‚ğˆê“xs‚Á‚Ä‚¢‚­
+	//æ›´æ–°å‡¦ç†ã‚’ä¸€åº¦è¡Œã£ã¦ã„ã
 	Update();
 
 }
@@ -45,7 +46,7 @@ void Camera1::Update()
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 	UpdateRotation();
-	//ƒ^[ƒQƒbƒg‚ª‚¢‚È‚©‚Á‚½‚ç
+	//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ãªã‹ã£ãŸã‚‰
 	if (mpTarget == nullptr)
 	{
 		mpTarget = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
@@ -57,21 +58,21 @@ void Camera1::Update()
 	}
 	else
 	{
-		//’‹“_‚ğ­‚µã‚É‚¸‚ç‚·
+		//æ³¨è¦–ç‚¹ã‚’å°‘ã—ä¸Šã«ãšã‚‰ã™
 		mvLookAtPosition.y = 80.0f;
 	}
 
 	{
-		VECTOR temp; //ì‹Æ—p•Ï”
+		VECTOR temp; //ä½œæ¥­ç”¨å¤‰æ•°
 
 
 		mvLookAtPosition = VSub(pPlayer->GetPosition() , mvPosition);
 		mvLookAtPosition = VNorm(mvLookAtPosition);
 
-		//ã‚Å‹‚ß‚½À•W‚É’‹“_‚ÌÀ•W‚ğ‘«‚µ‚½‚à‚Ì‚ªƒJƒƒ‰‚ÌÀ•W‚Æ‚È‚é
+		//ä¸Šã§æ±‚ã‚ãŸåº§æ¨™ã«æ³¨è¦–ç‚¹ã®åº§æ¨™ã‚’è¶³ã—ãŸã‚‚ã®ãŒã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã¨ãªã‚‹
 		//mvPosition = VAdd(temp, mvLookAtPosition);
 		//mvPosition = VAdd(temp, mvLookAtPosition);
-		//ƒJƒƒ‰İ’è‚ğ”½‰f
+		//ã‚«ãƒ¡ãƒ©è¨­å®šã‚’åæ˜ 
 		SetCameraPositionAndTarget_UpVecY(pPlayer->GetPosition(), mvLookAtPosition);
 	}
 
@@ -79,7 +80,7 @@ void Camera1::Update()
 
 void Camera1::UpdateRotation()
 {
-	////•ûŒüƒL[‚ÅƒJƒƒ‰‘€ì
+	////æ–¹å‘ã‚­ãƒ¼ã§ã‚«ãƒ¡ãƒ©æ“ä½œ
 	//if (CheckHitKey(KEY_INPUT_LEFT))
 	//{
 	//	mfHorizontalAngle += 5.0f;
@@ -115,24 +116,24 @@ void Camera1::UpdateRotation()
 	}
 
 
-	float camAngleY = 0.0f; // …•½•ûŒüi¶‰Ej
-	float camAngleX = 0.0f; // ‚’¼•ûŒüiã‰ºj
+	float camAngleY = 0.0f; // æ°´å¹³æ–¹å‘ï¼ˆå·¦å³ï¼‰
+	float camAngleX = 0.0f; // å‚ç›´æ–¹å‘ï¼ˆä¸Šä¸‹ï¼‰
 
-	// Š´“x
+	// æ„Ÿåº¦
 	const float MOUSE_SENSITIVITY = 0.05f;
 
-	// ƒJƒƒ‰‚Ì‹——£
+	// ã‚«ãƒ¡ãƒ©ã®è·é›¢
 	float camDistance = 300.0f;
 
 
 
-	// ƒJ[ƒ\ƒ‹‚ğ”ñ•\¦‚É
+	// ã‚«ãƒ¼ã‚½ãƒ«ã‚’éè¡¨ç¤ºã«
 	//SetMouseDispFlag(FALSE);
 
-		// ƒ}ƒEƒX‚ÌˆÚ“®—Ê‚ğæ“¾
+		// ãƒã‚¦ã‚¹ã®ç§»å‹•é‡ã‚’å–å¾—
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
-	// ’†SÀ•W
+	// ä¸­å¿ƒåº§æ¨™
 	if (!CheckHitKey(KEY_INPUT_0))
 	{
 		int centerX = 640;
@@ -145,15 +146,15 @@ void Camera1::UpdateRotation()
 	int deltaX = mouseX - centerX;
 	int deltaY = mouseY - centerY;
 
-	// ‰ñ“]Šp“x‚ğXV
+	// å›è»¢è§’åº¦ã‚’æ›´æ–°
 	mfHorizontalAngle -= deltaX * MOUSE_SENSITIVITY;
 	mfVerticalAngle += deltaY * MOUSE_SENSITIVITY;
 
-	// ã‰º‚Ì‰ñ“]‚ğ§ŒÀi‹ü‚ª— •Ô‚ç‚È‚¢‚æ‚¤‚Éj
+	// ä¸Šä¸‹ã®å›è»¢ã‚’åˆ¶é™ï¼ˆè¦–ç·šãŒè£è¿”ã‚‰ãªã„ã‚ˆã†ã«ï¼‰
 	/*if (camAngleX < -DX_PI_F / 2.0f) camAngleX = -DX_PI_F / 2.0f;
 	if (camAngleX > DX_PI_F / 2.0f) camAngleX = DX_PI_F / 2.0f;*/
 
-	//// ƒJƒƒ‰‚ÌˆÊ’u‚Æ’‹“_‚ğŒvZ
+	//// ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã¨æ³¨è¦–ç‚¹ã‚’è¨ˆç®—
 	//VECTOR camTarget = VGet(0.0f, 0.0f, 0.0f);
 	//VECTOR temp = VGet(
 	//	camTarget.x + camDistance * sinf(camAngleY) * cosf(camAngleX),

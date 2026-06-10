@@ -1,4 +1,5 @@
-﻿#include"TutorialScene.h"
+#include"TutorialScene.h"
+#include"Config.h"
 #include"ObjectManager.h"
 #include"Player3D.h"
 #include"Wall.h"
@@ -68,8 +69,8 @@ void TutorialScene::Initialize()
 
 	//new Enemy3D("Resource/3D/Hero.mv1", VGet(0.0f, 100.0f, -12000.0f), 2442, 5.0f, 0, 0);//hp.speed,サーチ距離1,2
 
-	const float wallWidth = 8000.0f;
-	const float wallDistance = 2000.0f;
+	const float wallWidth = Config::TutorialWallWidth;
+	const float wallDistance = Config::TutorialWallDistance;
 	new Wall(
 		"Resource/Kuro.png",
 		VGet(wallDistance/2 , 0.0f, -wallWidth),
@@ -98,8 +99,8 @@ void TutorialScene::Initialize()
 	//	VGet(-wallWidth / 2, 3000.0f, -wallWidth * 2));
 	VECTOR pos = VGet(10000, 0, 10000);
 
-	const float wallWidth_boss = 2500.0f;//stageのサイズ
-	const float wallDistance_boss = 5000.0f;//stageのサイズ main
+	const float wallWidth_boss = Config::TutorialBossWallWidth;//stageのサイズ
+	const float wallDistance_boss = Config::TutorialBossWallDistance;//stageのサイズ main
 
 	new Wall("Resource/2D/mori.png",
 		VAdd(VGet(-wallWidth_boss, 0, 0), pos),//左
@@ -161,13 +162,15 @@ void TutorialScene::Draw()
 	if (Master::TutorialCount == 1)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "左クリックでこうげきして敵を倒そう");
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "\nEで攻撃方法を変えられるよ");
+		
+	/*	DrawFormatString(300, 20, GetColor(255, 0, 0), "左クリックでこうげきして敵を倒そう");
+
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "\nEで攻撃方法を変えられるよ");*/
 	}
 	if (Master::TutorialCount == 4)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "目の前のobject入ろう");
+		DrawFormatString(300, 20, GetColor(255, 0, 0),"目の前のobject入ろう");
 		DrawFormatString(300, 20, GetColor(255, 0, 0),"\nチュートリアルではその先にショップがあるよ");
 
 	}

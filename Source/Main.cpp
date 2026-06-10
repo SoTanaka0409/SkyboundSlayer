@@ -1,5 +1,6 @@
 
 #include "DxLib.h"
+#include "Config.h"
 #include"Texture.h"
 //#include"Texture Animation.h"
 #include"Player.h"
@@ -93,8 +94,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// ウインドウモードで起動
 	ChangeWindowMode(true);
 
-	SetGraphMode(1000,1000, 32);
-	SetWindowSize(1000,1000 );
+	SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32);
+	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	
 	// DXライブラリ初期化

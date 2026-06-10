@@ -1,4 +1,5 @@
-﻿#include"TutorialScene.h"
+#include"TutorialScene.h"
+#include"Config.h"
 #include"ObjectManager.h"
 #include"Player3D.h"
 #include"Wall.h"
@@ -76,8 +77,8 @@ void TutorialScene::Initialize()
 
 	//new Enemy3D("Resource/3D/Hero.mv1", VGet(0.0f, 100.0f, -12000.0f), 2442, 5.0f, 0, 0);//hp.speed,サーチ距離1,2
 
-	const float wallWidth = 8000.0f;
-	const float wallDistance = 2000.0f;
+	const float wallWidth = Config::TutorialWallWidth;
+	const float wallDistance = Config::TutorialWallDistance;
 	new Wall(
 		"Resource/Kuro.png",
 		VGet(wallDistance/2 , 0.0f, -wallWidth),

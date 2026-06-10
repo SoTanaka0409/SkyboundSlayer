@@ -1,4 +1,5 @@
 #include"Scene3D.h"
+#include"Config.h"
 #include"Enemy3D_AT.h"
 #include"Player3D.h"
 #include"InputManager.h"
@@ -31,24 +32,22 @@ Scene3D::~Scene3D()
 
 void Scene3D::Initialize()
 {
-    const float wallWidth = 4000.0f;//stageのサイズ
-    const float wallDistance = 10000.0f;//stageのサイズ main
+    const float wallWidth = Config::StageWallWidth;//stageのサイズ
+    const float wallDistance = Config::StageWallDistance;//stageのサイズ main
     const float Spawnpos = 12000.0f;
     VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
 
     mpEnemyManager = new EnemyManager();
-    mCurrentPhase = Phase::PHASE_1;
-    SpawnPhaseEnemies();
+    mpGameManager = new GameManager(mpEnemyManager, GameManager::Difficulty::NORMAL);
     new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
     new Shop("Resource/3D/Hero.mv1", VGet(7500, 200, 7000));
     //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトプス,hp,speed,Hitsize,size
        //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size
-    new Stage(VGet(-5000.0f, 3000.0f, -5000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", 
+    new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", 
         VGet(200.0f, 100.0f, 200.0f));
-    new Stage(VGet(15000.0f, 3000.0f, 15000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1",
-        VGet(200.0f, 100.0f, 200.0f));
-    new Stage(VGet(0,0,0),"Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",
-        VGet(1.0f,0.0f,1.0f));
+   
+    new Stage(VGet(0,0,-5000),"Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",
+        VGet(1.5f,0.0f,1.5f));
     float ObjectSize=10.0f;
     new StageObject(VGet(0, 0, 0), "Resource/3D/Stage_casule/source/Parede castelo.mv1",VGet(ObjectSize, ObjectSize, ObjectSize));
     //  //new Tree("Resource/3D/Tree.mv1", VGet(500, 0, 600), 400.0, 80.0f, true);
@@ -98,8 +97,8 @@ void Scene3D::Initialize()
   //      VGet(-wallDistance, 3000, -wallWidth),
   //      VGet(wallDistance, 0, -wallWidth));
    
-    SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(10000,0,0));
-    float scale = 5.0f;
+    SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(0,0,-5000));
+    float scale = 13.0f;
    pSkyBox->SetScale(VGet(scale, scale, scale));
    pSkyBox->SetScale(VGet(scale, scale, scale));
    pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky000.jpg");
@@ -109,8 +108,8 @@ void Scene3D::Initialize()
   //  pSkyBox2->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");
 
 
-  //  const float wallWidth_boss = 2000.0f;//stageのサイズ
-  //  const float wallDistance_boss = 4000.0f;//stageのサイズ main
+    const float wallWidth_boss = Config::StageBossWallWidth;//stageのサイズ
+    const float wallDistance_boss = Config::StageBossWallDistance;//stageのサイズ main
   // 
   //  VECTOR pos = VGet(10000, 0, 10000);
   //  
@@ -168,19 +167,11 @@ void Scene3D::Update()
             GetColor(255, 255, 255)
         );
     }*/
-    auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-    if (enemies.empty() && !Loadflag)
+    mpGameManager->Update(Loadflag);
+
+    if (mpGameManager->GetCurrentPhase() == GameManager::Phase::CLEAR) 
     {
-        if (mCurrentPhase == Phase::PHASE_1) {
-            mCurrentPhase = Phase::PHASE_2;
-            SpawnPhaseEnemies();
-        } else if (mCurrentPhase == Phase::PHASE_2) {
-            mCurrentPhase = Phase::BOSS;
-            SpawnPhaseEnemies();
-        } else if (mCurrentPhase == Phase::BOSS) {
-            mCurrentPhase = Phase::CLEAR;
-            Master::GameClearCount = 2;
-        }
+        Master::GameClearCount = 2;
     }
 
     if (Master::GameClearCount == 2)
@@ -223,6 +214,7 @@ void Scene3D::Draw()
         }
     }*/
 
+    mpGameManager->Draw();
 }
 
 void Scene3D::Finalize()
@@ -232,64 +224,4 @@ void Scene3D::Finalize()
 
 }
 
-void Scene3D::SpawnPhaseEnemies()
-{
-    const float Spawnpos = 12000.0f;
-    VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
 
-   /* if (mCurrentPhase == Phase::PHASE_1) {
-        auto e = new EnemyManager::enemydate;
-        e->filename = "Resource/Model/T.mv1";
-        e->initPos = initPOS;
-        e->hp = 20;
-        e->speed = 3;
-        e->attack = 2;
-        e->HitSize = 60.0f;
-        e->Serch1 = 1000;
-        e->Serch2 = 100;
-        e->Serch3 = 100;
-        e->isSeparateAnim = true;
-        e->xp = 30;
-        e->money = 200;
-        e->tag = EnemyManager::night_stagg1;
-        e->Count = 10;
-        mpEnemyManager->NewEnemyList(*e);
-    }
-    else if (mCurrentPhase == Phase::PHASE_2) {
-        auto e1 = new EnemyManager::enemydate;
-        e1->filename = "Resource/Model/T.mv1";
-        e1->initPos = initPOS;
-        e1->hp = 20;
-        e1->speed = 3;
-        e1->attack = 2;
-        e1->HitSize = 60.0f;
-        e1->money = 200;
-        e1->Serch1 = 2000;
-        e1->Serch2 = 1000;
-        e1->Serch3 = 1000;
-        e1->isSeparateAnim = true;
-        e1->xp = 30;
-        e1->tag = EnemyManager::archerl_stage1;
-        e1->Count = 10;
-        mpEnemyManager->NewEnemyList(*e1);
-    }
-    else if (mCurrentPhase == Phase::BOSS) {
-        VECTOR initPOS2 = VGet(22000, 100, 22000);
-        auto e2 = new EnemyManager::enemydate;
-        e2->filename = "Resource/3D/Boss1.mv1";
-        e2->initPos = initPOS2;
-        e2->hp = 300;
-        e2->speed = 10;
-        e2->attack = 20;
-        e2->HitSize = 300.0f;
-        e2->Serch1 = 2000;
-        e2->Serch2 = 1000;
-        e2->Serch3 = 1000;
-        e2->money = 3000;
-        e2->isSeparateAnim = true;
-        e2->xp = 300;
-        e2->tag = EnemyManager::boss_stage1;
-        e2->Count = 1;
-        mpEnemyManager->NewEnemyList(*e2);
-    }*/
-}

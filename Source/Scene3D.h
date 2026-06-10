@@ -4,6 +4,7 @@
 #include"Master.h"
 #include"Texture.h"
 #include"EnemyManager.h"
+#include"GameManager.h"
 
 
 
@@ -18,12 +19,7 @@ public:
 	~Scene3D();
 
 
-	enum class Phase {
-		PHASE_1,
-		PHASE_2,
-		BOSS,
-		CLEAR
-	};
+	GameManager* mpGameManager;
 
 	void Initialize();
 	void Finalize();
@@ -38,8 +34,7 @@ private:
 	float LoadCount;
 	bool Loadflag;
 
-	Phase mCurrentPhase;
-	void SpawnPhaseEnemies();
+
 	VECTOR pos = { 200,400 };
 	VECTOR size = { 600,100 };
 };

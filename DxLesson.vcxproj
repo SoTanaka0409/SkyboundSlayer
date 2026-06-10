@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -75,6 +75,7 @@
     <ClCompile Include="Source\Rule.cpp" />
     <ClCompile Include="Source\Save.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\GameManager.cpp" />
     <ClCompile Include="Source\Scene3D.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\ScoreManager.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\CollsionManager.h" />
     <ClInclude Include="Source\Combo.h" />
+    <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\Debugh.h" />
     <ClInclude Include="Source\DrawCircle1.h" />
     <ClInclude Include="Source\DrawHp.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="Source\Rule.h" />
     <ClInclude Include="Source\Save.h" />
     <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\GameManager.h" />
     <ClInclude Include="Source\Scene3D.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\ScoreManager.h" />
