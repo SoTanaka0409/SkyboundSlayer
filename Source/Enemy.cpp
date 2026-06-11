@@ -50,7 +50,7 @@ Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float 
 {
 	SetTag(Object3D::Tag3D_Enemy3D);
 	//SpeedDownNomber =mnSpeed-
-	//モチE��の生�E
+	//繝｢繝・Ν縺ｮ逕滓・
 	mpModel = new Model(filename, initPos, isSeparateAnim);
 	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
 	VinitPos = initPos;
@@ -63,15 +63,15 @@ Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float 
 	mpEquipmentManager = mpInventory->mpEquipmentManager;
 	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize/2, 0.0f)), mfSize);
 	mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 30.0f);
-	mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//敵を探知する冁E
-	mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//敵を攻撁E��始める�E
-	mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//敵との距離を保つ冁E
+	mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//謨ｵ繧呈爾遏･縺吶ｋ蜀・
+	mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//謨ｵ繧呈判謦・＠蟋九ａ繧句・
+	mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//謨ｵ縺ｨ縺ｮ霍晞屬繧剃ｿ昴▽蜀・
 	mpPurposCollider = new SphereCollider(this, mvPosition, 100.0f);
-	//new DrawHp("",  //画像名
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//中忁E��樁E
-	//	VAdd(mvPosition, VGet(150.0f, 200.0f, 0.0f)),//左上座樁E
-	//	VAdd(mvPosition, VGet(-150.0f, 0.0f, 0.0f)));//右下座樁E
-	  // コライダー生�E
+	//new DrawHp("",  //逕ｻ蜒丞錐
+	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//荳ｭ蠢・ｺｧ讓・
+	//	VAdd(mvPosition, VGet(150.0f, 200.0f, 0.0f)),//蟾ｦ荳雁ｺｧ讓・
+	//	VAdd(mvPosition, VGet(-150.0f, 0.0f, 0.0f)));//蜿ｳ荳句ｺｧ讓・
+	  // 繧ｳ繝ｩ繧､繝繝ｼ逕滓・
 	
 	
 }
@@ -82,8 +82,7 @@ Enemy::~Enemy()
 	{
 		delete mpModel;
 	}
-	Delete();
-	SetDeleteFlag(true);
+	
 }
 
 void Enemy::Update()
@@ -91,7 +90,7 @@ void Enemy::Update()
 	
 	if (mfHp<=0)
 	{
-		DeathEnemy();//敵を倒したときにクリアするためのカウントを減らぁE
+		DeathEnemy();//謨ｵ繧貞偵＠縺溘→縺阪↓繧ｯ繝ｪ繧｢縺吶ｋ縺溘ａ縺ｮ繧ｫ繧ｦ繝ｳ繝医ｒ貂帙ｉ縺・
 	}
 	else
 	{
@@ -101,10 +100,10 @@ void Enemy::Update()
 			CollPositionUpdate();
 			RotationByMove();
 			Move();
-			/////弾mを打つ処琁E
+			/////蠑ｾm繧呈遠縺､蜃ｦ逅・
 		
 			mpModel->Update();
-			//mpDH->Update();//drawHpのアチE�EチE�Eトを呼ぶ
+			//mpDH->Update();//drawHp縺ｮ繧｢繝・・繝・・繝医ｒ蜻ｼ縺ｶ
 			
 		}
 
@@ -152,16 +151,16 @@ void Enemy::Attack()
 {
 	AnimationState now = mpModel->GetNowState();
 	
-	//f ()プレイヤーに近づぁE��時と書ぁE
+	//f ()繝励Ξ繧､繝､繝ｼ縺ｫ霑代▼縺・◆譎ゅ→譖ｸ縺・
 	if (AttackCount >= AttackInterval&& isHitAttackSearch)
 	{
 		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
 		AttackCount = 0;
-		//攻撁E��ーションに変更
+		//謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ螟画峩
 		mpModel->ChangeAnimation(ANIMATION_ATTACK);
-		//ループ�EさせなぁE
+		//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
 		mpModel->SetLoop(false);
-		//モーション後�E征E��モーションに戻ぁE
+		//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		//mpModel->SetRotation(mvRotation);
 		isHitAttackSearch = false;
@@ -183,7 +182,7 @@ void Enemy::Move()
 {
 	AnimationState now = mpModel->GetNowState();
 	if (now == ANIMATION_ATTACK||now==ANIMATION_ATTACKMAGIC||now==ANIMATION_ATTACKJUMP)return;
-	if (Master::SafePointOn)mvPosition = VinitPos;//もしプレイヤーが安�E地帯にぁE��なら�E期�Eスに戻めE
+	if (Master::SafePointOn)mvPosition = VinitPos;//繧ゅ＠繝励Ξ繧､繝､繝ｼ縺悟ｮ牙・蝨ｰ蟶ｯ縺ｫ縺・ｋ縺ｪ繧牙・譛溘・繧ｹ縺ｫ謌ｻ繧・
 	
 
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
@@ -193,27 +192,27 @@ void Enemy::Move()
 	 UpMoveVector = VGet(0.0f, 0.0f, 0.0f);
 	 leftMoveVector = VGet(0.0f, 0.0f, 0.0f);
 	{
-		//上方向への移動�Eクトルは、カメラ視点方向からy成�Eを抜ぁE��も�Eとする
+		//荳頑婿蜷代∈縺ｮ遘ｻ蜍輔・繧ｯ繝医Ν縺ｯ縲√き繝｡繝ｩ隕也せ譁ｹ蜷代°繧謁謌仙・繧呈栢縺・◆繧ゅ・縺ｨ縺吶ｋ
 		UpMoveVector = VSub(Master::mpCamera->GetlookAtPosition(), Master::mpCamera->GetPosition());
 		UpMoveVector.y = 0.0f;
 
-		//左方向への移動�Eクトルが、上方向�E移動�Eクトルと、Y軸のプラス方向へのベクトルに垂直な方向（外積！E
+		//蟾ｦ譁ｹ蜷代∈縺ｮ遘ｻ蜍輔・繧ｯ繝医Ν縺後∽ｸ頑婿蜷代・遘ｻ蜍輔・繧ｯ繝医Ν縺ｨ縲〆霆ｸ縺ｮ繝励Λ繧ｹ譁ｹ蜷代∈縺ｮ繝吶け繝医Ν縺ｫ蝙ら峩縺ｪ譁ｹ蜷托ｼ亥､也ｩ搾ｼ・
 		leftMoveVector = VCross(UpMoveVector, VGet(0.0f, 1.0f, 0.0f));
 		leftMoveVector.y = 0.0f;
 
 
-		//移動�Eクトルは移動量を加味しなぁE�Eで、正規化しておく(ベクトルの長さを�E�にすること)
+		//遘ｻ蜍輔・繧ｯ繝医Ν縺ｯ遘ｻ蜍暮㍼繧貞刈蜻ｳ縺励↑縺・・縺ｧ縲∵ｭ｣隕丞喧縺励※縺翫￥(繝吶け繝医Ν縺ｮ髟ｷ縺輔ｒ・代↓縺吶ｋ縺薙→)
 		UpMoveVector = VNorm(UpMoveVector);
 		leftMoveVector = VNorm(leftMoveVector);
 	}
 
 
-	//////////////移動方向とスピ�Eド�E処琁E///////////////
+	//////////////遘ｻ蜍墓婿蜷代→繧ｹ繝斐・繝峨・蜃ｦ逅・///////////////
 	{
 		WalkCount++;
 		if (isHitSerchStop)
 		{
-			mfSpeed = 0;///進まなぁE��ぁE��する
+			mfSpeed = 0;///騾ｲ縺ｾ縺ｪ縺・ｈ縺・↓縺吶ｋ
 		}
 		else
 		{
@@ -221,35 +220,36 @@ void Enemy::Move()
 		}
 		if (WalkTimer < WalkCount)
 		{
-			WalkTimer = rand()%300;//こ�Eタイマ�Eを過ぎると方向転揁E
-			mnAlgorithm = rand()%4;
+			WalkTimer = rand()%300;//方向転換タイマー
+			mnAlgorithm = rand()%8; // 0-3: 歩く, 4-7: 立ち止まる
 			WalkCount = 0;
-			if (mnAlgorithm == 0)//左方向への移送E
-			{
-				moveVec = VAdd(moveVec, leftMoveVector);
-			}
-			if (mnAlgorithm == 1)//右方向への移送E
-			{
-				//veVec.x = 1.0f;
-				moveVec = VAdd(moveVec, VScale(leftMoveVector, -1));
+		}
 
-			}
-			if (mnAlgorithm == 2)//奥方向への移送E
-			{
-				moveVec = VAdd(moveVec, UpMoveVector);
-
-			}
-			if (mnAlgorithm == 3)//手前方向への移送E
-			{
-				moveVec = VAdd(moveVec, VScale(UpMoveVector, -1.0f));
-
-			}
+		if (mnAlgorithm == 0)//左方向への移動
+		{
+			moveVec = VAdd(moveVec, leftMoveVector);
+		}
+		else if (mnAlgorithm == 1)//右方向への移動
+		{
+			moveVec = VAdd(moveVec, VScale(leftMoveVector, -1.0f));
+		}
+		else if (mnAlgorithm == 2)//奥方向への移動
+		{
+			moveVec = VAdd(moveVec, UpMoveVector);
+		}
+		else if (mnAlgorithm == 3)//手前方向への移動
+		{
+			moveVec = VAdd(moveVec, VScale(UpMoveVector, -1.0f));
+		}
+		else
+		{
+			// mnAlgorithmが 4〜7 の場合は何もしない（立ち止まる）
 		}
 
 
 
 		GoPosition = VSub(pPlayer->GetPosition(), mvPosition);
-		GoPosition = VNorm(GoPosition);///プレイヤーへ向かぁE�E琁E
+		GoPosition = VNorm(GoPosition);///繝励Ξ繧､繝､繝ｼ縺ｸ蜷代°縺・・逅・
 
 
 		bool isMove = (moveVec.x != 0.0f || moveVec.z != 0.0f);
@@ -257,7 +257,7 @@ void Enemy::Move()
 		{
 			mpModel->ChangeAnimation(ANIMATION_RUN);
 
-			//移動方向を正規化しておく
+			//遘ｻ蜍墓婿蜷代ｒ豁｣隕丞喧縺励※縺翫￥
 			//moveVec = VNorm(moveVec);
 			//moveVec =VAdd( moveVec  ,mnSpeed);
 			if (isHitSearch == false)
@@ -270,7 +270,11 @@ void Enemy::Move()
 			}
 
 		}
-		VECTOR oldPosition = mvPosition;//前回の座標を一旦保持
+		else
+		{
+			mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
+		}
+		VECTOR oldPosition = mvPosition;//蜑榊屓縺ｮ蠎ｧ讓吶ｒ荳譌ｦ菫晄戟
 		if (isHitSearch == false)
 		{
 			mvPosition = VAdd(mvPosition, VScale(moveVec, mfSpeed));
@@ -283,7 +287,7 @@ void Enemy::Move()
 		//////////////////////////////////////////////////////
 
 		VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
-		//スチE�Eジとの当たり判定をする
+		//繧ｹ繝・・繧ｸ縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ縺吶ｋ
 		hitPos = VGet(0.0f, 0.0f, 0.0f);
 		bool isHit = false;
 
@@ -294,16 +298,16 @@ void Enemy::Move()
 			Stage* pStage = dynamic_cast<Stage*>(obj);
 			if (pStage != nullptr)
 			{
-				//スチE�Eジとプレイヤーのカプセルが当たってぁE��場吁E
+				//繧ｹ繝・・繧ｸ縺ｨ繝励Ξ繧､繝､繝ｼ縺ｮ繧ｫ繝励そ繝ｫ縺悟ｽ薙◆縺｣縺ｦ縺・ｋ蝣ｴ蜷・
 				if (pStage->CheckHit_Capsule(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)), 40.0f))
 				{
-					//当たってぁE��であろぁE�Eリゴンとの接触点を求めめE
+					//蠖薙◆縺｣縺ｦ縺・ｋ縺ｧ縺ゅｍ縺・・繝ｪ繧ｴ繝ｳ縺ｨ縺ｮ謗･隗ｦ轤ｹ繧呈ｱゅａ繧・
 					hitPos = pStage->CheckHit_Line(
-						VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),//enemyの膝当ためE多�E)と
-						VAdd(mvPosition, VGet(0.0f, -40.0f, 0.0f))//enemyの少し下あたりを線�Eとして持E��E
+						VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),//enemy縺ｮ閹晏ｽ薙◆繧・螟壼・)縺ｨ
+						VAdd(mvPosition, VGet(0.0f, -40.0f, 0.0f))//enemy縺ｮ蟆代＠荳九≠縺溘ｊ繧堤ｷ壼・縺ｨ縺励※謖・ｮ・
 					);
 
-					//当たった判定を取っておく
+					//蠖薙◆縺｣縺溷愛螳壹ｒ蜿悶▲縺ｦ縺翫￥
 					isHit = true;
 				}
 			}
@@ -311,13 +315,13 @@ void Enemy::Move()
 
 		if (isHit)
 		{
-			//地面に沿って歩ぁE��ぁE��状態として、Y座標をスチE�Eジに合わせる
+			//蝨ｰ髱｢縺ｫ豐ｿ縺｣縺ｦ豁ｩ縺・※縺・ｋ迥ｶ諷九→縺励※縲〆蠎ｧ讓吶ｒ繧ｹ繝・・繧ｸ縺ｫ蜷医ｏ縺帙ｋ
 			mvPosition.y = hitPos.y;
 		}
 		if (isHit == false)
 		{
-			//要改喁E
-			mvPosition.y += -4.0f;//落下する速度
+			//隕∵隼蝟・
+			mvPosition.y += -4.0f;//關ｽ荳九☆繧矩溷ｺｦ
 			if (mvPosition.y <= 0.0f)
 			{
 				mvPosition.y = oldPosition.y;
@@ -326,8 +330,8 @@ void Enemy::Move()
 		auto walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
 		if (!walls.empty())
 		{
-			// 当たってぁE��壁を調べめE
-			// hint: 現状の処琁E��は1枚�E壁しか最終的に判定されなぁE�Eで、E枚（以上）に当たってぁE��場合�E処琁E��老E��めE
+			// 蠖薙◆縺｣縺ｦ縺・ｋ螢√ｒ隱ｿ縺ｹ繧・
+			// hint: 迴ｾ迥ｶ縺ｮ蜃ｦ逅・〒縺ｯ1譫壹・螢√＠縺区怙邨ら噪縺ｫ蛻､螳壹＆繧後↑縺・・縺ｧ縲・譫夲ｼ井ｻ･荳奇ｼ峨↓蠖薙◆縺｣縺ｦ縺・◆蝣ｴ蜷医・蜃ｦ逅・ｒ閠・∴繧・
 			for (int i = 0; i < walls.size(); i++)
 			{
 				Wall* wall = dynamic_cast<Wall*>(walls.at(i));
@@ -335,7 +339,7 @@ void Enemy::Move()
 				{
 					std::vector<VERTEX3D> vertex = wall->GetVertex();
 
-					// プレイヤーを包むようなカプセル型�E判定と、壁�E三角形ポリゴンとの当たり判定を行う
+					// 繝励Ξ繧､繝､繝ｼ繧貞桁繧繧医≧縺ｪ繧ｫ繝励そ繝ｫ蝙九・蛻､螳壹→縲∝｣√・荳芽ｧ貞ｽ｢繝昴Μ繧ｴ繝ｳ縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ陦後≧
 					if (HitCheck_Capsule_Triangle(
 						mvPosition,
 						VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
@@ -351,12 +355,12 @@ void Enemy::Move()
 
 
 
-						// 壁に沿って行くようなベクトルを取征E
-						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 壁沿ぁE�Eクトル
-						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 移動方向�Eクトルの反対ベクトルと、壁�E法線との冁E��を求めめE
-						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 壁沿ぁE�Eクトルを計箁E
+						// 螢√↓豐ｿ縺｣縺ｦ陦後￥繧医≧縺ｪ繝吶け繝医Ν繧貞叙蠕・
+						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 螢∵ｲｿ縺・・繧ｯ繝医Ν
+						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 遘ｻ蜍墓婿蜷代・繧ｯ繝医Ν縺ｮ蜿榊ｯｾ繝吶け繝医Ν縺ｨ縲∝｣√・豕慕ｷ壹→縺ｮ蜀・ｩ阪ｒ豎ゅａ繧・
+						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 螢∵ｲｿ縺・・繧ｯ繝医Ν繧定ｨ育ｮ・
 
-						// 一旦座標を戻してから壁に沿って歩くよぁE��する
+						// 荳譌ｦ蠎ｧ讓吶ｒ謌ｻ縺励※縺九ｉ螢√↓豐ｿ縺｣縺ｦ豁ｩ縺上ｈ縺・↓縺吶ｋ
 						mvPosition = oldPosition;
 						mvPosition = VAdd(mvPosition, VScale(slide, mfSpeed));
 					}
@@ -375,11 +379,11 @@ void Enemy::Move()
 
 void Enemy::RotationByMove()
 {
-	//現在の回転値から目標�E回転値の差刁E��求めめE
+	//迴ｾ蝨ｨ縺ｮ蝗櫁ｻ｢蛟､縺九ｉ逶ｮ讓吶・蝗櫁ｻ｢蛟､縺ｮ蟾ｮ蛻・ｒ豎ゅａ繧・
 	float subAngle = mfTargetAngle - mfAngle;
 
-	//ある方向からある方向�E差が１８０度以上（以下）になることがなぁE�Eずなので
-	//差の値が１８０以上（以下）になってぁE��ら矯正する
+	//縺ゅｋ譁ｹ蜷代°繧峨≠繧区婿蜷代・蟾ｮ縺鯉ｼ托ｼ假ｼ仙ｺｦ莉･荳奇ｼ井ｻ･荳具ｼ峨↓縺ｪ繧九％縺ｨ縺後↑縺・・縺壹↑縺ｮ縺ｧ
+	//蟾ｮ縺ｮ蛟､縺鯉ｼ托ｼ假ｼ蝉ｻ･荳奇ｼ井ｻ･荳具ｼ峨↓縺ｪ縺｣縺ｦ縺・◆繧臥浣豁｣縺吶ｋ
 	if (subAngle < -DX_PI_F)
 	{
 		subAngle += DX_TWO_PI_F;
@@ -389,7 +393,7 @@ void Enemy::RotationByMove()
 		subAngle -= DX_TWO_PI_F;
 	}
 
-	//角度の差刁E��徐、E���E�に近づける
+	//隗貞ｺｦ縺ｮ蟾ｮ蛻・ｒ蠕舌・↓・舌↓霑代▼縺代ｋ
 	if (subAngle > 0.0f)
 	{
 		subAngle -= ROTATE_SPEED;
@@ -406,12 +410,12 @@ void Enemy::RotationByMove()
 			subAngle = 0.0f;
 		}
 	}
-	//今向ぁE��ほしい角度を産出
+	//莉雁髄縺・※縺ｻ縺励＞隗貞ｺｦ繧堤肇蜃ｺ
 	mfAngle = mfTargetAngle - subAngle;
 
-	//回転値を設宁E
+	//蝗櫁ｻ｢蛟､繧定ｨｭ螳・
 	mvRotation.y = mfAngle + DX_PI_F;
-	//モチE��に伝えめE
+	//繝｢繝・Ν縺ｫ莨昴∴繧・
 	mpModel->SetRotation(mvRotation);
 
 
@@ -434,23 +438,26 @@ void Enemy::DeathEnemy()
 	//Delete();
 	//Master::TutorialCount++;
 	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//ループ�EさせなぁE
+	//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
 	mpModel->SetLoop(false);
-	//モーション後�E征E��モーションに戻ぁE
+	//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
 	mpModel->SetLoopFinishState(ANIMATION_MAX);
-	DeathColliderPosition();
+	//DeathColliderPosition();
 	
 	//Master::mpLevelUp->SetXp(Master::mpLevelUp->GetXp() + mfHaveXp);
+	Delete();
 	if (mpModel->IsAnimationLoopFinish())
 	{
-		isDead = false;
-		mpInventory->DropInventory(mnChance, mbWeapon, mbItem);//キャラクラスのストラクトで初期化すめE
-		new Coin("Resource/3D/Coin/coin.mv1", mvPosition, mfHaveMoney);
-		player->mpLevelUp->AddXp(mfHaveXp);
-		mfHp = mfMaxHp;//回復させて再スポ�Eン
-		mvPosition = VGet(-mvPosition.x, 100.0f, -mvPosition.z);//反対側にスポ�EンさせめE
-		if (Master::TutorialFlag) {mvPosition=VGet(10000,0,100000); Master::TutorialCount++; }//チューとリアルはdelete
+		mpInventory->DropInventory(mnChance, mbWeapon, mbItem);//繧ｭ繝｣繝ｩ繧ｯ繝ｩ繧ｹ縺ｮ繧ｹ繝医Λ繧ｯ繝医〒蛻晄悄蛹悶☆繧・
+		if (player != nullptr) {
+			player->mpHaveMoney->AddMoney(mfHaveMoney);
+			player->mpLevelUp->AddXp(mfHaveXp);
+		}
 		
+		if (Master::TutorialFlag) { Master::TutorialCount++; }
+		
+		
+		SetDeleteFlag(true);
 	}
 	
 	mpModel->Draw();
@@ -462,16 +469,36 @@ void Enemy::DeathEnemy()
 void Enemy::DeathColliderPosition()
 {
 	VECTOR pos = VGet(10000, 10000, 10000);
-	mpSerchCollider->mvPosition = pos;
-	mpCapsuleCollider->mvPosition = pos;
-	mpCapsuleCollider->mvPosition2 = pos;
-	mpAttachCollider->mvPosition = pos;
-	mpAttackCollider->mvPosition = pos;
+	if (mpCapsuleCollider != nullptr)
+	{
+		mpCapsuleCollider->mvPosition = pos;
+		mpCapsuleCollider->mvPosition2 = pos;
+	}
+	if (mpAttachCollider != nullptr)
+	{
+		mpAttachCollider->mvPosition = pos;
+	}
+	if (mpSerchCollider != nullptr)
+	{
+		mpSerchCollider->mvPosition = pos;
+	}
+	if (mpStopCollider != nullptr)
+	{
+		mpStopCollider->SetDeleteFlag(true);
+	}
+	if (mpAttackCollider != nullptr)
+	{
+		mpAttackCollider->mvPosition = pos;
+	}
+	
+	
+	
+
 	mpStopCollider->mvPosition = pos;
 
 }
 
-void Enemy::OnEnter(Collider* collider, Collider* check)//左側.
+void Enemy::OnEnter(Collider* collider, Collider* check)//蟾ｦ蛛ｴ.
 {
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	if (mfHp <= 0)return;
@@ -492,7 +519,7 @@ void Enemy::OnEnter(Collider* collider, Collider* check)//左側.
 		}
 		if (collider == mpAttackCollider && player->GetCollisionCollider() == check)
 		{
-			isHitAttackSearch = true;//攻撁E��始フラグ
+			isHitAttackSearch = true;//謾ｻ謦・幕蟋九ヵ繝ｩ繧ｰ
 
 		}
 		if (collider == mpStopCollider && player->GetCollisionCollider() == check)
@@ -500,15 +527,15 @@ void Enemy::OnEnter(Collider* collider, Collider* check)//左側.
 			isHitSerchStop = true;
 		}
 	}
-	//当たってぁE��間時の処琁E
+	//蠖薙◆縺｣縺ｦ縺・ｋ髢捺凾縺ｮ蜃ｦ逅・
 }
 
 void Enemy::OnTrigger(Collider* collider, Collider* check)
-{//当たった瞬間�E処琁E
+{//蠖薙◆縺｣縺溽椪髢薙・蜃ｦ逅・
 	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-	{//mpModelの番号もあってぁE��、けどこ�Eif斁E��入らなぁE
+	{//mpModel縺ｮ逡ｪ蜿ｷ繧ゅ≠縺｣縺ｦ縺・ｋ縲√￠縺ｩ縺薙・if譁・↓蜈･繧峨↑縺・
 		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 		if (player == nullptr)return;
 		if (check == player->GetCollisionCollider())
@@ -518,7 +545,7 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 			{
 
 				player->Damage(mfAttack);
-				AttackHitJudgmentflag = true;//当たったよー
+				AttackHitJudgmentflag = true;//蠖薙◆縺｣縺溘ｈ繝ｼ
 			}
 		}
 
@@ -526,6 +553,7 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 	if (collider == mpPurposCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
 		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+		if (player == nullptr) return;
 		if (check == player->GetCollisionCollider())
 		{
 			mpPurposCollider->mvPosition = PurposePosition;
@@ -555,7 +583,7 @@ void Enemy::OnExit(Collider* collider, Collider* check)
 			}
 			if (collider == mpAttackCollider && player->GetCollisionCollider() == check)
 			{
-				isHitAttackSearch = false;//攻撁E��始フラグ
+				isHitAttackSearch = false;//謾ｻ謦・幕蟋九ヵ繝ｩ繧ｰ
 
 			}
 			if (collider == mpStopCollider && player->GetCollisionCollider() == check)
@@ -568,12 +596,33 @@ void Enemy::OnExit(Collider* collider, Collider* check)
 
 void Enemy::CollPositionUpdate()
 {
-	mpSerchCollider->mvPosition = mvPosition;
-	mpCapsuleCollider->mvPosition = mvPosition;
-	mpCapsuleCollider->mvPosition2 = VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f));
-	mpAttachCollider->mvPosition = mpModel->GetAttachmentPosition();
-	mpAttackCollider->mvPosition = VAdd(mvPosition, VGet(0.0f, mfSize / 2, 0.0f));
-	mpStopCollider->mvPosition = VAdd(mvPosition, VGet(0.0f, mfSize / 2, 0.0f));
+	if (mpCapsuleCollider != nullptr)
+	{
+		mpCapsuleCollider->mvPosition = mvPosition;
+		mpCapsuleCollider->mvPosition2 = VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f));
+		
+	}
+	if (mpAttachCollider != nullptr)
+	{
+		mpAttachCollider->mvPosition = mpModel->GetAttachmentPosition();
+	}
+	if (mpSerchCollider != nullptr)
+	{
+		mpSerchCollider->mvPosition = mvPosition;
+	}
+	if (mpStopCollider != nullptr)
+	{
+		mpStopCollider->mvPosition = VAdd(mvPosition, VGet(0.0f, mfSize / 2, 0.0f));
+	}
+	if (mpAttackCollider != nullptr)
+	{
+		mpAttackCollider->mvPosition = VAdd(mvPosition, VGet(0.0f, mfSize / 2, 0.0f));
+	}
+	
+	
+
+
+	
 	
 }
 

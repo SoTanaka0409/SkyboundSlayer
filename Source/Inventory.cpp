@@ -1,4 +1,4 @@
-#include"Inventory.h"
+ï»¿#include"Inventory.h"
 #include"InputManager.h"
 #include"Master.h"
 #include"ObjectManager.h"
@@ -36,7 +36,7 @@ Inventory::~Inventory()
 
 void Inventory::Draw()
 {
-	//add‚ªŒÄ‚Ño‚³‚ê‚½uŠÔ•\Ž¦‚·‚é  
+	//addç¸ºæ‚Ÿä»–ç¸ºï½³èœƒï½ºç¸ºè¼”ï½Œç¸ºæº½æ¤ªé«¢æ¥¢ï½¡ï½¨é‰ï½ºç¸ºå¶ï½‹  
 
 }
 
@@ -47,8 +47,8 @@ void Inventory::Update()
 		if (Master::InventoryClasOn)
 		{
 			mpTexture->Draw();
-			SelectClass();//Ws‚ÅŠeƒRƒ}ƒ“ƒh‚ð‘I‘ð‚·‚éˆ×
-			if (InventoryOn)//ŠeƒCƒ“ƒxƒ“ƒgƒŠ‚ÉG‚ê‚ç‚ê‚é‚æ‚¤‚É‚·‚éƒtƒ‰ƒOAfalse‚¾‚Æselect1‚Ì‘I‘ð‰æ–Ê‚É‚È‚é
+			SelectClass();//Wsç¸ºï½§èœ·ãƒ»ã•ç¹æ§­Î¦ç¹å³¨ï½’é©•ï½¸è¬šæ§­â˜†ç¹§ç‹—ãœ
+			if (InventoryOn)//èœ·ãƒ»ã†ç¹ï½³ç¹å¶Î¦ç¹åŒ»Îœç¸ºï½«éš—ï½¦ç¹§å¾Œï½‰ç¹§å¾Œï½‹ç¹§åŒ»â‰§ç¸ºï½«ç¸ºå¶ï½‹ç¹è¼”Î›ç¹§ï½°ç¸²â€™alseç¸ºï¿½ç¸ºï½¨select1ç¸ºï½®é©•ï½¸è¬šæ¨’åˆ¤é«±ï½¢ç¸ºï½«ç¸ºï½ªç¹§ãƒ»
 			{
 				SelectWeapon();
 				SelectItem();
@@ -126,7 +126,7 @@ void Inventory::SelectWeapon()
 					}
 				}
 				DrawFormatString(mnFirst_X, mnFirst_Y + 50 * count, GetColor(255, 5, 255), "%s", (*itr)->name.c_str());
-				if ((*itr)->mbGet)DrawFormatString(500, 400 + 50 * count, GetColor(255, 0, 0), "‘•”õ’†");
+				if ((*itr)->mbGet)DrawFormatString(500, 400 + 50 * count, GetColor(255, 0, 0), "é™¬ãƒ»ï½™è³ï½­");
 				count++;
 				
 				
@@ -149,12 +149,12 @@ void Inventory::SelectClass()
 	if (InputManager::CheckDownKey(KEY_INPUT_DOWN))
 	{
 		Select++;
-		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//Œø‰Ê‰¹
+		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//èœ‰ï½¹è­«æ†ºæµ¹
 	}
 	if (InputManager::CheckDownKey(KEY_INPUT_UP))
 	{
 		Select--;
-		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//Œø‰Ê‰¹
+		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//èœ‰ï½¹è­«æ†ºæµ¹
 
 	}
 	if (Select >= SelectMax)
@@ -179,7 +179,7 @@ void Inventory::SelectEquipment()
 
 		for (auto itr = player->mpEquipmentManager->mDateList.begin(); itr != player->mpEquipmentManager->mDateList.end(); itr++)
 		{
-			//if ((*itr)->mbGet)DrawFormatString(500, 200 + 50 * count, GetColor(255, 255, 255), "‘•”õ’†");
+			//if ((*itr)->mbGet)DrawFormatString(500, 200 + 50 * count, GetColor(255, 255, 255), "é™¬ãƒ»ï½™è³ï½­");
 			if (Select == count)
 			{
 				DrawBox(mnFirst_X, mnFirst_Y + 50 * count, 1000, mnFirst_Y + 50 + 50 * count, GetColor(0, 0, 0), true);
@@ -192,7 +192,7 @@ void Inventory::SelectEquipment()
 				}
 			}
 			DrawFormatString(mnFirst_X, mnFirst_Y + 50 * count, GetColor(255, 255, 255), "%s:", (*itr)->name.c_str());
-			if ((*itr)->mbGet)DrawFormatString(500, 200 + 50 * count, GetColor(255,0,0), "‘•”õ’†");
+			if ((*itr)->mbGet)DrawFormatString(500, 200 + 50 * count, GetColor(255,0,0), "é™¬ãƒ»ï½™è³ï½­");
 			count++;
 
 
@@ -227,8 +227,8 @@ void Inventory::SelectItem()
 						
 					}
 				}
-				DrawFormatString(mnFirst_X, mnFirst_Y + 50 * count, GetColor(255, 255, 255), "%s:%dŒÂŠŽ", (*itr)->Name.c_str(), (*itr)->Count);
-				count++;
+				DrawFormatString(mnFirst_X, mnFirst_Y + 50 * count, GetColor(255, 255, 255), "%s:%då€‹æ‰€æŒ", (*itr)->Name.c_str(), (*itr)->Count);
+				DrawFormatString(mnFirst_X, mnFirst_Y + 50 * count, GetColor(255, 255, 255), "%s:%d", (*itr)->Name.c_str(), (*itr)->Count);
 				
 				
 			}
@@ -243,13 +243,14 @@ void Inventory::SelectItem()
 	}
 
 }
-//ƒVƒ‡ƒbƒv‚ÌŽó‚¯“n‚µˆ—‚àÚ‚¹‚Ä‚¢‚­
-void Inventory::DropInventory(int chance, bool onWeapon, bool onItem)//ƒvƒŒƒCƒ„[ˆÈŠO‚É“n‚·•û–@‚ª’m‚è‚½‚¢
+//ç¹§ï½·ç¹ï½§ç¹ãƒ»ãƒ»ç¸ºï½®èœ¿åŠ±ï¿ è²‚ï½¡ç¸ºæ€œãƒ»é€…ãƒ»ï½‚éœˆå³¨â—‹ç¸ºï½¦ç¸ºãƒ»ï¿¥
+void Inventory::DropInventory(int chance, bool onWeapon, bool onItem)//ç¹åŠ±Îžç¹§ï½¤ç¹ï½¤ç¹ï½¼èŽ‰ï½¥èžŸæ‚¶â†“è²‚ï½¡ç¸ºå‘Žå©¿è±•è¼”â€²éï½¥ç¹§ç¿«â—†ç¸ºãƒ»
 {
 	int C = rand()%100;
-	if (C > chance)return;//drop‚·‚éŠm—¦
+	if (C > chance)return;//dropç¸ºå¶ï½‹é’ï½ºé‚‡ãƒ»
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+	if (player == nullptr) return;
 	for (auto e = mpWeaponManager->mDateList.begin(); e != mpWeaponManager->mDateList.end(); e++)
 	{
 		if (!onWeapon)break;

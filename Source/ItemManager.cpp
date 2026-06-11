@@ -10,12 +10,12 @@ ItemManager::ItemManager()
 
 	/*auto Itemlistinformation = new Item::ItemInformation();
 	Itemlistinformation->Count = 3;
-	Itemlistinformation->Name = "回復薬";
+	Itemlistinformation->Name = "蝗槫ｾｩ阮ｬ";
 	Itemlistinformation->ID = Item::HEAL;
 	mItemList.push_back(Itemlistinformation);
 	auto Itemlistinformation2 = new Item::ItemInformation();
 	Itemlistinformation2->Count = 3;
-	Itemlistinformation2->Name = "回復薬";
+	Itemlistinformation2->Name = "蝗槫ｾｩ阮ｬ";
 	Itemlistinformation2->ID = Item::HEAL;
 	mItemList.push_back(Itemlistinformation2);*/
 
@@ -35,6 +35,8 @@ void ItemManager::Update()
 
 void ItemManager::AddItem(Item::ItemInformation* mItem)
 {
+    if (mItem == nullptr) return;
+    if (Master::mpInfClassManager == nullptr) return;
 	mbGetItemflag = true;
 	for (auto itr = mItemList.begin(); itr != mItemList.end(); itr++)
 	{
@@ -43,28 +45,28 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 		case Item::ItemID::NONE:
 			break;
 		case Item::ItemID::HEAL:
-			mItem->Name = "回復薬";
+			mItem->Name = "蝗槫ｾｩ阮ｬ";
 			mItem->price = 100;
 			break;
 		case Item::ItemID::POWER:
-			mItem->Name = "強化薬";
+			mItem->Name = "蠑ｷ蛹冶脈";
 			mItem->price = 100;
 			break;
 		case Item::ItemID::HIGHHEAL:
-			mItem->Name = "ハイヒールポーション";
+			mItem->Name = "繝上う繝偵・繝ｫ繝昴・繧ｷ繝ｧ繝ｳ";
 			mItem->price = 300;
 			break;
 		case Item::ItemID::SPEED:
-			mItem->Name = "スピードポーション";
+			mItem->Name = "繧ｹ繝斐・繝峨・繝ｼ繧ｷ繝ｧ繝ｳ";
 			mItem->price = 50;
 		default:
 			break;
 		}
-		if ((*itr)->ID == mItem->ID)//GetItemを回す方法がわからない
+		if ((*itr)->ID == mItem->ID)//GetItem繧貞屓縺呎婿豕輔′繧上°繧峨↑縺・
 		{
 			(*itr)->Count += mItem->Count;
 			
-			if((*mItem).isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));//もしログしてもいい状態なら、獲得したとき
+			if((*mItem).isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));//繧ゅ＠繝ｭ繧ｰ縺励※繧ゅ＞縺・憾諷九↑繧峨∫佐蠕励＠縺溘→縺・
 			return;
 		}
 
@@ -80,16 +82,17 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 void ItemManager::UseItem(Item::ItemID id)
 {
 	auto mpplayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-	Player3D* player = dynamic_cast<Player3D*>(mpplayer);
+    Player3D* player = dynamic_cast<Player3D*>(mpplayer);
+    if (player == nullptr) return;
 	for (auto itr = mItemList.begin(); itr != mItemList.end(); itr++)
 	{
 		if ((*itr)->ID == id)
 		{
-			//残りの数が０又は既に使用されているとき
+			//谿九ｊ縺ｮ謨ｰ縺鯉ｼ仙処縺ｯ譌｢縺ｫ菴ｿ逕ｨ縺輔ｌ縺ｦ縺・ｋ縺ｨ縺・
 			if ((*itr)->Count <= 0) { Master::mpInfClassManager->LogList.push_back(new InfClass(400, (*itr)->Name.c_str(), 4)); return; }
 
-			if (id == Item::HIGHHEAL || id == Item::HEAL)Master::mpSoundManager->PlaySE(SoundManager::SE_HEAL);//heal音を鳴らす
-			if (id == Item::POWER || id == Item::SPEED)Master::mpSoundManager->PlaySE(SoundManager::SE_POWER);//statusUpの音
+			if (id == Item::HIGHHEAL || id == Item::HEAL)Master::mpSoundManager->PlaySE(SoundManager::SE_HEAL);//heal髻ｳ繧帝ｳｴ繧峨☆
+			if (id == Item::POWER || id == Item::SPEED)Master::mpSoundManager->PlaySE(SoundManager::SE_POWER);//statusUp縺ｮ髻ｳ
 			(*itr)->Count -= 1;
 			(*itr)->mbUse = true;
 
@@ -106,7 +109,8 @@ void ItemManager::UseItem(Item::ItemID id)
 void ItemManager::Effect(Item::ItemID id)
 {
 	auto mpplayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-	Player3D* player = dynamic_cast<Player3D*>(mpplayer);
+    Player3D* player = dynamic_cast<Player3D*>(mpplayer);
+    if (player == nullptr) return;
 	if (id == Item::HEAL)
 	{
 		player->Damage(-20);
@@ -133,7 +137,7 @@ void ItemManager::Effect(Item::ItemID id)
 //{
 //	for (auto itr = mItemList.begin(); itr != mItemList.end(); itr++)
 //	{
-//		if (itr->GetItem() == id)//GetItemを回す方法がわからない
+//		if (itr->GetItem() == id)//GetItem繧貞屓縺呎婿豕輔′繧上°繧峨↑縺・
 //		{
 //			if (itr->GetItemCount() <= 0)
 //			{

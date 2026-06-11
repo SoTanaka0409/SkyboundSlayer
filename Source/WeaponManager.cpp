@@ -17,14 +17,14 @@ WeaponManager::~WeaponManager()
 
 }
 
-//‚à‚µ‚·‚Å‚É‚»‚Ì•Ší‚ğ‚Á‚Ä‚¢‚½‚çreturn‚·‚é,
+//ã‚‚ã—ã™ã§ã«ãã®æ­¦å™¨ã‚’æŒã£ã¦ã„ãŸã‚‰returnã™ã‚‹,
 void WeaponManager::AddWeapon(Weapon::WeaponDate* date)
 {
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
 		if ((*itr)->id==date->id)
 		{
-			if ((*itr)->damage < date->damage)//‚à‚µ¡Œ»İŠl“¾‚µ‚½‚¨‚È‚¶ID‚Ì•Ší‚ÌUŒ‚—Í‚ªŠî‚Ì‚æ‚è‚‚©‚Á‚½‚çUŒ‚—Í‚ğXV‚·‚é
+			if ((*itr)->damage < date->damage)//ã‚‚ã—ä»Šç¾åœ¨ç²å¾—ã—ãŸãŠãªã˜IDã®æ­¦å™¨ã®æ”»æ’ƒåŠ›ãŒåŸºã®ã‚ˆã‚Šé«˜ã‹ã£ãŸã‚‰æ”»æ’ƒåŠ›ã‚’æ›´æ–°ã™ã‚‹
 			{
 				(*itr)->damage = date->damage;
 				if(date->isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
@@ -37,23 +37,23 @@ void WeaponManager::AddWeapon(Weapon::WeaponDate* date)
 	{
 	case Weapon::Tag_Weapon1:
 		date->price = 500;
-		date->name = "‚½‚¾‚ÌŒ•";
+		date->name = "ãŸã ã®å‰£";
 		break;
 	case Weapon::Tag_Weapon2:
 		date->price = 800;
-		date->name = "•’Ê‚ÌŒ•";
+		date->name = "æ™®é€šã®å‰£";
 		break;
 	case Weapon::Tag_Weapon3:
 		date->price = 1200;
-		date->name = "‹­‚¢Œ•";
+		date->name = "å¼·ã„å‰£";
 		break;
 	case Weapon::Tag_Weapon4:
 		date->price = 1600;
-		date->name = "‚Â‚¨[‚¢Œ•";
+		date->name = "ã¤ãŠãƒ¼ã„å‰£";
 		break;
 	case Weapon::Tag_Weapon5:
 		date->price = 2000;
-		date->name = "Å‹­‚ÌŒ•";
+		date->name = "æœ€å¼·ã®å‰£";
 		break;
 	default:
 		break;
@@ -68,7 +68,7 @@ void WeaponManager::Update()
 	{
 		if ((*itr)->mbGet == true)
 		{
-			filename = (*itr)->filename;//ƒLƒƒƒ‰ƒNƒ^[‚²‚Æ‚É‚Á‚Ä‚¢‚é•Ší‚Ìƒ‚ƒfƒ‹‚Ìƒtƒ@ƒCƒ‹‚ğ’T‚·
+			filename = (*itr)->filename;//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã”ã¨ã«æŒã£ã¦ã„ã‚‹æ­¦å™¨ã®ãƒ¢ãƒ‡ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¢ã™
 		}
 	
 
@@ -91,6 +91,7 @@ void WeaponManager::ChangeWeapon(Weapon::WeaponDate* date)
 {
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+	if (player == nullptr) return;
 	
 	//GetDamage(date);
 	
@@ -99,7 +100,7 @@ void WeaponManager::ChangeWeapon(Weapon::WeaponDate* date)
 	player->GetAllStatusState(Object3D::Status_Attack);
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
-		(*itr)->mbGet = false;//ˆê‰ñ‚·‚×‚Ä‚Ì•Ší‚ğŠO‚·
+		(*itr)->mbGet = false;//ä¸€å›ã™ã¹ã¦ã®æ­¦å™¨ã‚’å¤–ã™
 	}
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{

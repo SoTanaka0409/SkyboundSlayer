@@ -49,9 +49,32 @@ void GameManager::Update(bool loadFlag)
 
 void GameManager::Draw()
 {
+    int fontSize = GetFontSize();
+    SetFontSize(30);
+
+    const char* phaseStr = "";
+    switch (mCurrentPhase) {
+    case Phase::PHASE_1: phaseStr = "Phase 1"; break;
+    case Phase::PHASE_2: phaseStr = "Phase 2"; break;
+    case Phase::PHASE_3: phaseStr = "Phase 3"; break;
+    case Phase::BOSS:    phaseStr = "BOSS Phase"; break;
+    case Phase::SHOP_1:  phaseStr = "Shop 1"; break;
+    case Phase::SHOP_2:  phaseStr = "Shop 2"; break;
+    case Phase::SHOP_3:  phaseStr = "Shop 3"; break;
+    case Phase::CLEAR:   phaseStr = "CLEAR!"; break;
+    }
+
+    auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+    int enemyCount = (int)enemies.size();
+
+    DrawFormatString(20, 100, GetColor(255, 255, 255), "Current Phase: %s", phaseStr);
+    DrawFormatString(20, 140, GetColor(255, 255, 255), "Enemies Remaining: %d", enemyCount);
+
+    SetFontSize(fontSize);
+
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3) {
         int seconds = mShopTimer / 60;
-        DrawFormatString(Config::ScreenWidth / 2 - 150, 50, GetColor(255, 255, 0), "SHOP PHASE - Next Wave in %d s", seconds);
+        DrawFormatString(1920 / 2 - 150, 50, GetColor(255, 255, 0), "SHOP PHASE - Next Wave in %d s", seconds);
     }
 }
 

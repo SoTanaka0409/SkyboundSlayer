@@ -75,33 +75,33 @@ void StageCollider::OnEnter(Collider* collider, Collider* check)
 		}*/
 		
 
-		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage‚És‚­
+		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstageã«è¡Œã
 		{
 			//mpTexture2->Draw();
 
 			
 		}
-		if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstage‚És‚­
+		if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstageã«è¡Œã
 		{
 			//mpTexture->Draw();
 			
 		}
 	}
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-	if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage‚És‚­
+	if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstageã«è¡Œã
 	{
 		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 		if (player == nullptr)return;
 		if(check==player->Get500Collider())
 		{
 			DrawBox(400, 200, 600, 250, GetColor(0, 0, 0), true);
-			DrawFormatString(450, 220, GetColor(255, 255, 255), "BossStage‚Ö");
+			DrawFormatString(450, 220, GetColor(255, 255, 255), "BossStageã¸");
 			
 		}
 		
 
 	}
-	if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstage‚És‚­
+	if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstageã«è¡Œã
 	{
 		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 		if (player == nullptr)return;
@@ -109,7 +109,7 @@ void StageCollider::OnEnter(Collider* collider, Collider* check)
 		if (check == player->Get500Collider())
 		{
 			DrawBox(400, 200, 600, 250, GetColor(0, 0, 0), true);
-			DrawFormatString(450, 220, GetColor(255, 255, 255), "normalStage‚Ö");
+			DrawFormatString(450, 220, GetColor(255, 255, 255), "normalStageã¸");
 		}
 	}
 
@@ -121,26 +121,28 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 	{
 		auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 
-		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage‚És‚­
+		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstageã«è¡Œã
 		{
 			Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+			if (player == nullptr) return;
 			mpTexture2->Draw();
 			if (check == player->GetCollisionCollider())
 			{
-				player->SetPosition(VAdd(mpGoStageCollider->mvPosition, VGet(500.0f, 0, 0)));//êŠ‚ğˆÚ“®
-				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warp‰¹‚ğ–Â‚ç‚·
+				player->SetPosition(VAdd(mpGoStageCollider->mvPosition, VGet(500.0f, 0, 0)));//å ´æ‰€ã‚’ç§»å‹•
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warpéŸ³ã‚’é³´ã‚‰ã™
 				new Effect(VGet(17000, 0, 16000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
 				new Effect(VGet(16000, 0, 17000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
 			}
 		}
-		if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstage‚És‚­
+		if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstageã«è¡Œã
 		{
 			Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+			if (player == nullptr) return;
 			mpTexture->Draw();
 			if (check == player->GetCollisionCollider())
 			{
-				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warp‰¹‚ğ–Â‚ç‚·
-				player->SetPosition(VAdd(mpGoBossCollider->mvPosition, VGet(500.0f, 0, 0)));//êŠ‚ğˆÚ“®
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warpéŸ³ã‚’é³´ã‚‰ã™
+				player->SetPosition(VAdd(mpGoBossCollider->mvPosition, VGet(500.0f, 0, 0)));//å ´æ‰€ã‚’ç§»å‹•
 				
 			}
 		}

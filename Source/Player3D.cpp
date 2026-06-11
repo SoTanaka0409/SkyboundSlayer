@@ -37,15 +37,15 @@
 #include"InfClass.h"
 #include"HaveMoneyClass.h"
 
-// 分割アニメーションを使用するかの設定を追加（デフォルトはfalse（使用しない））
+// 蛻・牡繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧剃ｽｿ逕ｨ縺吶ｋ縺九・險ｭ螳壹ｒ霑ｽ蜉�・医ョ繝輔か繝ｫ繝医・false・井ｽｿ逕ｨ縺励↑縺・ｼ会ｼ・
 Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float speed, float hp, bool isSeparateAnim)
 	:Object3D(initPos)
-	, mfAttack(0)//ダメージ
+	, mfAttack(0)//繝繝｡繝ｼ繧ｸ
 	, mfAttackjump(5)
 	, mfAttackSlide(7)
 
-	,OnJumpCollider(false)//この瞬間に当たり判定をつける
-	, mbInvisible(false)//攻撃が重複しないように
+	,OnJumpCollider(false)//縺薙・迸ｬ髢薙↓蠖薙◆繧雁愛螳壹ｒ縺､縺代ｋ
+	, mbInvisible(false)//謾ｻ謦・′驥崎､・＠縺ｪ縺・ｈ縺・↓
 	, mbjump(false)
 	, mfVerticalAngle(0.0f)
 	, mfHorizontalAngle(0.0f)
@@ -54,14 +54,14 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	, mfHp(hp)//hp
 	, mfMaxHp(hp)//maxhp
 	, mfDashSpeed(speed * 2)
-	, NewShieldFast(false)//シールドを生成するかどうか
-	, mfSize(60.0f)//あたり判定
-	, Pause(false)//ポーズ画面
-	, ChangeCamera(0)//視点変更
+	, NewShieldFast(false)//繧ｷ繝ｼ繝ｫ繝峨ｒ逕滓・縺吶ｋ縺九←縺・°
+	, mfSize(60.0f)//縺ゅ◆繧雁愛螳・
+	, Pause(false)//繝昴・繧ｺ逕ｻ髱｢
+	, ChangeCamera(0)//隕也せ螟画峩
 	, DashGuage(100.0f)//
 	, EneSerchCount(0)
-	, Gpush(false)//必殺技をしていいか
-	, GpushCount(2)//必殺技のカウント
+	, Gpush(false)//蠢・ｮｺ謚繧偵＠縺ｦ縺・＞縺・
+	, GpushCount(2)//蠢・ｮｺ謚縺ｮ繧ｫ繧ｦ繝ｳ繝・
 	, EffectUflag(false)
 	, EffectUCount(0)
 	, mfRideOldHp(0)
@@ -110,7 +110,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	float HpRatio = (float)mfHp / mfMaxHp;
 	mfMaxHp = mfHp;
 	mfNormalSpeed = mfSpeed;
-	{//初期装備
+	{//蛻晄悄陬・ｙ
 		Weapon::WeaponDate* weaponInf;
 		weaponInf = new Weapon::WeaponDate;
 		weaponInf->damage = 1000;
@@ -120,8 +120,8 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 		mpWeaponManager->AddWeapon(weaponInf);
 		mpWeaponManager->ChangeWeapon(weaponInf);
 
-		mfNormalAttack = weaponInf->damage;//最初に初期装備の攻撃力の初期化処理を行う
-		mfAttack = weaponInf->damage;//最初に初期装備の攻撃力の初期化処理を行う
+		mfNormalAttack = weaponInf->damage;//譛蛻昴↓蛻晄悄陬・ｙ縺ｮ謾ｻ謦・鴨縺ｮ蛻晄悄蛹門・逅・ｒ陦後≧
+		mfAttack = weaponInf->damage;//譛蛻昴↓蛻晄悄陬・ｙ縺ｮ謾ｻ謦・鴨縺ｮ蛻晄悄蛹門・逅・ｒ陦後≧
 	}
 
 
@@ -132,7 +132,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	//mpTarget = new Enemy3D("", VGet(20000, 0, 0), 0, 0, 0, 0, 0);
 	
 	//mpCamera->ResetCameraPlayer(true);
-	 // コライダー生成
+	 // 繧ｳ繝ｩ繧､繝繝ｼ逕滓・
 	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize, 0.0f)), mfSize);
 	mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 60.0f);
 	mpAttackSlideCollider = new SphereCollider(this, mvPosition, 200.0f);
@@ -154,7 +154,7 @@ Player3D::~Player3D()
 
 void Player3D::Update()
 {
-	mpInventory->Update();//inventoryだけはここに
+	mpInventory->Update();//inventory縺�縺代・縺薙％縺ｫ
 	if (Master::ShopClassOn || Master::InventoryClasOn)return;
 	///////////////////////////////////////////////
 	
@@ -162,35 +162,52 @@ void Player3D::Update()
 	if (InputManager::CheckDownKey(KEY_INPUT_O)&&!Master::NearShopOn)
 	{
 		Master::InventoryClasOn = true;
-		Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);//効果音
+		Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);//蜉ｹ譫憺浹
 	}
 		
 	
-	if (Master::PauseOn == false)//ポーズ中は動かないようにする
+	if (Master::PauseOn == false)//繝昴・繧ｺ荳ｭ縺ｯ蜍輔°縺ｪ縺・ｈ縺・↓縺吶ｋ
 	{
+		if (mpTarget != nullptr)
+		{
+			bool isTargetValid = false;
+			auto mpEneList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+			for (int i = 0; i < mpEneList.size(); i++)
+			{
+				if (mpTarget == mpEneList.at(i) && !mpTarget->IsDeleteFlag())
+				{
+					isTargetValid = true;
+					break;
+				}
+			}
+			if (!isTargetValid)
+			{
+				mpTarget = nullptr;
+			}
+		}
 		Test();
 		ManagerUpdate();
 		if (InputManager::CheckDownKey(KEY_INPUT_Q))
 		{
 			ChangeView();
 		}
-		////////////////////////行動/////////////////
+		////////////////////////陦悟虚/////////////////
 		SelectAttack();
 		Result();
 		ResetNUETRAL();
-		//ジャンプ処理
+		//繧ｸ繝｣繝ｳ繝怜・逅・
 		CollPositionUpdate();
 		Evasion();
-		//攻撃処理
+		//謾ｻ謦・・逅・
 		SelectAttack();
-		//移動処理
+		//遘ｻ蜍募・逅・
 		MoveEx();
-		//回転処理
+		//蝗櫁ｻ｢蜃ｦ逅・
 		RotationByMove();
 		EnemySerch();
 
 		//Interval++;
-		//if (Interval >= 10)//銃を撃つインターバル
+		//if (Interval >= 10)//驫・ｒ謦・▽繧､繝ｳ繧ｿ繝ｼ繝舌Ν
 		//{
 		//	Shot();
 		//	Interval = 0;
@@ -198,7 +215,7 @@ void Player3D::Update()
 		if (mpLevelUp->GetLevelUp())
 		{ 
 			Master::mpSoundManager->PlaySE(SoundManager::SE_LEVELUP);
-			mfHp = GetAllStatusState(Object3D::Status_Hp);//hpを全回させる
+			mfHp = GetAllStatusState(Object3D::Status_Hp);//hp繧貞・蝗槭＆縺帙ｋ
 		}
 		mpModel->Update();
 	}
@@ -220,8 +237,8 @@ void Player3D::ResetNUETRAL()
 		}
 
 
-		FirstNearVec = 0;//攻撃してないときに敵との距離を測るカウントをリセット
-		mpTarget = nullptr;//目標のターゲットをリセット
+		FirstNearVec = 0;//謾ｻ謦・＠縺ｦ縺ｪ縺・→縺阪↓謨ｵ縺ｨ縺ｮ霍晞屬繧呈ｸｬ繧九き繧ｦ繝ｳ繝医ｒ繝ｪ繧ｻ繝・ヨ
+		mpTarget = nullptr;//逶ｮ讓吶・繧ｿ繝ｼ繧ｲ繝・ヨ繧偵Μ繧ｻ繝・ヨ
 
 	}
 }
@@ -239,22 +256,22 @@ void Player3D::Draw()
 
 	if (mfHp <= 0)return;
 	if (Master::ShopClassOn || Master::InventoryClasOn)return;
-	if (Master::PauseOn == false)///ポーズ画面ではないとき
+	if (Master::PauseOn == false)///繝昴・繧ｺ逕ｻ髱｢縺ｧ縺ｯ縺ｪ縺・→縺・
 	{
 		
 		bar();
 		
 	}
-	////////////////////////三人称視点の時のみプレイヤーが見えるようにする///////////////
+	////////////////////////荳我ｺｺ遘ｰ隕也せ縺ｮ譎ゅ・縺ｿ繝励Ξ繧､繝､繝ｼ縺瑚ｦ九∴繧九ｈ縺・↓縺吶ｋ///////////////
 	if (Master::mpCamera->GetCamera3() == true)
 	{
-		//モデルの描画
+		//繝｢繝・Ν縺ｮ謠冗判
 		mpModel->Draw();
 	}
 
 	if (Master::mpDebug->Getdebug() == true)
 	{
-		//でバック表示方法
+		//縺ｧ繝舌ャ繧ｯ陦ｨ遉ｺ譁ｹ豕・
 		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize,
 			8,
@@ -262,13 +279,13 @@ void Player3D::Draw()
 			GetColor(255, 255, 255),
 			false
 		);
-		DrawFormatString(100, 300, GetColor(255, 255, 255), "攻撃力:%f", GetAllStatusState(Object3D::Status_Attack));
-		DrawFormatString(100, 400, GetColor(255, 255, 255), "防御力:%f", mpEquipmentManager->GetDamage());
-		DrawFormatString(100, 500, GetColor(255, 255, 255), "sスピード:%f", GetAllStatusState(Object3D::Status_Speed));
-		DrawFormatString(100, 350, GetColor(255, 255, 255), "経験値:%d", mpLevelUp->GetXp());
+		DrawFormatString(100, 300, GetColor(255, 255, 255), "謾ｻ謦・鴨:%f", GetAllStatusState(Object3D::Status_Attack));
+		DrawFormatString(100, 400, GetColor(255, 255, 255), "髦ｲ蠕｡蜉・%f", mpEquipmentManager->GetDamage());
+		DrawFormatString(100, 500, GetColor(255, 255, 255), "s繧ｹ繝斐・繝・%f", GetAllStatusState(Object3D::Status_Speed));
+		DrawFormatString(100, 350, GetColor(255, 255, 255), "邨碁ｨ灘､:%d", mpLevelUp->GetXp());
 		DrawFormatString(100, 450, GetColor(255, 255, 255), "X:%f        Y:%f       Z:%f", mvPosition.x, mvPosition.y, mvPosition.z);
 	}
-	//武器を包むような球体
+	//豁ｦ蝎ｨ繧貞桁繧繧医≧縺ｪ逅・ｽ・
 	DrawSphere3D(
 		mpModel->GetAttachmentPosition(),
 		30.0f,
@@ -279,77 +296,77 @@ void Player3D::Draw()
 	);
 }
 
-//移動処理ステージとの当たり判定
+//遘ｻ蜍募・逅・せ繝・・繧ｸ縺ｨ縺ｮ蠖薙◆繧雁愛螳・
 void Player3D::MoveEx()
 {
 	AnimationState state = mpModel->GetNowState();
 	if (state==ANIMATION_ATTACKJUMP||state == ANIMATION_ATTACK || state == ANIMATION_JUMP_OUT || state == ANIMATION_SLIDE||state==ANIMATION_ATTACKSLIDE||Master::InventoryClasOn||Master::ShopClassOn)
 	{
-		return;//特定のモーション中であれば何もしない
+		return;//迚ｹ螳壹・繝｢繝ｼ繧ｷ繝ｧ繝ｳ荳ｭ縺ｧ縺ゅｌ縺ｰ菴輔ｂ縺励↑縺・
 	}
 
-	moveVec = VGet(0.0f, 0.0f, 0.0f);//移動方向
-	VECTOR UpMoveVector = VGet(0.0f, 0.0f, 0.0f);//カメラの上方向ベクトル
-	VECTOR leftMoveVector = VGet(0.0f, 0.0f, 0.0f);//カメラの左方向ベクトル
-	//VECTOR DownMoveVector = VGet(0.0f, 0.0f, 0.0f);//カメラの下方向ベクトル
-	//VECTOR RightMoveVector = VGet(0.0f, 0.0f, 0.0f);//カメラの右方向ベクトル
+	moveVec = VGet(0.0f, 0.0f, 0.0f);//遘ｻ蜍墓婿蜷・
+	VECTOR UpMoveVector = VGet(0.0f, 0.0f, 0.0f);//繧ｫ繝｡繝ｩ縺ｮ荳頑婿蜷代・繧ｯ繝医Ν
+	VECTOR leftMoveVector = VGet(0.0f, 0.0f, 0.0f);//繧ｫ繝｡繝ｩ縺ｮ蟾ｦ譁ｹ蜷代・繧ｯ繝医Ν
+	//VECTOR DownMoveVector = VGet(0.0f, 0.0f, 0.0f);//繧ｫ繝｡繝ｩ縺ｮ荳区婿蜷代・繧ｯ繝医Ν
+	//VECTOR RightMoveVector = VGet(0.0f, 0.0f, 0.0f);//繧ｫ繝｡繝ｩ縺ｮ蜿ｳ譁ｹ蜷代・繧ｯ繝医Ν
 
 
-	//カメラの向きから移動ベクトルを求める
+	//繧ｫ繝｡繝ｩ縺ｮ蜷代″縺九ｉ遘ｻ蜍輔・繧ｯ繝医Ν繧呈ｱゅａ繧・
 	{
-		//上方向への移動ベクトルは、カメラ視点方向からy成分を抜いたものとする
+		//荳頑婿蜷代∈縺ｮ遘ｻ蜍輔・繧ｯ繝医Ν縺ｯ縲√き繝｡繝ｩ隕也せ譁ｹ蜷代°繧謁謌仙・繧呈栢縺・◆繧ゅ・縺ｨ縺吶ｋ
 		UpMoveVector = VSub(Master::mpCamera->GetlookAtPosition(), Master::mpCamera->GetPosition());
 		//UpMoveVector.y = 0.0f;
 
-		//左方向への移動ベクトルが、上方向の移動ベクトルと、Y軸のプラス方向へのベクトルに垂直な方向（外積）
+		//蟾ｦ譁ｹ蜷代∈縺ｮ遘ｻ蜍輔・繧ｯ繝医Ν縺後∽ｸ頑婿蜷代・遘ｻ蜍輔・繧ｯ繝医Ν縺ｨ縲〆霆ｸ縺ｮ繝励Λ繧ｹ譁ｹ蜷代∈縺ｮ繝吶け繝医Ν縺ｫ蝙ら峩縺ｪ譁ｹ蜷托ｼ亥､也ｩ搾ｼ・
 		leftMoveVector = VCross(UpMoveVector, VGet(0.0f, 1.0f, 0.0f));
 		//leftMoveVector.y = 0.0f;
 
 
-		//移動ベクトルは移動量を加味しないので、正規化しておく(ベクトルの長さを１にすること)
+		//遘ｻ蜍輔・繧ｯ繝医Ν縺ｯ遘ｻ蜍暮㍼繧貞刈蜻ｳ縺励↑縺・・縺ｧ縲∵ｭ｣隕丞喧縺励※縺翫￥(繝吶け繝医Ν縺ｮ髟ｷ縺輔ｒ・代↓縺吶ｋ縺薙→)
 		UpMoveVector = VNorm(UpMoveVector);
 		leftMoveVector = VNorm(leftMoveVector);
 	}
 
-	//VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//移動方向
+	//VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//遘ｻ蜍墓婿蜷・
 
-	if (CheckHitKey(KEY_INPUT_A))//左方向への移送
+	if (CheckHitKey(KEY_INPUT_A))//蟾ｦ譁ｹ蜷代∈縺ｮ遘ｻ騾・
 	{
 		moveVec = VAdd(moveVec, leftMoveVector);
 	}
-	if (CheckHitKey(KEY_INPUT_D))//右方向への移送
+	if (CheckHitKey(KEY_INPUT_D))//蜿ｳ譁ｹ蜷代∈縺ｮ遘ｻ騾・
 	{
 		//veVec.x = 1.0f;
 		moveVec = VAdd(moveVec, VScale(leftMoveVector, -1.0f));
 		//moveVec = VSub(moveVec, leftMoveVector);
 
 	}
-	if (CheckHitKey(KEY_INPUT_W))//奥方向への移送
+	if (CheckHitKey(KEY_INPUT_W))//螂･譁ｹ蜷代∈縺ｮ遘ｻ騾・
 	{
 		//veVec.z = 1.0;
 		moveVec = VAdd(moveVec, UpMoveVector);
 	}
-	if (CheckHitKey(KEY_INPUT_S))//手前方向への移送
+	if (CheckHitKey(KEY_INPUT_S))//謇句燕譁ｹ蜷代∈縺ｮ遘ｻ騾・
 	{
 		//moveVec.z = -1.0;
 		moveVec = VAdd(moveVec, VScale(UpMoveVector, -1.0f));
 		//moveVec = VSub(moveVec, UpMoveVector);
 
 	}
-	//移動している状態であれば
+	//遘ｻ蜍輔＠縺ｦ縺・ｋ迥ｶ諷九〒縺ゅｌ縺ｰ
 	bool isMove = (moveVec.x != 0.0f || moveVec.z != 0.0f);
 	if (isMove)
 	{
 		//mpModel->ChangeAnimation(ModelAnimation::ANIMATION_RUN);
 
-		//移動方向を正規化しておく
+		//遘ｻ蜍墓婿蜷代ｒ豁｣隕丞喧縺励※縺翫￥
 		moveVec = VNorm(moveVec);
 
-		//新しい回転をセット
+		//譁ｰ縺励＞蝗櫁ｻ｢繧偵そ繝・ヨ
 		mfTargetAngle = atan2f(moveVec.x, moveVec.z);
-		oldmoveVec = moveVec;//ここで今キャラクタ―が向いている方向を出す。保存
+		oldmoveVec = moveVec;//縺薙％縺ｧ莉翫く繝｣繝ｩ繧ｯ繧ｿ窶輔′蜷代＞縺ｦ縺・ｋ譁ｹ蜷代ｒ蜃ｺ縺吶ゆｿ晏ｭ・
 	}
-	//ジャンプ開始のアニメじゃないのであれば
+	//繧ｸ繝｣繝ｳ繝鈴幕蟋九・繧｢繝九Γ縺倥ｃ縺ｪ縺・・縺ｧ縺ゅｌ縺ｰ
 	if (state != ANIMATION_JUMP_IN || state != ANIMATION_JUMP_LOOP)
 	{
 		if (isMove)
@@ -364,8 +381,8 @@ void Player3D::MoveEx()
 
 
 
-	//移動させる
-	mvOldPosition = mvPosition;//前回の座標を一旦保持
+	//遘ｻ蜍輔＆縺帙ｋ
+	mvOldPosition = mvPosition;//蜑榊屓縺ｮ蠎ｧ讓吶ｒ荳譌ｦ菫晄戟
 
 
 	mvPosition = VAdd(mvPosition, VScale(moveVec, GetAllStatusState(Object3D::Status_Speed)));
@@ -373,7 +390,7 @@ void Player3D::MoveEx()
 
 
 
-		/////ステージとの当たり判定をする////////////
+		/////繧ｹ繝・・繧ｸ縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ縺吶ｋ////////////
 	hitPos = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
 	auto obj = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
@@ -385,16 +402,16 @@ void Player3D::MoveEx()
 			
 			if (pStage != nullptr)
 			{
-				//ステージとプレイヤーのカプセルが当たっている場合
+				//繧ｹ繝・・繧ｸ縺ｨ繝励Ξ繧､繝､繝ｼ縺ｮ繧ｫ繝励そ繝ｫ縺悟ｽ薙◆縺｣縺ｦ縺・ｋ蝣ｴ蜷・
 				if (pStage->CheckHit_Capsule(VAdd(mvPosition, VGet(0.0f, -150.0f, 0.0f)), VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)), 40.0f))
 				{
-					//当たっているであろうポリゴンとの接触点を求める
+					//蠖薙◆縺｣縺ｦ縺・ｋ縺ｧ縺ゅｍ縺・・繝ｪ繧ｴ繝ｳ縺ｨ縺ｮ謗･隗ｦ轤ｹ繧呈ｱゅａ繧・
 					hitPos = pStage->CheckHit_Line(
-						VAdd(mvPosition, VGet(0.0f, 1000.0f, 0.0f)),//プレイヤーの膝当たり(多分)と
-						VAdd(mvPosition, VGet(0.0f, -1000.0f, 0.0f))//プレイヤーの少し下あたりを線分として指定
+						VAdd(mvPosition, VGet(0.0f, 1000.0f, 0.0f)),//繝励Ξ繧､繝､繝ｼ縺ｮ閹晏ｽ薙◆繧・螟壼・)縺ｨ
+						VAdd(mvPosition, VGet(0.0f, -1000.0f, 0.0f))//繝励Ξ繧､繝､繝ｼ縺ｮ蟆代＠荳九≠縺溘ｊ繧堤ｷ壼・縺ｨ縺励※謖・ｮ・
 					);
 
-					//当たった判定を取っておく
+					//蠖薙◆縺｣縺溷愛螳壹ｒ蜿悶▲縺ｦ縺翫￥
 					isHit = true;
 				}
 			}
@@ -403,27 +420,27 @@ void Player3D::MoveEx()
 
 	if (isHit)
 	{
-		//地面に沿って歩いている状態として、Y座標をステージに合わせる
+		//蝨ｰ髱｢縺ｫ豐ｿ縺｣縺ｦ豁ｩ縺・※縺・ｋ迥ｶ諷九→縺励※縲〆蠎ｧ讓吶ｒ繧ｹ繝・・繧ｸ縺ｫ蜷医ｏ縺帙ｋ
 		mvPosition.y = hitPos.y;
 	}
 	if (isHit == false)
 	{
-		//要改善
-		mvPosition.y += -8.0f;//落下する速度
+		//隕∵隼蝟・
+		mvPosition.y += -8.0f;//關ｽ荳九☆繧矩溷ｺｦ
 		if (mvPosition.y <= 0.0f || mvPosition.y <= hitPos.y)
 		{
 			mvPosition.y = hitPos.y;
 		}
 	}
 
-	/////////////////////////壁の当たり判定////////////////////////////
+	/////////////////////////螢√・蠖薙◆繧雁愛螳・///////////////////////////
 	bool hitwall = false;
 	bool hitwalls = false;
 	auto walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
 	if (!walls.empty())
 	{
-		// 当たっている壁を調べる
-		// hint: 現状の処理では1枚の壁しか最終的に判定されないので、2枚（以上）に当たっていた場合の処理を考える
+		// 蠖薙◆縺｣縺ｦ縺・ｋ螢√ｒ隱ｿ縺ｹ繧・
+		// hint: 迴ｾ迥ｶ縺ｮ蜃ｦ逅・〒縺ｯ1譫壹・螢√＠縺区怙邨ら噪縺ｫ蛻､螳壹＆繧後↑縺・・縺ｧ縲・譫夲ｼ井ｻ･荳奇ｼ峨↓蠖薙◆縺｣縺ｦ縺・◆蝣ｴ蜷医・蜃ｦ逅・ｒ閠・∴繧・
 		for (int i = 0; i < walls.size(); i++)
 		{
 			Wall* wall = dynamic_cast<Wall*>(walls.at(i));
@@ -431,7 +448,7 @@ void Player3D::MoveEx()
 			{
 				std::vector<VERTEX3D> vertex = wall->GetVertex();
 
-				// プレイヤーを包むようなカプセル型の判定と、壁の三角形ポリゴンとの当たり判定を行う
+				// 繝励Ξ繧､繝､繝ｼ繧貞桁繧繧医≧縺ｪ繧ｫ繝励そ繝ｫ蝙九・蛻､螳壹→縲∝｣√・荳芽ｧ貞ｽ｢繝昴Μ繧ｴ繝ｳ縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ陦後≧
 				if (HitCheck_Capsule_Triangle(
 					mvPosition,
 					VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
@@ -445,14 +462,13 @@ void Player3D::MoveEx()
 					)
 				{
 					int WallFontSize = GetFontSize();
-					(40);
-					DrawFormatString(20, 820, GetColor(255, 0, 0), "エリアの端っこです！！");
-					(WallFontSize);
-					hitwall = true;
-					// 壁に沿って行くようなベクトルを取得
-					VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 壁沿いベクトル
-					float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 移動方向ベクトルの反対ベクトルと、壁の法線との内積を求める
-					slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 壁沿いベクトルを計算
+					SetFontSize(40);
+					DrawFormatString(20, 820, GetColor(255, 0, 0), "エリアの端っこです！");
+					DrawFormatString(20, 820, GetColor(255, 0, 0), "End of Area!");
+					// 螢√↓豐ｿ縺｣縺ｦ陦後￥繧医≧縺ｪ繝吶け繝医Ν繧貞叙蠕・
+					VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 螢∵ｲｿ縺・・繧ｯ繝医Ν
+					float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 遘ｻ蜍墓婿蜷代・繧ｯ繝医Ν縺ｮ蜿榊ｯｾ繝吶け繝医Ν縺ｨ縲∝｣√・豕慕ｷ壹→縺ｮ蜀・ｩ阪ｒ豎ゅａ繧・
+					slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 螢∵ｲｿ縺・・繧ｯ繝医Ν繧定ｨ育ｮ・
 
 					if (hitwall == true && hitwalls == false)
 					{
@@ -481,9 +497,9 @@ void Player3D::MoveEx()
 void Player3D::Damage(float damage)
 {
 	AnimationState now = mpModel->GetNowState();
-	if (damage - mpEquipmentManager->GetDamage() <= 0) { mfHp -= 1; return; }//最低でも1減らす
+	if (damage - mpEquipmentManager->GetDamage() <= 0) { mfHp -= 1; return; }//譛菴弱〒繧・貂帙ｉ縺・
 	if (now == ANIMATION_SLIDE)return;
-	mfHp -= (damage-mpEquipmentManager->GetDamage());//装備しているダメージ分ダメージを減らす
+	mfHp -= (damage-mpEquipmentManager->GetDamage());//陬・ｙ縺励※縺・ｋ繝繝｡繝ｼ繧ｸ蛻・ム繝｡繝ｼ繧ｸ繧呈ｸ帙ｉ縺・
 
 }
 
@@ -514,15 +530,15 @@ void Player3D::Evasion()
 void Player3D::RotationByMove()
 {
 
-	//////今向いてほしい角度を産出
+	//////莉雁髄縺・※縺ｻ縺励＞隗貞ｺｦ繧堤肇蜃ｺ
 	//Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag_3D_Camera)
-	//現在の回転値から目標の回転値の差分を求める
+	//迴ｾ蝨ｨ縺ｮ蝗櫁ｻ｢蛟､縺九ｉ逶ｮ讓吶・蝗櫁ｻ｢蛟､縺ｮ蟾ｮ蛻・ｒ豎ゅａ繧・
 	float subAngle = mfTargetAngle - mfAngle;
 
 
 
-	//ある方向からある方向の差が１８０度以上（以下）になることがないはずなので
-	//差の値が１８０以上（以下）になっていたら矯正する
+	//縺ゅｋ譁ｹ蜷代°繧峨≠繧区婿蜷代・蟾ｮ縺鯉ｼ托ｼ假ｼ仙ｺｦ莉･荳奇ｼ井ｻ･荳具ｼ峨↓縺ｪ繧九％縺ｨ縺後↑縺・・縺壹↑縺ｮ縺ｧ
+	//蟾ｮ縺ｮ蛟､縺鯉ｼ托ｼ假ｼ蝉ｻ･荳奇ｼ井ｻ･荳具ｼ峨↓縺ｪ縺｣縺ｦ縺・◆繧臥浣豁｣縺吶ｋ
 	if (subAngle < -DX_PI_F)
 	{
 		subAngle += DX_TWO_PI_F;
@@ -532,7 +548,7 @@ void Player3D::RotationByMove()
 		subAngle -= DX_TWO_PI_F;
 	}
 
-	//角度の差分を徐々に０に近づける
+	//隗貞ｺｦ縺ｮ蟾ｮ蛻・ｒ蠕舌・↓・舌↓霑代▼縺代ｋ
 	if (subAngle > 0.0f)
 	{
 		subAngle -= ROTATE_SPEED;
@@ -552,20 +568,20 @@ void Player3D::RotationByMove()
 
 	//(400, 560, GetColor(0, 0, 0), "subAngle::%f",subAngle);
 
-	//今向いてほしい角度を産出
+	//莉雁髄縺・※縺ｻ縺励＞隗貞ｺｦ繧堤肇蜃ｺ
 	mfAngle = mfTargetAngle - subAngle;
 
 	//DrawFormatString(400, 600, GetColor(0, 0, 0), "mfAngle::%f", subAngle);
 
-	//回転値を設定
+	//蝗櫁ｻ｢蛟､繧定ｨｭ螳・
 	mvRotation.y = mfAngle + DX_PI_F;
-	//モデルに伝える
+	//繝｢繝・Ν縺ｫ莨昴∴繧・
 	mpModel->SetRotation(mvRotation);
 	//mfAngle = mfTargetAngle - Master::mpCamera->GetLookCamera();
 
-	////回転値を設定
+	////蝗櫁ｻ｢蛟､繧定ｨｭ螳・
 	//mvRotation.y = mpCamera->GetlookAtPosition().y; //mfAngle + DX_PI_F;
-	////モデルに伝える
+	////繝｢繝・Ν縺ｫ莨昴∴繧・
 	//mpModel->SetRotation(mvRotation);
 
 
@@ -583,7 +599,7 @@ void Player3D::Jump()
 		mbjump = true;
 		mfjumpPower = JUMP_POWER;
 
-		//ジャンプ開始アニメーションにする
+		//繧ｸ繝｣繝ｳ繝鈴幕蟋九い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ縺吶ｋ
 		
 	}
 
@@ -600,16 +616,16 @@ void Player3D::Result()
 void Player3D::Attack()
 {
 	AnimationState now = mpModel->GetNowState();
-	int mouseInput = GetMouseInput(); // マウスの状態を取得
+	int mouseInput = GetMouseInput(); // 繝槭え繧ｹ縺ｮ迥ｶ諷九ｒ蜿門ｾ・
 	if (mouseInput & MOUSE_INPUT_LEFT && AttackCount >= AttackTime&&now!=ANIMATION_ATTACK)
 	{
 		AttackCount = 0;
 		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACK);
-		//攻撃モーションに変更
+		//謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ螟画峩
 		mpModel->ChangeAnimation(ANIMATION_ATTACK);
-		//ループはさせない
+		//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
 		mpModel->SetLoop(false);
-		//モーション後は待機モーションに戻す
+		//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		if (mpModel->GetIsSeparate() == true)
 		{
@@ -638,19 +654,19 @@ void Player3D::Attack()
 void Player3D::AttackJump()
 {
 	AnimationState now = mpModel->GetNowState();
-	int mouseInput = GetMouseInput(); // マウスの状態を取得
+	int mouseInput = GetMouseInput(); // 繝槭え繧ｹ縺ｮ迥ｶ諷九ｒ蜿門ｾ・
 	if (mouseInput & MOUSE_INPUT_LEFT && AttackJumpCount >= AttackJumpTime&&!mbjump)
 	{
 		Master::mpSoundManager->PlaySE(SoundManager::SE_JUMP);
 		mbjump = true;
 		AttackJumpCount = 0;
 		mfjumpPower = JUMP_POWER;
-		//攻撃モーションに変更
+		//謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ螟画峩
 		mpModel->ChangeAnimation(ANIMATION_ATTACKJUMP);
-		//ループはさせない
+		//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
 		mpModel->SetLoop(false);
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
-		//モーション後は待機モーションに戻す
+		//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
 		
 		if (mpModel->GetIsSeparate() == true)
 		{
@@ -689,7 +705,7 @@ void Player3D::AttackJump()
 		if (mvPosition.y <= hitPos.y)
 		{
 			OnJumpCollider = true;
-			mvPosition.y = hitPos.y;//Y座標を0にしておく
+			mvPosition.y = hitPos.y;//Y蠎ｧ讓吶ｒ0縺ｫ縺励※縺翫￥
 			
 		}
 		
@@ -707,11 +723,11 @@ void Player3D::AttackJump()
 void Player3D::AttackSlide()
 {
 	AnimationState now = mpModel->GetNowState();
-	int mouseInput = GetMouseInput(); // マウスの状態を取得
+	int mouseInput = GetMouseInput(); // 繝槭え繧ｹ縺ｮ迥ｶ諷九ｒ蜿門ｾ・
 	if (mouseInput & MOUSE_INPUT_LEFT && AttackSlideCount >= AttackSlideTime)
 	{
 		//mvOldPosition = mvPosition;
-		if (mpTarget == nullptr)return;//敵を感知できなったらretrurn
+		if (mpTarget == nullptr)return;//謨ｵ繧呈─遏･縺ｧ縺阪↑縺｣縺溘ｉretrurn
 		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
 		if (mpModel->GetIsSeparate())mpModel->mpSeparateAnimation->SetAnimationCount(1.2f);
 		else mpModel->mpAnimation->SetAnimationCount(1.2f);
@@ -719,11 +735,11 @@ void Player3D::AttackSlide()
 		GoPosition = (VSub(mpTarget->GetPosition(), mvPosition));
 		TargetPosition = VScale(GoPosition, 0.5f);
 
-		//攻撃モーションに変更
+		//謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ螟画峩
 		mpModel->ChangeAnimation(ANIMATION_ATTACKSLIDE);
-		//ループはさせない
+		//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
 		mpModel->SetLoop(false);
-		//モーション後は待機モーションに戻す
+		//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 	}
@@ -737,7 +753,7 @@ void Player3D::AttackSlide()
 		mfTargetAngle = atan2f(GoPosition.x, GoPosition.z);
 
 
-		////////////////スライド攻撃の座標移動////////////////
+		////////////////繧ｹ繝ｩ繧､繝画判謦・・蠎ｧ讓咏ｧｻ蜍・///////////////
 		if (AttackSlideCount < 5)
 		{
 			mvPosition = VAdd(mvPosition, TargetPosition);
@@ -764,8 +780,8 @@ void Player3D::bar()
 	float HpRatio = mfHp / GetAllStatusState(Object3D::Status_Hp);
 
 
-	mfHp = mfHp < 0 ? 0 : mfHp; //HPが0未満になったら0を入れる
-	mfHp = mfHp > GetAllStatusState(Object3D::Status_Hp) ? GetAllStatusState(Object3D::Status_Hp) : mfHp; //HPが最大値を超えていたら、最大値を入れる
+	mfHp = mfHp < 0 ? 0 : mfHp; //HP縺・譛ｪ貅縺ｫ縺ｪ縺｣縺溘ｉ0繧貞・繧後ｋ
+	mfHp = mfHp > GetAllStatusState(Object3D::Status_Hp) ? GetAllStatusState(Object3D::Status_Hp) : mfHp; //HP縺梧怙螟ｧ蛟､繧定ｶ・∴縺ｦ縺・◆繧峨∵怙螟ｧ蛟､繧貞・繧後ｋ
 	unsigned int Color;
 	unsigned int Color2;
 	Color = GetColor(255, 255, 255);
@@ -779,8 +795,8 @@ void Player3D::bar()
 
 	float DashRatio = DashGuage / MaxDashGauge;
 
-	DashGuage = DashGuage < 0 ? 0 : DashGuage; //HPが0未満になったら0を入れる
-	DashGuage = DashGuage > MaxDashGauge ? MaxDashGauge : DashGuage; //HPが最大値を超えていたら、最大値を入れる
+	DashGuage = DashGuage < 0 ? 0 : DashGuage; //HP縺・譛ｪ貅縺ｫ縺ｪ縺｣縺溘ｉ0繧貞・繧後ｋ
+	DashGuage = DashGuage > MaxDashGauge ? MaxDashGauge : DashGuage; //HP縺梧怙螟ｧ蛟､繧定ｶ・∴縺ｦ縺・◆繧峨∵怙螟ｧ蛟､繧貞・繧後ｋ
 	unsigned int Color3;
 	unsigned int Color4;
 	Color3 = GetColor(255, 255, 255);
@@ -829,12 +845,12 @@ void Player3D::Test()
 	//Jump();
 	if (InputManager::CheckDownKey(KEY_INPUT_2))
 	{
-		// 何を拾っても必ず回復薬 ---------------- //
+		// 菴輔ｒ諡ｾ縺｣縺ｦ繧ょｿ・★蝗槫ｾｩ阮ｬ ---------------- //
 		Item::ItemInformation* itemInfo;
 		itemInfo = new Item::ItemInformation();
 		itemInfo->Count = 2;
 		itemInfo->ID = Item::ItemID::HEAL;
-		itemInfo->Name = "回復薬";
+		itemInfo->Name = "蝗槫ｾｩ阮ｬ";
 		mpItemManager->AddItem(itemInfo);
 
 		//Master::mpInfClassManager->LogList.push_back(new InfClass(400, itemInfo->Name.c_str(), 1));
@@ -853,9 +869,9 @@ void Player3D::Test()
 		itemInfo->Name = "Power";
 		mpItemManager->AddItem(itemInfo);
 
-		// 理想
-		// 拾ったアイテムからItemInformationを取得する
-		// それをItemManagerに渡してあげる
+		// 逅・Φ
+		// 諡ｾ縺｣縺溘い繧､繝・Β縺九ｉItemInformation繧貞叙蠕励☆繧・
+		// 縺昴ｌ繧棚temManager縺ｫ貂｡縺励※縺ゅ￡繧・
 
 		Weapon::WeaponDate* weaponInf;
 		weaponInf = new Weapon::WeaponDate;
@@ -876,7 +892,7 @@ void Player3D::Test()
 	}
 	if (InputManager::CheckDownKey(KEY_INPUT_3))
 	{
-		// 何を拾っても必ず回復薬 ---------------- //
+		// 菴輔ｒ諡ｾ縺｣縺ｦ繧ょｿ・★蝗槫ｾｩ阮ｬ ---------------- //
 		Item::ItemInformation* itemInfo;
 		
 		itemInfo = new Item::ItemInformation();
@@ -904,6 +920,7 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 		
 
 		auto pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+		if (pEne == nullptr) return;
 		VECTOR mnEneDistance = VSub(pEne->GetPosition(), mvPosition);
 		if (check == pEne->GetEnemycoll())
 		{
@@ -934,7 +951,7 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 	//	mbStageOutFlag = false;
 	//	if (check == this->mpCapsuleCollider)
 	//	{
-	//		mbStageOutFlag = true;//stage内にいなかったら場所移動する前の所に戻る
+	//		mbStageOutFlag = true;//stage蜀・↓縺・↑縺九▲縺溘ｉ蝣ｴ謇遘ｻ蜍輔☆繧句燕縺ｮ謇縺ｫ謌ｻ繧・
 	//	}
 
 	//}
@@ -957,16 +974,17 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 		if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Object3D::Tag3D_Enemy3D)
 		{
 			Enemy* pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+			if (pEne == nullptr) return;
 			if (check == pEne->GetEnemycoll())
 			{
 				
-				// 攻撃モーション&&Attack1
+				// 謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ&&Attack1
 				if (now == ANIMATION_ATTACK && AttackState == Attack_Normal && !mbjump && !pEne->GetHitjudgment())
 				{
 					pEne->SetHitjudgment(true);
 					pEne->Damage(GetAllStatusState(Object3D::Status_Attack));
 					AttackHitJudgmentflag = true;
-					// 画面揺れさせる
+					// 逕ｻ髱｢謠ｺ繧後＆縺帙ｋ
 					Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);
 					new Effect(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/Damage.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
 				}
@@ -979,6 +997,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 	if (collider == mpAttackJumpCollider && check->mpParentObject->GetTag() == Tag3D_Enemy3D)
 	{
 		Enemy* pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+		if (pEne == nullptr) return;
 		if (check == pEne->GetEnemycoll())
 		{
 			if (now == ANIMATION_ATTACKJUMP && AttackState == Attack_Jump && !pEne->GetHitjudgment())
@@ -986,7 +1005,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				pEne->SetHitjudgment(true);
 				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + mfAttackjump);
 
-				// 画面揺れさせる
+				// 逕ｻ髱｢謠ｺ繧後＆縺帙ｋ
 				Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);
 				new Effect(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 30.0f, 0.1f);
 			}
@@ -996,13 +1015,14 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 	if (collider == mpAttackSlideCollider && check->mpParentObject->GetTag() == Tag3D_Enemy3D)
 	{
 		Enemy* pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+		if (pEne == nullptr) return;
 		if (check == pEne->GetEnemycoll())
 		{
 			if (now == ANIMATION_ATTACKSLIDE && AttackState == Attack_Slide && !pEne->GetHitjudgment())
 			{
 				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + mfAttackSlide);
 				pEne->SetHitjudgment(true);
-				// 画面揺れさせる
+				// 逕ｻ髱｢謠ｺ繧後＆縺帙ｋ
 				Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);
 				new Effect(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/Damage.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
 			}
@@ -1059,12 +1079,13 @@ void Player3D::SelectAttack()
 	{
 		DrawFormatString(300, 300, GetColor(255, 255, 255), "%d", ChangeStateCount);
 	}
-	if (!(now==ANIMATION_ATTACK)&& !(now == ANIMATION_ATTACKJUMP)&& !(now == ANIMATION_ATTACKSLIDE))//当たり判定の復活
+	if (!(now==ANIMATION_ATTACK)&& !(now == ANIMATION_ATTACKJUMP)&& !(now == ANIMATION_ATTACKSLIDE))//蠖薙◆繧雁愛螳壹・蠕ｩ豢ｻ
 	{
 		auto mpEne = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		for (int i = 0; i < mpEne.size(); i++)
 		{
 			Enemy* pEne = dynamic_cast<Enemy*>(mpEne.at(i));
+			if (pEne == nullptr) continue;
 			pEne->SetHitjudgment(false);
 		}
 	}
@@ -1084,7 +1105,7 @@ void Player3D::AttackCountClass()
 void Player3D::CollPositionUpdate()
 {
 	AnimationState now = mpModel->GetNowState();
-	// 当たり判定更新
+	// 蠖薙◆繧雁愛螳壽峩譁ｰ
 	mpCapsuleCollider->mvPosition = mvPosition;
 	mpCapsuleCollider->mvPosition2 = VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f));
 

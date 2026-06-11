@@ -28,14 +28,14 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 	//,Animation(false)
 {
 	mbMagic = true;
-	mnChance = 30;//ƒAƒCƒeƒ€‚ÌƒhƒƒbƒvŠm—¦
+	mnChance = 30;//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‰ãƒ­ãƒƒãƒ—ç¢ºç‡
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
 	SetTagEne(Enemy::boss_stage1);
 
 	//SpeedDownNomber =mnSpeed-
-	//ƒ‚ƒfƒ‹‚Ì¶¬
+	//ãƒ¢ãƒ‡ãƒ«ã®ç”Ÿæˆ
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
@@ -71,9 +71,9 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 
 	//mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize, 0.0f)), mfSize);
 	//mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 30.0f);
-	//mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//“G‚ğ’T’m‚·‚é‰~
-	//mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//“G‚ğUŒ‚‚µn‚ß‚é‰~
-	//mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//“G‚Æ‚Ì‹——£‚ğ•Û‚Â‰~d
+	//mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//æ•µã‚’æ¢çŸ¥ã™ã‚‹å††
+	//mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//æ•µã‚’æ”»æ’ƒã—å§‹ã‚ã‚‹å††
+	//mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//æ•µã¨ã®è·é›¢ã‚’ä¿ã¤å††d
 }
 
 EnemyBoss_1::~EnemyBoss_1()
@@ -97,7 +97,7 @@ void EnemyBoss_1::Update()
 		if (mpModel != nullptr)
 		{
 			
-			//if (mfHp > mfMaxHp / 2)//‘Ì—Í‚ÌŠÇ—‚ÅUŒ‚•û–@‚ğ•Ï‚¦‚é
+			//if (mfHp > mfMaxHp / 2)//ä½“åŠ›ã®ç®¡ç†ã§æ”»æ’ƒæ–¹æ³•ã‚’å¤‰ãˆã‚‹
 			//{
 			//	Attack();
 			//}
@@ -115,7 +115,7 @@ void EnemyBoss_1::Update()
 			}
 
 			mpModel->Update();
-			//mpDH->Update();//drawHp‚ÌƒAƒbƒvƒf[ƒg‚ğŒÄ‚Ô
+			//mpDH->Update();//drawHpã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’å‘¼ã¶
 			CollPositionUpdate();
 			mpJumpAttackCoiider->mvPosition = mvPosition;
 
@@ -157,15 +157,15 @@ void EnemyBoss_1::Attack()
 {
 	AnimationState now = mpModel->GetNowState();
 
-	//f ()ƒvƒŒƒCƒ„[‚É‹ß‚Ã‚¢‚½‚Æ‘‚­
+	//f ()ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¿‘ã¥ã„ãŸæ™‚ã¨æ›¸ã
 	if (AttackCount >= AttackInterval && isHitAttackSearch)
 	{
 		AttackCount = 0;
-		//UŒ‚ƒ‚[ƒVƒ‡ƒ“‚É•ÏX
+		//æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«å¤‰æ›´
 		mpModel->ChangeAnimation(ANIMATION_ATTACKMAGIC);
-		//ƒ‹[ƒv‚Í‚³‚¹‚È‚¢
+		//ãƒ«ãƒ¼ãƒ—ã¯ã•ã›ãªã„
 		mpModel->SetLoop(false);
-		//ƒ‚[ƒVƒ‡ƒ“Œã‚Í‘Ò‹@ƒ‚[ƒVƒ‡ƒ“‚É–ß‚·
+		//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã¯å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«æˆ»ã™
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		//mpModel->SetRotation(mvRotation);
 		isHitAttackSearch = false;
@@ -176,21 +176,22 @@ void EnemyBoss_1::Attack()
 	if (!(now == ANIMATION_ATTACKMAGIC))
 	{
 		AttackCount++;
-		AttackHitJudgmentflag = false;//“–‚½‚è”»’è‚Ì•œŠˆ
+		AttackHitJudgmentflag = false;//å½“ãŸã‚Šåˆ¤å®šã®å¾©æ´»
 	}
 
 
 
 }
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
-{//“–‚½‚Á‚½uŠÔ‚Ìˆ—
+{//å½“ãŸã£ãŸç¬é–“ã®å‡¦ç†
 	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
 		if (collider == mpJumpAttackCoiider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-		{//mpModel‚Ì”Ô†‚à‚ ‚Á‚Ä‚¢‚éA‚¯‚Ç‚±‚Ìif•¶‚É“ü‚ç‚È‚¢
+		{//mpModelã®ç•ªå·ã‚‚ã‚ã£ã¦ã„ã‚‹ã€ã‘ã©ã“ã®ifæ–‡ã«å…¥ã‚‰ãªã„
 			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
 			{
 				//if (pPlayer->GetInvisible()) { return; }
@@ -198,7 +199,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 				{
 
 					pPlayer->Damage(mfAttack);
-					AttackHitJudgmentflag = true;//“–‚½‚Á‚½‚æ[
+					AttackHitJudgmentflag = true;//å½“ãŸã£ãŸã‚ˆãƒ¼
 				}
 			}
 
@@ -206,6 +207,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 		if (collider == mpPurposCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 		{
 			Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
+			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
 			{
 				mpPurposCollider->mvPosition = PurposePosition;
@@ -224,23 +226,24 @@ void EnemyBoss_1::DeathEnemy()
 	//Delete();
 	//Master::TutorialCount++;
 	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//ƒ‹[ƒv‚Í‚³‚¹‚È‚¢
+	//ãƒ«ãƒ¼ãƒ—ã¯ã•ã›ãªã„
 	mpModel->SetLoop(false);
-	//ƒ‚[ƒVƒ‡ƒ“Œã‚Í‘Ò‹@ƒ‚[ƒVƒ‡ƒ“‚É–ß‚·
+	//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã¯å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«æˆ»ã™
 	mpModel->SetLoopFinishState(ANIMATION_MAX);
 	DeathColliderPosition();
 
 	//Master::mpLevelUp->SetXp(Master::mpLevelUp->GetXp() + mfHaveXp);
 	if (mpModel->IsAnimationLoopFinish())
 	{
-		isDead = false;
-		mpInventory->DropInventory(mnChance, mbWeapon, mbItem);//ƒLƒƒƒ‰ƒNƒ‰ƒX‚ÌƒXƒgƒ‰ƒNƒg‚Å‰Šú‰»‚·‚é
-		player->mpHaveMoney->AddMoney(mfHaveMoney);
-		player->mpLevelUp->AddXp(mfHaveXp);
-		mfHp = mfMaxHp;//‰ñ•œ‚³‚¹‚ÄÄƒXƒ|[ƒ“
-		mvPosition = VGet(mvPosition.x, 100.0f, mvPosition.z);//”½‘Î‘¤‚ÉƒXƒ|[ƒ“‚³‚¹‚é
+		mpInventory->DropInventory(mnChance, mbWeapon, mbItem);
+		if (player != nullptr) {
+			player->mpHaveMoney->AddMoney(mfHaveMoney);
+			player->mpLevelUp->AddXp(mfHaveXp);
+		}
 		Master::GameClearCount++;
-
+		
+		Delete();
+		SetDeleteFlag(true);
 	}
 
 	mpModel->Draw();
