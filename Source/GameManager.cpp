@@ -86,19 +86,21 @@ void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 
 void GameManager::SpawnPhaseEnemies()
 {
-   
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-    Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-    VECTOR playerPos = VGet(12000.0f, 100.0f, 12000.0f);
-    if (player) {
-        playerPos = player->GetPosition();
+    auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+    Player3D* player = dynamic_cast<Player3D*>(p);
+    // 敵がステージから外れて落下・埋没しないように、Configのステージ中心座標を湧き位置の基準とする
+    VECTOR centerPos = Config::GetStageCenter();
+    if (player != nullptr)
+    {
+        VECTOR playercenterPos = player->GetPosition();
     }
+    VECTOR centerbackPos = VAdd(Config::GetStageCenter(), VGet(0, 0, -2000));
 
     if (mCurrentPhase == Phase::PHASE_1) {
         // Wave 1
         EnemyManager::enemydate e;
         e.filename = "Resource/Model/T.mv1";
-        e.spawnCenter = playerPos;
+        e.spawnCenter = centerPos;
         e.initPos = VGet(3000.0f, 100.0f, 3000.0f);
         e.hp = 20;
         e.speed = 3.0f;
@@ -120,8 +122,8 @@ void GameManager::SpawnPhaseEnemies()
         // Wave 2: 魔法兵士
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
-        e1.spawnCenter = playerPos;
-        e1.initPos = VGet(10000.0f, 100.0f, 10000.0f);
+        e1.spawnCenter = centerPos;
+        e1.initPos = VGet(8000.0f, 100.0f, 8000.0f);
         e1.hp = 20;
         e1.speed = 3.0f;
         e1.attack = 2.0f;
@@ -141,7 +143,7 @@ void GameManager::SpawnPhaseEnemies()
         // Wave 2: 近接剣士
         EnemyManager::enemydate e2;
         e2.filename = "Resource/Model/T.mv1";
-        e2.spawnCenter = playerPos;
+        e2.spawnCenter = centerPos;
         e2.initPos = VGet(2000.0f, 100.0f, 2000.0f);
         e2.hp = 20;
         e2.speed = 4.0f;
@@ -160,8 +162,6 @@ void GameManager::SpawnPhaseEnemies()
         mpEnemyManager->NewEnemyList(e2);
     }
     else if (mCurrentPhase == Phase::PHASE_3) {
-        VECTOR centerPos = playerPos;
-
         // Wave 3: 重量級代用
         EnemyManager::enemydate e_heavy;
         e_heavy.filename = "Resource/Model/T.mv1";
@@ -226,10 +226,9 @@ void GameManager::SpawnPhaseEnemies()
         mpEnemyManager->NewEnemyList(e_melee);
     }
     else if (mCurrentPhase == Phase::BOSS) {
-        VECTOR initPOS2 = playerPos;
         EnemyManager::enemydate e2;
         e2.filename = "Resource/3D/Boss1.mv1";
-        e2.spawnCenter = initPOS2;
+        e2.spawnCenter = centerPos;
         e2.initPos = VGet(4000.0f, 100.0f, 4000.0f);
         e2.hp = 300;
         e2.speed = 10.0f;
