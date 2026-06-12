@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="ソース ファイル">
@@ -227,6 +227,9 @@
     </ClCompile>
     <ClCompile Include="Source\Shop.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StatShop.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\HaveMoneyClass.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
@@ -471,6 +474,9 @@
     </ClInclude>
     <ClInclude Include="Source\Shop.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StatShop.h">
+      <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
     </ClInclude>
     <ClInclude Include="Source\HaveMoneyClass.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>

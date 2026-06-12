@@ -66,12 +66,11 @@ Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float 
 	mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//謨ｵ繧呈爾遏･縺吶ｋ蜀・
 	mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//謨ｵ繧呈判謦・＠蟋九ａ繧句・
 	mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//謨ｵ縺ｨ縺ｮ霍晞屬繧剃ｿ昴▽蜀・
-	mpPurposCollider = new SphereCollider(this, mvPosition, 100.0f);
 	//new DrawHp("",  //逕ｻ蜒丞錐
 	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//荳ｭ蠢・ｺｧ讓・
 	//	VAdd(mvPosition, VGet(150.0f, 200.0f, 0.0f)),//蟾ｦ荳雁ｺｧ讓・
 	//	VAdd(mvPosition, VGet(-150.0f, 0.0f, 0.0f)));//蜿ｳ荳句ｺｧ讓・
-	  // 繧ｳ繝ｩ繧､繝繝ｼ逕滓・
+	  // 繧ｳ繝ｩ繧､繝€繝ｼ逕滓・
 	
 	
 }
@@ -90,7 +89,7 @@ void Enemy::Update()
 	
 	if (mfHp<=0)
 	{
-		DeathEnemy();//謨ｵ繧貞偵＠縺溘→縺阪↓繧ｯ繝ｪ繧｢縺吶ｋ縺溘ａ縺ｮ繧ｫ繧ｦ繝ｳ繝医ｒ貂帙ｉ縺・
+		DeathEnemy();//謨ｵ繧貞€偵＠縺溘→縺阪↓繧ｯ繝ｪ繧｢縺吶ｋ縺溘ａ縺ｮ繧ｫ繧ｦ繝ｳ繝医ｒ貂帙ｉ縺・
 	}
 	else
 	{
@@ -196,7 +195,7 @@ void Enemy::Move()
 		UpMoveVector = VSub(Master::mpCamera->GetlookAtPosition(), Master::mpCamera->GetPosition());
 		UpMoveVector.y = 0.0f;
 
-		//蟾ｦ譁ｹ蜷代∈縺ｮ遘ｻ蜍輔・繧ｯ繝医Ν縺後∽ｸ頑婿蜷代・遘ｻ蜍輔・繧ｯ繝医Ν縺ｨ縲〆霆ｸ縺ｮ繝励Λ繧ｹ譁ｹ蜷代∈縺ｮ繝吶け繝医Ν縺ｫ蝙ら峩縺ｪ譁ｹ蜷托ｼ亥､也ｩ搾ｼ・
+		//蟾ｦ譁ｹ蜷代∈縺ｮ遘ｻ蜍輔・繧ｯ繝医Ν縺後€∽ｸ頑婿蜷代・遘ｻ蜍輔・繧ｯ繝医Ν縺ｨ縲〆霆ｸ縺ｮ繝励Λ繧ｹ譁ｹ蜷代∈縺ｮ繝吶け繝医Νｫ蝙ら峩縺ｪ譁ｹ蜷托ｼ亥､也ｩ搾ｼ・
 		leftMoveVector = VCross(UpMoveVector, VGet(0.0f, 1.0f, 0.0f));
 		leftMoveVector.y = 0.0f;
 
@@ -274,7 +273,7 @@ void Enemy::Move()
 		{
 			mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
 		}
-		VECTOR oldPosition = mvPosition;//蜑榊屓縺ｮ蠎ｧ讓吶ｒ荳譌ｦ菫晄戟
+		VECTOR oldPosition = mvPosition;//蜑榊屓縺ｮ蠎ｧ讓吶ｒ荳€譌ｦ菫晄戟
 		if (isHitSearch == false)
 		{
 			mvPosition = VAdd(mvPosition, VScale(moveVec, mfSpeed));
@@ -321,7 +320,7 @@ void Enemy::Move()
 		if (isHit == false)
 		{
 			//隕∵隼蝟・
-			mvPosition.y += -4.0f;//關ｽ荳九☆繧矩溷ｺｦ
+			mvPosition.y += -4.0f;//關ｽ荳九☆繧矩€溷ｺｦ
 			if (mvPosition.y <= 0.0f)
 			{
 				mvPosition.y = oldPosition.y;
@@ -339,7 +338,7 @@ void Enemy::Move()
 				{
 					std::vector<VERTEX3D> vertex = wall->GetVertex();
 
-					// 繝励Ξ繧､繝､繝ｼ繧貞桁繧繧医≧縺ｪ繧ｫ繝励そ繝ｫ蝙九・蛻､螳壹→縲∝｣√・荳芽ｧ貞ｽ｢繝昴Μ繧ｴ繝ｳ縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ陦後≧
+					// 繝励Ξ繧､繝､繝ｼ繧貞桁繧€繧医≧縺ｪ繧ｫ繝励そ繝ｫ蝙九・蛻､螳壹→縲∝｣√・荳芽ｧ貞ｽ｢繝昴Μ繧ｴ繝ｳ縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ陦後≧
 					if (HitCheck_Capsule_Triangle(
 						mvPosition,
 						VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
@@ -360,7 +359,7 @@ void Enemy::Move()
 						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 遘ｻ蜍墓婿蜷代・繧ｯ繝医Ν縺ｮ蜿榊ｯｾ繝吶け繝医Ν縺ｨ縲∝｣√・豕慕ｷ壹→縺ｮ蜀・ｩ阪ｒ豎ゅａ繧・
 						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 螢∵ｲｿ縺・・繧ｯ繝医Ν繧定ｨ育ｮ・
 
-						// 荳譌ｦ蠎ｧ讓吶ｒ謌ｻ縺励※縺九ｉ螢√↓豐ｿ縺｣縺ｦ豁ｩ縺上ｈ縺・↓縺吶ｋ
+						// 荳€譌ｦ蠎ｧ讓吶ｒ謌ｻ縺励※縺九ｉ螢√↓豐ｿ縺｣縺ｦ豁ｩ縺上ｈ縺・↓縺吶ｋ
 						mvPosition = oldPosition;
 						mvPosition = VAdd(mvPosition, VScale(slide, mfSpeed));
 					}
@@ -393,7 +392,7 @@ void Enemy::RotationByMove()
 		subAngle -= DX_TWO_PI_F;
 	}
 
-	//隗貞ｺｦ縺ｮ蟾ｮ蛻・ｒ蠕舌・↓・舌↓霑代▼縺代ｋ
+	//隗貞ｺｦ縺ｮ蟾ｮ蛻・ｒ蠕舌€・↓・舌↓霑代▼縺代ｋ
 	if (subAngle > 0.0f)
 	{
 		subAngle -= ROTATE_SPEED;
@@ -491,9 +490,6 @@ void Enemy::DeathColliderPosition()
 		mpAttackCollider->mvPosition = pos;
 	}
 	
-	
-	
-
 	mpStopCollider->mvPosition = pos;
 
 }
@@ -532,7 +528,7 @@ void Enemy::OnEnter(Collider* collider, Collider* check)//蟾ｦ蛛ｴ.
 
 void Enemy::OnTrigger(Collider* collider, Collider* check)
 {//蠖薙◆縺｣縺溽椪髢薙・蜃ｦ逅・
-	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{//mpModel縺ｮ逡ｪ蜿ｷ繧ゅ≠縺｣縺ｦ縺・ｋ縲√￠縺ｩ縺薙・if譁・↓蜈･繧峨↑縺・
@@ -548,25 +544,13 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 				AttackHitJudgmentflag = true;//蠖薙◆縺｣縺溘ｈ繝ｼ
 			}
 		}
-
-	}
-	if (collider == mpPurposCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-	{
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-		if (player == nullptr) return;
-		if (check == player->GetCollisionCollider())
-		{
-			mpPurposCollider->mvPosition = PurposePosition;
-
-		}
-	
 	}
 	
 }
 
 void Enemy::OnExit(Collider* collider, Collider* check)
 {
-	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{

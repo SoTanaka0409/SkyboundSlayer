@@ -82,6 +82,7 @@
     <ClCompile Include="Source\SeparateModelAnimation.cpp" />
     <ClCompile Include="Source\Shield.cpp" />
     <ClCompile Include="Source\Shop.cpp" />
+    <ClCompile Include="Source\StatShop.cpp" />
     <ClCompile Include="Source\SkyBox.cpp" />
     <ClCompile Include="Source\SoundManager.cpp" />
     <ClCompile Include="Source\SphereCollider.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Source\SeparateModelAnimation.h" />
     <ClInclude Include="Source\Shield.h" />
     <ClInclude Include="Source\Shop.h" />
+    <ClInclude Include="Source\StatShop.h" />
     <ClInclude Include="Source\SkyBox.h" />
     <ClInclude Include="Source\SoundManager.h" />
     <ClInclude Include="Source\Stage.h" />

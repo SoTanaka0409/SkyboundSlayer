@@ -204,17 +204,6 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 			}
 
 		}
-		if (collider == mpPurposCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-		{
-			Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
-			if (pPlayer == nullptr) return;
-			if (check == pPlayer->GetCollisionCollider())
-			{
-				mpPurposCollider->mvPosition = PurposePosition;
-
-			}
-
-		}
 	}
 }
 

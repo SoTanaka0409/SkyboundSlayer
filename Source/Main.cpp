@@ -77,6 +77,7 @@ bool Master::TutorialFlag=false;
 bool Master::InventoryClasOn = false;//inventory中はsceneを止める
 bool Master::PauseOn = false;
 bool Master::ShopClassOn = false;
+bool Master::StatShopClassOn = false;
 bool Master::SafePointOn = false;
 bool Master::NearShopOn = false;
 bool Master::mbSave = false;

@@ -27,22 +27,22 @@
 #include"Chat.h"
 #include"Save.h"
 //
-//ƒQ[ƒ€“à‚Å‚P‚Â‚¾‚¯‚µ‚©‘¶İ‚µ‚È‚¢‚à‚Ì‚ğŠÇ—‚·‚éƒNƒ‰ƒX
-// —á‚¦‚Î
-// SceneManager‚¾‚Á‚½‚èiƒV[ƒ“ŠÇ—ŠÖ”j
-// SoundManager‚¾‚Á‚½‚èiƒTƒEƒ“ƒhŠÇ—ƒNƒ‰ƒX)
-// ResourceManager‚¾‚Á‚½‚èiƒŠƒ\[ƒXi‰æ‘œ‚âƒ‚ƒfƒ‹jŠÇ—ƒNƒ‰ƒXj
-// ‚ğA‚Ç‚±‚©‚ç‚àQÆ‚Å‚«‚é‚æ‚¤‚É‚µ‚Ä‚¨‚«‚½‚¢‚Ì‚Å
-// ‚±‚¤‚¢‚Á‚½ƒNƒ‰ƒX‚ğì‚é
+//ã‚²ãƒ¼ãƒ å†…ã§ï¼‘ã¤ã ã‘ã—ã‹å­˜åœ¨ã—ãªã„ã‚‚ã®ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
+// ä¾‹ãˆã°
+// SceneManagerã ã£ãŸã‚Šï¼ˆã‚·ãƒ¼ãƒ³ç®¡ç†é–¢æ•°ï¼‰
+// SoundManagerã ã£ãŸã‚Šï¼ˆã‚µã‚¦ãƒ³ãƒ‰ç®¡ç†ã‚¯ãƒ©ã‚¹)
+// ResourceManagerã ã£ãŸã‚Šï¼ˆãƒªã‚½ãƒ¼ã‚¹ï¼ˆç”»åƒã‚„ãƒ¢ãƒ‡ãƒ«ï¼‰ç®¡ç†ã‚¯ãƒ©ã‚¹ï¼‰
+// ã‚’ã€ã©ã“ã‹ã‚‰ã‚‚å‚ç…§ã§ãã‚‹ã‚ˆã†ã«ã—ã¦ãŠããŸã„ã®ã§
+// ã“ã†ã„ã£ãŸã‚¯ãƒ©ã‚¹ã‚’ä½œã‚‹
 //
 class Master
 {
 public:
-	static SceneManager* mpSceneManager;  //ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[ƒ|ƒCƒ“ƒ^
-	static SoundManager* mpSoundManager;  //ƒTƒEƒ“ƒhƒ}ƒl[ƒWƒƒ[‚Ìƒ|ƒCƒ“ƒ^
-	static ScoreManager* mpScoreManager;//ƒXƒRƒAƒ}ƒl[ƒWƒƒ[‚Ìƒ|ƒCƒ“ƒ^
-	//static NormalResultScene* mpNormalResultScene;//‚O–‡‚É‚È‚Á‚½‚ÌƒŠƒUƒ‹ƒgƒV[ƒ“
-	static Camera* mpCamera;           //ƒJƒƒ‰‚Ìƒ|ƒCƒ“ƒ^
+	static SceneManager* mpSceneManager;  //ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ãƒã‚¤ãƒ³ã‚¿
+	static SoundManager* mpSoundManager;  //ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®ãƒã‚¤ãƒ³ã‚¿
+	static ScoreManager* mpScoreManager;//ã‚¹ã‚³ã‚¢ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®ãƒã‚¤ãƒ³ã‚¿
+	//static NormalResultScene* mpNormalResultScene;//ï¼æšã«ãªã£ãŸæ™‚ã®ãƒªã‚¶ãƒ«ãƒˆã‚·ãƒ¼ãƒ³
+	static Camera* mpCamera;           //ã‚«ãƒ¡ãƒ©ã®ãƒã‚¤ãƒ³ã‚¿
 	static Camera* mpCamerafa;
 	static WeaponManager* mpWeaponManager;
 	static Weapon* mpWeapon;
@@ -60,12 +60,12 @@ public:
 	static Save* mpSave;
 	
 
-	//static void SetName(char name) { Name = name; }//–¼‘O‚ğ•Û‘¶‚µ‚Ä‚¨‚­ƒNƒ‰ƒX
+	//static void SetName(char name) { Name = name; }//åå‰ã‚’ä¿å­˜ã—ã¦ãŠãã‚¯ãƒ©ã‚¹
 	//static char GetName() { return Name; }
 
 	static int TutorialCount;//
-	static bool TutorialFlag;//ƒc[‚ÆƒŠƒAƒ‹‚©‚Ç‚¤‚©
-	static int TutorialClearCount;//ƒ`ƒ…[ƒgƒŠƒAƒ‹‚ğI‚í‚ç‚¹‚éƒJƒEƒ“ƒg
+	static bool TutorialFlag;//ãƒ„ãƒ¼ã¨ãƒªã‚¢ãƒ«ã‹ã©ã†ã‹
+	static int TutorialClearCount;//ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚’çµ‚ã‚ã‚‰ã›ã‚‹ã‚«ã‚¦ãƒ³ãƒˆ
 	static char NameTest[256];
 	///////////////enemy////////////////////////////////////
 
@@ -73,6 +73,7 @@ public:
 	static bool PauseOn;
 	static bool InventoryClasOn;
 	static bool ShopClassOn;
+	static bool StatShopClassOn;
 	static bool NearShopOn;
 	static bool SafePointOn;
 	static bool mbSave;

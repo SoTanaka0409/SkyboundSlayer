@@ -16,16 +16,32 @@ GameManager::~GameManager()
 void GameManager::Update(bool loadFlag)
 {
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3) {
-        mShopTimer--;
-        if (mShopTimer <= 0) {
-            if (mCurrentPhase == Phase::SHOP_1) {
-                mCurrentPhase = Phase::PHASE_2;
-            } else if (mCurrentPhase == Phase::SHOP_2) {
-                mCurrentPhase = Phase::PHASE_3;
-            } else if (mCurrentPhase == Phase::SHOP_3) {
-                mCurrentPhase = Phase::BOSS;
+        if (mCurrentPhase != Phase::SHOP_3) {
+            mShopTimer--;
+            if (mShopTimer <= 0) {
+                if (mCurrentPhase == Phase::SHOP_1) {
+                    mCurrentPhase = Phase::PHASE_2;
+                } else if (mCurrentPhase == Phase::SHOP_2) {
+                    mCurrentPhase = Phase::PHASE_3;
+                }
+                SpawnPhaseEnemies();
             }
-            SpawnPhaseEnemies();
+        } else {
+            // SHOP_3: No time limit. Wait for player to enter teleporter.
+            auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+            if (p) {
+                Player3D* player = dynamic_cast<Player3D*>(p);
+                VECTOR playerPos = player->GetPosition();
+                
+                // Placeholder teleporter position (center of stage, offset)
+                VECTOR teleporterPos = VAdd(Config::GetStageCenter(), VGet(0.0f, 0.0f, 800.0f));
+                
+                float dist = VSize(VSub(playerPos, teleporterPos));
+                if (dist < 150.0f) { // 150 radius to enter
+                    mCurrentPhase = Phase::BOSS;
+                    SpawnPhaseEnemies();
+                }
+            }
         }
     } else {
         auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
@@ -73,8 +89,17 @@ void GameManager::Draw()
     SetFontSize(fontSize);
 
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3) {
-        int seconds = mShopTimer / 60;
-        DrawFormatString(1920 / 2 - 150, 50, GetColor(255, 255, 0), "SHOP PHASE - Next Wave in %d s", seconds);
+        if (mCurrentPhase != Phase::SHOP_3) {
+            int seconds = mShopTimer / 60;
+            DrawFormatString(1920 / 2 - 150, 50, GetColor(255, 255, 0), "SHOP PHASE - Next Wave in %d s", seconds);
+        } else {
+            DrawFormatString(1920 / 2 - 350, 50, GetColor(0, 255, 255), "SHOP PHASE - Enter the blue teleporter to start BOSS BATTLE");
+            
+            // Draw placeholder teleporter
+            VECTOR teleporterPos = VAdd(Config::GetStageCenter(), VGet(0.0f, 0.0f, 800.0f));
+            DrawCapsule3D(teleporterPos, VAdd(teleporterPos, VGet(0.0f, 200.0f, 0.0f)), 150.0f, 32, GetColor(0, 150, 255), GetColor(0, 150, 255), FALSE);
+            DrawSphere3D(VAdd(teleporterPos, VGet(0.0f, 50.0f, 0.0f)), 100.0f, 32, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
+        }
     }
 }
 

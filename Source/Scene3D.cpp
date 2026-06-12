@@ -8,6 +8,7 @@
 #include"Stage.h"
 #include"Tree.h"
 #include"Shop.h"
+#include"StatShop.h"
 #include"Wall.h"
 #include"EnemyManager.h"
 #include"SkyBox.h"
@@ -41,6 +42,7 @@ void Scene3D::Initialize()
     mpGameManager = new GameManager(mpEnemyManager, GameManager::Difficulty::NORMAL);
     new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
     new Shop("Resource/3D/Hero.mv1", VGet(7500, 200, 7000));
+    new StatShop("Resource/3D/Hero.mv1", VGet(7500, 200, 8000)); // 少しZにずらして配置
     //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトプス,hp,speed,Hitsize,size
        //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", 
