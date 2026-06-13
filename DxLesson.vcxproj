@@ -39,6 +39,7 @@
     <ClCompile Include="Source\effect_r.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EnemyBoss_1.cpp" />
+    <ClCompile Include="Source\EnemyMonster.cpp" />
     <ClCompile Include="Source\EnemyManager.cpp" />
     <ClCompile Include="Source\Enemy3D.cpp" />
     <ClCompile Include="Source\Enemy3D_AT.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="Source\effect_r.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\EnemyBoss_1.h" />
+    <ClInclude Include="Source\EnemyMonster.h" />
     <ClInclude Include="Source\EnemyManager.h" />
     <ClInclude Include="Source\Enemy3D.h" />
     <ClInclude Include="Source\Enemy3D_AT.h" />

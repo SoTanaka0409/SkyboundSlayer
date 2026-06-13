@@ -17,6 +17,7 @@ public:
 		boss_stage3,
 		night_Defo,
 		Archer_Defo,
+		monster_stage1,
 	};
 	struct enemydate
 	{

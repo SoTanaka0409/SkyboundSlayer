@@ -48,8 +48,7 @@ void Scene3D::Initialize()
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", 
         VGet(200.0f, 100.0f, 200.0f));
    
-    new Stage(VGet(0,0,-5000),"Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",
-        VGet(1.5f,0.0f,1.5f));
+   
     float ObjectSize=10.0f;
     new StageObject(VGet(0, 0, 0), "Resource/3D/Stage_casule/source/Parede castelo.mv1",VGet(ObjectSize, ObjectSize, ObjectSize));
     //  //new Tree("Resource/3D/Tree.mv1", VGet(500, 0, 600), 400.0, 80.0f, true);

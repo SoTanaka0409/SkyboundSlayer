@@ -255,6 +255,9 @@
     <ClCompile Include="Source\EnemyBoss_1.cpp">
       <Filter>ソース ファイル\character</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EnemyMonster.cpp">
+      <Filter>ソース ファイル\character</Filter>
+    </ClCompile>
     <ClCompile Include="Source\StageCollider.cpp">
       <Filter>ソース ファイル\Weapon Bullet</Filter>
     </ClCompile>
@@ -503,6 +506,9 @@
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\EnemyBoss_1.h">
+      <Filter>ヘッダー ファイル\character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyMonster.h">
       <Filter>ヘッダー ファイル\character</Filter>
     </ClInclude>
     <ClInclude Include="Source\StageCollider.h">
