@@ -78,10 +78,7 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 
 EnemyBoss_1::~EnemyBoss_1()
 {
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-	}
+
 }
 
 void EnemyBoss_1::Update()

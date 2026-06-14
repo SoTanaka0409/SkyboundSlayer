@@ -17,7 +17,6 @@ enum AnimationState
 	//       Hero.mv1 がこの順番じゃないと機能しないので維持しておく。
 	//       ただし、SeparateModelAnimation の方で使ってはいけない訳ではないので注意。
 
-	// ★New★
 	// 上にある定義以外で使いたいモーションがあれば、このように下に追加していけばOK。
 	ANIMATION_WALKING,      // 歩き
 	ANIMATION_DYING,        // 死亡時
@@ -29,7 +28,7 @@ enum AnimationState
 
 
 
-// ★New★
+
 // 分割されているアニメーションのデータ
 struct AnimationInfo
 {

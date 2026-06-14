@@ -9,7 +9,7 @@ class Object3D
 public:
 	enum Tag3D
 	{
-		None3D = 0,//İ’è‚È‚µ
+		None3D = 0,//è¨­å®šãªã—
 		Tag3D_Player3D = 2000,
 		Tag3D_Wall3D = 2100,
 		Tag3D_Enemy3D = 2200,
@@ -35,14 +35,14 @@ public:
 		Status_Hp,
 		
 	}state;
-	// šNew!! Zƒ\[ƒg—pš
-public: // ƒ\[ƒgŠÖ”’è‹`
+	// â˜…New!! Zã‚½ãƒ¼ãƒˆç”¨â˜…
+public: // ã‚½ãƒ¼ãƒˆé–¢æ•°å®šç¾©
 
-	// Zƒ\[ƒg—p‚Ìİ’è
+	// Zã‚½ãƒ¼ãƒˆç”¨ã®è¨­å®š
 	void SetCameraDistance(float distance) { mfCurrentCameraDistance = distance; }
 
-	// ƒJƒƒ‰‹——£‚ğŠî€‚Éƒ\[ƒg‚·‚é‚½‚ß‚ÌƒIƒyƒŒ[ƒ^[
-	// note: ƒJƒƒ‰‚Æ‚Ì‹——£‚ª—£‚ê‚é‚Ù‚ÇƒŠƒXƒg‚Ìè‘O‚É—ˆ‚é‚æ‚¤‚É‚·‚éiæ‚É•`‰æ‚µ‚½‚¢j
+	// ã‚«ãƒ¡ãƒ©è·é›¢ã‚’åŸºæº–ã«ã‚½ãƒ¼ãƒˆã™ã‚‹ãŸã‚ã®ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼
+	// note: ã‚«ãƒ¡ãƒ©ã¨ã®è·é›¢ãŒé›¢ã‚Œã‚‹ã»ã©ãƒªã‚¹ãƒˆã®æ‰‹å‰ã«æ¥ã‚‹ã‚ˆã†ã«ã™ã‚‹ï¼ˆå…ˆã«æç”»ã—ãŸã„ï¼‰
 	struct CompareZOrder {
 		bool operator()(Object3D* a, Object3D* b) const {
 			return a->mfCurrentCameraDistance > b->mfCurrentCameraDistance;
@@ -54,7 +54,7 @@ public: // ƒ\[ƒgŠÖ”’è‹`
 public:
 	Object3D(VECTOR initPos);
 
-	~Object3D();
+	virtual ~Object3D();
 
 	virtual void Update();
 
@@ -66,7 +66,7 @@ public:
 	//virtual void Callback() = 0;
 
 
-public://ƒQƒbƒ^[AƒZƒbƒ^[w
+public://ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼w
 	void SetPosition(VECTOR pos) { mvPosition = pos; };
 	VECTOR GetPosition() { return mvPosition; }
 
@@ -79,21 +79,21 @@ public://ƒQƒbƒ^[AƒZƒbƒ^[w
 	void SetDeleteFlag(bool flag) { mbDeleteFlag = flag; }
 	bool IsDeleteFlag() { return mbDeleteFlag; }
 
-	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //“G‚Ìíœƒtƒ‰ƒOİ’è@
-	bool IsDrawFlag() { return mbDrawFlag; }          //“G‚Ìíœƒtƒ‰ƒO‚Ìì¬
+	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°è¨­å®šã€€
+	bool IsDrawFlag() { return mbDrawFlag; }          //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°ã®ä½œæˆ
 
-	//ƒ^ƒO
+	//ã‚¿ã‚°
 	void SetTag(Tag3D tag) { mnTag = tag; }
 	Tag3D GetTag() { return mnTag; }
 
 protected:
-	VECTOR mvPosition;  //À•W
-	VECTOR mvRotation;   //‰ñ“]
+	VECTOR mvPosition;  //åº§æ¨™
+	VECTOR mvRotation;   //å›è»¢
 	VECTOR mvOldPosition;
 private:
-	bool mbDeleteFlag;  //íœƒtƒ‰ƒO
-	Tag3D mnTag;   //ƒ^ƒO
-	bool mbDrawFlag;//•`‰æƒtƒ‰ƒO
-	float mfCurrentCameraDistance;     // Œ»İ‚ÌƒJƒƒ‰‚Æ‚Ì‹——£
+	bool mbDeleteFlag;  //å‰Šé™¤ãƒ•ãƒ©ã‚°
+	Tag3D mnTag;   //ã‚¿ã‚°
+	bool mbDrawFlag;//æç”»ãƒ•ãƒ©ã‚°
+	float mfCurrentCameraDistance;     // ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã¨ã®è·é›¢
 	
 };

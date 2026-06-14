@@ -1,14 +1,14 @@
 #pragma once
 #include"DxLib.h"
 
-//‘O•ûéŒ¾
+//å‰æ–¹å®£è¨€
 class ObjectManager;
 class ColliderManager;
 //
-//ƒV[ƒ“‚ÌŠî’êƒNƒ‰ƒX
+//ã‚·ãƒ¼ãƒ³ã®åŸºåº•ã‚¯ãƒ©ã‚¹
 // 
-// ƒ^ƒCƒgƒ‹AƒQ[ƒ€AƒŠƒUƒ‹ƒg‰æ–Ê‚È‚Ç
-// ‰æ–Ê‚ğì‚éÛ‚Í‚±‚ÌƒNƒ‰ƒX‚ğŒp³‚·‚é
+// ã‚¿ã‚¤ãƒˆãƒ«ã€ã‚²ãƒ¼ãƒ ã€ãƒªã‚¶ãƒ«ãƒˆç”»é¢ãªã©
+// ç”»é¢ã‚’ä½œã‚‹éš›ã¯ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã™ã‚‹
 //
 class Scene
 {
@@ -16,23 +16,23 @@ public:
 
 	Scene();
 
-	~Scene();
+	virtual ~Scene();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	virtual void Initialize() = 0;
-	//XV
+	//æ›´æ–°
 	virtual void Update();
-	//•`‰æ
+	//æç”»
 	virtual void Draw();
-	//I—¹ˆ—
+	//çµ‚äº†å‡¦ç†
 	virtual void Finalize() = 0;
 
 
-	//ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ìæ“¾
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®å–å¾—
 	ObjectManager* GetObjectManager() { return mpObjectManager; }
 	ColliderManager* GetCollisionManager() { return mpColliderManager; }
 
 private:
-	ObjectManager* mpObjectManager;  //ƒIƒuƒWƒFƒNƒgŠÇ—ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
+	ObjectManager* mpObjectManager;  //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç®¡ç†ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
 	ColliderManager* mpColliderManager;
 };
