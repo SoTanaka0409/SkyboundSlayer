@@ -38,8 +38,9 @@ public:
     GameManager(EnemyManager* enemyManager, Difficulty diff = Difficulty::NORMAL);
     ~GameManager();
 
-    void Update(bool loadFlag);
+    void Update();
     void Draw();
 
     Phase GetCurrentPhase() const { return mCurrentPhase; }
+    int GetShopTimer() const { return mShopTimer; }
 };

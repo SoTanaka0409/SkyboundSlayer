@@ -17,14 +17,14 @@ WeaponManager::~WeaponManager()
 
 }
 
-//もしすでにその武器を持っていたらreturnする,
+//もしすでにそ�E武器を持ってぁE��らreturnする,
 void WeaponManager::AddWeapon(Weapon::WeaponDate* date)
 {
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
 		if ((*itr)->id==date->id)
 		{
-			if ((*itr)->damage < date->damage)//もし今現在獲得したおなじIDの武器の攻撃力が基のより高かったら攻撃力を更新する
+			if ((*itr)->damage < date->damage)//もし今現在獲得したおなじIDの武器の攻撁E��が基のより高かったら攻撁E��を更新する
 			{
 				(*itr)->damage = date->damage;
 				if(date->isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
@@ -41,15 +41,15 @@ void WeaponManager::AddWeapon(Weapon::WeaponDate* date)
 		break;
 	case Weapon::Tag_Weapon2:
 		date->price = 800;
-		date->name = "普通の剣";
+		date->name = "普通�E剣";
 		break;
 	case Weapon::Tag_Weapon3:
 		date->price = 1200;
-		date->name = "強い剣";
+		date->name = "強ぁE��";
 		break;
 	case Weapon::Tag_Weapon4:
 		date->price = 1600;
-		date->name = "つおーい剣";
+		date->name = "つお�EぁE��";
 		break;
 	case Weapon::Tag_Weapon5:
 		date->price = 2000;
@@ -68,7 +68,7 @@ void WeaponManager::Update()
 	{
 		if ((*itr)->mbGet == true)
 		{
-			filename = (*itr)->filename;//キャラクターごとに持っている武器のモデルのファイルを探す
+			filename = (*itr)->filename;//キャラクターごとに持ってぁE��武器のモチE��のファイルを探ぁE
 		}
 	
 

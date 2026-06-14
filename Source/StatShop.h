@@ -40,4 +40,11 @@ private:
 	int mnLevelSpeed;
 	int mnLevelEvasionSpeed;
 	int mnLevelEvasionInvincibility;
+
+	// Icons
+	int mnIconMaxHpHandle;
+	int mnIconAttackHandle;
+	int mnIconSpeedHandle;
+	int mnIconEvasionDistHandle;
+	int mnIconEvasionInvHandle;
 };

@@ -75,14 +75,13 @@ Enemy3D::~Enemy3D()
 
 void Enemy3D::Update()
 {
-	
-	if (mfHp <= 0)
+	if (isDead)
 	{
 		DeathEnemy();
-		return;
 	}
 	else
 	{
+
 		if (mpModel != nullptr)
 		{
 
@@ -99,6 +98,7 @@ void Enemy3D::Update()
 			mpModel->Update();
 			//mpDH->Update();//drawHpのアップデートを呼ぶ
 			CollPositionUpdate();
+
 
 		}
 	}

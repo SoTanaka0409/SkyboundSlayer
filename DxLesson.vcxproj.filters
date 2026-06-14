@@ -305,7 +305,10 @@
       <Filter>ヘッダー ファイル\character</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene3D.h">
-      <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGame.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
       <Filter>ヘッダー ファイル\character</Filter>

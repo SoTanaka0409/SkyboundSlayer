@@ -6,6 +6,21 @@
 #include "SphereCollider.h"
 #include "Player3D.h"
 #include "Chat.h"
+#include "CapsuleCollider.h"
+#include "SceneGame.h"
+#include "GameManager.h"
+
+namespace
+{
+	bool IsShopPhaseActive() {
+		auto currentScene = Master::mpSceneManager->GetCurrentScene();
+		SceneGame* sceneGame = dynamic_cast<SceneGame*>(currentScene);
+		if (sceneGame) {
+			return sceneGame->IsShopPhase();
+		}
+		return false;
+	}
+}
 
 StatShop::StatShop(std::string filename, VECTOR vec)
 	: Object3D(vec)
@@ -24,11 +39,23 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
+
+	mnIconMaxHpHandle = LoadGraph("Resource/2D/icon_hp_up.png");
+	mnIconAttackHandle = LoadGraph("Resource/2D/icon_attack_up.png");
+	mnIconSpeedHandle = LoadGraph("Resource/2D/icon_speed_up.png");
+	mnIconEvasionDistHandle = LoadGraph("Resource/2D/icon_evade_dist_up.png");
+	mnIconEvasionInvHandle = LoadGraph("Resource/2D/icon_evade_inv_up.png");
 }
 
 StatShop::~StatShop()
 {
 	DeleteGraph(mnBgImageHandle);
+	DeleteGraph(mnIconMaxHpHandle);
+	DeleteGraph(mnIconAttackHandle);
+	DeleteGraph(mnIconSpeedHandle);
+	DeleteGraph(mnIconEvasionDistHandle);
+	DeleteGraph(mnIconEvasionInvHandle);
+
 	delete mpModel;
 	delete mpShopIn;
 	delete mpSafeZoon;
@@ -36,6 +63,8 @@ StatShop::~StatShop()
 
 void StatShop::Draw()
 {
+	if (!IsShopPhaseActive()) return;
+
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 
@@ -65,12 +94,17 @@ void StatShop::Draw()
 			"Evasion Invincibility UP"
 		};
 		int levels[] = { mnLevelMaxHp, mnLevelAttack, mnLevelSpeed, mnLevelEvasionSpeed, mnLevelEvasionInvincibility };
+		int icons[] = { mnIconMaxHpHandle, mnIconAttackHandle, mnIconSpeedHandle, mnIconEvasionDistHandle, mnIconEvasionInvHandle };
 
 		for (int i = 0; i <= mnSelectMax; i++)
 		{
 			int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
-			if (i == mnSelect) DrawFormatString(350, 250 + i * 60, color, ">");
-			DrawFormatString(390, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
+			if (i == mnSelect) DrawFormatString(330, 250 + i * 60, color, ">");
+			
+			// アイコン描画 (40x40 サイズに縮小して表示)
+			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
+
+			DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
 		}
 		
 		DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   Escape/Back: Close");
@@ -88,6 +122,19 @@ void StatShop::Draw()
 
 void StatShop::Update()
 {
+	if (!IsShopPhaseActive()) return;
+
+	auto currentScene = Master::mpSceneManager->GetCurrentScene();
+	SceneGame* sceneGame = dynamic_cast<SceneGame*>(currentScene);
+	if (sceneGame && sceneGame->mpGameManager) {
+		if (sceneGame->mpGameManager->GetShopTimer() <= 60 && sceneGame->mpGameManager->GetCurrentPhase() != GameManager::Phase::SHOP_3) {
+			if (Master::StatShopClassOn) {
+				Master::StatShopClassOn = false;
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
+			}
+		}
+	}
+
 	if (Master::StatShopClassOn)
 	{
 		SelectClass();
@@ -196,18 +243,24 @@ void StatShop::BuyClass()
 
 void StatShop::OnEnter(Collider* collider, Collider* check)
 {
+	if (!IsShopPhaseActive()) return;
+
+	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
+	{
+		Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
+		if (pPlayer && collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
+		{
+			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::InventoryClasOn && !Master::ShopClassOn && !Master::StatShopClassOn)
+			{
+				Master::StatShopClassOn = true;
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
+			}
+		}
+	}
 }
 
 void StatShop::OnTrigger(Collider* collider, Collider* check)
 {
-	if (collider == mpShopIn && check->mpParentObject->GetTag() == Tag3D_Player3D)
-	{
-		if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::InventoryClasOn && !Master::ShopClassOn && !Master::StatShopClassOn)
-		{
-			Master::StatShopClassOn = true;
-			Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
-		}
-	}
 }
 
 void StatShop::OnExit(Collider* collider, Collider* check)

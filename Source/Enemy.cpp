@@ -87,14 +87,12 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	
-	if (mfHp<=0)
-	{
-		DeathEnemy();//謨ｵ繧貞€偵＠縺溘→縺阪↓繧ｯ繝ｪ繧｢縺吶ｋ縺溘ａ縺ｮ繧ｫ繧ｦ繝ｳ繝医ｒ貂帙ｉ縺・
-	}
-	else
-	{
+		
+	
+	
 		if (mpModel != nullptr)
 		{
+			DeathEnemy();//謨ｵ繧貞€偵＠縺溘→縺阪↓繧ｯ繝ｪ繧｢縺吶ｋ縺溘ａ縺ｮ繧ｫ繧ｦ繝ｳ繝医ｒ貂帙ｉ縺・
 			Attack();
 			CollPositionUpdate();
 			RotationByMove();
@@ -106,7 +104,7 @@ void Enemy::Update()
 			
 		}
 
-	}
+	
 }
 
 void Enemy::Draw()
@@ -424,16 +422,21 @@ void Enemy::Damage(float damage)
 {
 
 	mfHp -= damage;
-
+	if(mfHp <= 0)
+	{
+		mfHp = 0;
+		isDead = true;
+	}
 }
 
 
 
 void Enemy::DeathEnemy()
 {
+	if (!isDead)return;
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-	isDead = true;
+	
 	//Delete();
 	//Master::TutorialCount++;
 	mpModel->ChangeAnimation(ANIMATION_DYING);

@@ -7,6 +7,8 @@
 #include"CapsuleCollider.h"
 #include"InfClass.h"
 #include"Chat.h"
+#include"SceneGame.h"
+#include"GameManager.h"
 
 Shop::Shop(std::string filename, VECTOR vec)
 	:Object3D(vec)
@@ -170,6 +172,17 @@ void Shop::Draw()
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 
+	auto currentScene = Master::mpSceneManager->GetCurrentScene();
+	SceneGame* sceneGame = dynamic_cast<SceneGame*>(currentScene);
+	if (sceneGame && sceneGame->mpGameManager) {
+		if (sceneGame->mpGameManager->GetShopTimer() <= 60 && sceneGame->mpGameManager->GetCurrentPhase() != GameManager::Phase::SHOP_3) {
+			if (Master::ShopClassOn) {
+				Master::ShopClassOn = false;
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
+			}
+		}
+	}
+
 	if (Master::ShopClassOn)
 	{
 		//w“ü‚·‚é‚Æ‚«‚Ì‰æ‘œ‚ÆŒˆ’è‰æ–Ê‚Ì•\Ž¦
@@ -193,6 +206,17 @@ void Shop::Draw()
 void Shop::Update()
 {
 	
+	auto currentScene = Master::mpSceneManager->GetCurrentScene();
+	SceneGame* sceneGame = dynamic_cast<SceneGame*>(currentScene);
+	if (sceneGame && sceneGame->mpGameManager) {
+		if (sceneGame->mpGameManager->GetShopTimer() <= 60 && sceneGame->mpGameManager->GetCurrentPhase() != GameManager::Phase::SHOP_3) {
+			if (Master::ShopClassOn) {
+				Master::ShopClassOn = false;
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
+			}
+		}
+	}
+
 	if (Master::ShopClassOn)
 	{
 		mpTexture->Draw();

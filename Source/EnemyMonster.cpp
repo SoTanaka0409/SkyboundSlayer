@@ -40,26 +40,29 @@ EnemyMonster::~EnemyMonster()
 
 void EnemyMonster::Update()
 {
-	if (mfHp <= 0)
+	
+	if (isDead)
 	{
 		DeathEnemy();
-		return;
 	}
-
-	if (mpModel != nullptr)
+	else
 	{
-		Attack();
-
-		// Only move normally if not currently in a jump attack sequence
-		if (mAttackState == AttackState::None)
+		if (mpModel != nullptr)
 		{
-			RotationByMove();
-			Move();
-		}
+			
+			Attack();
 
-		mpModel->Update();
-		CollPositionUpdate();
-		mpLandingAttackCollider->mvPosition = mvPosition; // Update collider position
+			// Only move normally if not currently in a jump attack sequence
+			if (mAttackState == AttackState::None)
+			{
+				RotationByMove();
+				Move();
+			}
+
+			mpModel->Update();
+			CollPositionUpdate();
+			mpLandingAttackCollider->mvPosition = mvPosition; // Update collider position
+		}
 	}
 }
 

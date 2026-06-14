@@ -1,6 +1,8 @@
 #include "GameManager.h"
 #include "Player3D.h"
+#include "Enemy.h"
 #include <cmath>
+#include <DxLib.h>
 
 GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     : mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0)
@@ -13,9 +15,22 @@ GameManager::~GameManager()
 {
 }
 
-void GameManager::Update(bool loadFlag)
+void GameManager::Update()
 {
-    if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3) {
+    // DEBUG: Press '0' to wipe out all enemies in the current phase
+    if (CheckHitKey(KEY_INPUT_0)) {
+        auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+        for (auto enemy : enemies)
+		{
+			Enemy* e = dynamic_cast<Enemy*>(enemy);
+            if (e) {
+                e->Damage(e->GetMaxHp()); // Deal max HP damage to trigger death animation
+            }
+        }
+    }
+
+    if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)
+    {
         if (mCurrentPhase != Phase::SHOP_3) {
             mShopTimer--;
             if (mShopTimer <= 0) {
@@ -45,7 +60,7 @@ void GameManager::Update(bool loadFlag)
         }
     } else {
         auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-        if (enemies.empty() && !loadFlag)
+        if (enemies.empty())
         {
             if (mCurrentPhase == Phase::PHASE_1) {
                 mCurrentPhase = Phase::SHOP_1;

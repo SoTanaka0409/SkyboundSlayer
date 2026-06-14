@@ -33,16 +33,16 @@ Scene3D::~Scene3D()
 
 void Scene3D::Initialize()
 {
+    SceneGame::Initialize();
+
     const float wallWidth = Config::StageWallWidth;//stageのサイズ
     const float wallDistance = Config::StageWallDistance;//stageのサイズ main
     const float Spawnpos = 12000.0f;
     VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
 
-    mpEnemyManager = new EnemyManager();
-    mpGameManager = new GameManager(mpEnemyManager, GameManager::Difficulty::NORMAL);
     new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
-    new Shop("Resource/3D/Hero.mv1", VGet(7500, 200, 7000));
-    new StatShop("Resource/3D/Hero.mv1", VGet(7500, 200, 8000)); // 少しZにずらして配置
+   // new Shop("Resource/3D/Hero.mv1", VGet(7500, 200, 7000));
+    new StatShop("Resource/3D/Hero.mv1", Config::GetStageCenter()); // ステージの真ん中に配置
     //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトプス,hp,speed,Hitsize,size
        //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", 
@@ -146,29 +146,10 @@ void Scene3D::Initialize()
 
 void Scene3D::Update()
 {
-    Scene::Update();
+    SceneGame::Update();
     Master::mpSave->Update();
     auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
     Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-    const int count = 51;
-    const float distance = 500.0f;
-    /*for (int i = 0; i < count; i++)
-    {
-        float base = (count / 2 - i) * -distance;
-
-        DrawLine3D(
-            VGet(-distance * (count / 2), 0.0f, base),
-            VGet(distance * (count / 2), 0.0f, base),
-            GetColor(255, 255, 255)
-        );
-
-        DrawLine3D(
-            VGet(base, 0.0f, -distance * (count / 2)),
-            VGet(base, 0.0f, distance * (count / 2)),
-            GetColor(255, 255, 255)
-        );
-    }*/
-    mpGameManager->Update(Loadflag);
 
     if (mpGameManager->GetCurrentPhase() == GameManager::Phase::CLEAR) 
     {
@@ -189,8 +170,28 @@ void Scene3D::Update()
 void Scene3D::Draw()
 {
     float Load = LoadCount / LoadTimer;
-    Scene::Draw();
+    SceneGame::Draw();
     Master::mpSave->Draw();
+
+    // 地面のグリッド（ステージ）を描画
+    const int count = 51;
+    const float distance = 500.0f;
+    for (int i = 0; i < count; i++)
+    {
+        float base = (count / 2 - i) * -distance;
+
+        DrawLine3D(
+            VGet(-distance * (count / 2), 0.0f, base),
+            VGet(distance * (count / 2), 0.0f, base),
+            GetColor(255, 255, 255)
+        );
+
+        DrawLine3D(
+            VGet(base, 0.0f, -distance * (count / 2)),
+            VGet(base, 0.0f, distance * (count / 2)),
+            GetColor(255, 255, 255)
+        );
+    }
    /* if (Loadflag)
     {
         Master::PauseOn = true;
@@ -214,15 +215,12 @@ void Scene3D::Draw()
             Master::PauseOn = false;
         }
     }*/
-
-    mpGameManager->Draw();
 }
 
 void Scene3D::Finalize()
 {
     Master::mpSoundManager->StopBGM();
-
-
+    SceneGame::Finalize();
 }
 
 

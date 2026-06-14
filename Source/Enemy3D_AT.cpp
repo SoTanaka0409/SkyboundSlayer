@@ -75,16 +75,15 @@ Enemy3D_AT::~Enemy3D_AT()
 void Enemy3D_AT::Update()
 {
 	
-	if (mfHp <= 0)
+	if (isDead)
 	{
 		DeathEnemy();
-		return;
 	}
 	else
 	{
 		if (mpModel != nullptr)
 		{
-
+			
 			Attack();
 
 			if (!(mpModel->GetNowState() == ANIMATION_ATTACK))

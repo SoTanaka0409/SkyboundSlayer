@@ -86,17 +86,15 @@ EnemyBoss_1::~EnemyBoss_1()
 
 void EnemyBoss_1::Update()
 {
-	
-	if (mfHp <= 0)
+	if (isDead)
 	{
 		DeathEnemy();
-		return;
 	}
 	else
 	{
 		if (mpModel != nullptr)
 		{
-			
+		
 			//if (mfHp > mfMaxHp / 2)//体力の管理で攻撃方法を変える
 			//{
 			//	Attack();
@@ -106,7 +104,7 @@ void EnemyBoss_1::Update()
 			//	Attack2();
 			//}
 			Attack();
-			if (!(mpModel->GetNowState() == ANIMATION_ATTACK)||!(mpModel->GetNowState()==ANIMATION_ATTACKJUMP))
+			if (!(mpModel->GetNowState() == ANIMATION_ATTACK) || !(mpModel->GetNowState() == ANIMATION_ATTACKJUMP))
 			{
 				RotationByMove();
 				Move();

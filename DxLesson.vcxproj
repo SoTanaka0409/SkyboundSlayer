@@ -78,6 +78,7 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
     <ClCompile Include="Source\Scene3D.cpp" />
+    <ClCompile Include="Source\SceneGame.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\ScoreManager.cpp" />
     <ClCompile Include="Source\SeparateModelAnimation.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\GameManager.h" />
     <ClInclude Include="Source\Scene3D.h" />
+    <ClInclude Include="Source\SceneGame.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\ScoreManager.h" />
     <ClInclude Include="Source\ScreenSize.h" />

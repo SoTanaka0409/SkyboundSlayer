@@ -88,6 +88,7 @@ public:
 	bool GetHitjudgment() { return HitJudgmentflag_Player; }
 
 	bool GetisDead() { return isDead; }
+	void SetIsDead(bool dead) { isDead = dead; }
 
 	virtual void OnEnter(Collider* collider, Collider* check) ;
 	virtual void OnTrigger(Collider* collider, Collider* check);

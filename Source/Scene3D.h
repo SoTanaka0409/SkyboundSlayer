@@ -1,5 +1,5 @@
 #pragma once
-#include"Scene.h"
+#include "SceneGame.h"
 #include"Dxlib.h"
 #include"Master.h"
 #include"Texture.h"
@@ -8,18 +8,14 @@
 
 
 
-class Scene3D :public Scene
+class Scene3D : public SceneGame
 {
 private:
 	Texture* mpTexture;
 	Texture* mpTexture2;
-	EnemyManager* mpEnemyManager;
 public:
 	Scene3D();
 	~Scene3D();
-
-
-	GameManager* mpGameManager;
 
 	void Initialize();
 	void Finalize();
