@@ -13,8 +13,14 @@ SceneGame::~SceneGame()
 
 void SceneGame::Initialize()
 {
-	mpEnemyManager = new EnemyManager();
-	mpGameManager = new GameManager(mpEnemyManager, mInitialDifficulty);
+	if (mpEnemyManager == nullptr)
+	{
+		mpEnemyManager = new EnemyManager();
+	}
+	if (mpGameManager == nullptr)
+	{
+		mpGameManager = new GameManager(mpEnemyManager, mInitialDifficulty);
+	}
 }
 
 void SceneGame::Update()

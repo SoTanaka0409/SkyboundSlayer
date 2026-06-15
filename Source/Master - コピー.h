@@ -17,7 +17,6 @@
 #include<iostream>
 #include"TutorialScene.h"
 
-//SaveDrawScreenToBMP(0,0,1000.1000."Screen")//ゲーム画面でスクショする際に使う
 
 //ゲーム内で１つだけしか存在しないものを管理するクラス
 // 例えば
@@ -44,7 +43,6 @@ public:
 	static TutorialScene* mpTutorial;
 
 	//static void SetName(char name) { Name = name; }//名前を保存しておくクラス
-	//static char GetName() { return Name; }
 
 	static int TutorialCount;//
 	static bool TutorialFlag;//ツーとリアルかどうか
@@ -61,8 +59,6 @@ public:
 
 	static bool RideOn;//恐竜に乗っているか
 	
-	//static ResultChange* mpResultChange;
 private: 
-	//static char Name;
 	
 };

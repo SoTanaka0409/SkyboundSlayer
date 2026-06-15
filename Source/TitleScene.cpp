@@ -1,4 +1,4 @@
-ï»¿#include"TitleScene.h"
+#include"TitleScene.h"
 #include"Texture.h"
 #include"InputManager.h"
 #include"Master.h"
@@ -29,19 +29,17 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
-	{/////////ãƒªã‚»ãƒƒãƒˆ///////////
+	{/////////ƒŠƒZƒbƒg///////////
 		Master::TutorialFlag = false;
 		Master::TutorialCount = 0;
-		Master::mpCamera->Initialize();//æœ€åˆã«ã‚«ãƒ¡ãƒ©ã‚’ã¤ã‘ã‚‹ä½ç½®ã‚’å¤‰æ›´
+		Master::mpCamera->Initialize();//Å‰‚ÉƒJƒƒ‰‚ğ‚Â‚¯‚éˆÊ’u‚ğ•ÏX
 		Master::GameClearCount = 0;
 		ColliderManager::GetInstance()->DeleteAllCollider();
 	}
-	//isNameflag = false;
 	
 	mpTexture=new Texture("Resource/Title", VGet(500,420, 0), true);
 	Master::mpSoundManager->PlayBGM(SoundManager::BGM_TITLE);
 	
-	//mpCamera->ResetCameraPlayer();
 }
 
 void TitleScene::Draw()
@@ -68,7 +66,7 @@ void TitleScene::Draw()
 	}
 	
 	
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255); // 0ã€œ255ï¼ˆ128ï¼50%é€æ˜ï¼‰
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255); // 0`255i12850%“§–¾j
 		Scene::Draw();
 		DrawBox(0, 0, 1000, 1000, GetColor(0, 0, 0), true);
 
@@ -84,15 +82,12 @@ void TitleScene::Draw()
 		E_Enter = false;*/
 		int Color = GetColor(255, 255, 255);
 		Master::mpScoreManager->LoadHighScore();
-		//DrawFormatString(480, 750, Color, "NO.1 %d ", Master::mpScoreManager->GetHighScore());//,Master::mpScoreManager->GetName().c_str());//,Master::mpScoreManager->);//ã‚¹ã‚³ã‚¢ãŒé«˜ã„é †ã«ä¸¦ã¹ã‚‹
-		//DrawFormatString(480, 820, Color, "NO.2 %d ", Master::mpScoreManager->GetHighScore2());//, Master::mpScoreManager->GetName2().c_str());
-		//DrawFormatString(480, 890, Color, "NO.3 %d ", Master::mpScoreManager->GetHighScore3());//, Master::mpScoreManager->GetName3().c_str());
 	
 
 		if (InputManager::CheckDownKey(KEY_INPUT_W))
 		{
 			mnPause--;
-			Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//åŠ¹æœéŸ³
+			Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//Œø‰Ê‰¹
 			if (mnPause < 1)
 			{
 				mnPause = 3;
@@ -101,7 +96,7 @@ void TitleScene::Draw()
 		if (InputManager::CheckDownKey(KEY_INPUT_S))
 		{
 			mnPause++;
-			Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//åŠ¹æœéŸ³
+			Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//Œø‰Ê‰¹
 			if (mnPause > 3)
 			{
 				mnPause = 1;
@@ -123,7 +118,7 @@ void TitleScene::Draw()
 			break;
 		case 2:
 			
-			DrawFormatString(50, 810, GetColor(0, 255, 255), "æ“ä½œæ–¹æ³•");
+			DrawFormatString(50, 810, GetColor(0, 255, 255), "‘€ì•û–@");
 			
 			S = true;
 			if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
@@ -134,7 +129,7 @@ void TitleScene::Draw()
 		
 		case 3:
 			(35);
-			DrawFormatString(50, 870, GetColor(0, 255, 255), "ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«");
+			DrawFormatString(50, 870, GetColor(0, 255, 255), "ƒ`ƒ…[ƒgƒŠƒAƒ‹");
 			
 			T = true;
 			if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
@@ -162,15 +157,15 @@ void TitleScene::Draw()
 			}
 			if (S == false)
 			{
-				DrawFormatString(50, 820, GetColor(255, 255, 255), "2:æ“ä½œæ–¹æ³•");
+				DrawFormatString(50, 820, GetColor(255, 255, 255), "2:‘€ì•û–@");
 			}
 			
 			if (T == false)
 			{
-				DrawFormatString(50, 870, GetColor(255, 255, 255), "3:ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«");
+				DrawFormatString(50, 870, GetColor(255, 255, 255), "3:ƒ`ƒ…[ƒgƒŠƒAƒ‹");
 			}
 		
-			DrawFormatString(750, 960, GetColor(255, 255, 255), "ENTERã§æ±ºå®š:WSã§é¸æŠ");
+			DrawFormatString(750, 960, GetColor(255, 255, 255), "ENTER‚ÅŒˆ’è:WS‚Å‘I‘ğ");
 
 
 

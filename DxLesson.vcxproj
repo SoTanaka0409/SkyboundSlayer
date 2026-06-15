@@ -30,7 +30,6 @@
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\ColliderManager.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
-    <ClCompile Include="Source\CollsionManager.cpp" />
     <ClCompile Include="Source\Combo.cpp" />
     <ClCompile Include="Source\DrawCircle1.cpp" />
     <ClCompile Include="Source\DrawHp.cpp" />
@@ -50,7 +49,6 @@
     <ClCompile Include="Source\InfClass.cpp" />
     <ClCompile Include="Source\InfClassManager.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
-    <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\Item.cpp" />
     <ClCompile Include="Source\ItemManager.cpp" />
     <ClCompile Include="Source\LevelUp.cpp" />
@@ -84,6 +82,7 @@
     <ClCompile Include="Source\SeparateModelAnimation.cpp" />
     <ClCompile Include="Source\Shield.cpp" />
     <ClCompile Include="Source\Shop.cpp" />
+    <ClCompile Include="Source\ShortInventory.cpp" />
     <ClCompile Include="Source\StatShop.cpp" />
     <ClCompile Include="Source\SkyBox.cpp" />
     <ClCompile Include="Source\SoundManager.cpp" />
@@ -115,7 +114,6 @@
     <ClInclude Include="Source\Chat.h" />
     <ClInclude Include="Source\Coin.h" />
     <ClInclude Include="Source\Collision.h" />
-    <ClInclude Include="Source\CollsionManager.h" />
     <ClInclude Include="Source\Combo.h" />
     <ClInclude Include="Source\Config.h" />
     <ClInclude Include="Source\Debugh.h" />
@@ -139,7 +137,6 @@
     <ClInclude Include="Source\InfClass.h" />
     <ClInclude Include="Source\InfClassManager.h" />
     <ClInclude Include="Source\InputManager.h" />
-    <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\ItemManager.h" />
     <ClInclude Include="Source\LevelUp.h" />
@@ -175,6 +172,7 @@
     <ClInclude Include="Source\SeparateModelAnimation.h" />
     <ClInclude Include="Source\Shield.h" />
     <ClInclude Include="Source\Shop.h" />
+    <ClInclude Include="Source\ShortInventory.h" />
     <ClInclude Include="Source\StatShop.h" />
     <ClInclude Include="Source\SkyBox.h" />
     <ClInclude Include="Source\SoundManager.h" />

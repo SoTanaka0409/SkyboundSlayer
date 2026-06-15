@@ -21,7 +21,6 @@ public:
 	};
 	//キャラクターの当たり判定を書いていく
 public:
-	//virtual void CallBack() = 0;
 
 	Collision();
 
@@ -38,7 +37,6 @@ public:
 	
 	std::list<float>mSizeList;
 private:
-	//Object3D* mpObject3D;
 	Tag_Coll CollTag;
   /*  Player3D* Coll_P;
 	Enemy* Coll_E;*/

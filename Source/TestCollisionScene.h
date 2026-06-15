@@ -1,13 +1,14 @@
 #pragma once
 #include "Scene.h"
 #include "DxLib.h"
-
+#include"SceneGame.h"
 struct TrackedVec3 {
     VECTOR current;
     VECTOR previous;
 };
 
-class TestCollisionScene : public Scene {
+class TestCollisionScene : public SceneGame 
+{
 public:
     TestCollisionScene();
     ~TestCollisionScene();

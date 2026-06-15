@@ -23,16 +23,11 @@ public:
 
 	
 
-	//void RotationByMove();
-	//void Delete()override;
 
-	//void DeathEnemy()override;
 	
 
-	//void Delete();
 
 
-	//void AddAnimation(AnimationState state, std::string filename);
 
 	
 private:
@@ -44,11 +39,9 @@ private:
 	//SphereCollider* mpAttackCollider;//攻撃し始める円
 	//SphereCollider* mpStopCollider;//ある程度の距離で立ち止まる円
 	
-	//DrawHp* mpDH;
 
 	
 	
-	//float mnHp;
 
 	/// <summary>
 	/// ///////////チュートリアル

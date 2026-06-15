@@ -22,11 +22,18 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	AttackInterval = 120; // 2 seconds between jump attacks
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-
+	//"C:\Users\student\Desktop\LevelMonster\Resource\Model\monster.mv1"
 	// Setup model and animations if needed (assuming "T.mv1" or passed filename)
 	// Add animations if the model supports them
 	if (mpModel) {
 		mpModel->SetScale(VGet(3.0f, 3.0f, 3.0f)); // Make it a bit large
+		
+		mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
+		mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
+		mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
+		mpModel->AddAnimation(ANIMATION_JUMP_IN, "Resource/Model/Jumping Up.mv1");
+		mpModel->AddAnimation(ANIMATION_JUMP_LOOP, "Resource/Model/Jump.mv1");
+		mpModel->AddAnimation(ANIMATION_JUMP_OUT, "Resource/Model/Landing.mv1");
 	}
 
 	// Landing attack collider (large radius)
@@ -49,7 +56,6 @@ void EnemyMonster::Update()
 	{
 		if (mpModel != nullptr)
 		{
-			
 			Attack();
 
 			// Only move normally if not currently in a jump attack sequence
@@ -101,9 +107,11 @@ void EnemyMonster::Attack()
 			mChargeTimer = 0;
 			AttackCount = 0;
 			mHasLandedHit = false;
+			mpModel->ChangeAnimation(AnimationState::ANIMATION_JUMP_IN);
+			mpModel->SetLoop(false);
 
-			// Determine jump direction towards the player (GoPosition)
-			VECTOR toPlayer = VSub(GoPosition, mvPosition);
+			// Determine jump direction towards the player (GoPosition is already normalized)
+			VECTOR toPlayer = GoPosition;
 			toPlayer.y = 0.0f;
 			if (VSquareSize(toPlayer) > 0.0f) {
 				mJumpTargetDir = VNorm(toPlayer);
@@ -119,9 +127,16 @@ void EnemyMonster::Attack()
 	else if (mAttackState == AttackState::Charging)
 	{
 		mChargeTimer++;
+		
+		// Aim at the player while charging
+		mfTargetAngle = atan2f(GoPosition.x, GoPosition.z);
+		RotationByMove();
+
 		// Wait for 30 frames (0.5s) to charge
 		if (mChargeTimer > 30)
 		{
+			mpModel->ChangeAnimation(AnimationState::ANIMATION_JUMP_LOOP);
+			mpModel->SetLoop(false);
 			mAttackState = AttackState::Jumping;
 			mJumpVelocity = 40.0f; // Initial upward velocity
 			mForwardSpeed = 20.0f; // Forward speed
@@ -154,6 +169,7 @@ void EnemyMonster::Attack()
 		mChargeTimer++;
 		if (mChargeTimer > 30)
 		{
+			mpModel->ChangeAnimation(ANIMATION_JUMP_OUT);
 			mAttackState = AttackState::None;
 			AttackHitJudgmentflag = false; // Reset attack flag
 		}
@@ -190,7 +206,7 @@ void EnemyMonster::DeathEnemy()
 
 	DeathColliderPosition();
 
-	mpInventory->DropInventory(mnChance, mbWeapon, mbItem);
+	if (mbItem && GetRand(100) < mnChance) { Item::ItemInformation* info = new Item::ItemInformation(); info->ID = Item::HEAL; info->Count = 1; info->Name = "HEAL"; Master::mpItemManager->AddItem(info); }
 	if (player != nullptr) {
 		player->mpHaveMoney->AddMoney(mfHaveMoney);
 		player->mpLevelUp->AddXp(mfHaveXp);

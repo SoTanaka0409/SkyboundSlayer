@@ -1,6 +1,8 @@
 #include "TestCollisionScene.h"
-
-TestCollisionScene::TestCollisionScene() {
+#include"Player3D.h"
+TestCollisionScene::TestCollisionScene()
+{
+   
 }
 
 TestCollisionScene::~TestCollisionScene() {
@@ -8,11 +10,7 @@ TestCollisionScene::~TestCollisionScene() {
 
 void TestCollisionScene::Initialize() {
     // Player settings (starts high up)
-    mPlayerPos.current = VGet(0.0f, 300.0f, 0.0f);
-    mPlayerPos.previous = mPlayerPos.current;
-    mPlayerVelocity = VGet(0.0f, 0.0f, 0.0f);
-    mPlayerRadius = 15.0f;
-    mIsGrounded = false;
+    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
 
     // Block settings
     mBlockPos = VGet(0.0f, 100.0f, 0.0f);
@@ -20,53 +18,31 @@ void TestCollisionScene::Initialize() {
 
     // Load Player Model
     mPlayerModelHandle = MV1LoadModel("Resource/3D/Hero.mv1");
+    // Wave 3: 重量級代用
+    mpEnemyManager = new EnemyManager();
+    EnemyManager::enemydate e_heavy;
+    e_heavy.filename = "Resource/Model/monster.mv1";
+    e_heavy.spawnCenter = VGet(0, 0, 0);
+    e_heavy.initPos = VGet(2000.0f, 100.0f, 2000.0f);
+    e_heavy.hp = 100;
+    e_heavy.speed = 2.0f;
+    e_heavy.attack = 5.0f;
+    e_heavy.HitSize = 100.0f;
+    e_heavy.Serch1 = 1000.0f;
+    e_heavy.Serch2 = 100.0f;
+    e_heavy.Serch3 = 100.0f;
+    e_heavy.isSeparateAnim = true;
+    e_heavy.xp = 100.0f;
+    e_heavy.money = 500;
+    e_heavy.tag = EnemyManager::monster_stage1;
+    e_heavy.Count = 1;
+    mpEnemyManager->NewEnemyList(e_heavy);
+  
 }
 
 void TestCollisionScene::Update() {
     // Save previous position
-    mPlayerPos.previous = mPlayerPos.current;
-
-    // Apply gravity
-    mPlayerVelocity.y -= 0.5f; // Gravity strength
-
-    // Input for moving around (optional, to test edge cases)
-    if (CheckHitKey(KEY_INPUT_LEFT))  mPlayerVelocity.x -= 0.5f;
-    if (CheckHitKey(KEY_INPUT_RIGHT)) mPlayerVelocity.x += 0.5f;
-    if (CheckHitKey(KEY_INPUT_UP))    mPlayerVelocity.z += 0.5f;
-    if (CheckHitKey(KEY_INPUT_DOWN))  mPlayerVelocity.z -= 0.5f;
-
-    // Friction
-    mPlayerVelocity.x *= 0.9f;
-    mPlayerVelocity.z *= 0.9f;
-
-    // Jump
-    if (mIsGrounded && CheckHitKey(KEY_INPUT_SPACE)) {
-        mPlayerVelocity.y = 12.0f;
-        mIsGrounded = false;
-    }
-
-    // Update current position based on velocity
-    mPlayerPos.current = VAdd(mPlayerPos.current, mPlayerVelocity);
-
-    // Collision detection
-    mIsGrounded = false;
-    float hitY = 0.0f;
-
-    // Top-Only collision check: Only check if player is falling (velocity.y <= 0)
-    if (mPlayerVelocity.y <= 0.0f) { 
-        if (CheckTopOnlyCollision(mPlayerPos, mPlayerRadius, mBlockPos, mBlockSize, hitY)) {
-            // Correct position to exactly top of the floor
-            mPlayerPos.current.y = hitY;
-            mPlayerVelocity.y = 0.0f;
-            mIsGrounded = true;
-        }
-    }
-
-    // Fall out of bounds reset
-    if (mPlayerPos.current.y < -200.0f) {
-        mPlayerPos.current = VGet(0.0f, 400.0f, 0.0f);
-        mPlayerVelocity = VGet(0.0f, 0.0f, 0.0f);
-    }
+    Scene::Update();
 }
 
 bool TestCollisionScene::CheckTopOnlyCollision(const TrackedVec3& playerPos, float playerRadius, const VECTOR& blockPos, const VECTOR& blockSize, float& outHitY) {
@@ -101,8 +77,7 @@ bool TestCollisionScene::CheckTopOnlyCollision(const TrackedVec3& playerPos, flo
 
 void TestCollisionScene::Draw() {
     // Camera setup
-    VECTOR camPos = VGet(mPlayerPos.current.x, mPlayerPos.current.y + 150.0f, mPlayerPos.current.z - 300.0f);
-    SetCameraPositionAndTarget_UpVecY(camPos, mPlayerPos.current);
+  
 
     // Draw Floor Block (Floating)
     VECTOR blockPos1 = VGet(mBlockPos.x - mBlockSize.x, mBlockPos.y - mBlockSize.y, mBlockPos.z - mBlockSize.z);
@@ -127,8 +102,29 @@ void TestCollisionScene::Draw() {
     DrawFormatString(10, 50, GetColor(255,255,255), "Grounded: %s", mIsGrounded ? "TRUE" : "FALSE");
     DrawFormatString(10, 70, GetColor(255,255,255), "Block Top: %.2f", mBlockPos.y + mBlockSize.y);
     DrawFormatString(10, 100, GetColor(200,200,200), "Controls: Arrow Keys to move, SPACE to jump");
+    // 地面のグリッド（ステージ）を描画
+    const int count = 51;
+    const float distance = 500.0f;
+    for (int i = 0; i < count; i++)
+    {
+        float base = (count / 2 - i) * -distance;
+
+        DrawLine3D(
+            VGet(-distance * (count / 2), 0.0f, base),
+            VGet(distance * (count / 2), 0.0f, base),
+            GetColor(255, 255, 255)
+        );
+
+        DrawLine3D(
+            VGet(base, 0.0f, -distance * (count / 2)),
+            VGet(base, 0.0f, distance * (count / 2)),
+            GetColor(255, 255, 255)
+        );
+    }
+    Scene::Draw();
 }
 
-void TestCollisionScene::Finalize() {
+void TestCollisionScene::Finalize() 
+{
     MV1DeleteModel(mPlayerModelHandle);
 }

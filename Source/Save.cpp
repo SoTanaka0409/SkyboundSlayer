@@ -6,7 +6,6 @@
 #include"SceneManager.h"
 
 // Ã“Iƒƒ“ƒo•Ï”’è‹`
-//ColliderManager* ColliderManager::Instance = nullptr;
 
 Save::Save()
 	:Select(0)

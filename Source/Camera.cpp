@@ -27,7 +27,6 @@ Camera::Camera()
 	, mfStepTime(0.0f)
 	, mvShakePosition(VGet(0.0f, 0.0f, 0.0f))
 {
-	//SetTag(Object3D::Tag3D_Player3D);
 	Camera1 = true;
 }
 
@@ -39,16 +38,16 @@ Camera::~Camera()
 void Camera::Initialize()
 {
 	mpTarget = nullptr;
-	//ã‚«ãƒ¡ãƒ©ã®ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°è·é›¢ã®è¨­å®š
-	SetCameraNearFar(100.0f, Config::CameraFar);//100ï½50000ã¾ã§ã®è·é›¢ãŒè¦‹ãˆã‚‹
+	//ƒJƒƒ‰‚ÌƒNƒŠƒbƒsƒ“ƒO‹——£‚Ìİ’è
+	SetCameraNearFar(100.0f, Config::CameraFar);//10050000‚Ü‚Å‚Ì‹——£‚ªŒ©‚¦‚é
 
-	//èƒŒæ™¯è‰²ã‚’è¨­å®šï¼ˆç°è‰²ï¼‰
+	//”wŒiF‚ğİ’èiŠDFj
 	SetBackgroundColor(128, 128, 128);
 
-	//ã‚«ãƒ¡ãƒ©ã®è¨­å®šã‚’åæ˜ 
+	//ƒJƒƒ‰‚Ìİ’è‚ğ”½‰f
 	SetCameraPositionAndTarget_UpVecY(mvPosition, mvLookAtPosition);
 
-	//æ›´æ–°å‡¦ç†ã‚’ä¸€åº¦è¡Œã£ã¦ã„ã
+	//XVˆ—‚ğˆê“xs‚Á‚Ä‚¢‚­
 	Update();
 
 	
@@ -62,7 +61,7 @@ void Camera::Update()
 		mpTitleScene->ResetCameraPlayer(false);
 	}*/
 	
-	VECTOR temp; //ä½œæ¥­ç”¨å¤‰æ•°
+	VECTOR temp; //ì‹Æ—p•Ï”
 	if (mpTarget == nullptr)
 	{
 		mpTarget = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
@@ -70,8 +69,8 @@ void Camera::Update()
 	}
 	if(Camera1==true)
 	{
-		// â˜…Newâ˜…
-   // ç”»é¢æºã‚Œå‡¦ç†
+		// šNewš
+   // ‰æ–Ê—h‚êˆ—
 		Shake();
 		Camera3 = false;
 		const float distance = 300.0f;
@@ -87,39 +86,35 @@ void Camera::Update()
 		UpdateRotation();
 		
 
-		//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ãªã‹ã£ãŸã‚‰
+		//ƒ^[ƒQƒbƒg‚ª‚¢‚È‚©‚Á‚½‚ç
 		
 		if (mpTarget != nullptr)
 		{
-			//mvLookAtPosition = mpTarget->GetPosition();
 			mvLookAtPosition = VAdd(mpTarget->GetPosition(), temp);
 			mvPosition = VAdd(mpTarget->GetPosition(), dir);
-			//mvLookAtPosition = VAdd(pPlayer->GetPosition(), temp);
 
-			//mvPosition = VAdd(mvLookAtPosition,temp);
 			mvPosition.y += 160.0f + dir.x + dir.z;
 
 
 		}
 		else
 		{
-			//æ³¨è¦–ç‚¹ã‚’å°‘ã—ä¸Šã«ãšã‚‰ã™
+			//’‹“_‚ğ­‚µã‚É‚¸‚ç‚·
 			mvPosition.y = 160.0f;
 		}
 
-		// â˜…Newâ˜…
-		// ç”»é¢æºã‚Œã®åˆ†ã‚’åŠ ç®—ã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
-		// ã‚«ãƒ¡ãƒ©è¨­å®šã‚’åæ˜ 
+		// šNewš
+		// ‰æ–Ê—h‚ê‚Ì•ª‚ğ‰ÁZ‚·‚é‚æ‚¤‚É•ÏX
+		// ƒJƒƒ‰İ’è‚ğ”½‰f
 		SetCameraPositionAndTarget_UpVecY(VAdd(mvPosition, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
-		//å›è»¢è¨­å®š
-		//MV1SetRotationXYZ(moveVec, mvRotation);
+		//‰ñ“]İ’è
 	}
 	if (Camera3 == true)
 	{
 		Camera1 = false;
 		
 		
-		//ä¸Šã§æ±‚ã‚ãŸåº§æ¨™ã«æ³¨è¦–ç‚¹ã®åº§æ¨™ã‚’è¶³ã—ãŸã‚‚ã®ãŒã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã¨ãªã‚‹
+		//ã‚Å‹‚ß‚½À•W‚É’‹“_‚ÌÀ•W‚ğ‘«‚µ‚½‚à‚Ì‚ªƒJƒƒ‰‚ÌÀ•W‚Æ‚È‚é
 		
 		
 		
@@ -127,7 +122,7 @@ void Camera::Update()
 		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 		
 		UpdateRotation();
-		//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ãªã‹ã£ãŸã‚‰
+		//ƒ^[ƒQƒbƒg‚ª‚¢‚È‚©‚Á‚½‚ç
 		/*if (mpTarget == nullptr)
 		{
 			mpTarget = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
@@ -140,14 +135,14 @@ void Camera::Update()
 		}
 		else
 		{
-			//æ³¨è¦–ç‚¹ã‚’å°‘ã—ä¸Šã«ãšã‚‰ã™
+			//’‹“_‚ğ­‚µã‚É‚¸‚ç‚·
 			mvLookAtPosition.y = 160.0f;
 		}
-		// â˜…Newâ˜…
-   // ç”»é¢æºã‚Œå‡¦ç†
+		// šNewš
+   // ‰æ–Ê—h‚êˆ—
 		Shake();
 		{
-			VECTOR temp; //ä½œæ¥­ç”¨å¤‰æ•°
+			VECTOR temp; //ì‹Æ—p•Ï”
 			const float distance = 500.0f;
 			temp.x = 400.0f * cosf(mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f)) * sinf(mfHorizontalAngle / 180.0f * DX_PI_F);
 			temp.y = 400.0f * sinf(-mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f));
@@ -155,16 +150,13 @@ void Camera::Update()
 			mvPosition = VAdd(temp, mvLookAtPosition);
 			/*mvLookAtPosition = VSub(mpTarget->GetPosition(), mvPosition);
 			mvLookAtPosition = VNorm(mvLookAtPosition);*/
-			// â˜…Newâ˜…
-		// ç”»é¢æºã‚Œã®åˆ†ã‚’åŠ ç®—ã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
-		 // ã‚«ãƒ¡ãƒ©è¨­å®šã‚’åæ˜ 
+			// šNewš
+		// ‰æ–Ê—h‚ê‚Ì•ª‚ğ‰ÁZ‚·‚é‚æ‚¤‚É•ÏX
+		 // ƒJƒƒ‰İ’è‚ğ”½‰f
 			SetCameraPositionAndTarget_UpVecY(VAdd(mvPosition, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
 
-			//ä¸Šã§æ±‚ã‚ãŸåº§æ¨™ã«æ³¨è¦–ç‚¹ã®åº§æ¨™ã‚’è¶³ã—ãŸã‚‚ã®ãŒã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã¨ãªã‚‹
-			//mvPosition = VAdd(temp, mvLookAtPosition);
-			//mvPosition = VAdd(temp, mvLookAtPosition);
-			//ã‚«ãƒ¡ãƒ©è¨­å®šã‚’åæ˜ 
-			//SetCameraPositionAndTarget_UpVecY(pPlayer->GetPosition(), mvLookAtPosition);
+			//ã‚Å‹‚ß‚½À•W‚É’‹“_‚ÌÀ•W‚ğ‘«‚µ‚½‚à‚Ì‚ªƒJƒƒ‰‚ÌÀ•W‚Æ‚È‚é
+			//ƒJƒƒ‰İ’è‚ğ”½‰f
 		}
 	}
 	
@@ -172,35 +164,20 @@ void Camera::Update()
 
 void Camera::UpdateRotation()
 {
-	////æ–¹å‘ã‚­ãƒ¼ã§ã‚«ãƒ¡ãƒ©æ“ä½œ
-	//if (CheckHitKey(KEY_INPUT_LEFT))
-	//{
-	//	mfHorizontalAngle += 5.0f;
+	////•ûŒüƒL[‚ÅƒJƒƒ‰‘€ì
 		if (mfHorizontalAngle >= 180.0f)
 		{
 			mfHorizontalAngle -= 360.0f;
 		}
-	//}
-	//if (CheckHitKey(KEY_INPUT_RIGHT))
-	//{
-	//	mfHorizontalAngle -= 5.0f;
 		if (mfHorizontalAngle <= -180.0f)
 		{
 			mfHorizontalAngle += 360.0f;
 		}
-	//}
-	//if (CheckHitKey(KEY_INPUT_UP))
-	//{
-	//	mfVerticalAngle += 5.0f;
 
 		if (mfVerticalAngle >= 80.0f)
 		{
 			mfVerticalAngle = 80.0f;
 		}
-	//}
-	//if (CheckHitKey(KEY_INPUT_DOWN))
-	//{
-	//	mfVerticalAngle -= 5.0f;
 
 		if (mfVerticalAngle <= -80.0f)
 		{
@@ -208,24 +185,23 @@ void Camera::UpdateRotation()
 		}
 	
 
-	float camAngleY = 0.0f; // æ°´å¹³æ–¹å‘ï¼ˆå·¦å³ï¼‰
-	float camAngleX = 0.0f; // å‚ç›´æ–¹å‘ï¼ˆä¸Šä¸‹ï¼‰
+	float camAngleY = 0.0f; // …•½•ûŒüi¶‰Ej
+	float camAngleX = 0.0f; // ‚’¼•ûŒüiã‰ºj
 
-	// æ„Ÿåº¦
+	// Š´“x
 	const float MOUSE_SENSITIVITY = 0.05f;
 
-	// ã‚«ãƒ¡ãƒ©ã®è·é›¢
+	// ƒJƒƒ‰‚Ì‹——£
 	float camDistance = 300.0f;
 
 	
 
-	// ã‚«ãƒ¼ã‚½ãƒ«ã‚’éè¡¨ç¤ºã«
-	//SetMouseDispFlag(FALSE);
+	// ƒJ[ƒ\ƒ‹‚ğ”ñ•\¦‚É
 
-		// ãƒã‚¦ã‚¹ã®ç§»å‹•é‡ã‚’å–å¾—
+		// ƒ}ƒEƒX‚ÌˆÚ“®—Ê‚ğæ“¾
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
-	// ä¸­å¿ƒåº§æ¨™
+	// ’†SÀ•W
 	if (!CheckHitKey(KEY_INPUT_0))
 	{
 		int centerX = 640;
@@ -238,53 +214,51 @@ void Camera::UpdateRotation()
 		int deltaX = mouseX - centerX;
 		int deltaY = mouseY - centerY;
 
-		// å›è»¢è§’åº¦ã‚’æ›´æ–°
+		// ‰ñ“]Šp“x‚ğXV
 		mfHorizontalAngle -= deltaX * MOUSE_SENSITIVITY;
 		mfVerticalAngle -= deltaY * MOUSE_SENSITIVITY;
 
-		// ä¸Šä¸‹ã®å›è»¢ã‚’åˆ¶é™ï¼ˆè¦–ç·šãŒè£è¿”ã‚‰ãªã„ã‚ˆã†ã«ï¼‰
+		// ã‰º‚Ì‰ñ“]‚ğ§ŒÀi‹ü‚ª— •Ô‚ç‚È‚¢‚æ‚¤‚Éj
 		/*if (camAngleX < -DX_PI_F / 2.0f) camAngleX = -DX_PI_F / 2.0f;
 		if (camAngleX > DX_PI_F / 2.0f) camAngleX = DX_PI_F / 2.0f;*/
 
-		//// ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã¨æ³¨è¦–ç‚¹ã‚’è¨ˆç®—
-		//VECTOR camTarget = VGet(0.0f, 0.0f, 0.0f);
+		//// ƒJƒƒ‰‚ÌˆÊ’u‚Æ’‹“_‚ğŒvZ
 		//VECTOR temp = VGet(
 		//	camTarget.x + camDistance * sinf(camAngleY) * cosf(camAngleX),
 		//	camTarget.y + camDistance * sinf(camAngleX),
 		//	camTarget.z + camDistance * cosf(camAngleY) * cosf(camAngleX)
-		//);
 
 		
 
 		
 }
-// â˜…Newâ˜…
-// ç”»é¢æºã‚Œ
+// šNewš
+// ‰æ–Ê—h‚ê
 void Camera::Shake()
 {
 	if (mfShakeTimeCounter < mfShakeTime)
 	{
-		// sinf ã‚’åˆ©ç”¨ã—ã¦æºã‚‰ã—åº§æ¨™ã‚’ç®—å‡º
-		// note: ä¸€æ—¦Yåº§æ¨™ã ã‘ã‚’æºã‚‰ã—ã¦ã¿ã‚‹
+		// sinf ‚ğ—˜—p‚µ‚Ä—h‚ç‚µÀ•W‚ğZo
+		// note: ˆê’UYÀ•W‚¾‚¯‚ğ—h‚ç‚µ‚Ä‚İ‚é
 		mvShakePosition.y = sinf(mfShakeAngle) * (1.0f - (mfShakeTimeCounter / mfShakeTime)) * mfShakeWidth;
 		mvShakePosition.x = 0.0f;
 		mvShakePosition.z = 0.0f;
 
-		// æºã‚‰ã—å‡¦ç†ã«ä½¿ç”¨ã™ã‚‹ sinf ã«æ¸¡ã™è§’åº¦ã®å¤‰æ›´å‡¦ç†
+		// —h‚ç‚µˆ—‚Ég—p‚·‚é sinf ‚É“n‚·Šp“x‚Ì•ÏXˆ—
 		mfShakeAngle += mfShakeAngleSpeed * mfStepTime;
 
-		// æºã‚‰ã™æ™‚é–“ã‚’çµŒéã•ã›ã‚‹
+		// —h‚ç‚·ŠÔ‚ğŒo‰ß‚³‚¹‚é
 		mfShakeTimeCounter += mfStepTime;
 	}
 	else
 	{
-		// æºã‚‰ã•ã‚Œã¦ã„ãªã„å ´åˆã¯æºã‚‰ã—å‡¦ç†ã«ã‚ˆã‚‹åŠ ç®—åº§æ¨™ã‚’ï¼ã«ã™ã‚‹
+		// —h‚ç‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í—h‚ç‚µˆ—‚É‚æ‚é‰ÁZÀ•W‚ğ‚O‚É‚·‚é
 		mvShakePosition = VGet(0.0f, 0.0f, 0.0f);
 	}
 }
 
-// â˜…Newâ˜…
-// ç”»é¢æºã‚Œè¨­å®š
+// šNewš
+// ‰æ–Ê—h‚êİ’è
 void Camera::SetupShake(float time, float width, float angleSpeed, float stepTime)
 {
 	mfShakeTimeCounter = 0.0f;

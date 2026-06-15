@@ -33,7 +33,7 @@ void ResetScene::Initialize()
     e->Serch3 = 100;
     e->isSeparateAnim = true;
     e->xp = 1;
-    e->tag = EnemyManager::night_stagg1;
+    e->tag = EnemyManager::night_stage1;
     e->Count = 10;
     auto e1 = new EnemyManager::enemydate;
     e1->filename = "Resource/Model/T.mv1";

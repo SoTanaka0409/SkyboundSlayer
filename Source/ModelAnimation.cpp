@@ -89,8 +89,6 @@ void ModelAnimation::Update()
 				fAnimTotaltime = MV1GetAttachAnimTotalTime(mnModelHandle, mnAnimationIndex);
 			}
 			mfAnimationTime = 0.0f;
-			//ChangeAnimation(ANIMATION_NEUTRAL);
-			//Do = false;
 		}
 
 		//アニメーションを反映
@@ -106,14 +104,7 @@ void ModelAnimation::Update()
 		fAnimTotaltime = MV1GetAttachAnimTotalTime(mnModelHandle, mnOldAnimationIndex);
 
 		////アニメーションを進める
-		//if (mnState != ANIMATION_JUMP_IN)
-		//{
-		//	mfOldAnimationTime += 0.5f;
-		//}
 		//else
-		//{
-		//	mfOldAnimationTime += 0.25f;
-		//}
 
 		//ループさせる
 		if (mfOldAnimationTime > fAnimTotaltime)
@@ -123,7 +114,6 @@ void ModelAnimation::Update()
 		}
 
 		//アニメーションを反映
-		//MV1SetAttachAnimTime(mnModelHandle, mnOldAnimationIndex, mfOldAnimationTime);
 
 		//ブレンド率を設定
 		MV1SetAttachAnimBlendRate(mnModelHandle, mnOldAnimationIndex, 1.0f - mfAnimBlendRate);
@@ -189,25 +179,14 @@ void ModelAnimation::ChangeAnimation(AnimationState state, int index)
 }
 
 //bool ModelAnimation::Animation()
-//{
-//	float fAnimTotaltime = 0.0f;
 //
 //
 //
-//	if (mnAnimationIndex != -1)
 //	{//そう再生時間の取得
-//		fAnimTotaltime = MV1GetAttachAnimTotalTime(mnModelHandle, mnAnimationIndex);
 //
 //		//ループさせる
-//		if (mfAnimationTime > fAnimTotaltime-5)
-//		{
-//			return true;
-//		}
-//	}
 //
-//	return false;
 //
-//}
 //アニメションのブレンド設定
 void ModelAnimation::SetAnimationBlend(bool isblend)
 {

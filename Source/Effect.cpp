@@ -24,11 +24,9 @@ Effect::Effect(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float 
 
 		//‘å‚«‚³
 		mpEffect->particle[i].size = Size;
-		//((float)GetRand(SIZE_RAND_MAX) + SIZE_RAND_MIN) / 100.0f;
 
 		//•\¦ŠÔ
 		mpEffect->particle[i].visibleTime = VisibleTime;
-		//((float)GetRand(VISIBLE_TIME_RAND_MAX) + VISIBLE_TIME_RAND_MIN) / 100.0f;
 
 	}
 	//‰æ‘œ‚Ì“Ç‚İ‚İ

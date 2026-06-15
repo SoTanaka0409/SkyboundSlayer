@@ -21,18 +21,14 @@ public:
 
 	void Update()override;
 
-    //void Move()override;
 	void Attack()override;
 
-	//void DeathEnemy()override;
 	
 	
 
 private:
 	bool mbMagic;
 
-	//Collision* mpCollision;
 
-	//DrawHp* mpDH;
 
 };

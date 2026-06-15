@@ -23,7 +23,7 @@
 
 #include"EnemyManager.h"
 #include"ColliderManager.h"
-#include"Inventory.h"
+
 #include"ItemManager.h"
 #include"InfClassManager.h"
 #include"InfClass.h"
@@ -31,10 +31,10 @@
 #include"Chat.h"
 #include"Save.h"
 /**
-* @note ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ https://dxlib.xsrv.jp/dxfunc.html
+* @note ƒŠƒtƒ@ƒŒƒ“ƒX https://dxlib.xsrv.jp/dxfunc.html
 */
 
-//ã‚²ãƒ¼ãƒ ã®ï¼“Dãƒ¢ãƒ‡ãƒ«   metaseq316
+//ƒQ[ƒ€‚Ì‚RDƒ‚ƒfƒ‹   metaseq316
 //https://www.d5render.com/ja/workflow/blender?utm_campaign=bingsearchILJPblender&utm_source=bing&utm_medium=cpc&msclkid=929170cec1521e953f1c187910ba1cae
 
 
@@ -42,14 +42,14 @@
 /**
 /**
 * @fn WinMain
-* @brief Mainé–¢æ•°
+* @brief MainŠÖ”
 * @param[in] HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
-* @return int 0 æ­£å¸¸çµ‚äº†ï¼-1 ã‚¨ãƒ©ãƒ¼
-* @details Mainé–¢æ•°
+* @return int 0 ³íI—¹^-1 ƒGƒ‰[
+* @details MainŠÖ”
 */
 
-//Masterã‚¯ãƒ©ã‚¹ã®é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°å®šç¾©
-SceneManager* Master::mpSceneManager = new SceneManager();//å‘¼ã³å‡ºã—
+//MasterƒNƒ‰ƒX‚ÌÃ“Iƒƒ“ƒo•Ï”’è‹`
+SceneManager* Master::mpSceneManager = new SceneManager();//ŒÄ‚Ño‚µ
 SoundManager* Master::mpSoundManager = new SoundManager();
 WeaponManager* Master::mpWeaponManager = new WeaponManager();
 Weapon* Master::mpWeapon = new Weapon();
@@ -74,7 +74,7 @@ bool Master::TutorialFlag=false;
 /// <summary>
 /// ///////////////////////Enemy//////////////////
 /// </summary>
-bool Master::InventoryClasOn = false;//inventoryä¸­ã¯sceneã‚’æ­¢ã‚ã‚‹
+
 bool Master::PauseOn = false;
 bool Master::ShopClassOn = false;
 bool Master::StatShopClassOn = false;
@@ -86,72 +86,68 @@ bool Master::mbSave = false;
 int Master::GameClearCount = 0;
 
 
-//Camera1* Master::mpCamerafa = new Camera1();
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã§èµ·å‹•
+	// ƒEƒCƒ“ƒhƒEƒ‚[ƒh‚Å‹N“®
 	ChangeWindowMode(true);
 
 	SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32);
 	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	
-	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªåˆæœŸåŒ–
+	// DXƒ‰ƒCƒuƒ‰ƒŠ‰Šú‰»
 	if (DxLib_Init() == -1)
 	{
 		return -1;
 	}
 
-	// --- å…¨ä½“ã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ï¼ˆç’°å¢ƒå…‰ãƒ»å¤ªé™½å…‰ï¼‰è¨­å®š ---
+	// --- ‘S‘Ì‚Ìƒ‰ƒCƒeƒBƒ“ƒOiŠÂ‹«ŒõE‘¾—zŒõjİ’è ---
 	SetLightEnable(TRUE);
-	// ç’°å¢ƒå…‰ï¼ˆAmbColorï¼‰ã‚’å°‘ã—é«˜ã‚ã«è¨­å®šã—ã€å½±ã«ãªã‚Šã‚„ã™ã„éƒ¨åˆ†ï¼ˆåº•é¢ã‚„å´é¢ï¼‰ãŒçœŸã£é»’ã«æ²ˆã¾ãªã„ã‚ˆã†ã«ã™ã‚‹
+	// ŠÂ‹«ŒõiAmbColorj‚ğ­‚µ‚‚ß‚Éİ’è‚µA‰e‚É‚È‚è‚â‚·‚¢•”•ªi’ê–Ê‚â‘¤–Êj‚ª^‚Á•‚É’¾‚Ü‚È‚¢‚æ‚¤‚É‚·‚é
 	SetLightAmbColor(GetColorF(0.6f, 0.6f, 0.6f, 1.0f));
-	// å¤ªé™½å…‰ï¼ˆãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒ«ãƒ©ã‚¤ãƒˆï¼‰ã®å‘ãã‚’æ–œã‚ä¸‹ã«å‘ã‘ã‚‹
+	// ‘¾—zŒõiƒfƒBƒŒƒNƒVƒ‡ƒiƒ‹ƒ‰ƒCƒgj‚ÌŒü‚«‚ğÎ‚ß‰º‚ÉŒü‚¯‚é
 	SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
-	// å¤ªé™½å…‰ã®è‰²ï¼ˆå°‘ã—ç™½ã¿ãŒã‹ã£ãŸæ˜ã‚‹ã„è‰²ï¼‰
+	// ‘¾—zŒõ‚ÌFi­‚µ”’‚İ‚ª‚©‚Á‚½–¾‚é‚¢Fj
 	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
 	// ------------------------------------------------
 
 
-	//BGMã®èª­ã¿è¾¼ã¿
+	//BGM‚Ì“Ç‚İ‚İ
 
-	//ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®åˆæœŸåŒ–
-	Master::mpSoundManager->Initialize();//ã™ã¹ã¦ã®ã‚µã‚¦ãƒ³ãƒ‰ãŒèª­ã¿è¾¼ã¾ã‚Œru----
+	//ƒTƒEƒ“ƒhƒ}ƒl[ƒWƒƒ[‚Ì‰Šú‰»
+	Master::mpSoundManager->Initialize();//‚·‚×‚Ä‚ÌƒTƒEƒ“ƒh‚ª“Ç‚İ‚Ü‚êru----
 
-	//ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®ç”Ÿæˆã¨åˆæœŸåŒ–
+	//ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[‚Ì¶¬‚Æ‰Šú‰»
 	Master::mpSceneManager->Initialize();
 
 	Master::mpScoreManager->Initialize();
 
-	//ã‚«ãƒ¡ãƒ©ã®æ›´æ–°
+	//ƒJƒƒ‰‚ÌXV
 	Master::mpCamera->Initialize();
 
 	
 
 
 
-	//æç”»å…ˆè¨­å®šã‚’è£ç”»é¢ã«è¨­å®šã™ã‚‹
+	//•`‰ææİ’è‚ğ— ‰æ–Ê‚Éİ’è‚·‚é
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//Zãƒãƒƒãƒ•ã‚¡ã«æ›¸ãè¾¼ã‚€æº–å‚™
+	//Zƒoƒbƒtƒ@‚É‘‚«‚Ş€”õ
 	SetUseZBufferFlag(true);
 	SetWriteZBufferFlag(true);
 
 	SetFontSize(20);
 	int animationCounter = 0;
 	int textureCurrentNum = 0;
-	//Player3D* player = new Player3D("Resource/3D/Hero.mv1", VGet(400.0f, 200.0f, 100.0f));
 
-	//ã‚²ãƒ¼ãƒ ã®ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
-	//ProcessMesseage()==0^>ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®xãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãªã„ã‹ã©ã†ã‹
-	//CheckHiyKey(KEY_INPUT_ESCAPE)==0->ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+	//ƒQ[ƒ€‚ÌƒƒCƒ“ƒ‹[ƒv
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 
-		//ç”»é¢ã‚’åˆæœŸåŒ–ã™ã‚‹
+		//‰æ–Ê‚ğ‰Šú‰»‚·‚é
 		ClearDrawScreen();
 		int time = GetNowCount();
 
@@ -162,41 +158,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 		
 
-		//æ›´æ–°
+		//XV
 		Master::mpSceneManager->Update();
 	
-		//player->Update();
-		//æç”»
+		//•`‰æ
 		Master::mpSceneManager->Draw();
 		Master::mpScoreManager->Draw();
 
 
 		
 		
-		//player->Draw();
 
 
-		//è£ç”»é¢ã®å†…å®¹ã‚’è¡¨ç”»é¢ã«æ˜ ã™
+		//— ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É‰f‚·
 		ScreenFlip();
 
-		//ï¼‘ï¼—ãƒŸãƒªç§’ï¼ˆç§’æ•°é–“è¨³ï¼–ï¼ãƒ•ãƒ¬ãƒ¼ãƒ ã ã£ãŸã£å ´åˆï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å½“ãŸã‚Šã®çµŒéæ™‚é–“
-		//çµŒéã™ã‚‹ã¾ã§ã“ã“ã§å¾…ã¤
+		//‚P‚Vƒ~ƒŠ•bi•b”ŠÔ–ó‚U‚OƒtƒŒ[ƒ€‚¾‚Á‚½‚Áê‡‚PƒtƒŒ[ƒ€“–‚½‚è‚ÌŒo‰ßŠÔ
+		//Œo‰ß‚·‚é‚Ü‚Å‚±‚±‚Å‘Ò‚Â
 		while (GetNowCount() - time < 17)
 		{
-			//å¾…ã¤ã ã‘ãªã®ã§ã“ã“ã«ã¯ä½•ã‚‚æ›¸ã‹ãªã„
+			//‘Ò‚Â‚¾‚¯‚È‚Ì‚Å‚±‚±‚É‚Í‰½‚à‘‚©‚È‚¢
 		}
 
-		//å‰Šé™¤ã™ã‚‹å¿…è¦ã®ã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Œã°å‰Šé™¤ã™ã‚‹
+		//íœ‚·‚é•K—v‚Ì‚ ‚éƒIƒuƒWƒFƒNƒg‚ª‚ ‚ê‚Îíœ‚·‚é
 		ColliderManager::GetInstance()->DeleteAllColliderIfNeeded();
 		Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
 		
 
-		//ãƒ«ãƒ¼ãƒ—ã™ã‚‹ç›´å‰ã«ã‚·ãƒ¼ãƒ³é·ç§»ãƒã‚§ãƒƒã‚¯ã‚’å…¥ã‚Œã¦ãŠã
+		//ƒ‹[ƒv‚·‚é’¼‘O‚ÉƒV[ƒ“‘JˆÚƒ`ƒFƒbƒN‚ğ“ü‚ê‚Ä‚¨‚­
 		Master::mpSceneManager->ChangeSceneIfNeeded();
 
 		
 	}
-	//çµ‚äº†å‡¦ç†
+	//I—¹ˆ—
 	Master::mpSceneManager->Finalize();
 	delete Master::mpSceneManager;
 	Master::mpSoundManager->Finalize();
@@ -211,10 +205,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨ã®çµ‚äº†
+	// DXƒ‰ƒCƒuƒ‰ƒŠg—p‚ÌI—¹
 	DxLib_End();
 
-	// ã‚½ãƒ•ãƒˆã®çµ‚äº†
+	// ƒ\ƒtƒg‚ÌI—¹
 	return 0;
 }
 

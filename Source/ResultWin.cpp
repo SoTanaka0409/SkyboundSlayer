@@ -1,4 +1,4 @@
-ï»¿#include"ResultWin.h"
+#include"ResultWin.h"
 #include"Master.h"
 #include"SceneManager.h"
 #include"InputManager.h"
@@ -8,7 +8,6 @@ ResultWin::ResultWin()
 	:AllTimer(0)
 	,Name(0)
 {
-	//mpTitle = new TitleScene();
 }
 
 ResultWin::~ResultWin()
@@ -33,7 +32,7 @@ void ResultWin::Draw()
 	mpTexture = new Texture("Resource/result.png", VGet(500, 500, 0), true);
 	mpTexture->Draw();
 	int size = GetFontSize();
-	Master::mpScoreManager->SaveHighScore();//ã‚¹ã‚³ã‚¢ã‚’ä¿å­˜
+	Master::mpScoreManager->SaveHighScore();//ƒXƒRƒA‚ð•Û‘¶
 	
 	unsigned int Color;
 	Color = GetColor(0, 255, 255);
@@ -42,14 +41,13 @@ void ResultWin::Draw()
 		if (Master::mpScoreManager->GetScore() >= 0)
 		{
 			SetFontSize(40);
-			/*DrawFormatString(300, 280, Color, "%sã•ã‚“ã®ã‚¹ã‚³ã‚¢ã¯",Master::GetName());
+			/*DrawFormatString(300, 280, Color, "%s‚³‚ñ‚ÌƒXƒRƒA‚Í",Master::GetName());
 			DrawKeyInputString(300, 280, mpTitle->Name);
-			DrawFormatString(300, 280, Color, "ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€%dï¼ï¼",Master::mpScoreManager->GetScore());*/
-			DrawFormatString(320, 660, Color, "   %sã¯ã‚¯ãƒªã‚¢ã—ãŸ",Master::NameTest);
+			DrawFormatString(300, 280, Color, "@@@@@@@@%dII",Master::mpScoreManager->GetScore());*/
+			DrawFormatString(320, 660, Color, "   %s‚ÍƒNƒŠƒA‚µ‚½",Master::NameTest);
 		}
 		else
 		{
-			//DrawFormatString(60, 280, Color, "æ®‹å¿µ");
 		}
 	}
 	
@@ -57,18 +55,15 @@ void ResultWin::Draw()
 	if (AllTimer >= 200)
 	{
 		
-		DrawFormatString(400, 750, GetColor(255, 255, 255), "   BackSpaceã‚’æŠ¼ã—ã¦");
+		DrawFormatString(400, 750, GetColor(255, 255, 255), "   BackSpace‚ð‰Ÿ‚µ‚Ä");
 		if (InputManager::CheckDownKey(KEY_INPUT_BACK))
 		{
 			
 			Master::mpSceneManager->SetNextScene(SceneManager::SCENE_NAME);
 		}
 	}
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128); // 0ã€œ255ï¼ˆ128ï¼50%é€æ˜Žï¼‰
-	////// åŠé€æ˜Žã®é»’ã„çŸ©å½¢ã‚’æç”»
-	//DrawBox(100, 300, 900, 780, GetColor(0, 0, 0), TRUE);
-	////// ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒ¢ãƒ¼ãƒ‰ã‚’å…ƒã«æˆ»ã™ï¼ˆé‡è¦ï¼‰
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	////// ”¼“§–¾‚Ì•‚¢‹éŒ`‚ð•`‰æ
+	////// ƒuƒŒƒ“ƒhƒ‚[ƒh‚ðŒ³‚É–ß‚·id—vj
 }
 
 void ResultWin::Finalize()

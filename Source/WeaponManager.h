@@ -28,7 +28,6 @@ public:
 
 	std::vector<Weapon::Tag_Weapon>mTagList;
 	std::list<Weapon::WeaponDate*>mDateList;
-	//std::vector<Weapon*>mBulletList;
 	
 private:
 	std::string filename;

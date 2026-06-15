@@ -22,7 +22,6 @@ public:
 
 	void Update()override;
 
-	//void Move()override;
 	
 
 	void Attack()override;
@@ -30,15 +29,12 @@ public:
 	void OnTrigger(Collider* collider, Collider* check)override;
 	
 	void DeathEnemy()override;
-	//void DeathEnemy()override;
 
 
 
 private:
 	bool mbMagic;
 	SphereCollider* mpJumpAttackCoiider;
-	//Collision* mpCollision;
 
-	//DrawHp* mpDH;
 
 };

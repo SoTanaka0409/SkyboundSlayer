@@ -41,9 +41,7 @@ void LevelUp::Draw()
 		Color3, true);
 
 /////////////////////////////////////////////////////
-	//(30);
 	
-	//(Fontsize);
 //////////////////////////////////////////////////////
 	DrawFormatString(30, 800, Color3, "レベル:%f", level);
 
@@ -55,7 +53,6 @@ void LevelUp::Update()
 	
 	//レベルUPフラグ
 	
-	//if (mnMaxXp == mnXp) { mnMaxXp = Level_2; mnXp = 0; }
 	if (exp > GetNextXp())
 	{
 		level += 1;

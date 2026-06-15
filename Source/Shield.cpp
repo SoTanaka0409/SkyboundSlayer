@@ -33,7 +33,6 @@ Shield::~Shield()
 
 void Shield::Update()
 {
-	//mpModel->Update();
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 	mvPosition = pPlayer->GetPosition();
@@ -48,6 +47,5 @@ void Shield::Draw()
 		GetColor(0, 255, 255),
 		false
 	);
-	//mpModel->Draw();
 
 }

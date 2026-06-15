@@ -9,7 +9,7 @@ class EnemyManager
 public:
 	enum enemy_tag
 	{
-		night_stagg1,
+		night_stage1,
 		archerl_stage1,
 		animal_stage1,
 		boss_stage1,
@@ -27,16 +27,16 @@ public:
 		VECTOR initPos;
 		float hp;//hp
 		float speed;//speed
-		float attack;//æ”»æ’ƒåŠ›
-		float HitSize;//ã‚ãŸã‚Šåˆ¤å®šã®ã‚µã‚¤ã‚º
-		float Serch1;//æ•µã‚’ã‚µãƒ¼ãƒã™ã‚‹å¤§ãã•
-		float Serch2;//æ•µã«æ”»æ’ƒã—å§‹ã‚ã‚‹ã‚µã‚¤ã‚º
-		float Serch3;//æ•µã«è¿‘ãšãã™ããŸã¨ãã«ç«‹ã¡æ­¢ã¾ã‚‹
-		float xp;//å€’ã•ã‚ŒãŸã¨ãã«playerãŒç²å¾—ã™ã‚‹xp
-		bool isSeparateAnim;//ã‚»ãƒ‘ãƒ¬ãƒ¼ãƒˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã™ã‚‹ã‹ã©ã†ã‹
-		int MaxEnemyCount;//stageã®æœ€å¤§æ²¸ãæ•°
+		float attack;//UŒ‚—Í
+		float HitSize;//‚ ‚½‚è”»’è‚ÌƒTƒCƒY
+		float Serch1;//“G‚ğƒT[ƒ`‚·‚é‘å‚«‚³
+		float Serch2;//“G‚ÉUŒ‚‚µn‚ß‚éƒTƒCƒY
+		float Serch3;//“G‚É‹ß‚¸‚«‚·‚¬‚½‚Æ‚«‚É—§‚¿~‚Ü‚é
+		float xp;//“|‚³‚ê‚½‚Æ‚«‚Éplayer‚ªŠl“¾‚·‚éxp
+		bool isSeparateAnim;//ƒZƒpƒŒ[ƒgƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‚·‚é‚©‚Ç‚¤‚©
+		int MaxEnemyCount;//stage‚ÌÅ‘å•¦‚«”
 		int money;
-		int Count;//æ•µã®æ•°
+		int Count;//“G‚Ì”
 	};
 
 public:
@@ -55,11 +55,7 @@ public:
 private:
 	enemydate mpDate;
 	enemy_tag mnTag;
-	//Enemy* mpEnemy;
-	//std::list<Enemy*>mEneTagList;
 	
-	//std::list<EnemyManager*>mGetEneVec() { return  Enemy::GetPosition(); };
-	//std::list<EnemyManager*>mGetEneSize() { return  Enemy::GetSize(); };
 	/*std::vector<Enemy*> GetEnemyVec() { return enemyVec; }
 	std::vector<Enemy*> enemyVec;*/
 	

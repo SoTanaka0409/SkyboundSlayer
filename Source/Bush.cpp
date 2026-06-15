@@ -15,14 +15,11 @@ Bush::Bush(std::string stageModelName, VECTOR initPos,int size)
 
 	//ステージモデルの読み込み
 	mnModelHandle = MV1LoadModel(stageModelName.c_str());
-	//mnCollisionHandle = MV1LoadModel(stageModelName.c_str());
 	//コリジョンモデル(当たり判定用のモデル)の読み込み
-	//mnCollisionHandle = MV1LoadModel(stageCollisionModelName.c_str());
 	mpModel = new Model(stageModelName, initPos, false);
 	mpModel->SetScale(VGet(mnSize, mnSize, mnSize));
 	//当たり判定情報の作成　子リジョンなので作ってくれている
 	//自動的にデータが作成される便利な関数
-	//MV1SetupCollInfo(mnCollisionHandle);
 	MV1SetPosition(mnModelHandle,initPos);
 	mvPosition = initPos;
 }
@@ -36,7 +33,6 @@ Bush::~Bush()
 
 void Bush::Update()
 {
-	//MV1SetPosition(mnModelHandle, mvPosition);
 	//ステージとの当たり判定をする
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
@@ -85,7 +81,6 @@ void Bush::Draw()
 	//コリジョンモデルの描画(ワイヤーフレームみたいな感じで描画)
 	// ///当たり判定用のモデルとして作られている
 	//読み込むモデル、色、
-	//MV1DrawModelDebug(mnCollisionHandle,GetColor(255,255,255),1,10,1,0);
 }
 
 bool Bush::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
@@ -122,7 +117,6 @@ VECTOR Bush::CheckHit_Line(VECTOR pos1, VECTOR pos2)
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
 
 	//当たり判定情報と線分との当たり判定を行う
-	//MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_LineDim(mnCollisionHandle, -1, pos1, pos2);
 	auto result = MV1CollCheck_Line(mnCollisionHandle, -1, pos1, pos2);
 
 	//当たっていた場合
@@ -130,7 +124,6 @@ VECTOR Bush::CheckHit_Line(VECTOR pos1, VECTOR pos2)
 	{
 		//当たった個数のポジションをreturnするように取得する
 		//壁の時みたいにHitPositionをとる必要ない
-		//ret = result.Dim[0].HitPosition;
 		ret = result.HitPosition;
 	}
 
@@ -142,7 +135,6 @@ VECTOR Bush::CheckHit_LineDebug(VECTOR pos1, VECTOR pos2)
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
 
 	//当たり判定情報と線分との当たり判定を行う
-	//MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_LineDim(mnCollisionHandle, -1, pos1, pos2);
 	auto result = MV1CollCheck_Line(mnCollisionHandle, -1, pos1, pos2);
 
 	//当たっていた場合
@@ -150,7 +142,6 @@ VECTOR Bush::CheckHit_LineDebug(VECTOR pos1, VECTOR pos2)
 	{
 		//当たった個数のポジションをreturnするように取得する
 		//壁の時みたいにHitPositionをとる必要ない
-		//ret = result.Dim[0].HitPosition;
 		ret = result.HitPosition;
 		DrawFormatString(200, 0, GetColor(255, 0, 0), "Hit: x:%f, y:%f. z:%f", ret.x, ret.y, ret.z);
 	}

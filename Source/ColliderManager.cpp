@@ -19,16 +19,14 @@ ColliderManager::~ColliderManager()
 // 更新
 void ColliderManager::Update()
 {
-    for (std::list<Collider*>::iterator itr = mColliderList.begin(); itr != mColliderList.end(); itr++)
+    for (auto itr = mColliderList.begin(); itr != mColliderList.end(); ++itr)
     {
-        for (std::list<Collider*>::iterator itr_check = mColliderList.begin(); itr_check != mColliderList.end(); itr_check++)
+        auto itr_check = itr;
+        ++itr_check;
+        for (; itr_check != mColliderList.end(); ++itr_check)
         {
-            if (itr == itr_check)
-            {
-                continue;
-            }
-
             (*itr)->Update((*itr_check));
+            (*itr_check)->Update((*itr));
         }
     }
 }
@@ -78,7 +76,6 @@ void ColliderManager::DeleteAllColliderIfNeeded()
             Collider* temp = *itr;
 
             // リストから削除
-            // erase() は、削除した itr の次の要素を返却してくれる
             itr = mColliderList.erase(itr);
 
             // オブジェクトそのものを削除

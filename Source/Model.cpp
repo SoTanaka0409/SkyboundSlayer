@@ -2,7 +2,7 @@
 #include"AttachmentModel.h"
 #include"Master.h"
 
-// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
     : mvPosition(initPos)
     , mpAttachment(nullptr)
@@ -10,29 +10,28 @@ Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
     , mnChangeTextureHandle(-1)
     ,isSeparate(isSeparateAnimation)
 {
-    // ãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
+    // ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
     mnHandle = Master::mpResourceManager->LoadModel(filename.c_str());
 
-    //ã‚µã‚¤ã‚ºè¨­å®š
-    //MV1SetScale(mnHandle, VGet(ModelSize, ModelSize, ModelSize));
+    //ƒTƒCƒYİ’è
 
-    // â˜…Newâ˜…
-    // æ¡ä»¶åˆ†å²ã‚’è¿½åŠ 
+    // šNewš
+    // ğŒ•ªŠò‚ğ’Ç‰Á
     if (isSeparateAnimation)
     {
-        // åˆ†å‰²ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã®ç”Ÿæˆ
+        // •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì¶¬
         mpSeparateAnimation = new SeparateModelAnimation(mnHandle);
         mpAnimation = nullptr;
     }
     else
     {
-        // é€šå¸¸ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã®ç”Ÿæˆ
+        // ’ÊíƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì¶¬
         mpAnimation = new ModelAnimation(mnHandle);
         mpSeparateAnimation = nullptr;
     }
 }
 
-// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¿½åŠ 
+// ƒAƒjƒ[ƒVƒ‡ƒ“’Ç‰Á
 void Model::AddAnimation(AnimationState state, std::string filename)
 {
     if (mpSeparateAnimation != nullptr)
@@ -41,76 +40,76 @@ void Model::AddAnimation(AnimationState state, std::string filename)
     }
 }
 
-// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// ƒfƒXƒgƒ‰ƒNƒ^
 Model::~Model()
 {
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã®ç ´æ£„
+    // ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì”jŠü
     if (mpAnimation != nullptr)
     {
         delete mpAnimation;
     }
 
-    // â˜…Newâ˜…
-    // åˆ†å‰²ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã®ç ´æ£„
+    // šNewš
+    // •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì”jŠü
     if (mpSeparateAnimation != nullptr)
     {
         delete mpSeparateAnimation;
     }
 
-    // ã‚¢ã‚¿ãƒƒãƒãƒ¢ãƒ‡ãƒ«ã‚¯ãƒ©ã‚¹ã®ç ´æ£„
+    // ƒAƒ^ƒbƒ`ƒ‚ƒfƒ‹ƒNƒ‰ƒX‚Ì”jŠü
     if (mpAttachment != nullptr)
     {
         mpAttachment->SetDeleteFlag(true);
     }
 
-    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’åˆ‡ã‚Šæ›¿ãˆã¦ã„ã‚‹å ´åˆã¯ãã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç ´æ£„
+    // ƒeƒNƒXƒ`ƒƒ‚ğØ‚è‘Ö‚¦‚Ä‚¢‚éê‡‚Í‚»‚ÌƒeƒNƒXƒ`ƒƒ‚Ì”jŠü
     if (mnChangeTextureHandle != -1)
     {
         DeleteGraph(mnChangeTextureHandle);
     }
 
-    // èª­ã¿è¾¼ã‚“ã ãƒ¢ãƒ‡ãƒ«ã®å‰Šé™¤
-    // note: èª­ã¿è¾¼ã‚“ã ãƒ¢ãƒ‡ãƒ«ã¯å‹æ‰‹ã«ç ´æ£„ã—ã¦ãã‚Œãªã„ã®ã§ã€å¿…è¦ãªããªã£ãŸã‚‰æ‰‹å‹•ã§ç ´æ£„ã™ã‚‹
+    // “Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚Ìíœ
+    // note: “Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚ÍŸè‚É”jŠü‚µ‚Ä‚­‚ê‚È‚¢‚Ì‚ÅA•K—v‚È‚­‚È‚Á‚½‚çè“®‚Å”jŠü‚·‚é
     MV1DeleteModel(mnHandle);
 }
 
-// æ›´æ–°
+// XV
 void Model::Update()
 {
     if (mpAnimation != nullptr)
     {
-        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°
+        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXV
         mpAnimation->Update();
     }
 
-    // â˜…Newâ˜…
-    // åˆ†å‰²ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ›´æ–°
+    // šNewš
+    // •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXV
     if (mpSeparateAnimation != nullptr)
     {
         mpSeparateAnimation->Update();
     }
 
-    // åº§æ¨™è¨­å®š
+    // À•Wİ’è
     MV1SetPosition(mnHandle, mvPosition);
 
     
 
-    // å›è»¢è¨­å®š
+    // ‰ñ“]İ’è
     MV1SetRotationXYZ(mnHandle, mvRotation);
 }
 
-// æç”»
+// •`‰æ
 void Model::Draw()
 {
-    // ãƒ¢ãƒ‡ãƒ«ã®æç”»
+    // ƒ‚ƒfƒ‹‚Ì•`‰æ
     MV1DrawModel(mnHandle);
 }
 
-// ã‚¢ãƒ‹ãƒ¡ï¼ã‚·ãƒ§ãƒ³åˆ‡ã‚Šæ›¿ãˆ
+// ƒAƒjƒƒVƒ‡ƒ“Ø‚è‘Ö‚¦
 void Model::ChangeAnimation(AnimationState state)
 {
-    // â˜…Newâ˜…
-    // é€šå¸¸ or åˆ†å‰²ã®ã©ã¡ã‚‰ã‹ã‚’ä½¿ã£ã¦ã„ã‚‹ã‹ã§åˆ†å²
+    // šNewš
+    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
     if (mpAnimation != nullptr)
     {
         mpAnimation->ChangeAnimation(state);
@@ -123,8 +122,8 @@ void Model::ChangeAnimation(AnimationState state)
 
 void Model::SetLoop(bool loop)
 {
-    // â˜…Newâ˜…
-    // é€šå¸¸ or åˆ†å‰²ã®ã©ã¡ã‚‰ã‹ã‚’ä½¿ã£ã¦ã„ã‚‹ã‹ã§åˆ†å²
+    // šNewš
+    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
     if (mpAnimation != nullptr)
     {
         mpAnimation->SetLoop(loop);
@@ -137,8 +136,8 @@ void Model::SetLoop(bool loop)
 
 void Model::SetLoopFinishState(AnimationState state)
 {
-    // â˜…Newâ˜…
-    // é€šå¸¸ or åˆ†å‰²ã®ã©ã¡ã‚‰ã‹ã‚’ä½¿ã£ã¦ã„ã‚‹ã‹ã§åˆ†å²
+    // šNewš
+    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
     if (mpAnimation != nullptr)
     {
         mpAnimation->SetLoopFinishState(state);
@@ -151,8 +150,8 @@ void Model::SetLoopFinishState(AnimationState state)
 
 void Model::SetAnimationBlend(bool isBlend)
 {
-    // â˜…Newâ˜…
-     // é€šå¸¸ or åˆ†å‰²ã®ã©ã¡ã‚‰ã‹ã‚’ä½¿ã£ã¦ã„ã‚‹ã‹ã§åˆ†å²
+    // šNewš
+     // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
     if (mpAnimation != nullptr)
     {
         mpAnimation->SetAnimationBlend(isBlend);
@@ -165,9 +164,9 @@ void Model::SetAnimationBlend(bool isBlend)
 
 AnimationState Model::GetNowState()
 {
-    // â˜…Newâ˜…
-    // é€šå¸¸ or åˆ†å‰²ã®ã©ã¡ã‚‰ã‹ã‚’ä½¿ã£ã¦ã„ã‚‹ã‹ã§åˆ†å²
-    // note: ï¼ˆã»ã¼ã‚ã‚Šãˆãªã„ãŒï¼‰ã‚‚ã—ã©ã¡ã‚‰ã‚‚ç„¡ã‘ã‚Œã°ã€ç‰¹ã«è¨­å®šã®ãªã„æœ€å¤§å€¤ã‚’è¿”ã™ã‚ˆã†ã«ã™ã‚‹
+    // šNewš
+    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
+    // note: i‚Ù‚Ú‚ ‚è‚¦‚È‚¢‚ªj‚à‚µ‚Ç‚¿‚ç‚à–³‚¯‚ê‚ÎA“Á‚Éİ’è‚Ì‚È‚¢Å‘å’l‚ğ•Ô‚·‚æ‚¤‚É‚·‚é
     AnimationState ret = AnimationState::ANIMATION_MAX;
 
     if (mpAnimation != nullptr)
@@ -184,9 +183,9 @@ AnimationState Model::GetNowState()
 
 bool Model::IsAnimationLoopFinish()
 {
-    // â˜…Newâ˜…
-    // é€šå¸¸ or åˆ†å‰²ã®ã©ã¡ã‚‰ã‹ã‚’ä½¿ã£ã¦ã„ã‚‹ã‹ã§åˆ†å²
-    // note: ï¼ˆã»ã¼ã‚ã‚Šãˆãªã„ãŒï¼‰ã‚‚ã—ã©ã¡ã‚‰ã‚‚ç„¡ã‘ã‚Œã°ã€false ã‚’è¿”ã™ã‚ˆã†ã«ã—ã¦ãŠã
+    // šNewš
+    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
+    // note: i‚Ù‚Ú‚ ‚è‚¦‚È‚¢‚ªj‚à‚µ‚Ç‚¿‚ç‚à–³‚¯‚ê‚ÎAfalse ‚ğ•Ô‚·‚æ‚¤‚É‚µ‚Ä‚¨‚­
 
     bool ret = false;
 
@@ -203,14 +202,14 @@ bool Model::IsAnimationLoopFinish()
 }
 
 
-// ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆã‚’è¿½åŠ 
+// ƒAƒ^ƒbƒ`ƒƒ“ƒg‚ğ’Ç‰Á
 void Model::AddAttachment(std::string filename, std::string attachFrameName)
 {
    if(mpAttachment!=nullptr) mpAttachment->SetDeleteFlag(true);
-    // ã‚¢ã‚¿ãƒƒãƒå…ˆã®ãƒ•ãƒ¬ãƒ¼ãƒ ç•ªå·ã‚’å–å¾—
+    // ƒAƒ^ƒbƒ`æ‚ÌƒtƒŒ[ƒ€”Ô†‚ğæ“¾
     int frameIndex = MV1SearchFrame(mnHandle, attachFrameName.c_str());
 
-    // ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆãƒ¢ãƒ‡ãƒ«ã®ç”Ÿæˆ
+    // ƒAƒ^ƒbƒ`ƒƒ“ƒgƒ‚ƒfƒ‹‚Ì¶¬
     mpAttachment = new AttachmentModel(filename, mnHandle, frameIndex);
 }
 
@@ -228,23 +227,23 @@ VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 
 
 
-// ã‚¢ã‚¿ãƒƒãƒãƒ¢ãƒ‡ãƒ«ã®åº§æ¨™å–å¾—
+// ƒAƒ^ƒbƒ`ƒ‚ƒfƒ‹‚ÌÀ•Wæ“¾
 VECTOR Model::GetAttachmentPosition()
 {
     if (mpAttachment != nullptr)
     {
         VECTOR vec = VGet(0.0f, -50.0f, 0.0f);
 
-        // è¡Œåˆ—ã®å–å¾—
+        // s—ñ‚Ìæ“¾
         MATRIX matrix = MV1GetFrameLocalWorldMatrix(mpAttachment->GetHandle(), 0);
 
-        // è¡Œåˆ—æƒ…å ±ã‚’ã‚‚ã¨ã«åº§æ¨™å¤‰æ›ã™ã‚‹
+        // s—ñî•ñ‚ğ‚à‚Æ‚ÉÀ•W•ÏŠ·‚·‚é
         vec = VTransform(vec, matrix);
 
         return vec;
     }
 
-    // ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆãŒç„¡ã„å ´åˆã¯åŸç‚¹ã‚’è¿”ã—ã¦ãŠã
+    // ƒAƒ^ƒbƒ`ƒƒ“ƒg‚ª–³‚¢ê‡‚ÍŒ´“_‚ğ•Ô‚µ‚Ä‚¨‚­
     return VGet(0.0f, 0.0f, 0.0f);
 }
 
@@ -258,15 +257,15 @@ void Model::SetScale(VECTOR scale)
 
 void Model::SetTexture(std::string filename, int index)
 {
-    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ã™ã§ã«åˆ‡ã‚Šæ›¿ãˆã¦ã„ã‚‹å ´åˆã¯ãã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç ´æ£„
+    // ƒeƒNƒXƒ`ƒƒ‚ğ‚·‚Å‚ÉØ‚è‘Ö‚¦‚Ä‚¢‚éê‡‚Í‚»‚ÌƒeƒNƒXƒ`ƒƒ‚Ì”jŠü
     if (mnChangeTextureHandle != -1)
     {
         DeleteGraph(mnChangeTextureHandle);
     }
 
-    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿
+    // ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ
     mnChangeTextureHandle = Master::mpResourceManager->LoadGraphics(filename);
 
-    // èª­ã¿è¾¼ã‚“ã ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®åæ˜ 
+    // “Ç‚İ‚ñ‚¾ƒeƒNƒXƒ`ƒƒ‚Ì”½‰f
     MV1SetTextureGraphHandle(mnHandle, index, mnChangeTextureHandle, FALSE);
 }

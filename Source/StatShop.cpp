@@ -35,7 +35,7 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 {
 	mpModel = new Model(filename, vec, false);
 	mpShopIn = new SphereCollider(this, vec, 200.0f);
-	mpSafeZoon = new SphereCollider(this, vec, 1000.0f); // 謨ｵ縺瑚ｿ代▼縺代↑縺�繧ｻ繝ｼ繝輔だ繝ｼ繝ｳ
+	mpSafeZoon = new SphereCollider(this, vec, 1000.0f); // 敵が近づけないセーフゾーン
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
@@ -72,7 +72,7 @@ void StatShop::Draw()
 	{
 		player->mpHaveMoney->Draw();
 
-		// 閭梧勹繧ФI
+		// 背景やUI
 		DrawExtendGraph(300, 100, 1620, 800, mnBgImageHandle, TRUE);
 		
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
@@ -101,7 +101,7 @@ void StatShop::Draw()
 			int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 			if (i == mnSelect) DrawFormatString(330, 250 + i * 60, color, ">");
 			
-			// 繧｢繧､繧ｳ繝ｳ謠冗判 (40x40 繧ｵ繧､繧ｺ縺ｫ邵ｮ蟆上＠縺ｦ陦ｨ遉ｺ)
+			// アイコン描画 (40x40 サイズに縮小して表示)
 			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
 
 			DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
@@ -204,6 +204,7 @@ void StatShop::BuyClass()
 
 	if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
 	{
+
 		doBuy = true;
 	}
 
@@ -250,7 +251,7 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 		Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
 		if (pPlayer && collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
-			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::InventoryClasOn && !Master::ShopClassOn && !Master::StatShopClassOn)
+			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::ShopClassOn && !Master::StatShopClassOn)
 			{
 				Master::StatShopClassOn = true;
 				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);

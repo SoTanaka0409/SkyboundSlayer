@@ -6,7 +6,7 @@ StageBlock::StageBlock(VECTOR initPos, VECTOR size, unsigned int color, int fill
 	, mColor(color)
 	, mFillFlag(fillFlag)
 {
-	// ステージ用のタグや壁用のタグなどをセットする
+	// �X�e�[�W�p�̃^�O��Ǘp�̃^�O�Ȃǂ��Z�b�g����
 	SetTag(Tag3D_Stage);
 }
 
@@ -21,14 +21,14 @@ void StageBlock::Update()
 
 void StageBlock::Draw()
 {
-	// 描画フラグがOFFの場合は描画しない
+	// �`��t���O��OFF�̏ꍇ�͕`�悵�Ȃ�
 	if (!IsDrawFlag()) return;
 
-	// initPos を中心点として、XYZの各方向に mSize の半分ずつ広げた頂点を計算
+	// initPos �𒆐S�_�Ƃ��āAXYZ�̊e������ mSize �̔������L�������_���v�Z
 
 	VECTOR pos1 = VGet(mvPosition.x - mSize.x / 2.0f, mvPosition.y - mSize.y / 2.0f, mvPosition.z - mSize.z / 2.0f);
 	VECTOR pos2 = VGet(mvPosition.x + mSize.x / 2.0f, mvPosition.y + mSize.y / 2.0f, mvPosition.z + mSize.z / 2.0f);
 
-	// DxLibの DrawCube3D を使って 3Dの直方体を描画
+	// DxLib�� DrawCube3D ���g���� 3D�̒����̂�`��
 	DrawCube3D(pos1, pos2, mColor, mColor, mFillFlag);
 }

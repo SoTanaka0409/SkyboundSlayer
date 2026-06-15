@@ -16,18 +16,18 @@ public:
 
 	void Draw()override;
 
-	//ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã‚«ãƒ—ã‚»ãƒ«å‹ã¨ã®å½“ãŸã‚Šåˆ¤å®š
+	//ƒXƒe[ƒW‚ÆƒJƒvƒZƒ‹Œ^‚Æ‚Ì“–‚½‚è”»’è
 	bool CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r);
 
-	//ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ç·šåˆ†ã¨ã®å½“ãŸã‚Šåˆ¤å®š
+	//ƒXƒe[ƒW‚Æü•ª‚Æ‚Ì“–‚½‚è”»’è
 	VECTOR CheckHit_Line(VECTOR pos1, VECTOR pos2);
 	VECTOR CheckHit_LineDebug(VECTOR pos1, VECTOR pos2);
 
 
 private:
 	Debug* mpDebug;
-	int mnModelHandle; //ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
-	int mnCollisionHandle;;//ã‚¹ãƒ†ãƒ¼ã‚¸ã®å­ãƒªã‚¸ãƒ§ãƒ³ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
+	int mnModelHandle; //ƒXƒe[ƒWƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
+	int mnCollisionHandle;;//ƒXƒe[ƒW‚ÌqƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
 
 
 

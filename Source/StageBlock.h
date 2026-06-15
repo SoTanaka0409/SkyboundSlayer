@@ -4,7 +4,7 @@
 class StageBlock : public Object3D
 {
 public:
-	// ä¸­å¿ƒåº§æ¨™ã€ã‚µã‚¤ã‚º(å¹…ãƒ»é«˜ã•ãƒ»å¥¥è¡Œã)ã€è‰²ã€å¡—ã‚Šã¤ã¶ã—ãƒ•ãƒ©ã‚°ã‚’æŒ‡å®šã—ã¦ç”Ÿæˆ
+	// ’†SÀ•WAƒTƒCƒY(•E‚‚³E‰œs‚«)AFA“h‚è‚Â‚Ô‚µƒtƒ‰ƒO‚ðŽw’è‚µ‚Ä¶¬
 	StageBlock(VECTOR initPos, VECTOR size, unsigned int color, int fillFlag = TRUE);
 	~StageBlock();
 
@@ -14,5 +14,5 @@ public:
 private:
 	VECTOR mSize;
 	unsigned int mColor;
-	int mFillFlag; // TRUEã§å¡—ã‚Šã¤ã¶ã—ã€FALSEã§ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ 
+	int mFillFlag; // TRUE‚Å“h‚è‚Â‚Ô‚µAFALSE‚ÅƒƒCƒ„[ƒtƒŒ[ƒ€
 };

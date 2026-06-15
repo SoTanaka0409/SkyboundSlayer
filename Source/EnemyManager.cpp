@@ -31,7 +31,7 @@ void EnemyManager::Update()
 void EnemyManager::NewEnemyList(enemydate date)
 {
 	
-	if (date.tag ==night_stagg1)
+	if (date.tag ==night_stage1)
 	{
 		
 		for (int i = 0; i < date.Count; i++)
@@ -79,7 +79,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 			mpEneList.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.xp, date.money, date.isSeparateAnim));
 		}
 	}
-	//å¢—ã‚„ã—ã¦ã„ã
+	//‘‚â‚µ‚Ä‚¢‚­
 }
 
 

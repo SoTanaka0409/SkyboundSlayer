@@ -6,34 +6,34 @@ class Model;
 class SkyBox : public Object3D
 {
 public:
-	SkyBox(std::string filename,VECTOR pos);		// コンストラクタ
-	~SkyBox();							// デストラクタ
+	SkyBox(std::string filename,VECTOR pos);		// �R���X�g���N�^
+	~SkyBox();							// �f�X�g���N�^
 
-	void Update() override;	// 更新処理
-	void Draw() override;	// 描画処理
+	void Update() override;	// �X�V����
+	void Draw() override;	// �`�揈��
 
-	void SetScale(VECTOR scale);									// 拡大値（スケール値）の設定（Modelクラスへの橋渡し）
-	void SetModelTexture(std::string filename, int index = 0);	// モデルのテクスチャ変更（Modelクラスへの橋渡し）
+	void SetScale(VECTOR scale);									// �g��l�i�X�P�[���l�j�̐ݒ�iModel�N���X�ւ̋��n���j
+	void SetModelTexture(std::string filename, int index = 0);	// ���f���̃e�N�X�`���ύX�iModel�N���X�ւ̋��n���j
 
 private:
-	Model* mpModel;			// モデルクラスのポインタ
+	Model* mpModel;			// ���f���N���X�̃|�C���^
 };
 
 /*
 *
-* ★使用方法
-* 1. スカイボックスを生成したい Scene の Initialize 内で、SkyBox クラスを new する。
-* 2. 必要であれば SkyBox の大きさを調整する。
-*	2-a. 1の手順でnewする際に、ローカル変数にnewしたものを取っておく
-*		例）SkyBox* pSkyBox = new SkyBox(ファイル名);
+* ���g�p���@
+* 1. �X�J�C�{�b�N�X�𐶐������� Scene �� Initialize ���ŁASkyBox �N���X�� new ����B
+* 2. �K�v�ł���� SkyBox �̑傫���𒲐�����B
+*	2-a. 1�̎菇��new����ۂɁA���[�J���ϐ���new�������̂�����Ă���
+*		��jSkyBox* pSkyBox = new SkyBox(�t�@�C����);
 *			pSkyBox->SetScale(5.0f);
-* 3. スカイボックスモデルに使用されているテクスチャを変更したい場合は、SetModelTexture を利用する。
-*	3-a. 1の手順でnewする際に、ローカル変数にnewしたものを取っておく
-*		例）SkyBox* pSkyBox = new SkyBox(ファイル名);
-*			pSkyBox->SetModelTexture(変更したい画像へのパス);
-* ※2 と 3 は併用可能です。
+* 3. �X�J�C�{�b�N�X���f���Ɏg�p����Ă���e�N�X�`����ύX�������ꍇ�́ASetModelTexture �𗘗p����B
+*	3-a. 1�̎菇��new����ۂɁA���[�J���ϐ���new�������̂�����Ă���
+*		��jSkyBox* pSkyBox = new SkyBox(�t�@�C����);
+*			pSkyBox->SetModelTexture(�ύX�������摜�ւ̃p�X);
+* ��2 �� 3 �͕��p�\�ł��B
 *
-* 基本的にはこれだけですが、使用したい場合は Model クラス側の修正も必要なので注意すること。
-* →「（Modelクラスへの橋渡し）」というコメントのある関数を Model クラス側に用意する必要がある。
+* ��{�I�ɂ͂��ꂾ���ł����A�g�p�������ꍇ�� Model �N���X���̏C�����K�v�Ȃ̂Œ��ӂ��邱�ƁB
+* ���u�iModel�N���X�ւ̋��n���j�v�Ƃ����R�����g�̂���֐��� Model �N���X���ɗp�ӂ���K�v������B
 *
 */

@@ -50,7 +50,6 @@ private:
 
 	Object3D* mpTarget;    //ƒJƒƒ‰‚ğŒü‚¯‚é‘ÎÛ
 	Model* mpModel;
-	//TitleScene* mpTitleScene;
 
 
 	int centerX = 640;
@@ -72,5 +71,4 @@ private:
 	float mfShakeAngleSpeed;
 	float mfStepTime;
 	VECTOR mvShakePosition;
-	//bool resetNullP;
 };
