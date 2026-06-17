@@ -36,7 +36,7 @@ void SceneManager::Initialize()
 	//mnNextSceneType = SCENE_TYPE::SCENE_TEST_COLLISION;
 	//mnNextSceneType = SCENE_TYPE::SCENE_3D;
 	//mnNextSceneType = SCENE_TYPE::SCENE_RESULTWIN;
-	mnNextSceneType = SCENE_TYPE::SCENE_3D;
+	mnNextSceneType = SCENE_TYPE::SCENE_TEST_COLLISION;
 
 	//ÉVÅ[ÉìëJà⁄Ç≥ÇπÇÈ
 	ChangeSceneIfNeeded();

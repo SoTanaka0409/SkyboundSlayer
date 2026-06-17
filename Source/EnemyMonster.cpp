@@ -28,6 +28,10 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	if (mpModel) {
 		mpModel->SetScale(VGet(3.0f, 3.0f, 3.0f)); // Make it a bit large
 	}
+	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
+	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
+	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
+	mpModel->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/Model/Jump Attack.mv1");
 
 	// Landing attack collider (large radius)
 	mpLandingAttackCollider = new SphereCollider(this, mvPosition, 300.0f);
@@ -101,7 +105,7 @@ void EnemyMonster::Attack()
 			mChargeTimer = 0;
 			AttackCount = 0;
 			mHasLandedHit = false;
-
+			
 			// Determine jump direction towards the player (GoPosition)
 			VECTOR toPlayer = VSub(GoPosition, mvPosition);
 			toPlayer.y = 0.0f;
@@ -119,9 +123,13 @@ void EnemyMonster::Attack()
 	else if (mAttackState == AttackState::Charging)
 	{
 		mChargeTimer++;
+		mpModel->ChangeAnimation(ANIMATION_ATTACKJUMP);
+		mpModel->SetLoop(false);
+		mpModel->SetLoopFinishState(ANIMATION_MAX);
 		// Wait for 30 frames (0.5s) to charge
 		if (mChargeTimer > 30)
 		{
+			mpModel->mpAnimation->SetAnimationCount(1.0f);
 			mAttackState = AttackState::Jumping;
 			mJumpVelocity = 40.0f; // Initial upward velocity
 			mForwardSpeed = 20.0f; // Forward speed
@@ -156,6 +164,7 @@ void EnemyMonster::Attack()
 		{
 			mAttackState = AttackState::None;
 			AttackHitJudgmentflag = false; // Reset attack flag
+			
 		}
 	}
 }
