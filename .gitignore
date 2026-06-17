@@ -91,5 +91,5 @@ Testing/
 *.VC.opendb
 *.db
 
-# Large resource files that exceed GitHub's 100MB limit
-Resource/3D/Niku.fbx
+# Intermediate build output
+DxLesson/x64/
