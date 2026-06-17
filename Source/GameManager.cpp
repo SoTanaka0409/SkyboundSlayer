@@ -66,13 +66,13 @@ void GameManager::Update()
         {
             if (mCurrentPhase == Phase::PHASE_1) {
                 mCurrentPhase = Phase::SHOP_1;
-                mShopTimer = 60 * 20; // 20•b
+                mShopTimer = 60 * 20; // 20ç§’
             } else if (mCurrentPhase == Phase::PHASE_2) {
                 mCurrentPhase = Phase::SHOP_2;
-                mShopTimer = 60 * 20; // 20•b
+                mShopTimer = 60 * 20; // 20ç§’
             } else if (mCurrentPhase == Phase::PHASE_3) {
                 mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20•b
+                mShopTimer = 60 * 20; // 20ç§’
             } else if (mCurrentPhase == Phase::BOSS) {
                 mCurrentPhase = Phase::CLEAR;
             }
@@ -153,7 +153,7 @@ void GameManager::SpawnPhaseEnemies()
 {
     auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
     Player3D* player = dynamic_cast<Player3D*>(p);
-    // “G‚ªƒXƒe[ƒW‚©‚çŠO‚ê‚Ä—‰ºE–„–v‚µ‚È‚¢‚æ‚¤‚ÉAConfig‚ÌƒXƒe[ƒW’†SÀ•W‚ğ—N‚«ˆÊ’u‚ÌŠî€‚Æ‚·‚é
+    // æ•µãŒã‚¹ãƒ†ãƒ¼ã‚¸ã‹ã‚‰å¤–ã‚Œã¦è½ä¸‹ãƒ»åŸ‹æ²¡ã—ãªã„ã‚ˆã†ã«ã€Configã®ã‚¹ãƒ†ãƒ¼ã‚¸ä¸­å¿ƒåº§æ¨™ã‚’æ¹§ãä½ç½®ã®åŸºæº–ã¨ã™ã‚‹
     VECTOR centerPos = Config::GetStageCenter();
     if (player != nullptr)
     {
@@ -184,7 +184,7 @@ void GameManager::SpawnPhaseEnemies()
         mpEnemyManager->NewEnemyList(e);
     }
     else if (mCurrentPhase == Phase::PHASE_2) {
-        // Wave 2: –‚–@•ºm
+        // Wave 2: é­”æ³•å…µå£«
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
         e1.spawnCenter = centerPos;
@@ -205,7 +205,7 @@ void GameManager::SpawnPhaseEnemies()
         ApplyDifficultyMultipliers(e1);
         mpEnemyManager->NewEnemyList(e1);
 
-        // Wave 2: ‹ßÚŒ•m
+        // Wave 2: è¿‘æ¥å‰£å£«
         EnemyManager::enemydate e2;
         e2.filename = "Resource/Model/T.mv1";
         e2.spawnCenter = centerPos;
@@ -227,7 +227,7 @@ void GameManager::SpawnPhaseEnemies()
         mpEnemyManager->NewEnemyList(e2);
     }
     else if (mCurrentPhase == Phase::PHASE_3) {
-        // Wave 3: d—Ê‹‰‘ã—p
+        // Wave 3: é‡é‡ç´šä»£ç”¨
         EnemyManager::enemydate e_heavy;
         e_heavy.filename = "Resource/Model/monster.mv1";
         e_heavy.spawnCenter = centerPos;
@@ -248,7 +248,7 @@ void GameManager::SpawnPhaseEnemies()
         ApplyDifficultyMultipliers(e_heavy);
         mpEnemyManager->NewEnemyList(e_heavy);
 
-        // Wave 3: –‚–@•ºm
+        // Wave 3: é­”æ³•å…µå£«
         EnemyManager::enemydate e_magic;
         e_magic.filename = "Resource/Model/T.mv1";
         e_magic.spawnCenter = centerPos;
@@ -269,7 +269,7 @@ void GameManager::SpawnPhaseEnemies()
         ApplyDifficultyMultipliers(e_magic);
         mpEnemyManager->NewEnemyList(e_magic);
 
-        // Wave 3: ‹ßÚ•ºm
+        // Wave 3: è¿‘æ¥å…µå£«
         EnemyManager::enemydate e_melee;
         e_melee.filename = "Resource/Model/T.mv1";
         e_melee.spawnCenter = centerPos;

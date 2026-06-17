@@ -10,7 +10,7 @@ TestCollisionScene::~TestCollisionScene() {
 
 void TestCollisionScene::Initialize() {
     // Player settings (starts high up)
-    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ƒWƒƒƒ“ƒvAƒAƒ^ƒbƒNAƒXƒs[ƒhA‚ˆ‚
+    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ã‚¸ãƒ£ãƒ³ãƒ—ã€ã‚¢ã‚¿ãƒƒã‚¯ã€ã‚¹ãƒ”ãƒ¼ãƒ‰ã€ï½ˆï½
 
     // Block settings
     mBlockPos = VGet(0.0f, 100.0f, 0.0f);
@@ -18,7 +18,7 @@ void TestCollisionScene::Initialize() {
 
     // Load Player Model
     mPlayerModelHandle = MV1LoadModel("Resource/3D/Hero.mv1");
-    // Wave 3: d—Ê‹‰‘ã—p
+    // Wave 3: é‡é‡ç´šä»£ç”¨
     mpEnemyManager = new EnemyManager();
     EnemyManager::enemydate e_heavy;
     e_heavy.filename = "Resource/Model/monster.mv1";
@@ -102,7 +102,7 @@ void TestCollisionScene::Draw() {
     DrawFormatString(10, 50, GetColor(255,255,255), "Grounded: %s", mIsGrounded ? "TRUE" : "FALSE");
     DrawFormatString(10, 70, GetColor(255,255,255), "Block Top: %.2f", mBlockPos.y + mBlockSize.y);
     DrawFormatString(10, 100, GetColor(200,200,200), "Controls: Arrow Keys to move, SPACE to jump");
-    // ’n–Ê‚ÌƒOƒŠƒbƒhiƒXƒe[ƒWj‚ğ•`‰æ
+    // åœ°é¢ã®ã‚°ãƒªãƒƒãƒ‰ï¼ˆã‚¹ãƒ†ãƒ¼ã‚¸ï¼‰ã‚’æç”»
     const int count = 51;
     const float distance = 500.0f;
     for (int i = 0; i < count; i++)
