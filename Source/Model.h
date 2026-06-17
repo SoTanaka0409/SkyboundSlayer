@@ -5,7 +5,7 @@
 #include "ModelAnimation.h"
 #include "SeparateModelAnimation.h"
 
-// å‰æ–¹å®£è¨€
+// ‘O•ûéŒ¾
 class AttachmentModel;
 
 
@@ -13,68 +13,68 @@ class Model
 {
 public:
 
-    // â˜…Newâ˜…
-    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
-    // note: åˆ†å‰²ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ä½¿ã†ã‹ã©ã†ã‹ã®è¨­å®šã‚’è¿½åŠ ã€‚
+    // šNewš
+    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    // note: •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“‚ğg‚¤‚©‚Ç‚¤‚©‚Ìİ’è‚ğ’Ç‰ÁB
     Model(std::string filename, VECTOR initPos, bool isSeparateAnimation = false);
-    ~Model();   // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    ~Model();   // ƒfƒXƒgƒ‰ƒNƒ^
 
-    void Update();  // æ›´æ–°
-    void Draw();    // æç”»
+    void Update();  // XV
+    void Draw();    // •`‰æ
 
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ‡ã‚Šæ›¿ãˆ
+    // ƒAƒjƒ[ƒVƒ‡ƒ“Ø‚è‘Ö‚¦
     void ChangeAnimation(AnimationState state);
-    // ãƒ«ãƒ¼ãƒ—è¨­å®š
+    // ƒ‹[ƒvİ’è
     void SetLoop(bool loop);
     void SetLoopFinishState(AnimationState state);
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰è¨­å®š
+    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhİ’è
     void SetAnimationBlend(bool isBlend);
-    // ç¾åœ¨å†ç”Ÿã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å–å¾—
+    // Œ»İÄ¶‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚Ìæ“¾
     AnimationState GetNowState();
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ«ãƒ¼ãƒ—ãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ 
+    // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒ‹[ƒv‚ªI—¹‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚© 
     bool IsAnimationLoopFinish();
 
 
-    // ã‚¢ã‚¿ãƒƒãƒãƒ¢ãƒ‡ãƒ«é–¢é€£ //
-    // ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆã‚’è¿½åŠ 
+    // ƒAƒ^ƒbƒ`ƒ‚ƒfƒ‹ŠÖ˜A //
+    // ƒAƒ^ƒbƒ`ƒƒ“ƒg‚ğ’Ç‰Á
     void AddAttachment(std::string filename, std::string attachFrameName);
     
    
-    // ã‚¢ã‚¿ãƒƒãƒãƒ¢ãƒ‡ãƒ«ã®åº§æ¨™å–å¾—
+    // ƒAƒ^ƒbƒ`ƒ‚ƒfƒ‹‚ÌÀ•Wæ“¾
     VECTOR GetAttachmentPosition();
     VECTOR GetAttachmentPosition_None(std::string attachFrameName);
 
 
-    VECTOR GetPosition() { return mvPosition; } // åº§æ¨™å–å¾—
-    void SetPosition(VECTOR pos) { mvPosition = pos; }  // åº§æ¨™è¨­å®š
+    VECTOR GetPosition() { return mvPosition; } // À•Wæ“¾
+    void SetPosition(VECTOR pos) { mvPosition = pos; }  // À•Wİ’è
 
-    VECTOR GetRotation() { return mvRotation; } // å›è»¢å–å¾—
-    void SetRotation(VECTOR rot) { mvRotation = rot; }  // å›è»¢è¨­å®š
+    VECTOR GetRotation() { return mvRotation; } // ‰ñ“]æ“¾
+    void SetRotation(VECTOR rot) { mvRotation = rot; }  // ‰ñ“]İ’è
 
     void SetScale(VECTOR scale);
     void SetTexture(std::string filename, int index = 0);
 
     bool GetIsSeparate() { return isSeparate; }
 
-    // â˜…Newâ˜…
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
-    // note: SeparateModelAnimation ã‚¯ãƒ©ã‚¹ã¸ã®æ©‹æ¸¡ã—é–¢æ•°
+    // šNewš
+    // ƒAƒjƒ[ƒVƒ‡ƒ“ƒf[ƒ^‚Ì’Ç‰Á
+    // note: SeparateModelAnimation ƒNƒ‰ƒX‚Ö‚Ì‹´“n‚µŠÖ”
     void AddAnimation(AnimationState state, std::string filename);
 
-    // åˆ†å‰²èª­ã¿è¾¼ã¿ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®ãƒ¢ãƒ‡ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
+    // •ªŠ„“Ç‚İ‚İƒo[ƒWƒ‡ƒ“‚Ìƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
     SeparateModelAnimation* mpSeparateAnimation;
-    ModelAnimation* mpAnimation;    // ãƒ¢ãƒ‡ãƒ«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
+    ModelAnimation* mpAnimation;    // ƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
 private:
-    int mnHandle;   // èª­ã¿è¾¼ã‚“ã ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
-    VECTOR mvPosition;  // åº§æ¨™
-    VECTOR mvRotation;  // å›è»¢
+    int mnHandle;   // “Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
+    VECTOR mvPosition;  // À•W
+    VECTOR mvRotation;  // ‰ñ“]
     VECTOR mvScale;
     int mnChangeTextureHandle;
 
     bool isSeparate;
 
-    // â˜…Newâ˜…
+    // šNewš
    
 
-    AttachmentModel* mpAttachment;  // ã‚¢ã‚¿ãƒƒãƒãƒ¢ãƒ‡ãƒ«ï¼ˆè¤‡æ•°æŒãŸã›ãŸã„å ´åˆã¯ std::vector ã‚„é…åˆ—ã§ç®¡ç†ã™ã‚‹ã¨è‰¯ã„ï¼‰
+    AttachmentModel* mpAttachment;  // ƒAƒ^ƒbƒ`ƒ‚ƒfƒ‹i•¡”‚½‚¹‚½‚¢ê‡‚Í std::vector ‚â”z—ñ‚ÅŠÇ—‚·‚é‚Æ—Ç‚¢j
 };

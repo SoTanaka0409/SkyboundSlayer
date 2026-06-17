@@ -16,7 +16,6 @@ Tree::Tree(std::string filename, VECTOR initPos,int Size,float getSize,bool HitF
 	SetTag(Object3D::Tag3D_Obj);
 
 	mvPosition = initPos;
-	//int treeSize = Size;
 	mnHitFlag = HitFlag;
 	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize, 0.0f)), mfSize);
 }
@@ -27,7 +26,6 @@ Tree::~Tree()
 
 void Tree::Update()
 {
-	//MV1DrawModel(mnModelHandle);
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
 	auto obj = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Stage);

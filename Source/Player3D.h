@@ -16,7 +16,7 @@
 #include"LevelUp.h"
 #include"Collision.h"
 #include"ItemManager.h"
-#include"Inventory.h"
+#include"ShortInventory.h"
 #include"InfClassManager.h"
 #include"BuffManager.h"
 #include"HaveMoneyClass.h"
@@ -35,7 +35,7 @@ public:
 	}AttackState;
 	
 public:
-	// åˆ†å‰²ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã®è¨­å®šã‚’è¿½åŠ ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯falseï¼ˆä½¿ç”¨ã—ãªã„ï¼‰ï¼‰
+	// •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“‚ğg—p‚·‚é‚©‚Ìİ’è‚ğ’Ç‰ÁiƒfƒtƒHƒ‹ƒg‚Ífalseig—p‚µ‚È‚¢jj
 	Player3D(std::string filename, VECTOR initPos, float junppower, float speed, float hp, bool isSeparateAnim = false);
 
 	~Player3D();
@@ -52,7 +52,6 @@ public:
 	void Attack();
 	void AttackSlide();
 	void AttackJump();
-	//void AttackShot();
 	void Damage(float damage);
 	void ResetNUETRAL();
 
@@ -74,17 +73,15 @@ public:
 
 	float GetAngle() { return mfAngle; }
 
-	void RotationByMove();//ç§»å‹•ã«ã‚ˆã‚‹å›è»¢å‡¦ç†
+	void RotationByMove();//ˆÚ“®‚É‚æ‚é‰ñ“]ˆ—
 
 	float GetHp() { return mfHp; }
 	void SetHp(float hp) { mfHp = hp; }
 	float GetAttack() { return mfAttack; }
 	void SetAttack(float attack) { mfAttack = attack; }
 	float GetAllStatusState(Object3D::StatusState state);
-	//void SetAddAttack(float attack) { mfAttack = mfAttack + attack; }
 	float GetSpeed() { return mfSpeed; }
 	void SetSpeed(float speed) { mfSpeed = mfSpeed + speed; }
-	//void SetNormalAttack(float attack) { mfNormalAttack += attack; }
 	float GetSize() { return mfSize; }
 	
 	// --- Upgrade Setters ---
@@ -100,8 +97,8 @@ public:
 	void bar();
 
 
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¿½åŠ 
-   // Modelã‚¯ãƒ©ã‚¹ã¸ã®æ©‹æ¸¡ã—é–¢æ•°
+	// ƒAƒjƒ[ƒVƒ‡ƒ“’Ç‰Á
+   // ModelƒNƒ‰ƒX‚Ö‚Ì‹´“n‚µŠÖ”
 	void AddAnimation(AnimationState state, std::string filename);
 
 
@@ -112,8 +109,8 @@ public:
 	CapsuleCollider* GetCollisionCollider() { return mpCapsuleCollider; }
 	SphereCollider* Get500Collider() { return mpSerchEnemyCollider; }
 
-	Model* mpModel;//ãƒ¢ãƒ‡ãƒ«ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
-	Inventory* mpInventory;
+	Model* mpModel;//ƒ‚ƒfƒ‹ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
+ShortInventory* mpShortInventory;
 	ItemManager* mpItemManager;
 	BuffManager* mpBuffManager;
 	WeaponManager* mpWeaponManager;
@@ -124,7 +121,6 @@ private:
 
 	Weapon* mpWeapon;
 
-	//Collision* mpCollision;
 	Shield* mpShield;
 	
 	Texture* mpTexture;
@@ -140,19 +136,19 @@ private:
 	bool Animation;
 	int NewShieldCount;
 	bool NewShieldFast;
-	float mfTargetAngle;//ç›®æ¨™ã®å›è»¢åœ°
-	float mfAngle;//ç¾åœ¨ã®å›è»¢åœ°
+	float mfTargetAngle;//–Ú•W‚Ì‰ñ“]’n
+	float mfAngle;//Œ»İ‚Ì‰ñ“]’n
 
-	const float ROTATE_SPEED = 0.2f;//å›è»¢é€Ÿåº¦
-	const float JUMP_POWER = 30.0f;//ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
+	const float ROTATE_SPEED = 0.2f;//‰ñ“]‘¬“x
+	const float JUMP_POWER = 30.0f;//ƒWƒƒƒ“ƒv—Í
 
-	bool mbjump;//ã‚¸ãƒ£ãƒ³ãƒ—ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã™ã‚‹ã‹å¦ã‹
-	bool mbjumpDown;//è½ä¸‹ã™ã‚‹åº§æ¨™ã«ã„ã£ãŸã‚‰ä¸‹é™ã‚’ã™ã‚‹ãƒ•ãƒ©ã‚°
-	bool HighPositionFlag;//ç›®æ¨™åº§æ¨™ã«è¡Œã£ãŸã¨ãã«true
+	bool mbjump;//ƒWƒƒƒ“ƒvƒ‚[ƒVƒ‡ƒ“‚ğ‚·‚é‚©”Û‚©
+	bool mbjumpDown;//—‰º‚·‚éÀ•W‚É‚¢‚Á‚½‚ç‰º~‚ğ‚·‚éƒtƒ‰ƒO
+	bool HighPositionFlag;//–Ú•WÀ•W‚És‚Á‚½‚Æ‚«‚Étrue
 	bool OnJumpCollider;
 	bool mbAttackSlideSerch;
 
-	float mfjumpPower;//ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
+	float mfjumpPower;//ƒWƒƒƒ“ƒv—Í
 	float mfSpeed;
 	float mfEvasionSpeed;
 	float mfDashSpeed;
@@ -168,43 +164,43 @@ private:
 	float mfUpgradeAttack = 0.0f;
 	float mfUpgradeSpeed = 0.0f;
 	float mfUpgradeEvasionSpeed = 0.0f;
-	int mnUpgradeEvasionInvincibility = 0; // è¿½åŠ ç„¡æ•µãƒ•ãƒ¬ãƒ¼ãƒ 
-	int mnInvincibleTimer = 0; // ç¾åœ¨ã®ç„¡æ•µã‚¿ã‚¤ãƒãƒ¼
+	int mnUpgradeEvasionInvincibility = 0; // ’Ç‰Á–³“GƒtƒŒ[ƒ€
+	int mnInvincibleTimer = 0; // Œ»İ‚Ì–³“Gƒ^ƒCƒ}[
 	// -----------------------------------
 
-	int AttackSlideCount;//æ”»æ’ƒé–“éš”ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
+	int AttackSlideCount;//UŒ‚ŠÔŠu‚ğƒJƒEƒ“ƒg‚·‚é
 	int AttackJumpCount;
 	int AttackCount;
 
-	int AttackSlideTime = 200;//æ”»æ’ƒå¯èƒ½æ™‚ã®ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ 
+	int AttackSlideTime = 200;//UŒ‚‰Â”\‚ÌƒN[ƒ‹ƒ^ƒCƒ€
 	int AttackTime = 30;
 	int AttackJumpTime=200;
-	////////////////	æ”»æ’ƒåŠ›	
+	////////////////	UŒ‚—Í	
 
-	float mfAttack;//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’è¨ˆç®—ã™ã‚‹ã¨ãã«ä½¿ã‚ã‚Œã‚‹åŸºæœ¬çš„ãªå€¤
-	float mfNormalAttack;//ä½•ã‚‰ã‹ã®è¦å› ã§mfAttackã®å€¤ã‚’å¤‰ãˆãŸæ™‚ã«æˆ»ã™ãŸã‚ã®å€¤
+	float mfAttack;//ƒ_ƒ[ƒW‚ğŒvZ‚·‚é‚Æ‚«‚Ég‚í‚ê‚éŠî–{“I‚È’l
+	float mfNormalAttack;//‰½‚ç‚©‚Ì—vˆö‚ÅmfAttack‚Ì’l‚ğ•Ï‚¦‚½‚É–ß‚·‚½‚ß‚Ì’l
 	float mfAttackjump;
 	float mfAttackSlide;
 	float mfAttackBullet;
 
 
 	
-	VECTOR slide = VGet(0.0f, 0.0f, 0.0f);//å£æ²¿ã„ãƒ™ã‚¯ãƒˆãƒ«
+	VECTOR slide = VGet(0.0f, 0.0f, 0.0f);//•Ç‰ˆ‚¢ƒxƒNƒgƒ‹
 	VECTOR  UpMoveVector;
-	VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//ç§»å‹•æ–¹å‘
+	VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//ˆÚ“®•ûŒü
 	VECTOR oldmoveVec;
-	VECTOR GoPosition;//ç§»å‹•æ–¹å‘
-	VECTOR TargetPosition;//ç›®æ¨™ã¨ã™ã‚‹åº§æ¨™
+	VECTOR GoPosition;//ˆÚ“®•ûŒü
+	VECTOR TargetPosition;//–Ú•W‚Æ‚·‚éÀ•W
 
-	//ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã™ã‚‹
+	//ƒXƒe[ƒW‚Æ‚Ì“–‚½‚è”»’è‚ğ‚·‚é
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
 	VECTOR hitPos2 = VGet(0.0f, 0.0f, 0.0f);
 	VECTOR WeaponHitPos;
-	bool OkAttackCount;//æ”»æ’ƒãŒé€£ç¶šã§å½“ãŸã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
+	bool OkAttackCount;//UŒ‚‚ª˜A‘±‚Å“–‚½‚ç‚È‚¢‚æ‚¤‚É‚·‚é
 
 
 	bool Pause;
-	bool EffectUflag;//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆUãŒå®Ÿè¡Œã•ã‚ŒãŸã¨ã
+	bool EffectUflag;//ƒGƒtƒFƒNƒgU‚ªÀs‚³‚ê‚½‚Æ‚«
 	int EffectUCount;
 	
 
@@ -219,12 +215,12 @@ private:
 
 
 	bool mbInvisible;
-	int BulletCount;//ç‰ã®æ‰“ã¤æ„Ÿè¦š
+	int BulletCount;//‹Ê‚Ì‘Å‚ÂŠ´Šo
 	int Interval;
-	float mfHorizontalAngle;  //æ°´å¹³æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
-	float mfVerticalAngle;   // å‚ç›´æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
+	float mfHorizontalAngle;  //…•½•ûŒüƒAƒ“ƒOƒ‹
+	float mfVerticalAngle;   // ‚’¼•ûŒüƒAƒ“ƒOƒ‹
 
-	int FirstNearVec;//ä¸€ç•ªè¿‘ã„æ•µ
+	int FirstNearVec;//ˆê”Ô‹ß‚¢“G
 	float VECSizeFirst;
 	float  VECSize;;
 
@@ -244,14 +240,13 @@ private:
 
 	int EneSerchCount;
 
-	const int SIZE_RAND_MAX = 800;//ã‚µã‚¤ã‚ºã®æœ€å¤§ä¹±æ•°åœ°
-	const int SIZE_RAND_MIN = 400;//ã‚µã‚¤ã‚ºã®æœ€å°ä¹±æ•°åœ°
+	const int SIZE_RAND_MAX = 800;//ƒTƒCƒY‚ÌÅ‘å—”’n
+	const int SIZE_RAND_MIN = 400;//ƒTƒCƒY‚ÌÅ¬—”’n
 
 
-	const int VISIBLE_TIME_RAND_MAX = 30;//è¡¨ç¤ºæ™‚é–“ã®æœ€å¤§ä¹±æ•°åœ°
-	const int VISIBLE_TIME_RAND_MIN = 5;//è¡¨ç¤ºæ™‚é–“ã®æœ€å°ä¹±æ•°åœ°
+	const int VISIBLE_TIME_RAND_MAX = 30;//•\¦ŠÔ‚ÌÅ‘å—”’n
+	const int VISIBLE_TIME_RAND_MIN = 5;//•\¦ŠÔ‚ÌÅ¬—”’n
 
-	//bool Invisible;
 	SphereCollider* mpAttachCollider;
 	SphereCollider* mpSerchEnemyCollider;
 	SphereCollider* mpAttackSlideCollider;
@@ -261,9 +256,9 @@ private:
 
 	int ChangeStateCount;
 
-	int mouseInput = GetMouseInput(); // ãƒã‚¦ã‚¹ã®çŠ¶æ…‹ã‚’å–å¾—
+	int mouseInput = GetMouseInput(); // ƒ}ƒEƒX‚Ìó‘Ô‚ğæ“¾
 
 	bool AttackHitJudgmentflag;
 
-	bool mbStageOutFlag;//trueã ã£ãŸã‚‰oldPositionã«æˆ»ã‚‹ã‚ˆã†ã«ã™ã‚‹
+	bool mbStageOutFlag;//true‚¾‚Á‚½‚çoldPosition‚É–ß‚é‚æ‚¤‚É‚·‚é
 };

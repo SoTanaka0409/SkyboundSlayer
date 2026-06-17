@@ -36,4 +36,5 @@ private:
 	float mGravity;
 	float mForwardSpeed;
 	VECTOR mJumpTargetDir;
+	float mJumpStartY; // Added to record the ground height when jumping
 };

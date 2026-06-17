@@ -21,7 +21,6 @@ Dino::Dino(std::string filename, VECTOR initPos, float hp,float speed)
 	,mnMaxHp(hp)
 	
 {
-	//SetTag(Object3D::Tag3D_Dino);
 	
 	//モデルの生成
 	mpModel = new Model(filename, initPos);
@@ -66,11 +65,6 @@ void Dino::Draw()
 
 void Dino::Dead()
 {
-	//if (mnHp <= 0)//死亡処理
-	//{
-	//	Master::gameDinoCount += 1;
-	//	SetDeleteFlag(true);
-	//}
 }
 
 void Dino::Move()
@@ -80,44 +74,20 @@ void Dino::Move()
 	VECTOR leftMoveVector = VGet(0.0f, 0.0f, 0.0f);
 	{
 		////上方向への移動ベクトルは、カメラ視点方向からy成分を抜いたものとする
-		//UpMoveVector = VSub(Master::mpCamera->GetlookAtPosition(), Master::mpCamera->GetPosition());
-		//UpMoveVector.y = 0.0f;
 
 		////左方向への移動ベクトルが、上方向の移動ベクトルと、Y軸のプラス方向へのベクトルに垂直な方向（外積）
-		//leftMoveVector = VCross(UpMoveVector, VGet(0.0f, 1.0f, 0.0f));
-		//leftMoveVector.y = 0.0f;
 
 
 		////移動ベクトルは移動量を加味しないので、正規化しておく(ベクトルの長さを１にすること)
-		//UpMoveVector = VNorm(UpMoveVector);
-		//leftMoveVector = VNorm(leftMoveVector);
 	}
 
 	{
-		//mnAlgorithm = rand() % AlgHit;
 		
-		//if (mnAlgorithm == 0)//左方向への移送
-		//{
-		//	moveVec = VAdd(moveVec, leftMoveVector);
 
 
-		//}
-		//if (mnAlgorithm == 1)//右方向への移送
-		//{
-		//	//veVec.x = 1.0f;
-		//	moveVec = VAdd(moveVec, VScale(leftMoveVector, -1));
 
-		//}
-		//if (mnAlgorithm == 2)//奥方向への移送
-		//{
-		//	moveVec = VAdd(moveVec, UpMoveVector);
 
-		//}
-		//if (mnAlgorithm == 3)//手前方向への移送
-		//{
-		//	moveVec = VAdd(moveVec, VScale(UpMoveVector, -1.0f));
 
-		//}
 		/*auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
 		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
@@ -142,8 +112,6 @@ void Dino::Move()
 			mpModel->ChangeAnimation(ANIMATION_RUN);
 
 			//移動方向を正規化しておく
-			//moveVec = VNorm(moveVec);
-			//moveVec =VAdd( moveVec  ,mnSpeed);
 			mfTargetAngle = atan2f(moveVec.x, moveVec.z);
 
 		}
@@ -227,7 +195,6 @@ void Dino::Move()
 							mvPosition = oldPosition;
 							mvPosition = VAdd(mvPosition, VScale(slide, mnSpeed));
 							hitwalls = true;
-							//hitwall = false;
 						}
 						else if (hitwalls == true)
 						{

@@ -9,7 +9,7 @@ class Object2D
 public:
 	enum Tag2D
 	{
-		None2D = 0,//è¨­å®šãªã—
+		None2D = 0,//İ’è‚È‚µ
 		Tag2D_Dino1 = 1,
 		Tag2D_Dino2=100,
 		
@@ -24,7 +24,7 @@ public:
 
 	virtual void Draw();
 
-public://ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼
+public://ƒQƒbƒ^[AƒZƒbƒ^[
 	void SetPosition(VECTOR pos) { mvPosition = pos; };
 	VECTOR GetPosition() { return mvPosition; }
 
@@ -34,21 +34,21 @@ public://ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼
 	void SetDeleteFlag(bool flag) { mbDeleteFlag = flag; }
 	bool IsDeleteFlag() { return mbDeleteFlag; }
 
-	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°è¨­å®šã€€
-	bool IsDrawFlag() { return mbDrawFlag; }          //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°ã®ä½œæˆ
+	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //“G‚Ìíœƒtƒ‰ƒOİ’è@
+	bool IsDrawFlag() { return mbDrawFlag; }          //“G‚Ìíœƒtƒ‰ƒO‚Ìì¬
 
-	//ã‚¿ã‚°
+	//ƒ^ƒO
 	void SetTag(Tag2D tag) { mnTag = tag; }
 	Tag2D GetTag() { return mnTag; }
 
 protected:
-	VECTOR mvPosition;  //åº§æ¨™
-	VECTOR mvRotation;   //å›è»¢
+	VECTOR mvPosition;  //À•W
+	VECTOR mvRotation;   //‰ñ“]
 
 private:
-	bool mbDeleteFlag;  //å‰Šé™¤ãƒ•ãƒ©ã‚°
-	Tag2D mnTag;   //ã‚¿ã‚°
-	bool mbDrawFlag;//æç”»ãƒ•ãƒ©ã‚°
+	bool mbDeleteFlag;  //íœƒtƒ‰ƒO
+	Tag2D mnTag;   //ƒ^ƒO
+	bool mbDrawFlag;//•`‰æƒtƒ‰ƒO
 
 
 };

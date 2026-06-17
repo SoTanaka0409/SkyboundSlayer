@@ -1,4 +1,4 @@
-ï»¿#include"OperationScene.h"
+#include"OperationScene.h"
 #include"Texture.h"
 #include"Master.h"
 #include"SceneManager.h"
@@ -35,7 +35,6 @@ void OperationScene::Initialize()
 
 void OperationScene::Update()
 {
-	//Scene::Update();
 	if (InputManager::CheckDownKey(KEY_INPUT_BACK))
 	{
 		Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TITLE);
@@ -46,27 +45,25 @@ void OperationScene::Update()
 
 void OperationScene::Draw()
 {
-	//Scene::Draw();
 	
-	//7DrawGraph(0,0, mnHandle1, true);
 	
 	
 	mpTexture->Draw();
 	int Color = GetColor(255, 255, 255);
 	SetFontSize(40);
-	DrawFormatString(150, 150, GetColor(0, 0, 255), "/////ç§»å‹•ã‚­ãƒ¼/////");
-	DrawFormatString(150, 190, Color, "WASD:ç§»å‹•ã‚­ãƒ¼");
-	DrawFormatString(150, 190, GetColor(255, 0, 0), "\n/////ã‚¢ã‚¿ãƒƒã‚¯ã‚­ãƒ¼////");
-	DrawFormatString(150, 190, Color, "\n\nMouseLeft:ã‚¢ã‚¿ãƒƒã‚¯");
-	DrawFormatString(150, 190, Color, "\n\n\nSHIFT:å›é¿");
-	DrawFormatString(150, 190, Color, "\n\n\n\nE:æ”»æ’ƒæ–¹æ³•ãƒã‚§ãƒ³ã‚¸");
-	DrawFormatString(150, 190, GetColor(0, 255, 0), "\n\n\n\n\n/////ãã®ã»ã‹/////");
-	DrawFormatString(150, 190, Color, "\n\n\n\n\n\nO:ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒª");
-	DrawFormatString(150, 190, Color, "\n\n\n\n\n\n\nQ:è¦–ç‚¹å¤‰æ›´");
-	DrawFormatString(150, 190, GetColor(255, 0, 0), "\n\n\n\n\n\n\n\næ­»ã‚“ã ã‚‰ãŠé‡‘ã‚’å°‘ã—ãªãã™");
-	DrawFormatString(150, 190, GetColor(255,255, 0), "\n\n\n\n\n\n\n\n\n///ã‚¯ãƒªã‚¢æ¡ä»¶///");
-	DrawFormatString(150, 190, GetColor(255, 255, 0), "\n\n\n\n\n\n\n\n\n\nbossã‚’äºŒå›å€’ã™");
-	DrawFormatString(700, 900, GetColor(255,255,255), "backspaceã§æˆ»ã‚‹");
+	DrawFormatString(150, 150, GetColor(0, 0, 255), "/////ˆÚ“®ƒL[/////");
+	DrawFormatString(150, 190, Color, "WASD:ˆÚ“®ƒL[");
+	DrawFormatString(150, 190, GetColor(255, 0, 0), "\n/////ƒAƒ^ƒbƒNƒL[////");
+	DrawFormatString(150, 190, Color, "\n\nMouseLeft:ƒAƒ^ƒbƒN");
+	DrawFormatString(150, 190, Color, "\n\n\nSHIFT:‰ñ”ğ");
+	DrawFormatString(150, 190, Color, "\n\n\n\nE:UŒ‚•û–@ƒ`ƒFƒ“ƒW");
+	DrawFormatString(150, 190, GetColor(0, 255, 0), "\n\n\n\n\n/////‚»‚Ì‚Ù‚©/////");
+	DrawFormatString(150, 190, Color, "\n\n\n\n\n\nO:ƒCƒ“ƒxƒ“ƒgƒŠ");
+	DrawFormatString(150, 190, Color, "\n\n\n\n\n\n\nQ:‹“_•ÏX");
+	DrawFormatString(150, 190, GetColor(255, 0, 0), "\n\n\n\n\n\n\n\n€‚ñ‚¾‚ç‚¨‹à‚ğ­‚µ‚È‚­‚·");
+	DrawFormatString(150, 190, GetColor(255,255, 0), "\n\n\n\n\n\n\n\n\n///ƒNƒŠƒAğŒ///");
+	DrawFormatString(150, 190, GetColor(255, 255, 0), "\n\n\n\n\n\n\n\n\n\nboss‚ğ“ñ‰ñ“|‚·");
+	DrawFormatString(700, 900, GetColor(255,255,255), "backspace‚Å–ß‚é");
 	SetFontSize(size);
 }
 

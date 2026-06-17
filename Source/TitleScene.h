@@ -29,8 +29,6 @@ public:
 	int Name;
 private:
 	Texture* mpTexture;
-	//Texture* mpTexture2;
-	//Texture* mpTexture3;
 	Scene* mpScene;
 	
 	

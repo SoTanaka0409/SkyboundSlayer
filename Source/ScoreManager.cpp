@@ -26,57 +26,21 @@ void ScoreManager::Update()
 void ScoreManager::Draw()
 {
 
-	//FILE* fp;
-	//char buffer;
-	//while (1)
-	//{
-	//	buffer = fgetc(fp);//１文字読み込み
-	//	if (buffer == EOF) //EOF...End Of Fileの略。ファイルの内容が最後まで読み込めたかどうかの判定。
-	//	{
-	//		break;
 
-	//	}
-	//	(40);
-	//	unsigned int Color;
-	//	Color = GetColor(0, 255, 0);
-	//	DrawFormatString(60, 200, Color, "%c", buffer); 
-	//}
 
-	//fseek(fp, 0, SEEK_SET);
 
 	////１行ずつ読み込む
 	//char strBuffer[256] = "";//1行読み込むためのバッファ
-	//while (1)
-	//{
-	//	fgets(strBuffer, 256, fp);//１行読み込み
-	//	if (feof(fp))  //fpがEOFかどうかチェック
-	//	{
-	//		break;
-	//	}
-	//	(40);
-	//	unsigned int Color;
-	//	Color = GetColor(0, 255, 0);
-	//	DrawFormatString(60, 200, Color, "%c",buffer);
-	//}
 
 
 	////ファイルを閉じる
-	//fclose(fp);
 
 	////バイナリファイルの書き込み
-	//fp = fopen("savedate.bin", "w");
-	//if (fp == NULL)
-	//{
-	//	printf("ファイルの読み込みに失敗しました。\n");
-	//	return ;
 
 
-	//}
 	////書き込み
-	//fwrite(&date, sizeof(SaveDate), 1, fp);
 
 	////ファイルくろーズ
-	//fclose(fp);
 }
 
 void ScoreManager::PrintSaveDate(SaveDate date)

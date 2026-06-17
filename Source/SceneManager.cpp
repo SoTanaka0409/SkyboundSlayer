@@ -31,11 +31,7 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize()
 {
 	////初期シーンの設定
-	//mnNextSceneType = SCENE_TYPE::SCENE_RESULTWIN;
 
-	//mnNextSceneType = SCENE_TYPE::SCENE_TEST_COLLISION;
-	//mnNextSceneType = SCENE_TYPE::SCENE_3D;
-	//mnNextSceneType = SCENE_TYPE::SCENE_RESULTWIN;
 	mnNextSceneType = SCENE_TYPE::SCENE_TEST_COLLISION;
 
 	//シーン遷移させる

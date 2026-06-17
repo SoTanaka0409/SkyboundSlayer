@@ -41,7 +41,9 @@ void GameManager::Update()
                 }
                 SpawnPhaseEnemies();
             }
-        } else {
+        } 
+        else
+        {
             // SHOP_3: No time limit. Wait for player to enter teleporter.
             auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
             if (p) {
@@ -175,7 +177,7 @@ void GameManager::SpawnPhaseEnemies()
         e.isSeparateAnim = true;
         e.xp = 30.0f;
         e.money = 200;
-        e.tag = EnemyManager::night_stagg1;
+        e.tag = EnemyManager::night_stage1;
         e.Count = 10;
         
         ApplyDifficultyMultipliers(e);
@@ -218,7 +220,7 @@ void GameManager::SpawnPhaseEnemies()
         e2.isSeparateAnim = true;
         e2.xp = 30.0f;
         e2.money = 200;
-        e2.tag = EnemyManager::night_stagg1;
+        e2.tag = EnemyManager::night_stage1;
         e2.Count = 6;
 
         ApplyDifficultyMultipliers(e2);
@@ -227,7 +229,7 @@ void GameManager::SpawnPhaseEnemies()
     else if (mCurrentPhase == Phase::PHASE_3) {
         // Wave 3: 重量級代用
         EnemyManager::enemydate e_heavy;
-        e_heavy.filename = "Resource/Model/T.mv1";
+        e_heavy.filename = "Resource/Model/monster.mv1";
         e_heavy.spawnCenter = centerPos;
         e_heavy.initPos = VGet(12000.0f, 100.0f, 12000.0f);
         e_heavy.hp = 100;
@@ -240,7 +242,7 @@ void GameManager::SpawnPhaseEnemies()
         e_heavy.isSeparateAnim = true;
         e_heavy.xp = 100.0f;
         e_heavy.money = 500;
-        e_heavy.tag = EnemyManager::night_stagg1;
+        e_heavy.tag = EnemyManager::monster_stage1;
         e_heavy.Count = 5;
 
         ApplyDifficultyMultipliers(e_heavy);
@@ -282,7 +284,7 @@ void GameManager::SpawnPhaseEnemies()
         e_melee.isSeparateAnim = true;
         e_melee.xp = 30.0f;
         e_melee.money = 200;
-        e_melee.tag = EnemyManager::night_stagg1;
+        e_melee.tag = EnemyManager::night_stage1;
         e_melee.Count = 5;
 
         ApplyDifficultyMultipliers(e_melee);

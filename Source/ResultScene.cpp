@@ -1,4 +1,4 @@
-ï»¿#include"ResultScene.h"
+#include"ResultScene.h"
 #include"Master.h"
 #include"SceneManager.h"
 #include"InputManager.h"
@@ -30,22 +30,19 @@ void ResultScene::Initialize()
 	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
 	
-	//new Dino2D("Resource/Mini.png", VGet(200, 800, 0), 10.0f, VGet(1000, 800, 0));
-	//new Dino2D("Resource/Mini2.png", VGet(0, 800, 0), 10.0f, VGet(1000, 800, 0));
 
-	///new Texture("", VGet(500, 300, 0), true);
 }
 
 void ResultScene::Draw()
 {
 	const TCHAR* text = _T("RAINBOW TEXT");
 	int colors[] = {
-		GetColor(255, 0, 0),     // èµ¤
-		GetColor(255, 165, 0),   // ã‚ªãƒ¬ãƒ³ã‚¸
-		GetColor(255, 255, 0),   // é»„
-		GetColor(0, 255, 0),     // ç·‘
-		GetColor(0, 0, 255),     // é’
-		GetColor(128, 0, 128)    // ç´«
+		GetColor(255, 0, 0),     // Ô
+		GetColor(255, 165, 0),   // ƒIƒŒƒ“ƒW
+		GetColor(255, 255, 0),   // ‰©
+		GetColor(0, 255, 0),     // —Î
+		GetColor(0, 0, 255),     // Â
+		GetColor(128, 0, 128)    // Ž‡
 	};
 	int Size = GetFontSize();
 	/*mpTexture = new Texture("", VGet(0, 0, 0), true);
@@ -61,7 +58,7 @@ void ResultScene::Draw()
 
 	(50);
 	int Color = GetColor(255, 0, 255);
-	DrawFormatString(320, 700, Color, "ãƒªãƒ™ãƒ³ã‚¸ã—ã¦ã­");
+	DrawFormatString(320, 700, Color, "ƒŠƒxƒ“ƒW‚µ‚Ä‚Ë");
 	Scene::Draw();
 	
 	if (AllTimer >= 200)
@@ -69,7 +66,6 @@ void ResultScene::Draw()
 		int x = 300;
 		int y = 750;
 
-		//Color++;
 		if (Colorflag==true)
 		{
 			Color1-=4;
@@ -88,7 +84,7 @@ void ResultScene::Draw()
 				Colorflag = true;
 			}
 		}
-		DrawFormatString(x,y, GetColor(Color1, Color1,0), "BackSpaceã‚’æŠ¼ã—ã¦");
+		DrawFormatString(x,y, GetColor(Color1, Color1,0), "BackSpace‚ð‰Ÿ‚µ‚Ä");
 		
 		
 		if (InputManager::CheckDownKey(KEY_INPUT_BACK))
@@ -98,11 +94,8 @@ void ResultScene::Draw()
 		}
 	}
 	(Size);
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128); // 0ã€œ255ï¼ˆ128ï¼50%é€æ˜Žï¼‰
-	////// åŠé€æ˜Žã®é»’ã„çŸ©å½¢ã‚’æç”»
-	//DrawBox(100, 300, 900, 780, GetColor(0, 0, 0), TRUE);
-	////// ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒ¢ãƒ¼ãƒ‰ã‚’å…ƒã«æˆ»ã™ï¼ˆé‡è¦ï¼‰
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	////// ”¼“§–¾‚Ì•‚¢‹éŒ`‚ð•`‰æ
+	////// ƒuƒŒƒ“ƒhƒ‚[ƒh‚ðŒ³‚É–ß‚·id—vj
 }
 void ResultScene::Update()
 {
@@ -114,5 +107,4 @@ void ResultScene::Update()
 
 void ResultScene::Finalize()
 {
-	//mpObjectManager->DeleteAll3D();
 }

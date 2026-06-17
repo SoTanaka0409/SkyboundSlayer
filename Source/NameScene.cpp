@@ -1,4 +1,4 @@
-ï»¿#include"NameScene.h"
+#include"NameScene.h"
 #include"Master.h"
 #include"InputManager.h"
 
@@ -44,15 +44,15 @@ void NameScene::Draw()
 	}
 
 	mpTexture->Draw();
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100); // 0ã€œ255ï¼ˆ128ï¼50%é€æ˜ï¼‰
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100); // 0`255i12850%“§–¾j
 	DrawBox(0, 0, 1280, 1000, GetColor(0, 0, 0), TRUE);
 	DrawBox(100, 650, 850, 670, GetColor(255, 255, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	// ã‚­ãƒ¼å…¥åŠ›ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œã‚‹(ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãªã—å…¨è§’æ–‡å­—æœ‰ã‚Šæ•°å€¤å…¥åŠ›ã˜ã‚ƒãªã—)
+	// ƒL[“ü—Íƒnƒ“ƒhƒ‹‚ğì‚é(ƒLƒƒƒ“ƒZƒ‹‚È‚µ‘SŠp•¶š—L‚è”’l“ü—Í‚¶‚á‚È‚µ)
 	InputHandle = MakeKeyInput(50, FALSE, FALSE, FALSE);
 
-	// ä½œæˆã—ãŸã‚­ãƒ¼å…¥åŠ›ãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
+	// ì¬‚µ‚½ƒL[“ü—Íƒnƒ“ƒhƒ‹‚ğƒAƒNƒeƒBƒu‚É‚·‚é
 	SetActiveKeyInput(InputHandle);
 
 	while (ProcessMessage() == 0)
@@ -62,7 +62,7 @@ void NameScene::Draw()
 		{
 			InputHandle = 0;
 		}*/
-		// å…¥åŠ›ãŒçµ‚äº†ã—ã¦ã„ã‚‹å ´åˆã¯çµ‚äº†
+		// “ü—Í‚ªI—¹‚µ‚Ä‚¢‚éê‡‚ÍI—¹
 		
 		/*if (InputManager::CheckDownKey(KEY_INPUT_BACK))
 		{
@@ -72,11 +72,11 @@ void NameScene::Draw()
 		
 
 		SetFontSize(60);
-		DrawFormatString(-50, 200, GetColor(200, 255, 0), "        åå‰ã‚’å…¥ã‚Œã¦ãã ã•ã„");
+		DrawFormatString(-50, 200, GetColor(200, 255, 0), "        –¼‘O‚ğ“ü‚ê‚Ä‚­‚¾‚³‚¢");
 		SetFontSize(40);
-		DrawFormatString(100, 300, GetColor(255, 255, 255), "\nï¼ˆã“ã®ã‚ˆã†ã«æ›¸ã„ã¦ãã ã•ã„->TANAKASOU)");
-		DrawFormatString(100, 300, GetColor(255, 255, 255), "\n\n     å¤§æ–‡å­—ã§è¡Œé–“ã‚’ä½œã‚‰ãªã„ã‚ˆã†ã«");
-		DrawFormatString(200, 800, GetColor(-Color1, -Color1, -Color1), "BackSpaceã§ã‚„ã‚Šç›´ã—  Enterã§å®Œäº†");/*0ã§ã‚„ã‚Šç›´ã—\n*/
+		DrawFormatString(100, 300, GetColor(255, 255, 255), "\ni‚±‚Ì‚æ‚¤‚É‘‚¢‚Ä‚­‚¾‚³‚¢->TANAKASOU)");
+		DrawFormatString(100, 300, GetColor(255, 255, 255), "\n\n     ‘å•¶š‚ÅsŠÔ‚ğì‚ç‚È‚¢‚æ‚¤‚É");
+		DrawFormatString(200, 800, GetColor(-Color1, -Color1, -Color1), "BackSpace‚Å‚â‚è’¼‚µ  Enter‚ÅŠ®—¹");/*0‚Å‚â‚è’¼‚µ\n*/
 
 		if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
 		{
@@ -91,15 +91,13 @@ void NameScene::Draw()
 			SetFontSize(size);
 		}
 
-		// å…¥åŠ›ãƒ¢ãƒ¼ãƒ‰ã‚’æç”»
+		// “ü—Íƒ‚[ƒh‚ğ•`‰æ
 		DrawKeyInputModeString(400, 360);
 
-		//DrawBox(300,500,400,600,GetColor())
-		// å…¥åŠ›é€”ä¸­ã®æ–‡å­—åˆ—ã‚’æç”»
+		// “ü—Í“r’†‚Ì•¶š—ñ‚ğ•`‰æ
 		DrawKeyInputString(300, 600, InputHandle);
 
-		// Name = InputHandle;
-		// è£ç”»é¢ã®å†…å®¹ã‚’è¡¨ç”»é¢ã«åæ˜ ã•ã›ã‚‹
+		// — ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É”½‰f‚³‚¹‚é
 		ScreenFlip();
 		
 
@@ -107,16 +105,13 @@ void NameScene::Draw()
 
 	GetKeyInputString(Master::NameTest, InputHandle);
 
-	//Master::SetName((int)String);
 
-	// ç”¨æ¸ˆã¿ã®ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒãƒ³ãƒ‰ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
+	// —pÏ‚İ‚ÌƒCƒ“ƒvƒbƒgƒnƒ“ƒhƒ‹‚ğíœ‚·‚é
 	DeleteKeyInput(InputHandle);
 
 	
-	//DrawFormatString(200, 600, GetColor(255, 0, 255), "%c", String);
 
 
-	//if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
 	
 	SetFontSize(size);
 }

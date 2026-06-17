@@ -35,68 +35,30 @@ void Scene3D::Initialize()
 {
     SceneGame::Initialize();
 
-    const float wallWidth = Config::StageWallWidth;//stageã®ã‚µã‚¤ã‚º
-    const float wallDistance = Config::StageWallDistance;//stageã®ã‚µã‚¤ã‚º main
+    const float wallWidth = Config::StageWallWidth;//stage‚ÌƒTƒCƒY
+    const float wallDistance = Config::StageWallDistance;//stage‚ÌƒTƒCƒY main
     const float Spawnpos = 12000.0f;
     VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
 
-    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ã‚¸ãƒ£ãƒ³ãƒ—ã€ã‚¢ã‚¿ãƒƒã‚¯ã€ã‚¹ãƒ”ãƒ¼ãƒ‰ã€ï½ˆï½
-   // new Shop("Resource/3D/Hero.mv1", VGet(7500, 200, 7000));
-    new StatShop("Resource/3D/Hero.mv1", Config::GetStageCenter()); // ã‚¹ãƒ†ãƒ¼ã‚¸ã®çœŸã‚“ä¸­ã«é…ç½®
-    //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//ãƒˆãƒªã‚±ãƒ©ãƒˆãƒ—ã‚¹,hp,speed,Hitsize,size
-       //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//ã‚¹ãƒ”ã® hp,speed,attack,Hitsize,size
+    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ƒWƒƒƒ“ƒvAƒAƒ^ƒbƒNAƒXƒs[ƒhA‚ˆ‚
+    new StatShop("Resource/3D/Hero.mv1", Config::GetStageCenter()); // ƒXƒe[ƒW‚Ì^‚ñ’†‚É”z’u
+    //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//ƒgƒŠƒPƒ‰ƒgƒvƒX,hp,speed,Hitsize,size
+       //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//ƒXƒs‚Ì hp,speed,attack,Hitsize,size
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", 
         VGet(200.0f, 100.0f, 200.0f));
    
    
     float ObjectSize=10.0f;
     new StageObject(VGet(0, 0, 0), "Resource/3D/Stage_casule/source/Parede castelo.mv1",VGet(ObjectSize, ObjectSize, ObjectSize));
-    //  //new Tree("Resource/3D/Tree.mv1", VGet(500, 0, 600), 400.0, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(2000, 0, 1200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(2900, 0, -400), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(6000, 0, 1200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(7900, 0, -4000), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(2000, 0, -2200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(2900, 0, -4000), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(6000, 0, 3200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(-3900, 0, -000), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(-2000, 0, 1200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(-2900, 0, -500), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(-6000, 0, 1200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(-3900, 0, -4000), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(2000, 0, 7200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(3900, 0, 6400), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(5000, 0, 5200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(7900, 0, 6000), 400.0f, 80.0f, true);
   // 
-  //  new Tree("Resource/3D/Tree.mv1", VGet(2000, 0, 1200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(-2900, 0, 4400), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(6000, 0, -3200), 400.0f, 80.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(5900, 0, -4000), 400.0f, 80.0f, true);
-  // /* new Rock("Resource/3D/rock.mv1", VGet(0, 0, 1000), 0, 3000,400);
-  //  new Rock("Resource/3D/rock.mv1", VGet(-5000, 0, -5000), 0, 3000, 400);
-  //  new Rock("Resource/3D/rock.mv1", VGet(5000, 0, 3000), 0, 3000, 400);
   //  new Rock("Resource/3D/rock.mv1", VGet(6000, 0, -300), 0, 3000, 400);*/
 
   // 
-  ////  new Tree("Resource/3D/Bush.mv1", VGet(6000, 0, -6000), 400.0f, 80.0f, true);
 
   //  new Wall("",
-  //      VGet(-wallWidth, 0, 0),//å·¦
-  //      VGet(-wallWidth, 3000, -wallDistance),
-  //      VGet(-wallWidth, 0, wallDistance));
-  //  new Wall("",//å³
-  //      VGet(wallWidth, 0, 0),
-  //      VGet(wallWidth, 3000, -wallDistance),
-  //      VGet(wallWidth, 0, wallDistance));
-  //  new Wall("",//ä¸Š
-  //      VGet(0, 0, wallWidth),
-  //      VGet(-wallDistance, 3000, wallWidth),
-  //      VGet(wallDistance, 0, wallWidth));
-  //  new Wall("",//ä¸‹
-  //      VGet(0, 0, -wallWidth),
-  //      VGet(-wallDistance, 3000, -wallWidth),
-  //      VGet(wallDistance, 0, -wallWidth));
+  //  new Wall("",//‰E
+  //  new Wall("",//ã
+  //  new Wall("",//‰º
    
     SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(0,0,-5000));
     float scale = 13.0f;
@@ -104,44 +66,20 @@ void Scene3D::Initialize()
    pSkyBox->SetScale(VGet(scale, scale, scale));
    pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky000.jpg");
    
-  //  SkyBox* pSkyBox2 = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(20000,0,20000));
-  //  pSkyBox2->SetScale(10.0f);
-  //  pSkyBox2->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");
 
 
-    const float wallWidth_boss = Config::StageBossWallWidth;//stageã®ã‚µã‚¤ã‚º
-    const float wallDistance_boss = Config::StageBossWallDistance;//stageã®ã‚µã‚¤ã‚º main
+    const float wallWidth_boss = Config::StageBossWallWidth;//stage‚ÌƒTƒCƒY
+    const float wallDistance_boss = Config::StageBossWallDistance;//stage‚ÌƒTƒCƒY main
   // 
-  //  VECTOR pos = VGet(10000, 0, 10000);
   //  
   //  new Wall("Resource/2D/mori.png",
-  //     VAdd(VGet(-wallWidth_boss, 0, 0),pos),//å·¦
-  //     VAdd( VGet(-wallWidth_boss,3000, -wallDistance_boss),pos),
-  //     VAdd( VGet(-wallWidth_boss, 0, wallDistance_boss),pos));
-  //  new Wall("Resource/2D/mori.png",//å³
-  //     VAdd( VGet(wallWidth_boss, 0, 0),pos),
-  //     VAdd( VGet(wallWidth_boss, 3000, -wallDistance_boss),pos),
-  //     VAdd( VGet(wallWidth_boss, 0, wallDistance_boss),pos));
-  //  new Wall("Resource/2D/mori.png",//ä¸Š
-  //     VAdd( VGet(0, 0, wallWidth_boss),pos),
-  //     VAdd( VGet(-wallDistance_boss, 3000, wallWidth_boss),pos),
-  //     VAdd( VGet(wallDistance_boss, 0, wallWidth_boss),pos));
-  //  new Wall("Resource/2D/mori.png",//ä¸‹
-  //     VAdd( VGet(0, 0, -wallWidth_boss),pos),
-  //     VAdd( VGet(-wallDistance_boss, 3000, -wallWidth_boss),pos),
-  //     VAdd( VGet(wallDistance_boss, 0, -wallWidth_boss),pos));
-  // /* SkyBox* pSkyBox2 = new SkyBox("Resource/3D/SkyBox/SkyBox.x");
-  //  pSkyBox2->SetScale(3.0f);
+  //  new Wall("Resource/2D/mori.png",//‰E
+  //  new Wall("Resource/2D/mori.png",//ã
+  //  new Wall("Resource/2D/mori.png",//‰º
   //  pSkyBox2->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");*/
   // 
-  //  new Tree("Resource/3D/Tree.mv1", VGet(18000, 0, 18000), 4000.0f, 500.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(21000, 0, 18000), 1000.0f, 300.0f, true);
-  //  new Tree("Resource/3D/Tree.mv1", VGet(18000, 0, 21000), 1000.0f,300.0f, true);
   // 
   // 
-  //  Master::mpSoundManager->PlayBGM(SoundManager::BGM_GAME);
-  //  new StageCollider();
-  //  mpTexture = new Texture("Resource/2D/Load.png", VGet(500, 300, 0), true);
 }
 
 void Scene3D::Update()
@@ -162,7 +100,7 @@ void Scene3D::Update()
     }
    
 
-    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();//ã²ã¨ã¤å‰ã®å ´æ‰€ã«æˆ»ã‚‹
+    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();//‚Ğ‚Æ‚Â‘O‚ÌêŠ‚É–ß‚é
 
    
 }
@@ -173,7 +111,7 @@ void Scene3D::Draw()
     SceneGame::Draw();
     Master::mpSave->Draw();
 
-    // åœ°é¢ã®ã‚°ãƒªãƒƒãƒ‰ï¼ˆã‚¹ãƒ†ãƒ¼ã‚¸ï¼‰ã‚’æç”»
+    // ’n–Ê‚ÌƒOƒŠƒbƒhiƒXƒe[ƒWj‚ğ•`‰æ
     const int count = 51;
     const float distance = 500.0f;
     for (int i = 0; i < count; i++)

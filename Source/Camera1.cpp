@@ -27,16 +27,16 @@ Camera1::~Camera1()
 
 void Camera1::Initialize()
 {
-	//ã‚«ãƒ¡ãƒ©ã®ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°è·é›¢ã®è¨­å®š
-	SetCameraNearFar(100.0f, Config::CameraFar);//100ï½50000ã¾ã§ã®è·é›¢ãŒè¦‹ãˆã‚‹
+	//ƒJƒƒ‰‚ÌƒNƒŠƒbƒsƒ“ƒO‹——£‚Ìİ’è
+	SetCameraNearFar(100.0f, Config::CameraFar);//10050000‚Ü‚Å‚Ì‹——£‚ªŒ©‚¦‚é
 
-	//èƒŒæ™¯è‰²ã‚’è¨­å®šï¼ˆç°è‰²ï¼‰
+	//”wŒiF‚ğİ’èiŠDFj
 	SetBackgroundColor(128, 128, 128);
 
-	//ã‚«ãƒ¡ãƒ©ã®è¨­å®šã‚’åæ˜ 
+	//ƒJƒƒ‰‚Ìİ’è‚ğ”½‰f
 	SetCameraPositionAndTarget_UpVecY(mvPosition, mvLookAtPosition);
 
-	//æ›´æ–°å‡¦ç†ã‚’ä¸€åº¦è¡Œã£ã¦ã„ã
+	//XVˆ—‚ğˆê“xs‚Á‚Ä‚¢‚­
 	Update();
 
 }
@@ -46,7 +46,7 @@ void Camera1::Update()
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 	UpdateRotation();
-	//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ãªã‹ã£ãŸã‚‰
+	//ƒ^[ƒQƒbƒg‚ª‚¢‚È‚©‚Á‚½‚ç
 	if (mpTarget == nullptr)
 	{
 		mpTarget = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
@@ -58,21 +58,19 @@ void Camera1::Update()
 	}
 	else
 	{
-		//æ³¨è¦–ç‚¹ã‚’å°‘ã—ä¸Šã«ãšã‚‰ã™
+		//’‹“_‚ğ­‚µã‚É‚¸‚ç‚·
 		mvLookAtPosition.y = 80.0f;
 	}
 
 	{
-		VECTOR temp; //ä½œæ¥­ç”¨å¤‰æ•°
+		VECTOR temp; //ì‹Æ—p•Ï”
 
 
 		mvLookAtPosition = VSub(pPlayer->GetPosition() , mvPosition);
 		mvLookAtPosition = VNorm(mvLookAtPosition);
 
-		//ä¸Šã§æ±‚ã‚ãŸåº§æ¨™ã«æ³¨è¦–ç‚¹ã®åº§æ¨™ã‚’è¶³ã—ãŸã‚‚ã®ãŒã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã¨ãªã‚‹
-		//mvPosition = VAdd(temp, mvLookAtPosition);
-		//mvPosition = VAdd(temp, mvLookAtPosition);
-		//ã‚«ãƒ¡ãƒ©è¨­å®šã‚’åæ˜ 
+		//ã‚Å‹‚ß‚½À•W‚É’‹“_‚ÌÀ•W‚ğ‘«‚µ‚½‚à‚Ì‚ªƒJƒƒ‰‚ÌÀ•W‚Æ‚È‚é
+		//ƒJƒƒ‰İ’è‚ğ”½‰f
 		SetCameraPositionAndTarget_UpVecY(pPlayer->GetPosition(), mvLookAtPosition);
 	}
 
@@ -80,35 +78,20 @@ void Camera1::Update()
 
 void Camera1::UpdateRotation()
 {
-	////æ–¹å‘ã‚­ãƒ¼ã§ã‚«ãƒ¡ãƒ©æ“ä½œ
-	//if (CheckHitKey(KEY_INPUT_LEFT))
-	//{
-	//	mfHorizontalAngle += 5.0f;
+	////•ûŒüƒL[‚ÅƒJƒƒ‰‘€ì
 	if (mfHorizontalAngle >= 180.0f)
 	{
 		mfHorizontalAngle -= 360.0f;
 	}
-	//}
-	//if (CheckHitKey(KEY_INPUT_RIGHT))
-	//{
-	//	mfHorizontalAngle -= 5.0f;
 	if (mfHorizontalAngle <= -180.0f)
 	{
 		mfHorizontalAngle += 360.0f;
 	}
-	//}
-	//if (CheckHitKey(KEY_INPUT_UP))
-	//{
-	//	mfVerticalAngle += 5.0f;
 
 	if (mfVerticalAngle >= 80.0f)
 	{
 		mfVerticalAngle = 80.0f;
 	}
-	//}
-	//if (CheckHitKey(KEY_INPUT_DOWN))
-	//{
-	//	mfVerticalAngle -= 5.0f;
 
 	if (mfVerticalAngle <= -80.0f)
 	{
@@ -116,24 +99,23 @@ void Camera1::UpdateRotation()
 	}
 
 
-	float camAngleY = 0.0f; // æ°´å¹³æ–¹å‘ï¼ˆå·¦å³ï¼‰
-	float camAngleX = 0.0f; // å‚ç›´æ–¹å‘ï¼ˆä¸Šä¸‹ï¼‰
+	float camAngleY = 0.0f; // …•½•ûŒüi¶‰Ej
+	float camAngleX = 0.0f; // ‚’¼•ûŒüiã‰ºj
 
-	// æ„Ÿåº¦
+	// Š´“x
 	const float MOUSE_SENSITIVITY = 0.05f;
 
-	// ã‚«ãƒ¡ãƒ©ã®è·é›¢
+	// ƒJƒƒ‰‚Ì‹——£
 	float camDistance = 300.0f;
 
 
 
-	// ã‚«ãƒ¼ã‚½ãƒ«ã‚’éè¡¨ç¤ºã«
-	//SetMouseDispFlag(FALSE);
+	// ƒJ[ƒ\ƒ‹‚ğ”ñ•\¦‚É
 
-		// ãƒã‚¦ã‚¹ã®ç§»å‹•é‡ã‚’å–å¾—
+		// ƒ}ƒEƒX‚ÌˆÚ“®—Ê‚ğæ“¾
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
-	// ä¸­å¿ƒåº§æ¨™
+	// ’†SÀ•W
 	if (!CheckHitKey(KEY_INPUT_0))
 	{
 		int centerX = 640;
@@ -146,21 +128,19 @@ void Camera1::UpdateRotation()
 	int deltaX = mouseX - centerX;
 	int deltaY = mouseY - centerY;
 
-	// å›è»¢è§’åº¦ã‚’æ›´æ–°
+	// ‰ñ“]Šp“x‚ğXV
 	mfHorizontalAngle -= deltaX * MOUSE_SENSITIVITY;
 	mfVerticalAngle += deltaY * MOUSE_SENSITIVITY;
 
-	// ä¸Šä¸‹ã®å›è»¢ã‚’åˆ¶é™ï¼ˆè¦–ç·šãŒè£è¿”ã‚‰ãªã„ã‚ˆã†ã«ï¼‰
+	// ã‰º‚Ì‰ñ“]‚ğ§ŒÀi‹ü‚ª— •Ô‚ç‚È‚¢‚æ‚¤‚Éj
 	/*if (camAngleX < -DX_PI_F / 2.0f) camAngleX = -DX_PI_F / 2.0f;
 	if (camAngleX > DX_PI_F / 2.0f) camAngleX = DX_PI_F / 2.0f;*/
 
-	//// ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã¨æ³¨è¦–ç‚¹ã‚’è¨ˆç®—
-	//VECTOR camTarget = VGet(0.0f, 0.0f, 0.0f);
+	//// ƒJƒƒ‰‚ÌˆÊ’u‚Æ’‹“_‚ğŒvZ
 	//VECTOR temp = VGet(
 	//	camTarget.x + camDistance * sinf(camAngleY) * cosf(camAngleX),
 	//	camTarget.y + camDistance * sinf(camAngleX),
 	//	camTarget.z + camDistance * cosf(camAngleY) * cosf(camAngleX)
-	//);
 
 
 }

@@ -43,11 +43,9 @@ public:
 
     //// 指定したタグのコライダーを取得
     //// note: 該当するオブジェクトが複数ある場合、最初に見つけたオブジェクトを返す
-    //Collider* GetColliderByTag(Collider::Tag tag);
 
     //// 指定したタグのコライダーのリストを取得
     //// note: 該当するオブジェクトが複数ある場合、リスト化して全てのオブジェクトを返す
-    //std::vector<Collider*> GetColliderListByTag(Collider::Tag tag);
 
 private:
     std::list<Collider*> mColliderList;    // コライダーを管理するリスト

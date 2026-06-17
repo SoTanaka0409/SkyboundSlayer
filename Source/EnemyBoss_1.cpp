@@ -28,14 +28,12 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 	//,Animation(false)
 {
 	mbMagic = true;
-	mnChance = 30;//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‰ãƒ­ãƒƒãƒ—ç¢ºç‡
+	mnChance = 30;//ƒAƒCƒeƒ€‚ÌƒhƒƒbƒvŠm—¦
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	SetTagEne(Enemy::boss_stage1);
-
-	//SpeedDownNomber =mnSpeed-
-	//ãƒ¢ãƒ‡ãƒ«ã®ç”Ÿæˆ
+	
+	//ƒ‚ƒfƒ‹‚Ì¶¬
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
@@ -47,33 +45,8 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 	mpJumpAttackCoiider = new SphereCollider(this, mvPosition, 400.0f);
 
 	mpDebug = new Debug();
-	Item::ItemInformation* itemInfo;
-	itemInfo = new Item::ItemInformation();
-	itemInfo->Count = 3;
-	itemInfo->ID = Item::ItemID::HIGHHEAL;
-	itemInfo->Name = "heal";
-	itemInfo->isLog = false;
-	mpItemManager->AddItem(itemInfo);
-	itemInfo = new Item::ItemInformation();
-	itemInfo->Count = 3;
-	itemInfo->ID = Item::ItemID::SPEED;
-	itemInfo->Name = "heal";
-	itemInfo->isLog = false;
-	mpItemManager->AddItem(itemInfo);
-	Weapon::WeaponDate* weaponInf;
-	weaponInf = new Weapon::WeaponDate;
-	weaponInf->damage = 10;
-	weaponInf->filename = "Resource/3D/Sabel.mv1";
-	weaponInf->id = Weapon::Tag_Weapon::Tag_Weapon4;
-	weaponInf->name = "weapon4";
-	weaponInf->isLog = false;
-	mpWeaponManager->AddWeapon(weaponInf);
 
-	//mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize, 0.0f)), mfSize);
-	//mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 30.0f);
-	//mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//æ•µã‚’æ¢çŸ¥ã™ã‚‹å††
-	//mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//æ•µã‚’æ”»æ’ƒã—å§‹ã‚ã‚‹å††
-	//mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//æ•µã¨ã®è·é›¢ã‚’ä¿ã¤å††d
+	
 }
 
 EnemyBoss_1::~EnemyBoss_1()
@@ -92,14 +65,7 @@ void EnemyBoss_1::Update()
 		if (mpModel != nullptr)
 		{
 		
-			//if (mfHp > mfMaxHp / 2)//ä½“åŠ›ã®ç®¡ç†ã§æ”»æ’ƒæ–¹æ³•ã‚’å¤‰ãˆã‚‹
-			//{
-			//	Attack();
-			//}
 			//else
-			//{
-			//	Attack2();
-			//}
 			Attack();
 			if (!(mpModel->GetNowState() == ANIMATION_ATTACK) || !(mpModel->GetNowState() == ANIMATION_ATTACKJUMP))
 			{
@@ -110,7 +76,7 @@ void EnemyBoss_1::Update()
 			}
 
 			mpModel->Update();
-			//mpDH->Update();//drawHpã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’å‘¼ã¶
+			//mpDH->Update();//drawHp‚ÌƒAƒbƒvƒf[ƒg‚ğŒÄ‚Ô
 			CollPositionUpdate();
 			mpJumpAttackCoiider->mvPosition = mvPosition;
 
@@ -152,17 +118,15 @@ void EnemyBoss_1::Attack()
 {
 	AnimationState now = mpModel->GetNowState();
 
-	//f ()ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¿‘ã¥ã„ãŸæ™‚ã¨æ›¸ã
 	if (AttackCount >= AttackInterval && isHitAttackSearch)
 	{
 		AttackCount = 0;
-		//æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«å¤‰æ›´
+		//UŒ‚ƒ‚[ƒVƒ‡ƒ“‚É•ÏX
 		mpModel->ChangeAnimation(ANIMATION_ATTACKMAGIC);
-		//ãƒ«ãƒ¼ãƒ—ã¯ã•ã›ãªã„
+		//ƒ‹[ƒv‚Í‚³‚¹‚È‚¢
 		mpModel->SetLoop(false);
-		//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã¯å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«æˆ»ã™
+		//ƒ‚[ƒVƒ‡ƒ“Œã‚Í‘Ò‹@ƒ‚[ƒVƒ‡ƒ“‚É–ß‚·
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
-		//mpModel->SetRotation(mvRotation);
 		isHitAttackSearch = false;
 		new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
 		new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition,sinf(30)), 0, 150);
@@ -171,30 +135,29 @@ void EnemyBoss_1::Attack()
 	if (!(now == ANIMATION_ATTACKMAGIC))
 	{
 		AttackCount++;
-		AttackHitJudgmentflag = false;//å½“ãŸã‚Šåˆ¤å®šã®å¾©æ´»
+		AttackHitJudgmentflag = false;//“–‚½‚è”»’è‚Ì•œŠˆ
 	}
 
 
 
 }
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
-{//å½“ãŸã£ãŸç¬é–“ã®å‡¦ç†
+{//“–‚½‚Á‚½uŠÔ‚Ìˆ—
 	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
 		if (collider == mpJumpAttackCoiider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-		{//mpModelã®ç•ªå·ã‚‚ã‚ã£ã¦ã„ã‚‹ã€ã‘ã©ã“ã®ifæ–‡ã«å…¥ã‚‰ãªã„
+		{//mpModel‚Ì”Ô†‚à‚ ‚Á‚Ä‚¢‚éA‚¯‚Ç‚±‚Ìif•¶‚É“ü‚ç‚È‚¢
 			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
 			{
-				//if (pPlayer->GetInvisible()) { return; }
 				if (now == ANIMATION_ATTACK && !AttackHitJudgmentflag)
 				{
 
 					pPlayer->Damage(mfAttack);
-					AttackHitJudgmentflag = true;//å½“ãŸã£ãŸã‚ˆãƒ¼
+					AttackHitJudgmentflag = true;//“–‚½‚Á‚½‚æ[
 				}
 			}
 
@@ -207,19 +170,16 @@ void EnemyBoss_1::DeathEnemy()
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	isDead = true;
-	//Delete();
-	//Master::TutorialCount++;
 	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//ãƒ«ãƒ¼ãƒ—ã¯ã•ã›ãªã„
+	//ƒ‹[ƒv‚Í‚³‚¹‚È‚¢
 	mpModel->SetLoop(false);
-	//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã¯å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«æˆ»ã™
+	//ƒ‚[ƒVƒ‡ƒ“Œã‚Í‘Ò‹@ƒ‚[ƒVƒ‡ƒ“‚É–ß‚·
 	mpModel->SetLoopFinishState(ANIMATION_MAX);
 	DeathColliderPosition();
 
-	//Master::mpLevelUp->SetXp(Master::mpLevelUp->GetXp() + mfHaveXp);
 	if (mpModel->IsAnimationLoopFinish())
 	{
-		mpInventory->DropInventory(mnChance, mbWeapon, mbItem);
+		if (mbItem && GetRand(100) < mnChance) { Item::ItemInformation* info = new Item::ItemInformation(); info->ID = Item::HEAL; info->Count = 1; info->Name = "HEAL"; Master::mpItemManager->AddItem(info); }
 		if (player != nullptr) {
 			player->mpHaveMoney->AddMoney(mfHaveMoney);
 			player->mpLevelUp->AddXp(mfHaveXp);

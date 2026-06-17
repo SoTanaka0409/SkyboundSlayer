@@ -9,7 +9,7 @@ class Object3D
 public:
 	enum Tag3D
 	{
-		None3D = 0,//è¨­å®šãªã—
+		None3D = 0,//İ’è‚È‚µ
 		Tag3D_Player3D = 2000,
 		Tag3D_Wall3D = 2100,
 		Tag3D_Enemy3D = 2200,
@@ -24,8 +24,6 @@ public:
 		Tag3D_DinoFriend=3000,
 		Tag3D_Object = 3050,
 		Tag3D_RideDino=3500,	
-		//Tag3D_charactor=3600,
-		//Tag3D_Object=3900,
 	};
 	enum StatusState
 	{
@@ -35,14 +33,14 @@ public:
 		Status_Hp,
 		
 	}state;
-	// â˜…New!! Zã‚½ãƒ¼ãƒˆç”¨â˜…
-public: // ã‚½ãƒ¼ãƒˆé–¢æ•°å®šç¾©
+	// šNew!! Zƒ\[ƒg—pš
+public: // ƒ\[ƒgŠÖ”’è‹`
 
-	// Zã‚½ãƒ¼ãƒˆç”¨ã®è¨­å®š
+	// Zƒ\[ƒg—p‚Ìİ’è
 	void SetCameraDistance(float distance) { mfCurrentCameraDistance = distance; }
 
-	// ã‚«ãƒ¡ãƒ©è·é›¢ã‚’åŸºæº–ã«ã‚½ãƒ¼ãƒˆã™ã‚‹ãŸã‚ã®ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼
-	// note: ã‚«ãƒ¡ãƒ©ã¨ã®è·é›¢ãŒé›¢ã‚Œã‚‹ã»ã©ãƒªã‚¹ãƒˆã®æ‰‹å‰ã«æ¥ã‚‹ã‚ˆã†ã«ã™ã‚‹ï¼ˆå…ˆã«æç”»ã—ãŸã„ï¼‰
+	// ƒJƒƒ‰‹——£‚ğŠî€‚Éƒ\[ƒg‚·‚é‚½‚ß‚ÌƒIƒyƒŒ[ƒ^[
+	// note: ƒJƒƒ‰‚Æ‚Ì‹——£‚ª—£‚ê‚é‚Ù‚ÇƒŠƒXƒg‚Ìè‘O‚É—ˆ‚é‚æ‚¤‚É‚·‚éiæ‚É•`‰æ‚µ‚½‚¢j
 	struct CompareZOrder {
 		bool operator()(Object3D* a, Object3D* b) const {
 			return a->mfCurrentCameraDistance > b->mfCurrentCameraDistance;
@@ -63,10 +61,9 @@ public:
 	virtual void OnEnter(Collider* collider, Collider* check);
 	virtual void OnTrigger(Collider* collider, Collider* check);
 	virtual void OnExit(Collider* collider, Collider* check);
-	//virtual void Callback() = 0;
 
 
-public://ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼w
+public://ƒQƒbƒ^[AƒZƒbƒ^[w
 	void SetPosition(VECTOR pos) { mvPosition = pos; };
 	VECTOR GetPosition() { return mvPosition; }
 
@@ -79,21 +76,21 @@ public://ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼w
 	void SetDeleteFlag(bool flag) { mbDeleteFlag = flag; }
 	bool IsDeleteFlag() { return mbDeleteFlag; }
 
-	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°è¨­å®šã€€
-	bool IsDrawFlag() { return mbDrawFlag; }          //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°ã®ä½œæˆ
+	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //“G‚Ìíœƒtƒ‰ƒOİ’è@
+	bool IsDrawFlag() { return mbDrawFlag; }          //“G‚Ìíœƒtƒ‰ƒO‚Ìì¬
 
-	//ã‚¿ã‚°
+	//ƒ^ƒO
 	void SetTag(Tag3D tag) { mnTag = tag; }
 	Tag3D GetTag() { return mnTag; }
 
 protected:
-	VECTOR mvPosition;  //åº§æ¨™
-	VECTOR mvRotation;   //å›è»¢
+	VECTOR mvPosition;  //À•W
+	VECTOR mvRotation;   //‰ñ“]
 	VECTOR mvOldPosition;
 private:
-	bool mbDeleteFlag;  //å‰Šé™¤ãƒ•ãƒ©ã‚°
-	Tag3D mnTag;   //ã‚¿ã‚°
-	bool mbDrawFlag;//æç”»ãƒ•ãƒ©ã‚°
-	float mfCurrentCameraDistance;     // ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã¨ã®è·é›¢
+	bool mbDeleteFlag;  //íœƒtƒ‰ƒO
+	Tag3D mnTag;   //ƒ^ƒO
+	bool mbDrawFlag;//•`‰æƒtƒ‰ƒO
+	float mfCurrentCameraDistance;     // Œ»İ‚ÌƒJƒƒ‰‚Æ‚Ì‹——£
 	
 };

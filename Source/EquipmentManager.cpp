@@ -16,14 +16,8 @@ EquipmentManager::~EquipmentManager()
 
 void EquipmentManager::Draw()
 {
-	//int status = 0;
-	//for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
-	//{
 	//	
-	//	if ((*itr)->mbGet)status = (*itr)->damage;//今現在装備しているデータの値を表示
 	//	
-	//}
-	//if (Master::mpDebug)DrawFormatString(200, 200, GetColor(255, 255, 255), "%d", status);
 	
 	
 }

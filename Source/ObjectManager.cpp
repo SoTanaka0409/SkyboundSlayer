@@ -139,7 +139,6 @@ void ObjectManager::DeleteAll3DIfNeeded()
 			Object3D* temp = *itr;
 
 			//リストから削除
-			//erase()は、削除した　itrの次の要素を返却してくれる
 			itr = mObject3DList.erase(itr);
 
 			//オブジェクトそのものを削除
@@ -187,7 +186,6 @@ void ObjectManager::DeleteAll2DIfNeeded()
 			Object2D* temp = *itr;
 
 			//リストから削除
-			//erase()は、削除した　itrの次の要素を返却してくれる
 			itr = mObject2DList.erase(itr);
 
 			//オブジェクトそのものを削除

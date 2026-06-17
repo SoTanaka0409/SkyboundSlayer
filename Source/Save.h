@@ -2,7 +2,7 @@
 #include"dxlib.h"
 #include"WeaponManager.h"
 #include"ItemManager.h"
-#include"Inventory.h"
+
 #include"EquipmentManager.h"
 #include"Texture.h"
 #include"list"
@@ -37,21 +37,8 @@ class Save
 public:
 
 	//static Save* GetInstance()
-	//{
-	//	if (Instance == nullptr)
-	//	{
-	//		Instance = new Save();
-	//	}
 
-	//	return Instance;
-	//}
 	//static void Finalize()
-	//{
-	//	if (Instance != nullptr)
-	//	{
-	//		delete Instance;
-	//	}
-	//}
 	Save();
 
 	~Save();

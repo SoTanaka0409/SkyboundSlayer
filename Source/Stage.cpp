@@ -1,19 +1,18 @@
 #include"Stage.h"
 #include"Master.h"
 
-Stage::Stage(VECTOR initPos,std::string stageModelName, std::string stageCollisionModelName, VECTOR scale)//åº§æ¨™ã¯åŸç‚¹ã¨ã—ã¦ãŠã
+Stage::Stage(VECTOR initPos,std::string stageModelName, std::string stageCollisionModelName, VECTOR scale)//À•W‚ÍŒ´“_‚Æ‚µ‚Ä‚¨‚­
 	:Object3D(initPos)
 {
-	//ã‚¿ã‚°è¨­å®š
+	//ƒ^ƒOİ’è
 	SetTag(Object3D::Tag3D_Stage);
-	//mpDebug = new Debug();
-	//ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
+	//ƒXƒe[ƒWƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
 	mnModelHandle = MV1LoadModel(stageModelName.c_str());
 	
-	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒ¢ãƒ‡ãƒ«(å½“ãŸã‚Šåˆ¤å®šç”¨ã®ãƒ¢ãƒ‡ãƒ«)ã®èª­ã¿è¾¼ã¿
+	//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹(“–‚½‚è”»’è—p‚Ìƒ‚ƒfƒ‹)‚Ì“Ç‚İ‚İ
 	mnCollisionHandle = MV1LoadModel(stageCollisionModelName.c_str());
 
-	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å¼•æ•°ãŒæ¸¡ã•ã‚ŒãŸå ´åˆã¯å¾“æ¥ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ä½¿ç”¨
+	//ƒfƒtƒHƒ‹ƒg‚Ìˆø”‚ª“n‚³‚ê‚½ê‡‚Í]—ˆ‚ÌƒXƒP[ƒ‹‚ğg—p
 	if (scale.x == -1.0f && scale.y == -1.0f && scale.z == -1.0f) {
 		float StageSize = 300.0f;
 		MV1SetScale(mnModelHandle, VGet(StageSize, 50.0f, StageSize));
@@ -32,7 +31,7 @@ Stage::Stage(VECTOR initPos,std::string stageModelName, std::string stageCollisi
 
 Stage::~Stage()
 {
-	//èª­ã¿è¾¼ã‚“ã ãƒ¢ãƒ‡ãƒ«ã®ç ´æ£„
+	//“Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚Ì”jŠü
 	MV1DeleteModel(mnModelHandle);
 	MV1DeleteModel(mnCollisionHandle);
 }
@@ -43,30 +42,29 @@ void Stage::Update()
 }
 void Stage::Draw()
 {
-	//ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«ã®æç”»
+	//ƒXƒe[ƒWƒ‚ƒfƒ‹‚Ì•`‰æ
 	MV1DrawModel(mnModelHandle);
 
-	//ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒ¢ãƒ‡ãƒ«ã®æç”»(ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã¿ãŸã„ãªæ„Ÿã˜ã§æç”»)
-	// ///å½“ãŸã‚Šåˆ¤å®šç”¨ã®ãƒ¢ãƒ‡ãƒ«ã¨ã—ã¦ä½œã‚‰ã‚Œã¦ã„ã‚‹
-	//èª­ã¿è¾¼ã‚€ãƒ¢ãƒ‡ãƒ«ã€è‰²ã€
-	//MV1DrawModelDebug(mnCollisionHandle,GetColor(255,255,255),1,10,1,0);
+	//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ì•`‰æ(ƒƒCƒ„[ƒtƒŒ[ƒ€‚İ‚½‚¢‚ÈŠ´‚¶‚Å•`‰æ)
+	// ///“–‚½‚è”»’è—p‚Ìƒ‚ƒfƒ‹‚Æ‚µ‚Äì‚ç‚ê‚Ä‚¢‚é
+	//“Ç‚İ‚Şƒ‚ƒfƒ‹AFA
 }
 
 bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 {
-	//ç”Ÿæˆã—ã¦ã„ãŸå½“ãŸã‚Šåˆ¤å®šã‚’åŸºã«ã‚«ãƒ—ã‚»ãƒ«ã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’è¡Œã†
-	//ã‚³ãƒªã‚¸ãƒ§ãƒ³çµæœä»£å…¥ç”¨ãƒãƒªã‚´ãƒ³é…åˆ—
+	//¶¬‚µ‚Ä‚¢‚½“–‚½‚è”»’è‚ğŠî‚ÉƒJƒvƒZƒ‹‚Æ‚Ì“–‚½‚è”»’è‚ğs‚¤
+	//ƒRƒŠƒWƒ‡ƒ“Œ‹‰Ê‘ã“ü—pƒ|ƒŠƒSƒ“”z—ñ
 	MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_Capsule(mnCollisionHandle, -1, pos1, pos2, r);
 
 	if (Master::mpDebug->Getdebug() == true)
 	{
-		//ãƒãƒªã‚´ãƒ³ã«ä¸€ã¤ä»¥ä¸Šå½“ãŸã£ã¦ã„ã‚‹å ´åˆ
+		//ƒ|ƒŠƒSƒ“‚Éˆê‚ÂˆÈã“–‚½‚Á‚Ä‚¢‚éê‡
 		if (result.HitNum >= 1)
 		{
-			//å›æ•°ã‚’å½“ãŸã£ãŸå›æ•°ã‚’å›ã™
+			//‰ñ”‚ğ“–‚½‚Á‚½‰ñ”‚ğ‰ñ‚·
 			for (int i = 0; i < result.HitNum; i++)
 			{
-				//3Dã®ä¸‰è§’å½¢ã‚’æç”»ã™ã‚‹
+				//3D‚ÌOŠpŒ`‚ğ•`‰æ‚·‚é
 				DrawTriangle3D(
 					result.Dim[i].Position[0],
 					result.Dim[i].Position[1],
@@ -77,7 +75,7 @@ bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 			}
 		}
 	}
-	//å½“ãŸã‚Šåˆ¤å®šæƒ…å ±ã®å¾Œç‰‡ã¥ã‘
+	//“–‚½‚è”»’èî•ñ‚ÌŒã•Ğ‚Ã‚¯
 	MV1CollResultPolyDimTerminate(result);
 
 
@@ -88,16 +86,14 @@ VECTOR Stage::CheckHit_Line(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
 
-	//å½“ãŸã‚Šåˆ¤å®šæƒ…å ±ã¨ç·šåˆ†ã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’è¡Œã†
-	//MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_LineDim(mnCollisionHandle, -1, pos1, pos2);
+	//“–‚½‚è”»’èî•ñ‚Æü•ª‚Æ‚Ì“–‚½‚è”»’è‚ğs‚¤
 	auto result = MV1CollCheck_Line(mnCollisionHandle, -1, pos1, pos2);
 
-	//å½“ãŸã£ã¦ã„ãŸå ´åˆ
+	//“–‚½‚Á‚Ä‚¢‚½ê‡
 	if (result.HitFlag)//result.HitNum >= 1
 	{
-		//å½“ãŸã£ãŸå€‹æ•°ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’returnã™ã‚‹ã‚ˆã†ã«å–å¾—ã™ã‚‹
-		//å£ã®æ™‚ã¿ãŸã„ã«HitPositionã‚’ã¨ã‚‹å¿…è¦ãªã„
-		//ret = result.Dim[0].HitPosition;
+		//“–‚½‚Á‚½ŒÂ”‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğreturn‚·‚é‚æ‚¤‚Éæ“¾‚·‚é
+		//•Ç‚Ì‚İ‚½‚¢‚ÉHitPosition‚ğ‚Æ‚é•K—v‚È‚¢
 		ret = result.HitPosition;
 	}
 
@@ -108,16 +104,14 @@ VECTOR Stage::CheckHit_LineDebug(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
 
-	//å½“ãŸã‚Šåˆ¤å®šæƒ…å ±ã¨ç·šåˆ†ã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’è¡Œã†
-	//MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_LineDim(mnCollisionHandle, -1, pos1, pos2);
+	//“–‚½‚è”»’èî•ñ‚Æü•ª‚Æ‚Ì“–‚½‚è”»’è‚ğs‚¤
 	auto result = MV1CollCheck_Line(mnCollisionHandle, -1, pos1, pos2);
 
-	//å½“ãŸã£ã¦ã„ãŸå ´åˆ
+	//“–‚½‚Á‚Ä‚¢‚½ê‡
 	if (result.HitFlag)//result.HitNum >= 1
 	{
-		//å½“ãŸã£ãŸå€‹æ•°ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’returnã™ã‚‹ã‚ˆã†ã«å–å¾—ã™ã‚‹
-		//å£ã®æ™‚ã¿ãŸã„ã«HitPositionã‚’ã¨ã‚‹å¿…è¦ãªã„
-		//ret = result.Dim[0].HitPosition;
+		//“–‚½‚Á‚½ŒÂ”‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğreturn‚·‚é‚æ‚¤‚Éæ“¾‚·‚é
+		//•Ç‚Ì‚İ‚½‚¢‚ÉHitPosition‚ğ‚Æ‚é•K—v‚È‚¢
 		ret = result.HitPosition;
 		if (Master::mpDebug->Getdebug() == true)
 		{

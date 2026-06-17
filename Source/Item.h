@@ -39,7 +39,6 @@ public:
 	void SetItemCount(int count) { Inf.Count = count; }
 	int GetItemCount() { return Inf.Count; }
 	std::string GetItemName() { return Inf.Name; }
-	//std::string GetItemName() { return ; }
 	void SetItem(ItemID  num) { Num = num; }
 	ItemID GetItem() { return Num; }
 

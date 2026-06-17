@@ -39,7 +39,6 @@ public:
 	float GetSpeed() { return speed; }
 	int GetXp() { return exp; }
 	
-	//bool Level_1flag;
 	
 	VECTOR pos = { 30,820 };
 	VECTOR size = { 300,40 };
