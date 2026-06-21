@@ -22,6 +22,7 @@ public:
 	void Attack() override;
 	void OnTrigger(Collider* collider, Collider* check) override;
 	void DeathEnemy() override;
+	void Delete() override;
 
 private:
 	AttackState mAttackState;

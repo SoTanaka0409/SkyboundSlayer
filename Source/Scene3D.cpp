@@ -46,7 +46,7 @@ void Scene3D::Initialize()
        //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//ƒXƒs‚Ì hp,speed,attack,Hitsize,size
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", 
         VGet(200.0f, 100.0f, 200.0f));
-   
+    new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1");
    
     float ObjectSize=10.0f;
     new StageObject(VGet(0, 0, 0), "Resource/3D/Stage_casule/source/Parede castelo.mv1",VGet(ObjectSize, ObjectSize, ObjectSize));

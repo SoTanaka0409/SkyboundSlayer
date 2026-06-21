@@ -25,6 +25,7 @@ public:
 	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//注視点取得
 
 	float GetLookCamera() { return mfVerticalAngle; }
+	void AddHorizontalAngle(float angle) { mfHorizontalAngle += angle; }
 	void SetLookCamera(float hor) { mfVerticalAngle = hor; }
 
 	VECTOR GetLookCamera2() { return dir; }//VECTORバージョン

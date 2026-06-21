@@ -29,12 +29,14 @@ public:
 	void OnTrigger(Collider* collider, Collider* check)override;
 	
 	void DeathEnemy()override;
-
-
+	void Delete()override;
 
 private:
 	bool mbMagic;
 	SphereCollider* mpJumpAttackCoiider;
+
+	int mAttackType;
+	int mAttack1ComboCount;
 
 
 };

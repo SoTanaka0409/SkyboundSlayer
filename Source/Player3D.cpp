@@ -37,15 +37,15 @@
 #include"InfClass.h"
 #include"HaveMoneyClass.h"
 
-// 髯具ｽｻ郢晢ｽｻ霑夲ｽ｡驛｢E繝ｻE驛｢譏懶ｽｹ譁滄豪E譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驛｢E陷薦EE繝ｻE鬨ｾ蛹・E驍ｵE陷ｷE繝ｻ迢暦ｽｸE闕ｵ譏ｴ繝ｻ鬮ｫE繝ｻE髯橸ｽｳ陞｢E繝ｻ蟶晄≧繝ｻE髯ｷ莨夲ｽｿE郢晢ｽｻ陋ｹE郢晢ｽｧ驛｢譎・譁青ｰ驛｢譎｢EE驛｢譎冗樟郢晢ｽｻfalse郢晢ｽｻ闔�蛹・E繝ｻE鬨ｾ蛹・E驍ｵE陷会ｽｱ遶界EE郢晢ｽｻ繝ｻE闔ｨ螟ｲEE郢晢ｽｻ
+// 鬮ｯ蜈ｷ・ｽ・ｻ驛｢譎｢・ｽ・ｻ髴大､ｲ・ｽ・｡鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴乗・・ｽ・ｹ隴∵ｻ・ｱｪE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E髯ｷ阮ｦEE郢晢ｽｻE鬯ｨ・ｾ陋ｹ繝ｻE鬩搾ｽｵE髯ｷ・ｷE郢晢ｽｻ霑｢證ｦ・ｽ・ｸE髣包ｽｵ隴擾ｽｴ郢晢ｽｻ鬯ｮ・ｫE郢晢ｽｻE鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E郢晢ｽｻ陝ｶ譎・鴬郢晢ｽｻE鬮ｯ・ｷ闔ｨ螟ｲ・ｽ・ｿE驛｢譎｢・ｽ・ｻ髯具ｽｹE驛｢譎｢・ｽ・ｧ鬩幢ｽ｢隴弱・隴・搨・ｰ鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴主・讓滄Δ譎｢・ｽ・ｻfalse驛｢譎｢・ｽ・ｻ髣費ｿｽ陋ｹ繝ｻE郢晢ｽｻE鬯ｨ・ｾ陋ｹ繝ｻE鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ驕ｶ逡窪E驛｢譎｢・ｽ・ｻ郢晢ｽｻE髣費ｽｨ陞滂ｽｲEE驛｢譎｢・ｽ・ｻ
 Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float speed, float hp, bool isSeparateAnim)
 	:Object3D(initPos)
-	, mfAttack(0)//驛｢謨夜Δ譎｢EE驛｢譎｢EE驛｢E繝ｻE
+	, mfAttack(0)//鬩幢ｽ｢隰ｨ螟慚碑ｭ趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE
 	, mfAttackjump(5)
 	, mfAttackSlide(7)
 
-	,OnJumpCollider(false)//驍ｵE髦ｮ蜷ｶ繝ｻ髴托ｽｸ繝ｻE鬯ｮE髦ｮ蜷ｮ繝ｻ髯檸萓ｭ隨ｳ繝ｻEE鬮ｮ竏ｵ繝ｻ髯橸ｽｳ陞｢E繝ｻ蝣､EE繝ｻE驍ｵE闔会ｽ｣繝ｻ繝ｻ
-	, mbInvisible(false)//髫ｰE繝ｻE髫ｰE郢晢ｽｻ遯ｶE鬯ｩE陝�雜｣EE郢晢ｽｻ繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ繝ｻ閧ｲEE郢晢ｽｻ遶界
+	,OnJumpCollider(false)//鬩搾ｽｵE鬮ｦ・ｮ陷ｷ・ｶ郢晢ｽｻ鬮ｴ謇假ｽｽ・ｸ郢晢ｽｻE鬯ｯ・ｮE鬮ｦ・ｮ陷ｷ・ｮ郢晢ｽｻ鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E郢晢ｽｻ陜｣・､EE郢晢ｽｻE鬩搾ｽｵE髣比ｼ夲ｽｽ・｣郢晢ｽｻ郢晢ｽｻ
+	, mbInvisible(false)//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ驕ｯ・ｶE鬯ｯ・ｩE髯晢ｿｽ髮懶ｽ｣EE驛｢譎｢・ｽ・ｻ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ髢ｧ・ｲEE驛｢譎｢・ｽ・ｻ驕ｶ逡・
 	, mbjump(false)
 	, mfVerticalAngle(0.0f)
 	, mfHorizontalAngle(0.0f)
@@ -54,14 +54,14 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	, mfHp(hp)//hp
 	, mfMaxHp(hp)//maxhp
 	, mfDashSpeed(speed * 2)
-	, NewShieldFast(false)//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驛｢譎擾ｽｳE繝ｻ蟶晏｢難ｽｻ阮僞驍ｵE陷ｷE繝ｻ迢暦ｽｸE闕ｵ譏ｶ繝ｻ驍ｵE郢晢ｽｻE・ｰ
-	, mfSize(60.0f)//驍ｵE郢ｧ繝ｻ陞ｺ驛｢E鬮ｮ竏ｵ繝ｻ髯橸ｽｳ郢晢ｽｻ
-	, Pause(false)//驛｢譎・郢晢ｽｻ驛｢E繝ｻE鬨ｾ蛹・E鬯ｮE繝ｻE
-	, ChangeCamera(0)//鬮ｫ遨ゑｽｹ貅倪雷髯樊ｺｽ蛻､陝ｲE
+	, NewShieldFast(false)//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴取得・ｽ・ｳE郢晢ｽｻ陝ｶ譎擾ｽ｢髮｣・ｽ・ｻ髦ｮ蜒樣ｩ搾ｽｵE髯ｷ・ｷE郢晢ｽｻ霑｢證ｦ・ｽ・ｸE髣包ｽｵ隴擾ｽｶ郢晢ｽｻ鬩搾ｽｵE驛｢譎｢・ｽ・ｻE繝ｻ・ｰ
+	, mfSize(60.0f)//鬩搾ｽｵE驛｢・ｧ郢晢ｽｻ髯橸ｽｺ鬩幢ｽ｢E鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ驛｢譎｢・ｽ・ｻ
+	, Pause(false)//鬩幢ｽ｢隴弱・驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬯ｨ・ｾ陋ｹ繝ｻE鬯ｯ・ｮE郢晢ｽｻE
+	, ChangeCamera(0)//鬯ｮ・ｫ驕ｨ繧托ｽｽ・ｹ雋・ｪ髮ｷ鬮ｯ讓奇ｽｺ・ｽ陋ｻ・､髯晢ｽｲE
 	, DashGuage(100.0f)//
 	, EneSerchCount(0)
-	, Gpush(false)//髯滂ｽ｢郢晢ｽｻ繝ｻE繝ｻE髫ｰ蝣矩ΔE陋幢ｽｵ繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ繝ｻ讓抵ｽｸE郢晢ｽｻ
-	, GpushCount(2)//髯滂ｽ｢郢晢ｽｻ繝ｻE繝ｻE髫ｰ蝣矩しE繝ｻE驛｢E繝ｻE驛｢E繝ｻE驛｢譎｢EE驛｢譏ｴ繝ｻ
+	, Gpush(false)//鬮ｯ貊ゑｽｽ・｢驛｢譎｢・ｽ・ｻ郢晢ｽｻE郢晢ｽｻE鬮ｫ・ｰ陜｣遏ｩﾎ忍髯句ｹ｢・ｽ・ｵ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ隶捺慣・ｽ・ｸE驛｢譎｢・ｽ・ｻ
+	, GpushCount(2)//鬮ｯ貊ゑｽｽ・｢驛｢譎｢・ｽ・ｻ郢晢ｽｻE郢晢ｽｻE鬮ｫ・ｰ陜｣遏ｩ縺勇郢晢ｽｻE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ
 	, EffectUflag(false)
 	, EffectUCount(0)
 	, mfRideOldHp(0)
@@ -98,7 +98,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
-	mpModel->AddAnimation(ANIMATION_ATTACK, "Resource/Model/Slash.mv1");
+	mpModel->AddAnimation(ANIMATION_ATTACK, "Resource/Model/Attack_3.mv1");
 	mpModel->AddAnimation(ANIMATION_ATTACKSLIDE, "Resource/Model/Attack.mv1");
 	mpModel->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/Model/Jump Attack.mv1");
 	mpModel->AddAnimation(ANIMATION_SLIDE, "Resource/Model/kaihi.mv1");
@@ -108,18 +108,18 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	float HpRatio = (float)mfHp / mfMaxHp;
 	mfMaxHp = mfHp;
 	mfNormalSpeed = mfSpeed;
-	{//髯具ｽｻ隴殺EEE郢晢ｽｻ繝ｻ繝ｻ
+	{//鬮ｯ蜈ｷ・ｽ・ｻ髫ｴ谿ｺEEE驛｢譎｢・ｽ・ｻ郢晢ｽｻ郢晢ｽｻ
 		Weapon::WeaponDate* weaponInf;
 		weaponInf = new Weapon::WeaponDate;
-		weaponInf->damage = 1000;
+		weaponInf->damage = 10;
 		weaponInf->filename = "Resource/3D/Sabel.mv1";
 		weaponInf->id = Weapon::Tag_Weapon::Tag_Weapon1;
 		weaponInf->name = "weapon1";
 		mpWeaponManager->AddWeapon(weaponInf);
 		mpWeaponManager->ChangeWeapon(weaponInf);
 
-		mfNormalAttack = weaponInf->damage;//髫ｴ蟠｢髯具ｽｻ隴擾ｽｴ遶頑･｢蟠戊ｭ殺EEE郢晢ｽｻ繝ｻ蜥擾ｽｸE繝ｻE髫ｰE繝ｻE髫ｰE郢晢ｽｻ鬲假ｽｨ驍ｵE繝ｻE髯具ｽｻ隴殺EEE鬮｢郢晢ｽｻ鬨ｾ繝ｻ繝ｻ繝ｻ蟶晏距陟募ｨｯ魘ｬ
-		mfAttack = weaponInf->damage;//髫ｴ蟠｢髯具ｽｻ隴擾ｽｴ遶頑･｢蟠戊ｭ殺EEE郢晢ｽｻ繝ｻ蜥擾ｽｸE繝ｻE髫ｰE繝ｻE髫ｰE郢晢ｽｻ鬲假ｽｨ驍ｵE繝ｻE髯具ｽｻ隴殺EEE鬮｢郢晢ｽｻ鬨ｾ繝ｻ繝ｻ繝ｻ蟶晏距陟募ｨｯ魘ｬ
+		mfNormalAttack = weaponInf->damage;//鬮ｫ・ｴ陝�・｢鬮ｯ蜈ｷ・ｽ・ｻ髫ｴ謫ｾ・ｽ・ｴ驕ｶ鬆托ｽ･・｢陝�謌奇ｽｭ谿ｺEEE驛｢譎｢・ｽ・ｻ郢晢ｽｻ陷･謫ｾ・ｽ・ｸE郢晢ｽｻE鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ鬯ｲ蛛・ｽｽ・ｨ鬩搾ｽｵE郢晢ｽｻE鬮ｯ蜈ｷ・ｽ・ｻ髫ｴ谿ｺEEE鬯ｮ・｢驛｢譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ郢晢ｽｻ陝ｶ譎剰ｷ晞辧蜍滂ｽｨ・ｯ鬲假ｽｬ
+		mfAttack = weaponInf->damage;//鬮ｫ・ｴ陝�・｢鬮ｯ蜈ｷ・ｽ・ｻ髫ｴ謫ｾ・ｽ・ｴ驕ｶ鬆托ｽ･・｢陝�謌奇ｽｭ谿ｺEEE驛｢譎｢・ｽ・ｻ郢晢ｽｻ陷･謫ｾ・ｽ・ｸE郢晢ｽｻE鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ鬯ｲ蛛・ｽｽ・ｨ鬩搾ｽｵE郢晢ｽｻE鬮ｯ蜈ｷ・ｽ・ｻ髫ｴ谿ｺEEE鬯ｮ・｢驛｢譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ郢晢ｽｻ陝ｶ譎剰ｷ晞辧蜍滂ｽｨ・ｯ鬲假ｽｬ
 	}
 
 
@@ -128,7 +128,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	MaxDashGauge = DashGuage;
 
 	
-	 // 驛｢E繝ｻE驛｢譎｢EE驛｢E繝ｻE驛｢謨夜Δ譎｢EE鬨ｾ蠅難ｽｻ阮僞
+	 // 鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隰ｨ螟慚碑ｭ趣ｽ｢EE鬯ｨ・ｾ陟・屮・ｽ・ｻ髦ｮ蜒・
 	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize, 0.0f)), mfSize);
 	mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 60.0f);
 	mpAttackSlideCollider = new SphereCollider(this, mvPosition, 200.0f);
@@ -162,11 +162,11 @@ void Player3D::Update()
 	if (false)
 	{
 		
-		Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);//髯ｷ莨夲ｽｽE髫ｴE隲橸ｽｺ雎ｬE
+		Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);//鬮ｯ・ｷ闔ｨ螟ｲ・ｽ・ｽE鬮ｫ・ｴE髫ｲ讖ｸ・ｽ・ｺ髮趣ｽｬE
 	}
 		
 	
-	if (Master::PauseOn == false)//驛｢譎・郢晢ｽｻ驛｢E繝ｻE髣包ｽｳ繝ｻE驍ｵE繝ｻE髯ｷ蟠趣ｽｼ譚ｿE驍ｵE繝ｻE驍ｵE郢晢ｽｻ繝ｻ閧ｲEE郢晢ｽｻ遶企豪EE陷ｷE繝ｻ繝ｻ
+	if (Master::PauseOn == false)//鬩幢ｽ｢隴弱・驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ隴夲ｽｿE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ髢ｧ・ｲEE驛｢譎｢・ｽ・ｻ驕ｶ莨∬ｱｪEE髯ｷ・ｷE郢晢ｽｻ郢晢ｽｻ
 	{
 		if (mpTarget != nullptr)
 		{
@@ -191,25 +191,25 @@ void Player3D::Update()
 		{
 			ChangeView();
 		}
-		////////////////////////鬮ｯE隰疲ｺｯE////////////////
+		////////////////////////鬯ｮ・ｯE髫ｰ逍ｲ・ｺ・ｯE////////////////
 		SelectAttack();
 		Result();
 		ResetNUETRAL();
-		//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驛｢譎・諛界鬨ｾ繝ｻ繝ｻ
+		//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴弱・隲帷阜鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
 		CollPositionUpdate();
 		Evasion();
-		//髫ｰE繝ｻE髫ｰE郢晢ｽｻ郢晢ｽｻ鬨ｾ繝ｻ繝ｻ
+		//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
 		SelectAttack();
-		//鬩募∞EE髯ｷ讎贋ｾ帷ｹ晢ｽｻ鬨ｾ繝ｻ繝ｻ
+		//鬯ｩ蜍溪・EE鬮ｯ・ｷ隶手ｴ具ｽｾ蟶ｷ・ｹ譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
 		MoveEx();
-		//髯懃軸E繝ｻEE繝ｻE髯ｷ繝ｻEE鬨ｾ繝ｻ繝ｻ
+		//鬮ｯ諛・ｻｸE郢晢ｽｻEE郢晢ｽｻE鬮ｯ・ｷ郢晢ｽｻEE鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
 		RotationByMove();
 		EnemySerch();
 
 		if (mpLevelUp->GetLevelUp())
 		{ 
 			Master::mpSoundManager->PlaySE(SoundManager::SE_LEVELUP);
-			mfHp = GetAllStatusState(Object3D::Status_Hp);//hp驛｢E髮区ｧｭ繝ｻ髯懃軸EE繝ｻ繝ｻEE陝ｶ蜻ｻE繝ｻ
+			mfHp = GetAllStatusState(Object3D::Status_Hp);//hp鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｭ郢晢ｽｻ鬮ｯ諛・ｻｸEE郢晢ｽｻ郢晢ｽｻEE髯晢ｽｶ陷ｻ・ｻE郢晢ｽｻ
 		}
 		mpModel->Update();
 	}
@@ -231,8 +231,8 @@ void Player3D::ResetNUETRAL()
 		}
 
 
-		FirstNearVec = 0;//髫ｰE繝ｻE髫ｰE郢晢ｽｻ繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ遶雁�､EE鬮ｦE遶頑･｢EE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE鬮ｴ閧ｴ霎ｨ陞ｻE驛｢E陷ｻ闌ｨEE繝ｻE驛｢E闕ｵ譏ｴ窶ｳ驛｢E繝ｻE驛｢譎｢EE驛｢譎冗樟繝ｻ蝣､E譎｢EE驛｢E繝ｻE驛｢譏ｴ繝ｻ郢晢ｽｨ
-		mpTarget = nullptr;//鬨ｾE繝ｻE髫ｶ轣倡函郢晢ｽｻ驛｢E繝ｻE驛｢譎｢EE驛｢E繝ｻE驛｢譏ｴ繝ｻ郢晢ｽｨ驛｢E陋幢ｽｵE諛ウE繝ｻE驛｢譏ｴ繝ｻ郢晢ｽｨ
+		FirstNearVec = 0;//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驕ｶ髮・ｿｽ・､EE鬯ｮ・ｦE驕ｶ鬆托ｽ･・｢EE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬯ｮ・ｴ髢ｧ・ｴ髴趣ｽｨ髯橸ｽｻE鬩幢ｽ｢E髯ｷ・ｻ髣鯉ｽｨEE郢晢ｽｻE鬩幢ｽ｢E髣包ｽｵ隴擾ｽｴ遯ｶ・ｳ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴主・讓溽ｹ晢ｽｻ陜｣・､E隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｨ
+		mpTarget = nullptr;//鬯ｨ・ｾE郢晢ｽｻE鬮ｫ・ｶ霓｣蛟｡蜃ｽ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｨ鬩幢ｽ｢E髯句ｹ｢・ｽ・ｵE隲帙えE郢晢ｽｻE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｨ
 
 	}
 }
@@ -249,22 +249,22 @@ void Player3D::Draw()
 {
 	if (mfHp <= 0)return;
 	if (Master::ShopClassOn || Master::StatShopClassOn)return;
-	if (Master::PauseOn == false)///郢晄亢繝ｻ郢ｧE騾包ｽｻ鬮ｱE邵ｺE邵ｺE邵ｺE邵ｺ繝ｻ竊醍ｹｧ閾･E譎・郢晢ｽｻ驛｢E繝ｻE鬨ｾ蛹・E鬯ｮE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ遶雁�､EE郢晢ｽｻ
+	if (Master::PauseOn == false)///驛｢譎・ｺ｢郢晢ｽｻ驛｢・ｧE鬨ｾ蛹・ｽｽ・ｻ鬯ｮ・ｱE驍ｵ・ｺE驍ｵ・ｺE驍ｵ・ｺE驍ｵ・ｺ郢晢ｽｻ遶企・・ｹ・ｧ髢ｾ・･E隴弱・驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬯ｨ・ｾ陋ｹ繝ｻE鬯ｯ・ｮE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驕ｶ髮・ｿｽ・､EE驛｢譎｢・ｽ・ｻ
 	{
 		
 		bar();
 		
 	}
-	////////////////////////髣包ｽｳ隰梧汚EE繝ｻE鬩募∞EE鬮ｫ遨ゑｽｹ貅倪雷驍ｵE繝ｻE髫ｴ蠑ｱEE・ｻ驍ｵE繝ｻE驛｢譎丞ｹｲE讓抵ｽｹE繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE霑ｹ螟ｲEE闕ｵ譏ｶ譁｡驛｢E闕ｵ譎｢E閧ｲEE郢晢ｽｻ遶企豪EE陷ｷE繝ｻ繝ｻ//////////////
+	////////////////////////鬮｣蛹・ｽｽ・ｳ髫ｰ譴ｧ豎哘E郢晢ｽｻE鬯ｩ蜍溪・EE鬯ｮ・ｫ驕ｨ繧托ｽｽ・ｹ雋・ｪ髮ｷ鬩搾ｽｵE郢晢ｽｻE鬮ｫ・ｴ陟托ｽｱEE繝ｻ・ｻ鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲE隶捺慣・ｽ・ｹE郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE髴托ｽｹ陞滂ｽｲEE髣包ｽｵ隴擾ｽｶ隴・ｽ｡鬩幢ｽ｢E髣包ｽｵ隴趣ｽ｢E髢ｧ・ｲEE驛｢譎｢・ｽ・ｻ驕ｶ莨∬ｱｪEE髯ｷ・ｷE郢晢ｽｻ郢晢ｽｻ//////////////
 	if (Master::mpCamera->GetCamera3() == true)
 	{
-		//驛｢譎｢EE驛｢譏ｴ繝ｻE譎右E繝ｻE髫ｰE陷諤廢
+		//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻE隴主承E郢晢ｽｻE鬮ｫ・ｰE髯ｷﾂ隲､蟒｢
 		mpModel->Draw();
 	}
 
 	if (Master::mpDebug->Getdebug() == true)
 	{
-		//驍ｵE繝ｻE驛｢譎・郢晢ｽ｣驛｢E繝ｻE鬮ｯE繝ｻE鬩穂ｼ夲ｽｽE髫ｴ繝ｻEE髮手ｼ忍
+		//鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢隴弱・驛｢譎｢・ｽ・｣鬩幢ｽ｢E郢晢ｽｻE鬯ｮ・ｯE郢晢ｽｻE鬯ｩ遨ゑｽｼ螟ｲ・ｽ・ｽE鬮ｫ・ｴ郢晢ｽｻEE鬮ｮ謇具ｽｼ蠢・
 		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize,
 			8,
@@ -272,13 +272,13 @@ void Player3D::Draw()
 			GetColor(255, 255, 255),
 			false
 		);
-		DrawFormatString(100, 300, GetColor(255, 255, 255), "髫ｰE繝ｻE髫ｰE郢晢ｽｻ鬲假ｽｨ:%f", GetAllStatusState(Object3D::Status_Attack));
-		DrawFormatString(100, 400, GetColor(255, 255, 255), "鬯ｮE繝ｻE髯溷桁EE髯ｷ蟲ｨ繝ｻ%f", mpEquipmentManager->GetDamage());
-		DrawFormatString(100, 500, GetColor(255, 255, 255), "s驛｢E繝ｻE驛｢譎・郢晢ｽｻ驛｢譏ｴ繝ｻ%f", GetAllStatusState(Object3D::Status_Speed));
-		DrawFormatString(100, 350, GetColor(255, 255, 255), "鬩搾ｽｨ驕脱EE霓｣蛟ｪ縺殺E:%d", mpLevelUp->GetXp());
+		DrawFormatString(100, 300, GetColor(255, 255, 255), "鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ鬯ｲ蛛・ｽｽ・ｨ:%f", GetAllStatusState(Object3D::Status_Attack));
+		DrawFormatString(100, 400, GetColor(255, 255, 255), "鬯ｯ・ｮE郢晢ｽｻE鬮ｯ貅ｷ譯・E鬮ｯ・ｷ陝ｲ・ｨ郢晢ｽｻ%f", mpEquipmentManager->GetDamage());
+		DrawFormatString(100, 500, GetColor(255, 255, 255), "s鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴弱・驛｢譎｢・ｽ・ｻ鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ%f", GetAllStatusState(Object3D::Status_Speed));
+		DrawFormatString(100, 350, GetColor(255, 255, 255), "鬯ｩ謳ｾ・ｽ・ｨ鬩戊┳EE髴難ｽ｣陋滂ｽｪ邵ｺ谿ｺE:%d", mpLevelUp->GetXp());
 		DrawFormatString(100, 450, GetColor(255, 255, 255), "X:%f        Y:%f       Z:%f", mvPosition.x, mvPosition.y, mvPosition.z);
 	}
-	//髮殺EE髯懆ｶ｣EE驛｢E髮区ｨ奇ｽ｡竏ｫEEE驛｢E陋ｹE遶包ｽｧ驍ｵE繝ｻE鬨ｾ繝ｻ繝ｻ繝ｻE郢晢ｽｻ
+	//鬮ｮ谿ｺEE鬮ｯ諛・ｽｶ・｣EE鬩幢ｽ｢E鬮ｮ蛹ｺ・ｨ螂・ｽｽ・｡遶擾ｽｫEEE鬩幢ｽ｢E髯具ｽｹE驕ｶ蛹・ｽｽ・ｧ鬩搾ｽｵE郢晢ｽｻE鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ郢晢ｽｻE驛｢譎｢・ｽ・ｻ
 	DrawSphere3D(
 		mpModel->GetAttachmentPosition(),
 		30.0f,
@@ -289,69 +289,69 @@ void Player3D::Draw()
 	);
 }
 
-//鬩募∞EE髯ｷ讎贋ｾ帷ｹ晢ｽｻ鬨ｾ繝ｻ繝ｻ邵ｺ蟶ｷE譏ｴ繝ｻ郢晢ｽｻ驛｢E繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE髯檸萓ｭ隨ｳ繝ｻEE鬮ｮ竏ｵ繝ｻ髯橸ｽｳ郢晢ｽｻ
+//鬯ｩ蜍溪・EE鬮ｯ・ｷ隶手ｴ具ｽｾ蟶ｷ・ｹ譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ驍ｵ・ｺ陝ｶ・ｷE隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ驛｢譎｢・ｽ・ｻ
 void Player3D::MoveEx()
 {
 	AnimationState state = mpModel->GetNowState();
 	if (state==ANIMATION_ATTACKJUMP||state == ANIMATION_ATTACK || state == ANIMATION_JUMP_OUT || state == ANIMATION_SLIDE||state==ANIMATION_ATTACKSLIDE||Master::ShopClassOn||Master::StatShopClassOn)
 	{
 		return;
-	}//髴大､ｲEE髯橸ｽｳ陞｢E郢晢ｽｻ驛｢譎｢EE驛｢譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE髣包ｽｳ繝ｻE驍ｵE繝ｻE驍ｵE郢ｧ繝ｻE讙趣ｽｸE繝ｻE髣厄ｽｴ髴郁ｲｻE繧会ｽｸE陷会ｽｱ遶界EE郢晢ｽｻ
+	}//鬮ｴ螟ｧ・､・ｲEE鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E驛｢譎｢・ｽ・ｻ鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬮｣蛹・ｽｽ・ｳ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢・ｧ郢晢ｽｻE隶呵ｶ｣・ｽ・ｸE郢晢ｽｻE鬮｣蜴・ｽｽ・ｴ鬮ｴ驛・ｽｲ・ｻE郢ｧ莨夲ｽｽ・ｸE髯ｷ莨夲ｽｽ・ｱ驕ｶ逡窪E驛｢譎｢・ｽ・ｻ
 
-	moveVec = VGet(0.0f, 0.0f, 0.0f);//鬩募∞EE髯ｷ讎奇ｽ｢轣假ｽｩE髯ｷE郢晢ｽｻ
-	VECTOR UpMoveVector = VGet(0.0f, 0.0f, 0.0f);//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髣包ｽｳEEE髯ｷE闔会ｽ｣郢晢ｽｻ驛｢E繝ｻE驛｢譎冗樟EE
-	VECTOR leftMoveVector = VGet(0.0f, 0.0f, 0.0f);//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髯晢ｽｾ繝ｻE髫ｴ繝ｻEE髯ｷE闔会ｽ｣郢晢ｽｻ驛｢E繝ｻE驛｢譎冗樟EE
-	//VECTOR DownMoveVector = VGet(0.0f, 0.0f, 0.0f);//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髣包ｽｳ陋ｹE陝E髯ｷE闔会ｽ｣郢晢ｽｻ驛｢E繝ｻE驛｢譎冗樟EE
-	//VECTOR RightMoveVector = VGet(0.0f, 0.0f, 0.0f);//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髯ｷE繝ｻE髫ｴ繝ｻEE髯ｷE闔会ｽ｣郢晢ｽｻ驛｢E繝ｻE驛｢譎冗樟EE
+	moveVec = VGet(0.0f, 0.0f, 0.0f);//鬯ｩ蜍溪・EE鬮ｯ・ｷ隶主･・ｽｽ・｢霓｣蛛・ｽｽ・ｩE鬮ｯ・ｷE驛｢譎｢・ｽ・ｻ
+	VECTOR UpMoveVector = VGet(0.0f, 0.0f, 0.0f);//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮｣蛹・ｽｽ・ｳEEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸E
+	VECTOR leftMoveVector = VGet(0.0f, 0.0f, 0.0f);//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｯ譎｢・ｽ・ｾ郢晢ｽｻE鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸E
+	//VECTOR DownMoveVector = VGet(0.0f, 0.0f, 0.0f);//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ髯具ｽｹE髯敖E鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸E
+	//VECTOR RightMoveVector = VGet(0.0f, 0.0f, 0.0f);//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｯ・ｷE郢晢ｽｻE鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸E
 
 
-	//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髯ｷE闔会ｽ｣遯ｶE驍ｵE闕ｵ譎｢E陋ｾﾂｧ繝ｻE髯ｷ蟠趣ｽｼ譁職驛｢E繝ｻE驛｢譎冗樟E譎右E陷ｻ闌ｨEE郢ｧ繝ｻE竏ｫEE郢晢ｽｻ
+	//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｯ・ｶE鬩搾ｽｵE髣包ｽｵ隴趣ｽ｢E髯具ｽｾ・ゑｽｧ郢晢ｽｻE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ隴∬・鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E髯ｷ・ｻ髣鯉ｽｨEE驛｢・ｧ郢晢ｽｻE遶擾ｽｫEE驛｢譎｢・ｽ・ｻ
 	{
-		//髣包ｽｳEEE髯ｷE闔会ｽ｣遶剰ごEE繝ｻE鬩募∞EE髯ｷ蟠趣ｽｼ譁職驛｢E繝ｻE驛｢譎冗樟E譎右E繝ｻE驍ｵE遶丞｣ｹ窶ｳ驛｢譎｢EE驛｢譎｢EE鬮ｫ遨ゑｽｹ貅倪雷髫ｴ繝ｻEE髯ｷE闔会ｽ｣E・ｰ驛｢E髫ｰ竏ｬE蠕｡E蜷ｶ繝ｻ驛｢E陷ｻ蝓檸驍ｵE郢晢ｽｻ隨ｳ繝ｻEE郢ｧ繝ｻ繝ｻ驍ｵE繝ｻE驍ｵE陷ｷE繝ｻ繝ｻ
+		//鬮｣蛹・ｽｽ・ｳEEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｶ蜑ｰ縺忍E郢晢ｽｻE鬯ｩ蜍溪・EE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ隴∬・鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E郢晢ｽｻE鬩搾ｽｵE驕ｶ荳橸ｽ｣・ｹ遯ｶ・ｳ鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬯ｮ・ｫ驕ｨ繧托ｽｽ・ｹ雋・ｪ髮ｷ鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣E繝ｻ・ｰ鬩幢ｽ｢E鬮ｫ・ｰ遶擾ｽｬE陟包ｽ｡E陷ｷ・ｶ郢晢ｽｻ鬩幢ｽ｢E髯ｷ・ｻ陜捺ｪｸ鬩搾ｽｵE驛｢譎｢・ｽ・ｻ髫ｨ・ｳ郢晢ｽｻEE驛｢・ｧ郢晢ｽｻ郢晢ｽｻ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE髯ｷ・ｷE郢晢ｽｻ郢晢ｽｻ
 		UpMoveVector = VSub(Master::mpCamera->GetlookAtPosition(), Master::mpCamera->GetPosition());
 
-		//髯晢ｽｾ繝ｻE髫ｴ繝ｻEE髯ｷE闔会ｽ｣遶剰ごEE繝ｻE鬩募∞EE髯ｷ蟠趣ｽｼ譁職驛｢E繝ｻE驛｢譎冗樟E譎右E陟募ｨｯ縺守ｫ擾ｽｽ繝ｻEEEE髯ｷE闔会ｽ｣郢晢ｽｻ鬩募∞EE髯ｷ蟠趣ｽｼ譁職驛｢E繝ｻE驛｢譎冗樟E譎右E繝ｻE驍ｵE邵ｲ繝ｻ諤髭E驍ｵE繝ｻE驛｢譎丞ｹｲE蟶ｷEE繝ｻE髫ｴ繝ｻEE髯ｷE闔会ｽ｣遶剰ごEE繝ｻE驛｢譎冗函邵ｺ驢搾ｽｹ譎冗樟E譎右E繝ｻE髯懷生E陝ｲE驍ｵE繝ｻE髫ｴ繝ｻEE髯ｷE隰・EE闔�E繝ｻE闕ｵ貊ゑｽｽE隰ｳE繝ｻE郢晢ｽｻ
+		//鬮ｯ譎｢・ｽ・ｾ郢晢ｽｻE鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｶ蜑ｰ縺忍E郢晢ｽｻE鬯ｩ蜍溪・EE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ隴∬・鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E髯溷供・ｨ・ｯ邵ｺ螳茨ｽｫ謫ｾ・ｽ・ｽ郢晢ｽｻEEEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬯ｩ蜍溪・EE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ隴∬・鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E郢晢ｽｻE鬩搾ｽｵE驍ｵ・ｲ郢晢ｽｻ隲､鬮ｭE鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲE陝ｶ・ｷEE郢晢ｽｻE鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｶ蜑ｰ縺忍E郢晢ｽｻE鬩幢ｽ｢隴主・蜃ｽ驍ｵ・ｺ鬩｢謳ｾ・ｽ・ｹ隴主・讓檸隴主承E郢晢ｽｻE鬮ｯ諛ｷ逕檸髯晢ｽｲE鬩搾ｽｵE郢晢ｽｻE鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髫ｰ繝ｻEE髣費ｿｽE郢晢ｽｻE髣包ｽｵ雋翫ｑ・ｽ・ｽE髫ｰ・ｳE郢晢ｽｻE驛｢譎｢・ｽ・ｻ
 		leftMoveVector = VCross(UpMoveVector, VGet(0.0f, 1.0f, 0.0f));
 
 
-		//鬩募∞EE髯ｷ蟠趣ｽｼ譁職驛｢E繝ｻE驛｢譎冗樟E譎右E繝ｻE鬩募∞EE髯ｷ閧ｴ蝮ｩE驛｢E髮区ｧｫ繝ｻ髯ｷE繝ｻE驍ｵE陷会ｽｱ遶界EE郢晢ｽｻ郢晢ｽｻ驍ｵE繝ｻE驍ｵE遶擾ｽｵ繝ｻE繝ｻE鬮ｫ遨ゑｽｸ讒ｫEE陷会ｽｱ遯ｶE驍ｵE驗呻ｽｫ繝ｻE(驛｢譎冗函邵ｺ驢搾ｽｹ譎冗樟E譎右E繝ｻE鬯ｮ貊ゑｽｽE驍ｵE髴郁ｲｻE蛛ｵ繝ｻ闔会ｽ｣遶企豪EE陷ｷE繝ｻ迢暦ｽｸE髦ｮ蜷ｮ繝ｻ)
+		//鬯ｩ蜍溪・EE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ隴∬・鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E郢晢ｽｻE鬯ｩ蜍溪・EE鬮ｯ・ｷ髢ｧ・ｴ陜ｮ・ｩE鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｫ郢晢ｽｻ鬮ｯ・ｷE郢晢ｽｻE鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ驕ｶ逡窪E驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驕ｶ謫ｾ・ｽ・ｵ郢晢ｽｻE郢晢ｽｻE鬯ｮ・ｫ驕ｨ繧托ｽｽ・ｸ隶抵ｽｫEE髯ｷ莨夲ｽｽ・ｱ驕ｯ・ｶE鬩搾ｽｵE鬩怜遜・ｽ・ｫ郢晢ｽｻE(鬩幢ｽ｢隴主・蜃ｽ驍ｵ・ｺ鬩｢謳ｾ・ｽ・ｹ隴主・讓檸隴主承E郢晢ｽｻE鬯ｯ・ｮ雋翫ｑ・ｽ・ｽE鬩搾ｽｵE鬮ｴ驛・ｽｲ・ｻE陋幢ｽｵ郢晢ｽｻ髣比ｼ夲ｽｽ・｣驕ｶ莨∬ｱｪEE髯ｷ・ｷE郢晢ｽｻ霑｢證ｦ・ｽ・ｸE鬮ｦ・ｮ陷ｷ・ｮ郢晢ｽｻ)
 		UpMoveVector = VNorm(UpMoveVector);
 		leftMoveVector = VNorm(leftMoveVector);
 	}
 
-	//VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//鬩募∞EE髯ｷ讎奇ｽ｢轣假ｽｩE髯ｷE郢晢ｽｻ
+	//VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//鬯ｩ蜍溪・EE鬮ｯ・ｷ隶主･・ｽｽ・｢霓｣蛛・ｽｽ・ｩE鬮ｯ・ｷE驛｢譎｢・ｽ・ｻ
 
-	if (CheckHitKey(KEY_INPUT_A))//髯晢ｽｾ繝ｻE髫ｴ繝ｻEE髯ｷE闔会ｽ｣遶剰ごEE繝ｻE鬩募∞EE鬯ｨE郢晢ｽｻ
+	if (CheckHitKey(KEY_INPUT_A))//鬮ｯ譎｢・ｽ・ｾ郢晢ｽｻE鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｶ蜑ｰ縺忍E郢晢ｽｻE鬯ｩ蜍溪・EE鬯ｯ・ｨE驛｢譎｢・ｽ・ｻ
 	{
 		moveVec = VAdd(moveVec, leftMoveVector);
 	}
-	if (CheckHitKey(KEY_INPUT_D))//髯ｷE繝ｻE髫ｴ繝ｻEE髯ｷE闔会ｽ｣遶剰ごEE繝ｻE鬩募∞EE鬯ｨE郢晢ｽｻ
+	if (CheckHitKey(KEY_INPUT_D))//鬮ｯ・ｷE郢晢ｽｻE鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｶ蜑ｰ縺忍E郢晢ｽｻE鬯ｩ蜍溪・EE鬯ｯ・ｨE驛｢譎｢・ｽ・ｻ
 	{
 		moveVec = VAdd(moveVec, VScale(leftMoveVector, -1.0f));
 
 	}
-	if (CheckHitKey(KEY_INPUT_W))//髯槭ｑEE髫ｴ繝ｻEE髯ｷE闔会ｽ｣遶剰ごEE繝ｻE鬩募∞EE鬯ｨE郢晢ｽｻ
+	if (CheckHitKey(KEY_INPUT_W))//鬮ｯ讒ｭ・薦E鬮ｫ・ｴ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｶ蜑ｰ縺忍E郢晢ｽｻE鬯ｩ蜍溪・EE鬯ｯ・ｨE驛｢譎｢・ｽ・ｻ
 	{
 		moveVec = VAdd(moveVec, UpMoveVector);
 	}
-	if (CheckHitKey(KEY_INPUT_S))//髫ｰ繝ｻ蜚ｱ霎ｯ謌奇ｽｭ繝ｻEE髯ｷE闔会ｽ｣遶剰ごEE繝ｻE鬩募∞EE鬯ｨE郢晢ｽｻ
+	if (CheckHitKey(KEY_INPUT_S))//鬮ｫ・ｰ郢晢ｽｻ陷夲ｽｱ髴趣ｽｯ隰悟･・ｽｽ・ｭ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驕ｶ蜑ｰ縺忍E郢晢ｽｻE鬯ｩ蜍溪・EE鬯ｯ・ｨE驛｢譎｢・ｽ・ｻ
 	{
 		moveVec = VAdd(moveVec, VScale(UpMoveVector, -1.0f));
 
 	}
-	//鬩募∞EE髯ｷ蟠趣ｽｼ雋ｻEE驍ｵE繝ｻE驍ｵE郢晢ｽｻ繝ｻ邇厄ｽｿE繝ｻE髫ｲE闕ｵ譏ｴ蝣､EE郢ｧ繝ｻE讙趣ｽｸE繝ｻE
+	//鬯ｩ蜍溪・EE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ髮具ｽｻEE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ驍・私・ｽ・ｿE郢晢ｽｻE鬮ｫ・ｲE髣包ｽｵ隴擾ｽｴ陜｣・､EE驛｢・ｧ郢晢ｽｻE隶呵ｶ｣・ｽ・ｸE郢晢ｽｻE
 	bool isMove = (moveVec.x != 0.0f || moveVec.z != 0.0f);
 	if (isMove)
 	{
 
-		//鬩募∞EE髯ｷ讎奇ｽ｢轣假ｽｩE髯ｷE闔会ｽ｣繝ｻ螳夲ｽｱ繝ｻEE鬮ｫ遨ゑｽｸ讒ｫEE陷会ｽｱ遯ｶE驍ｵE驗呻ｽｫ繝ｻE
+		//鬯ｩ蜍溪・EE鬮ｯ・ｷ隶主･・ｽｽ・｢霓｣蛛・ｽｽ・ｩE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣郢晢ｽｻ陞ｳ螟ｲ・ｽ・ｱ郢晢ｽｻEE鬯ｮ・ｫ驕ｨ繧托ｽｽ・ｸ隶抵ｽｫEE髯ｷ莨夲ｽｽ・ｱ驕ｯ・ｶE鬩搾ｽｵE鬩怜遜・ｽ・ｫ郢晢ｽｻE
 		moveVec = VNorm(moveVec);
 
-		//髫ｴ繝ｻEE驍ｵE陷会ｽｱ繝ｻ讚∵綜隶哘EE繝ｻE驛｢E陋幢ｽｵ邵ｺ譎会ｽｹ譏ｴ繝ｻ郢晢ｽｨ
+		//鬮ｫ・ｴ郢晢ｽｻEE鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ郢晢ｽｻ隶壺扱邯憺垳蜩櫓E郢晢ｽｻE鬩幢ｽ｢E髯句ｹ｢・ｽ・ｵ驍ｵ・ｺ隴惹ｼ夲ｽｽ・ｹ隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｨ
 		mfTargetAngle = atan2f(moveVec.x, moveVec.z);
-		oldmoveVec = moveVec;//驍ｵE髦ｮ蜻ｻE繝ｻEE繝ｻE髣忍EE邵ｺ蜀暦ｽｹ譎｢EE驛｢譎｢EE驛｢E繝ｻE驛｢E繝ｻE驕ｯE髴域喚E髯ｷE闔会ｽ｣繝ｻ讓抵ｽｸE繝ｻE驍ｵE郢晢ｽｻ繝ｻ邇厄ｽｭ繝ｻEE髯ｷE闔会ｽ｣繝ｻ螳壽殺E驍ｵE陷ｷEE郢ｧ繝ｻEE隴取得EE郢晢ｽｻ
+		oldmoveVec = moveVec;//鬩搾ｽｵE鬮ｦ・ｮ陷ｻ・ｻE郢晢ｽｻEE郢晢ｽｻE鬮｣蠢孔E驍ｵ・ｺ陷證ｦ・ｽ・ｹ隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢E郢晢ｽｻE鬩包ｽｯE鬮ｴ蝓溷繭E鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣郢晢ｽｻ隶捺慣・ｽ・ｸE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ驍・私・ｽ・ｭ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣郢晢ｽｻ陞ｳ螢ｽﾂ谿ｺE鬩搾ｽｵE髯ｷ・ｷEE驛｢・ｧ郢晢ｽｻEE髫ｴ蜿門ｾ勇E驛｢譎｢・ｽ・ｻ
 	}
-	//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驛｢譎樊味陝ｷ謌頑ｲり嵯譏ｴ繝ｻ驛｢E繝ｻE驛｢譏懶ｽｹ譁滄豪EE陋滂ｽ･繝ｻ繝ｻEE繝ｻE驍ｵE郢晢ｽｻ郢晢ｽｻ驍ｵE繝ｻE驍ｵE郢ｧ繝ｻE讙趣ｽｸE繝ｻE
+	//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴取ｨ雁袖髯晢ｽｷ隰碁�托ｽｲ繧雁ｵｯ隴擾ｽｴ郢晢ｽｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴乗・・ｽ・ｹ隴∵ｻ・ｱｪEE髯区ｻゑｽｽ・･郢晢ｽｻ郢晢ｽｻEE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢・ｧ郢晢ｽｻE隶呵ｶ｣・ｽ・ｸE郢晢ｽｻE
 	if (state != ANIMATION_JUMP_IN || state != ANIMATION_JUMP_LOOP)
 	{
 		if (isMove)
@@ -366,8 +366,8 @@ void Player3D::MoveEx()
 
 
 
-	//鬩募∞EE髯ｷ蟠趣ｽｼ雋ｻE繝ｻEE陝ｶ蜻ｻE繝ｻ
-	mvOldPosition = mvPosition;//髯ｷ隨ｬE髮・骰具ｽｸE繝ｻE髯溯ｶ｣EE髫ｶ轣倡函繝ｻ螳壼初E髫ｴ魃会ｽｽE髣厄ｽｫ隴殺E
+	//鬯ｩ蜍溪・EE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ髮具ｽｻE郢晢ｽｻEE髯晢ｽｶ陷ｻ・ｻE郢晢ｽｻ
+	mvOldPosition = mvPosition;//鬮ｯ・ｷ髫ｨ・ｬE鬮ｮ繝ｻ鬪ｰ蜈ｷ・ｽ・ｸE郢晢ｽｻE鬮ｯ貅ｯ・ｶ・｣EE鬮ｫ・ｶ霓｣蛟｡蜃ｽ郢晢ｽｻ陞ｳ螢ｼ蛻戲鬮ｫ・ｴ鬲・ｼ夲ｽｽ・ｽE鬮｣蜴・ｽｽ・ｫ髫ｴ谿ｺE
 
 
 	mvPosition = VAdd(mvPosition, VScale(moveVec, GetAllStatusState(Object3D::Status_Speed)));
@@ -375,7 +375,7 @@ void Player3D::MoveEx()
 
 
 
-		/////驛｢E繝ｻE驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢E繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE髯檸萓ｭ隨ｳ繝ｻEE鬮ｮ竏ｵ繝ｻ髯橸ｽｳ陞｢E繝ｻ蝣､EE陷ｷE繝ｻ繝ｻ///////////
+		/////鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E郢晢ｽｻ陜｣・､EE髯ｷ・ｷE郢晢ｽｻ郢晢ｽｻ///////////
 	hitPos = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
 	auto obj = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
@@ -387,16 +387,16 @@ void Player3D::MoveEx()
 			
 			if (pStage != nullptr)
 			{
-				//驛｢E繝ｻE驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢E繝ｻE驍ｵE繝ｻE驛｢譎丞ｹｲE讓抵ｽｹE繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE驛｢E繝ｻE驛｢譎丞ｹｲ邵ｺ譎会ｽｹ譎｢EE驍ｵE隰疲ｻゑｽｽE髦ｮ蜷ｮ陞ｺ驍ｵE繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ繝ｻ邇匁捗繝ｻE髯ｷE郢晢ｽｻ
+				//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲE隶捺慣・ｽ・ｹE郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲ驍ｵ・ｺ隴惹ｼ夲ｽｽ・ｹ隴趣ｽ｢EE鬩搾ｽｵE髫ｰ逍ｲ・ｻ繧托ｽｽ・ｽE鬮ｦ・ｮ陷ｷ・ｮ髯橸ｽｺ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ驍・戟謐礼ｹ晢ｽｻE鬮ｯ・ｷE驛｢譎｢・ｽ・ｻ
 				if (pStage->CheckHit_Capsule(VAdd(mvPosition, VGet(0.0f, -150.0f, 0.0f)), VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)), 40.0f))
 				{
-					//髯檸萓ｭ隨ｳ繝ｻEE繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ繝ｻ迢暦ｽｸE繝ｻE驍ｵE郢ｧ繝ｻE蜥ｲEE郢晢ｽｻ郢晢ｽｻ驛｢譎｢EE驛｢E繝ｻE驛｢譎｢EE驍ｵE繝ｻE驍ｵE繝ｻE髫ｰ證ｦEE鬮ｫ證ｦEE髴難ｽ､繝ｻE驛｢E陷ｻ闌ｨEE郢ｧ繝ｻE竏ｫEE郢晢ｽｻ
+					//鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ霑｢證ｦ・ｽ・ｸE郢晢ｽｻE鬩搾ｽｵE驛｢・ｧ郢晢ｽｻE陷･・ｲEE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｫ・ｰ隴会ｽｦEE鬯ｮ・ｫ隴会ｽｦEE鬮ｴ髮｣・ｽ・､郢晢ｽｻE鬩幢ｽ｢E髯ｷ・ｻ髣鯉ｽｨEE驛｢・ｧ郢晢ｽｻE遶擾ｽｫEE驛｢譎｢・ｽ・ｻ
 					hitPos = pStage->CheckHit_Line(
-						VAdd(mvPosition, VGet(0.0f, 1000.0f, 0.0f)),//驛｢譎丞ｹｲE讓抵ｽｹE繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE鬮｢E隴取得EE髦ｮ蜷ｮ陞ｺ驛｢E郢晢ｽｻ髯樊ｺｷEE郢晢ｽｻ)驍ｵE繝ｻE
-						VAdd(mvPosition, VGet(0.0f, -1000.0f, 0.0f))//驛｢譎丞ｹｲE讓抵ｽｹE繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髯戲EE繝ｻE髣包ｽｳ闕ｵ譏ｶ譌ｺ驍ｵEEE鬘費ｽｹE陜｣E繝ｻE陞｢E郢晢ｽｻ驍ｵE繝ｻE驍ｵE陷会ｽｱ遯ｶE髫ｰ謔ｶ繝ｻ繝ｻE郢晢ｽｻ
+						VAdd(mvPosition, VGet(0.0f, 1000.0f, 0.0f)),//鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲE隶捺慣・ｽ・ｹE郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬯ｮ・｢E髫ｴ蜿門ｾ勇E鬮ｦ・ｮ陷ｷ・ｮ髯橸ｽｺ鬩幢ｽ｢E驛｢譎｢・ｽ・ｻ鬮ｯ讓奇ｽｺ・ｷEE驛｢譎｢・ｽ・ｻ)鬩搾ｽｵE郢晢ｽｻE
+						VAdd(mvPosition, VGet(0.0f, -1000.0f, 0.0f))//鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲE隶捺慣・ｽ・ｹE郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｯ謌ｲEE郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ髣包ｽｵ隴擾ｽｶ隴鯉ｽｺ鬩搾ｽｵEEE鬯倩ｲｻ・ｽ・ｹE髯懶ｽ｣E郢晢ｽｻE髯橸ｽ｢E驛｢譎｢・ｽ・ｻ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ驕ｯ・ｶE鬮ｫ・ｰ隰費ｽｶ郢晢ｽｻ郢晢ｽｻE驛｢譎｢・ｽ・ｻ
 					);
 
-					//髯檸萓ｭ隨ｳ繝ｻEE繝ｻE驍ｵEE隲｢E陞｢E繝ｻ螳壽╂隰費ｽｶE驍ｵE繝ｻE驍ｵE驗呻ｽｫ繝ｻE
+					//鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE郢晢ｽｻE鬩搾ｽｵEE髫ｲ・｢E髯橸ｽ｢E郢晢ｽｻ陞ｳ螢ｽ笊る垈雋ｻ・ｽ・ｶE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE鬩怜遜・ｽ・ｫ郢晢ｽｻE
 					isHit = true;
 				}
 			}
@@ -405,27 +405,27 @@ void Player3D::MoveEx()
 
 	if (isHit)
 	{
-		//髯懶ｽｨ繝ｻE鬯ｮE繝ｻE驍ｵE繝ｻE髮取腸EE驍ｵE繝ｻE驍ｵE繝ｻE髮殺EE驍ｵE郢晢ｽｻ遯ｶE驍ｵE郢晢ｽｻ繝ｻ邇厄ｽｿE繝ｻE髫ｲE闕ｵ譏ｶ繝ｻ驍ｵE陷会ｽｱ遯ｶE驍ｵE邵ｲ繝ｻE雜｣EE髫ｶ轣倡函繝ｻ蝣､EE繝ｻE驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢E繝ｻE驍ｵE繝ｻE髯ｷE陋ｹE繝ｻ蜀暦ｽｸE陝ｶ蜻ｻE繝ｻ
+		//鬮ｯ諛ｶ・ｽ・ｨ郢晢ｽｻE鬯ｯ・ｮE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｮ蜿冶・EE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｮ谿ｺEE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驕ｯ・ｶE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ驍・私・ｽ・ｿE郢晢ｽｻE鬮ｫ・ｲE髣包ｽｵ隴擾ｽｶ郢晢ｽｻ鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ驕ｯ・ｶE鬩搾ｽｵE驍ｵ・ｲ郢晢ｽｻE髮懶ｽ｣EE鬮ｫ・ｶ霓｣蛟｡蜃ｽ郢晢ｽｻ陜｣・､EE郢晢ｽｻE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ・ｷE髯具ｽｹE郢晢ｽｻ陷證ｦ・ｽ・ｸE髯晢ｽｶ陷ｻ・ｻE郢晢ｽｻ
 		mvPosition.y = hitPos.y;
 	}
 	if (isHit == false)
 	{
-		//鬮ｫ陬懈桶鬮ｫE髯懈ｺ櫓
-		mvPosition.y += -8.0f;//鬮｣諛ｶEE髣包ｽｳ闕ｵ譏ｶ繝ｻ驛｢E驕擾ｽｩEE繝ｻE繝ｻE
+		//鬯ｮ・ｫ髯ｬ諛域｡ｶ鬯ｮ・ｫE鬮ｯ諛茨ｽｺ讚・
+		mvPosition.y += -8.0f;//鬯ｮ・｣隲幢ｽｶEE鬮｣蛹・ｽｽ・ｳ髣包ｽｵ隴擾ｽｶ郢晢ｽｻ鬩幢ｽ｢E鬩墓得・ｽ・ｩEE郢晢ｽｻE郢晢ｽｻE
 		if (mvPosition.y <= 0.0f || mvPosition.y <= hitPos.y)
 		{
 			mvPosition.y = hitPos.y;
 		}
 	}
 
-	/////////////////////////髯橸ｽ｢遶丞｣ｹ繝ｻ髯檸萓ｭ隨ｳ繝ｻEE鬮ｮ竏ｵ繝ｻ髯橸ｽｳ郢晢ｽｻ///////////////////////////
+	/////////////////////////鬮ｯ讖ｸ・ｽ・｢驕ｶ荳橸ｽ｣・ｹ郢晢ｽｻ鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ驛｢譎｢・ｽ・ｻ///////////////////////////
 	bool hitwall = false;
 	bool hitwalls = false;
 	auto walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
 	if (!walls.empty())
 	{
-		// 髯檸萓ｭ隨ｳ繝ｻEE繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ繝ｻ邇匁､ｶ遶丞､ｲE蟶晏擅繝ｻE驍ｵE繝ｻE驛｢E郢晢ｽｻ
-		// hint: 髴托ｽｴ繝ｻE髴托ｽ･繝ｻE驍ｵE繝ｻE髯ｷ繝ｻEE鬨ｾ繝ｻ繝ｻ邵ｲ蝣､EE繝ｻE1髫ｴE陞｢E郢晢ｽｻ髯橸ｽ｢遶丞､ｲEE驍ｵE陋ｹE隲､蜥弱♀郢ｧ迚咎｣ｭ驍ｵE繝ｻE髯具ｽｻ繝ｻE髯橸ｽｳ陞｢E繝ｻ繝ｻEE陟募ｨｯ繝ｻ驍ｵE郢晢ｽｻ郢晢ｽｻ驍ｵE繝ｻE驍ｵE郢晢ｽｻ髫ｴE陞滂ｽｲ繝ｻE闔�蛹・E繝ｻE髣包ｽｳ陞・EE陝ｲE遶頑･｢E蜀ｶ萓ｭ隨ｳ繝ｻEE繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ隨ｳ繝ｻ謦ｻ繝ｻE髯ｷE陋ｹE郢晢ｽｻ髯ｷ繝ｻEE鬨ｾ繝ｻ繝ｻ繝ｻ蟶晁箔郢晢ｽｻ遶擾ｽｴ驛｢E郢晢ｽｻ
+		// 鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ驍・戟・､・ｶ驕ｶ荳橸ｽ､・ｲE陝ｶ譎乗套郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢E驛｢譎｢・ｽ・ｻ
+		// hint: 鬮ｴ謇假ｽｽ・ｴ郢晢ｽｻE鬮ｴ謇假ｽｽ・･郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ・ｷ郢晢ｽｻEE鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ驍ｵ・ｲ陜｣・､EE郢晢ｽｻE1鬮ｫ・ｴE髯橸ｽ｢E驛｢譎｢・ｽ・ｻ鬮ｯ讖ｸ・ｽ・｢驕ｶ荳橸ｽ､・ｲEE鬩搾ｽｵE髯具ｽｹE髫ｲ・､陷･蠑ｱ笙驛｢・ｧ霑壼虫・｣・ｭ鬩搾ｽｵE郢晢ｽｻE鬮ｯ蜈ｷ・ｽ・ｻ郢晢ｽｻE鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E郢晢ｽｻ郢晢ｽｻEE髯溷供・ｨ・ｯ郢晢ｽｻ鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ鬮ｫ・ｴE髯樊ｻゑｽｽ・ｲ郢晢ｽｻE髣費ｿｽ陋ｹ繝ｻE郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ髯槭・EE髯晢ｽｲE驕ｶ鬆托ｽ･・｢E陷・ｶ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ髫ｨ・ｳ郢晢ｽｻ隰ｦ・ｻ郢晢ｽｻE鬮ｯ・ｷE髯具ｽｹE驛｢譎｢・ｽ・ｻ鬮ｯ・ｷ郢晢ｽｻEE鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ郢晢ｽｻ陝ｶ譎∫ｮ秘Δ譎｢・ｽ・ｻ驕ｶ謫ｾ・ｽ・ｴ鬩幢ｽ｢E驛｢譎｢・ｽ・ｻ
 		for (int i = 0; i < walls.size(); i++)
 		{
 			Wall* wall = dynamic_cast<Wall*>(walls.at(i));
@@ -433,7 +433,7 @@ void Player3D::MoveEx()
 			{
 				std::vector<VERTEX3D> vertex = wall->GetVertex();
 
-				// 驛｢譎丞ｹｲE讓抵ｽｹE繝ｻE驛｢譎｢EE驛｢譎｢EE驛｢E髮区ｨ奇ｽ｡竏ｫEEE驛｢E陋ｹE遶包ｽｧ驍ｵE繝ｻE驛｢E繝ｻE驛｢譎丞ｹｲ邵ｺ譎会ｽｹ譎｢EE髯懷姓E譏ｴ繝ｻ髯具ｽｻ繝ｻE髯橸ｽｳ陞｢E遶雁�､EE遶乗劼EE遶丞｣ｹ繝ｻ髣包ｽｳE繝ｻE髮区ｩｸEE繝ｻE驛｢譎・E諛ウE繝ｻE驛｢譎｢EE驍ｵE繝ｻE驍ｵE繝ｻE髯檸萓ｭ隨ｳ繝ｻEE鬮ｮ竏ｵ繝ｻ髯橸ｽｳ陞｢E繝ｻ蟶晏距陟募ｨｯ魘ｬ
+				// 鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲE隶捺慣・ｽ・ｹE郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E鬮ｮ蛹ｺ・ｨ螂・ｽｽ・｡遶擾ｽｫEEE鬩幢ｽ｢E髯具ｽｹE驕ｶ蛹・ｽｽ・ｧ鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲ驍ｵ・ｺ隴惹ｼ夲ｽｽ・ｹ隴趣ｽ｢EE鬮ｯ諛ｷ蟋摘隴擾ｽｴ郢晢ｽｻ鬮ｯ蜈ｷ・ｽ・ｻ郢晢ｽｻE鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E驕ｶ髮・ｿｽ・､EE驕ｶ荵怜款EE驕ｶ荳橸ｽ｣・ｹ郢晢ｽｻ鬮｣蛹・ｽｽ・ｳE郢晢ｽｻE鬮ｮ蛹ｺ・ｩ・ｸEE郢晢ｽｻE鬩幢ｽ｢隴弱・E隲帙えE郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E郢晢ｽｻ陝ｶ譎剰ｷ晞辧蜍滂ｽｨ・ｯ鬲假ｽｬ
 				if (HitCheck_Capsule_Triangle(
 					mvPosition,
 					VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
@@ -450,10 +450,10 @@ void Player3D::MoveEx()
 					SetFontSize(40);
 // removed
 // removed
-					// 髯橸ｽ｢遶丞｣ｺ繝ｻ髮取腸EE驍ｵE繝ｻE驍ｵE繝ｻE鬮ｯE陟暮ｯ会ｽｿE驛｢E陋ｹE遶包ｽｧ驍ｵE繝ｻE驛｢譎冗函邵ｺ驢搾ｽｹ譎冗樟E譎右E髮区ｧｫ蠕宣辧霈忍
-					VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 髯橸ｽ｢遶擾ｽｵ繝ｻE繝ｻE驍ｵE郢晢ｽｻ郢晢ｽｻ驛｢E繝ｻE驛｢譎冗樟EE
-					float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 鬩募∞EE髯ｷ讎奇ｽ｢轣假ｽｩE髯ｷE闔会ｽ｣郢晢ｽｻ驛｢E繝ｻE驛｢譎冗樟E譎右E繝ｻE髯ｷE隶殺E繝ｻE驛｢譎冗函邵ｺ驢搾ｽｹ譎冗樟E譎右E繝ｻE驍ｵE遶乗劼EE遶丞｣ｹ繝ｻ髮主｢摘繝ｻE陞｢E遶雁�､EE繝ｻE髯ｷ郢晢ｽｻ繝ｻE鬮ｦE繝ｻ螳夲ｽｱ蠑ｱEEE竏ｫEE郢晢ｽｻ
-					slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 髯橸ｽ｢遶擾ｽｵ繝ｻE繝ｻE驍ｵE郢晢ｽｻ郢晢ｽｻ驛｢E繝ｻE驛｢譎冗樟E譎右E陞ｳ螟ｲEE髢ｧE繝ｻE郢晢ｽｻ
+					// 鬮ｯ讖ｸ・ｽ・｢驕ｶ荳橸ｽ｣・ｺ郢晢ｽｻ鬮ｮ蜿冶・EE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬯ｮ・ｯE髯滓坩・ｯ莨夲ｽｽ・ｿE鬩幢ｽ｢E髯具ｽｹE驕ｶ蛹・ｽｽ・ｧ鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢隴主・蜃ｽ驍ｵ・ｺ鬩｢謳ｾ・ｽ・ｹ隴主・讓檸隴主承E鬮ｮ蛹ｺ・ｧ・ｫ陟募ｮ｣霎ｧ髴亥ｿ・
+					VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 鬮ｯ讖ｸ・ｽ・｢驕ｶ謫ｾ・ｽ・ｵ郢晢ｽｻE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸E
+					float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 鬯ｩ蜍溪・EE鬮ｯ・ｷ隶主･・ｽｽ・｢霓｣蛛・ｽｽ・ｩE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E郢晢ｽｻE鬮ｯ・ｷE髫ｶ谿ｺE郢晢ｽｻE鬩幢ｽ｢隴主・蜃ｽ驍ｵ・ｺ鬩｢謳ｾ・ｽ・ｹ隴主・讓檸隴主承E郢晢ｽｻE鬩搾ｽｵE驕ｶ荵怜款EE驕ｶ荳橸ｽ｣・ｹ郢晢ｽｻ鬮ｮ荳ｻ・｢鞫倡ｹ晢ｽｻE髯橸ｽ｢E驕ｶ髮・ｿｽ・､EE郢晢ｽｻE鬮ｯ・ｷ驛｢譎｢・ｽ・ｻ郢晢ｽｻE鬯ｮ・ｦE郢晢ｽｻ陞ｳ螟ｲ・ｽ・ｱ陟托ｽｱEEE遶擾ｽｫEE驛｢譎｢・ｽ・ｻ
+					slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 鬮ｯ讖ｸ・ｽ・｢驕ｶ謫ｾ・ｽ・ｵ郢晢ｽｻE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E髯橸ｽｳ陞滂ｽｲEE鬮｢・ｧE郢晢ｽｻE驛｢譎｢・ｽ・ｻ
 
 					if (hitwall == true && hitwalls == false)
 					{
@@ -481,10 +481,10 @@ void Player3D::MoveEx()
 void Player3D::Damage(float damage)
 {
 	AnimationState now = mpModel->GetNowState();
-	if (mnInvincibleTimer > 0) return; // 霎滂ｽ｡隰ｨE隴弱ｋ菫｣闕ｳE邵ｺE郢晉ｹ晢ｽ｡郢晢ｽｼ郢ｧE霎滂ｽ｡陷会ｽｹ
-	if (damage - mpEquipmentManager->GetDamage() <= 0) { mfHp -= 1; return; }//隴幄抄蠑ｱ縲堤ｹｧ繧茨ｽｸ蟶呻ｽ臥ｸｺ繝ｻ
-	if (now == ANIMATION_SLIDE)return;
-	mfHp -= (damage-mpEquipmentManager->GetDamage());//髯ｬ繝ｻE邵ｺ蜉ｱ窶ｻ邵ｺ繝ｻE郢晉ｹ晢ｽ｡郢晢ｽｼ郢ｧE陋ｻ繝ｻ繝�郢晢ｽ｡郢晢ｽｼ郢ｧE郢ｧ蜻茨ｽｸ蟶呻ｽ臥ｸｺ繝ｻ
+	if (mnInvincibleTimer > 0) return; // 髴取ｻゑｽｽ・｡髫ｰ・ｨE髫ｴ蠑ｱ・玖将・｣髣包ｽｳE驍ｵ・ｺE驛｢譎会ｽｹ譎｢・ｽ・｡驛｢譎｢・ｽ・ｼ驛｢・ｧE髴取ｻゑｽｽ・｡髯ｷ莨夲ｽｽ・ｹ
+	if (damage - mpEquipmentManager->GetDamage() <= 0) { mfHp -= 1; return; }//髫ｴ蟷・割陟托ｽｱ邵ｲ蝣､・ｹ・ｧ郢ｧ闌ｨ・ｽ・ｸ陝ｶ蜻ｻ・ｽ閾･・ｸ・ｺ郢晢ｽｻ
+	if (now == ANIMATION_SLIDE || now == ANIMATION_ATTACKSLIDE)return;
+	mfHp -= (damage-mpEquipmentManager->GetDamage());//鬮ｯ・ｬ郢晢ｽｻE驍ｵ・ｺ陷会ｽｱ遯ｶ・ｻ驍ｵ・ｺ郢晢ｽｻE驛｢譎会ｽｹ譎｢・ｽ・｡驛｢譎｢・ｽ・ｼ驛｢・ｧE髯具ｽｻ郢晢ｽｻ郢晢ｿｽ驛｢譎｢・ｽ・｡驛｢譎｢・ｽ・ｼ驛｢・ｧE驛｢・ｧ陷ｻ闌ｨ・ｽ・ｸ陝ｶ蜻ｻ・ｽ閾･・ｸ・ｺ郢晢ｽｻ
 
 }
 
@@ -498,12 +498,12 @@ void Player3D::Evasion()
 		mpModel->SetLoop(false);
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		
-		// 郢ｧE郢晢ｽｩ郢ｧE郢戲縺・・ｳ郢ｧE鬮｢蜿･E蛹ｺ蜃ｾ邵ｺE霎滂ｽ｡隰ｨE隴弱ｋ菫｣郢ｧ蛛ｵ縺晉ｹ戲繝ｨ (陜難ｽｺ隴幢ｽｬ30郢晁ｼ釆樒ｹ晢ｽｼ郢・+ 髴托ｽｽ陷芽ｾ滂ｽ｡隰ｨE郢晁ｼ釆樒ｹ晢ｽｼ郢・
+		// 驛｢・ｧE驛｢譎｢・ｽ・ｩ驛｢・ｧE驛｢謌ｲ邵ｺ繝ｻ繝ｻ・ｳ驛｢・ｧE鬯ｮ・｢陷ｿ・･E陋ｹ・ｺ陷・ｽｾ驍ｵ・ｺE髴取ｻゑｽｽ・｡髫ｰ・ｨE髫ｴ蠑ｱ・玖将・｣驛｢・ｧ陋幢ｽｵ邵ｺ譎会ｽｹ謌ｲ郢晢ｽｨ (髯憺屮・ｽ・ｺ髫ｴ蟷｢・ｽ・ｬ30驛｢譎・ｽｼ驥・ｨ抵ｽｹ譎｢・ｽ・ｼ驛｢繝ｻ+ 鬮ｴ謇假ｽｽ・ｽ髯ｷ闃ｽ・ｾ貊ゑｽｽ・｡髫ｰ・ｨE驛｢譎・ｽｼ驥・ｨ抵ｽｹ譎｢・ｽ・ｼ驛｢繝ｻ
 		mnInvincibleTimer = 30 + mnUpgradeEvasionInvincibility;
 	}
 	if (mpModel->GetNowState() == ANIMATION_SLIDE)
 	{
-		// 陜玲ｨ｣竏ｩ鬨ｾ貅ｷEE繝ｻ驛・譎槫ｱｬ繝ｻ蟲ｨ竊鍋ｹｧE郢戲繝ｻ郢ｧE郢晢ｽｬ郢晢ｽｼ郢晉甥繝ｻ郢ｧ螳夲ｽｶE邵ｺ繝ｻ
+		// 髯懃軸・ｨ・｣遶擾ｽｩ鬯ｨ・ｾ雋・ｽｷEE郢晢ｽｻ鬩帙・隴取ｧｫ・ｱ・ｬ郢晢ｽｻ陝ｲ・ｨ遶企豪・ｹ・ｧE驛｢謌ｲ郢晢ｽｻ驛｢・ｧE驛｢譎｢・ｽ・ｬ驛｢譎｢・ｽ・ｼ驛｢譎臥櫨郢晢ｽｻ驛｢・ｧ陞ｳ螟ｲ・ｽ・ｶE驍ｵ・ｺ郢晢ｽｻ
 		mvPosition = VAdd(mvPosition, VScale(oldmoveVec, mfEvasionSpeed + mfUpgradeEvasionSpeed));
 		mpModel->SetPosition(mvPosition);
 	}
@@ -519,15 +519,15 @@ void Player3D::Evasion()
 void Player3D::RotationByMove()
 {
 
-	//////髣碑崟螳ｦ鬯ｮ繝ｻEE郢晢ｽｻ遯ｶE驍ｵE繝ｻE驍ｵE陷会ｽｱ繝ｻ讓｣蝗馴寞讖ｸEE繝ｻE驛｢E陜｣E髢ｧ繝ｻ諤殺E
+	//////鬮｣遒大ｴ溯楜・ｦ鬯ｯ・ｮ郢晢ｽｻEE驛｢譎｢・ｽ・ｻ驕ｯ・ｶE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ郢晢ｽｻ隶難ｽ｣陜鈴ｦｴ蟇櫁ｮ厄ｽｸEE郢晢ｽｻE鬩幢ｽ｢E髯懶ｽ｣E鬮｢・ｧ郢晢ｽｻ隲､谿ｺE
 	//Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag_3D_Camera)
-	//髴托ｽｴ繝ｻE髯懶ｽｨ繝ｻE驍ｵE繝ｻE髯懃軸E繝ｻEE繝ｻE髯区ｻゑｽｽE驍ｵE闕ｵ譎｢E陋ｾE繝ｻE髫ｶ轣倡函郢晢ｽｻ髯懃軸E繝ｻEE繝ｻE髯区ｻゑｽｽE驍ｵE繝ｻE髯晢ｽｾ繝ｻE髯具ｽｻ郢晢ｽｻ繝ｻ螳夲ｽｱ蠑ｱEEE竏ｫEE郢晢ｽｻ
+	//鬮ｴ謇假ｽｽ・ｴ郢晢ｽｻE鬮ｯ諛ｶ・ｽ・ｨ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ諛・ｻｸE郢晢ｽｻEE郢晢ｽｻE鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩搾ｽｵE髣包ｽｵ隴趣ｽ｢E髯具ｽｾE郢晢ｽｻE鬮ｫ・ｶ霓｣蛟｡蜃ｽ驛｢譎｢・ｽ・ｻ鬮ｯ諛・ｻｸE郢晢ｽｻEE郢晢ｽｻE鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩搾ｽｵE郢晢ｽｻE鬮ｯ譎｢・ｽ・ｾ郢晢ｽｻE鬮ｯ蜈ｷ・ｽ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ陞ｳ螟ｲ・ｽ・ｱ陟托ｽｱEEE遶擾ｽｫEE驛｢譎｢・ｽ・ｻ
 	float subAngle = mfTargetAngle - mfAngle;
 
 
 
-	//驍ｵE郢ｧ繝ｻE邇厄ｽｭ繝ｻEE髯ｷE闔会ｽ｣E・ｰ驛｢E陝ｲE遶暮ΔE陋ｹE陝E髯ｷE闔会ｽ｣郢晢ｽｻ髯晢ｽｾ繝ｻE驍ｵE鬲・・ｽE隰・EE陋妣EE闔牙遜EE繝ｻE髣比ｼ夲ｽｽE髣包ｽｳ陞・EE闔�蛹・E繝ｻE髣包ｽｳ陷茨ｽｷ繝ｻE陝ｲE遶企豪EE繝ｻE驛｢E闕ｵ譎｢E繝ｻEE繝ｻE驍ｵE陟募ｨｯ繝ｻ驍ｵE郢晢ｽｻ郢晢ｽｻ驍ｵE陞｢E遶界EE繝ｻE驍ｵE繝ｻE
-	//髯晢ｽｾ繝ｻE驍ｵE繝ｻE髯区ｻゑｽｽE驍ｵE鬲・・ｽE隰・EE陋妣EE髯應ｼ夲ｽｽE繝ｻE髣包ｽｳ陞・EE闔�蛹・E繝ｻE髣包ｽｳ陷茨ｽｷ繝ｻE陝ｲE遶企豪EE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驍ｵE郢晢ｽｻ隨ｳ繝ｻEE髢ｾE雎ｬE髮殺EE驍ｵE陷ｷE繝ｻ繝ｻ
+	//鬩搾ｽｵE驛｢・ｧ郢晢ｽｻE驍・私・ｽ・ｭ郢晢ｽｻEE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣E繝ｻ・ｰ鬩幢ｽ｢E髯晢ｽｲE驕ｶ證ｮﾎ忍髯具ｽｹE髯敖E鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬮ｯ譎｢・ｽ・ｾ郢晢ｽｻE鬩搾ｽｵE鬯ｲ繝ｻ繝ｻ・ｽE髫ｰ繝ｻEE髯句ｦ｣EE髣皮甥驕廢E郢晢ｽｻE鬮｣豈費ｽｼ螟ｲ・ｽ・ｽE鬮｣蛹・ｽｽ・ｳ髯槭・EE髣費ｿｽ陋ｹ繝ｻE郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ髯ｷ闌ｨ・ｽ・ｷ郢晢ｽｻE髯晢ｽｲE驕ｶ莨∬ｱｪEE郢晢ｽｻE鬩幢ｽ｢E髣包ｽｵ隴趣ｽ｢E郢晢ｽｻEE郢晢ｽｻE鬩搾ｽｵE髯溷供・ｨ・ｯ郢晢ｽｻ鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩搾ｽｵE髯橸ｽ｢E驕ｶ逡窪E郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE
+	//鬮ｯ譎｢・ｽ・ｾ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩搾ｽｵE鬯ｲ繝ｻ繝ｻ・ｽE髫ｰ繝ｻEE髯句ｦ｣EE鬮ｯ諛会ｽｼ螟ｲ・ｽ・ｽE郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ髯槭・EE髣費ｿｽ陋ｹ繝ｻE郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ髯ｷ闌ｨ・ｽ・ｷ郢晢ｽｻE髯晢ｽｲE驕ｶ莨∬ｱｪEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ髫ｨ・ｳ郢晢ｽｻEE鬮｢・ｾE髮趣ｽｬE鬮ｮ谿ｺEE鬩搾ｽｵE髯ｷ・ｷE郢晢ｽｻ郢晢ｽｻ
 	if (subAngle < -DX_PI_F)
 	{
 		subAngle += DX_TWO_PI_F;
@@ -537,7 +537,7 @@ void Player3D::RotationByMove()
 		subAngle -= DX_TWO_PI_F;
 	}
 
-	//鬮ｫ闍難ｽｲ讖ｸEE繝ｻE驍ｵE繝ｻE髯晢ｽｾ繝ｻE髯具ｽｻ郢晢ｽｻ繝ｻ螳壽・EE郢晢ｽｻ遶願侭繝ｻ髣雁ｨｯ繝ｻ鬮ｴ蜿ｰEEE驍ｵE闔会ｽ｣繝ｻ繝ｻ
+	//鬯ｮ・ｫ髣埼屮・ｽ・ｲ隶厄ｽｸEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ譎｢・ｽ・ｾ郢晢ｽｻE鬮ｯ蜈ｷ・ｽ・ｻ驛｢譎｢・ｽ・ｻ郢晢ｽｻ陞ｳ螢ｽ繝ｻEE驛｢譎｢・ｽ・ｻ驕ｶ鬘倅ｾｭ郢晢ｽｻ鬮｣髮・ｽｨ・ｯ郢晢ｽｻ鬯ｮ・ｴ陷ｿ・ｰEEE鬩搾ｽｵE髣比ｼ夲ｽｽ・｣郢晢ｽｻ郢晢ｽｻ
 	if (subAngle > 0.0f)
 	{
 		subAngle -= ROTATE_SPEED;
@@ -556,17 +556,17 @@ void Player3D::RotationByMove()
 	}
 
 
-	//髣碑崟螳ｦ鬯ｮ繝ｻEE郢晢ｽｻ遯ｶE驍ｵE繝ｻE驍ｵE陷会ｽｱ繝ｻ讓｣蝗馴寞讖ｸEE繝ｻE驛｢E陜｣E髢ｧ繝ｻ諤殺E
+	//鬮｣遒大ｴ溯楜・ｦ鬯ｯ・ｮ郢晢ｽｻEE驛｢譎｢・ｽ・ｻ驕ｯ・ｶE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ郢晢ｽｻ隶難ｽ｣陜鈴ｦｴ蟇櫁ｮ厄ｽｸEE郢晢ｽｻE鬩幢ｽ｢E髯懶ｽ｣E鬮｢・ｧ郢晢ｽｻ隲､谿ｺE
 	mfAngle = mfTargetAngle - subAngle;
 
 
-	//髯懃軸E繝ｻEE繝ｻE髯区ｻゑｽｽE驛｢E陞ｳ螟ｲEE繝ｻE髯橸ｽｳ郢晢ｽｻ
+	//鬮ｯ諛・ｻｸE郢晢ｽｻEE郢晢ｽｻE鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩幢ｽ｢E髯橸ｽｳ陞滂ｽｲEE郢晢ｽｻE鬮ｯ讖ｸ・ｽ・ｳ驛｢譎｢・ｽ・ｻ
 	mvRotation.y = mfAngle + DX_PI_F;
-	//驛｢譎｢EE驛｢譏ｴ繝ｻE譎右E繝ｻE髣費ｽｨ隴擾ｽｴ遶擾ｽｴ驛｢E郢晢ｽｻ
+	//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻE隴主承E郢晢ｽｻE鬮｣雋ｻ・ｽ・ｨ髫ｴ謫ｾ・ｽ・ｴ驕ｶ謫ｾ・ｽ・ｴ鬩幢ｽ｢E驛｢譎｢・ｽ・ｻ
 	mpModel->SetRotation(mvRotation);
 
-	////髯懃軸E繝ｻEE繝ｻE髯区ｻゑｽｽE驛｢E陞ｳ螟ｲEE繝ｻE髯橸ｽｳ郢晢ｽｻ
-	////驛｢譎｢EE驛｢譏ｴ繝ｻE譎右E繝ｻE髣費ｽｨ隴擾ｽｴ遶擾ｽｴ驛｢E郢晢ｽｻ
+	////鬮ｯ諛・ｻｸE郢晢ｽｻEE郢晢ｽｻE鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩幢ｽ｢E髯橸ｽｳ陞滂ｽｲEE郢晢ｽｻE鬮ｯ讖ｸ・ｽ・ｳ驛｢譎｢・ｽ・ｻ
+	////鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻE隴主承E郢晢ｽｻE鬮｣雋ｻ・ｽ・ｨ髫ｴ謫ｾ・ｽ・ｴ驕ｶ謫ｾ・ｽ・ｴ鬩幢ｽ｢E驛｢譎｢・ｽ・ｻ
 
 
 }
@@ -583,7 +583,7 @@ void Player3D::Jump()
 		mbjump = true;
 		mfjumpPower = JUMP_POWER;
 
-		//驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驛｢譎樊味陝ｷ謌頑ｲり嵯譏ｴE驛｢譏懶ｽｹ譁滄豪E譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE驍ｵE陷ｷE繝ｻ繝ｻ
+		//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴取ｨ雁袖髯晢ｽｷ隰碁�托ｽｲ繧雁ｵｯ隴擾ｽｴE鬩幢ｽ｢隴乗・・ｽ・ｹ隴∵ｻ・ｱｪE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE髯ｷ・ｷE郢晢ｽｻ郢晢ｽｻ
 		
 	}
 
@@ -600,16 +600,16 @@ void Player3D::Result()
 void Player3D::Attack()
 {
 	AnimationState now = mpModel->GetNowState();
-	int mouseInput = GetMouseInput(); // 驛｢譎・E邵ｺ閧ｲEE繝ｻE驍ｵE繝ｻE髴托ｽ･繝ｻE髫ｲE闕ｵ譎｢E螳壽╂鬮｢繝ｻE郢晢ｽｻ
+	int mouseInput = GetMouseInput(); // 鬩幢ｽ｢隴弱・E驍ｵ・ｺ髢ｧ・ｲEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｴ謇假ｽｽ・･郢晢ｽｻE鬮ｫ・ｲE髣包ｽｵ隴趣ｽ｢E陞ｳ螢ｽ笊るｬｮ・｢郢晢ｽｻE驛｢譎｢・ｽ・ｻ
 	if (mouseInput & MOUSE_INPUT_LEFT && AttackCount >= AttackTime&&now!=ANIMATION_ATTACK)
 	{
 		AttackCount = 0;
 		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACK);
-		//髫ｰE繝ｻE髫ｰE郢晢ｽｻE逧ｮE譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髯樊ｺｽ蛻､陝ｲE
+		//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻE騾ｧ・ｮE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｯ讓奇ｽｺ・ｽ陋ｻ・､髯晢ｽｲE
 		mpModel->ChangeAnimation(ANIMATION_ATTACK);
-		//驛｢譎｢EE驛｢譎｢EE驛｢譎丞ｹｲ郢晢ｽｻ驍ｵE髴域喚髮ｷ驍ｵE繝ｻE驍ｵE郢晢ｽｻ
+		//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲ驛｢譎｢・ｽ・ｻ鬩搾ｽｵE鬮ｴ蝓溷繭鬮ｮ・ｷ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ
 		mpModel->SetLoop(false);
-		//驛｢譎｢EE驛｢譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE髯溷供E蠕窪髯溯ｼ忍繝ｻEE逧ｮE譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髫ｰ魃会ｽｽE驍ｵE郢晢ｽｻ
+		//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬮ｯ貅ｷ萓妣陟慕ｪｪ鬮ｯ貅ｯ・ｼ蠢咲ｹ晢ｽｻEE騾ｧ・ｮE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｫ・ｰ鬲・ｼ夲ｽｽ・ｽE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		if (mpModel->GetIsSeparate() == true)
 		{
@@ -625,10 +625,17 @@ void Player3D::Attack()
 	auto pObjList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	if (now == ANIMATION_ATTACK)
 	{
-	
 		AttackState = Attack_Normal;
 		
-
+		if (AttackCount == 10 || AttackCount == 20)
+		{
+			for (int i = 0; i < pObjList.size(); i++)
+			{
+				Enemy* pEne = dynamic_cast<Enemy*>(pObjList.at(i));
+				if (pEne == nullptr) continue;
+				pEne->SetHitjudgment(false);
+			}
+		}
 	}
 
 
@@ -638,19 +645,19 @@ void Player3D::Attack()
 void Player3D::AttackJump()
 {
 	AnimationState now = mpModel->GetNowState();
-	int mouseInput = GetMouseInput(); // 驛｢譎・E邵ｺ閧ｲEE繝ｻE驍ｵE繝ｻE髴托ｽ･繝ｻE髫ｲE闕ｵ譎｢E螳壽╂鬮｢繝ｻE郢晢ｽｻ
+	int mouseInput = GetMouseInput(); // 鬩幢ｽ｢隴弱・E驍ｵ・ｺ髢ｧ・ｲEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｴ謇假ｽｽ・･郢晢ｽｻE鬮ｫ・ｲE髣包ｽｵ隴趣ｽ｢E陞ｳ螢ｽ笊るｬｮ・｢郢晢ｽｻE驛｢譎｢・ｽ・ｻ
 	if (mouseInput & MOUSE_INPUT_LEFT && AttackJumpCount >= AttackJumpTime&&!mbjump)
 	{
 		Master::mpSoundManager->PlaySE(SoundManager::SE_JUMP);
 		mbjump = true;
 		AttackJumpCount = 0;
 		mfjumpPower = JUMP_POWER;
-		//髫ｰE繝ｻE髫ｰE郢晢ｽｻE逧ｮE譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髯樊ｺｽ蛻､陝ｲE
+		//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻE騾ｧ・ｮE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｯ讓奇ｽｺ・ｽ陋ｻ・､髯晢ｽｲE
 		mpModel->ChangeAnimation(ANIMATION_ATTACKJUMP);
-		//驛｢譎｢EE驛｢譎｢EE驛｢譎丞ｹｲ郢晢ｽｻ驍ｵE髴域喚髮ｷ驍ｵE繝ｻE驍ｵE郢晢ｽｻ
+		//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲ驛｢譎｢・ｽ・ｻ鬩搾ｽｵE鬮ｴ蝓溷繭鬮ｮ・ｷ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ
 		mpModel->SetLoop(false);
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
-		//驛｢譎｢EE驛｢譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE髯溷供E蠕窪髯溯ｼ忍繝ｻEE逧ｮE譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髫ｰ魃会ｽｽE驍ｵE郢晢ｽｻ
+		//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬮ｯ貅ｷ萓妣陟慕ｪｪ鬮ｯ貅ｯ・ｼ蠢咲ｹ晢ｽｻEE騾ｧ・ｮE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｫ・ｰ鬲・ｼ夲ｽｽ・ｽE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ
 		
 		if (mpModel->GetIsSeparate() == true)
 		{
@@ -689,7 +696,7 @@ void Player3D::AttackJump()
 		if (mvPosition.y <= hitPos.y)
 		{
 			OnJumpCollider = true;
-			mvPosition.y = hitPos.y;//Y髯溯ｶ｣EE髫ｶ轣倡函繝ｻ繝ｻ驍ｵE繝ｻE驍ｵE陷会ｽｱ遯ｶE驍ｵE驗呻ｽｫ繝ｻE
+			mvPosition.y = hitPos.y;//Y鬮ｯ貅ｯ・ｶ・｣EE鬮ｫ・ｶ霓｣蛟｡蜃ｽ郢晢ｽｻ郢晢ｽｻ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ驕ｯ・ｶE鬩搾ｽｵE鬩怜遜・ｽ・ｫ郢晢ｽｻE
 			
 		}
 		
@@ -707,22 +714,23 @@ void Player3D::AttackJump()
 void Player3D::AttackSlide()
 {
 	AnimationState now = mpModel->GetNowState();
-	int mouseInput = GetMouseInput(); // 驛｢譎・E邵ｺ閧ｲEE繝ｻE驍ｵE繝ｻE髴托ｽ･繝ｻE髫ｲE闕ｵ譎｢E螳壽╂鬮｢繝ｻE郢晢ｽｻ
+	int mouseInput = GetMouseInput(); // 鬩幢ｽ｢隴弱・E驍ｵ・ｺ髢ｧ・ｲEE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｴ謇假ｽｽ・･郢晢ｽｻE鬮ｫ・ｲE髣包ｽｵ隴趣ｽ｢E陞ｳ螢ｽ笊るｬｮ・｢郢晢ｽｻE驛｢譎｢・ｽ・ｻ
 	if (mouseInput & MOUSE_INPUT_LEFT && AttackSlideCount >= AttackSlideTime)
 	{
-		if (mpTarget == nullptr)return;//髫ｰE繝ｻE驛｢E陷ｻ驕ｺ讌ｳ鬩墓得EE驍ｵE繝ｻE驍ｵE鬮ｦE遶界EE繝ｻE驍ｵEEE隧�etrurn
+		if (mpTarget == nullptr)return;//鬮ｫ・ｰE郢晢ｽｻE鬩幢ｽ｢E髯ｷ・ｻ鬩包ｽｺ隶鯉ｽｳ鬯ｩ蠅灘ｾ勇E鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE鬯ｮ・ｦE驕ｶ逡窪E郢晢ｽｻE鬩搾ｽｵEEE髫ｧ・ｽetrurn
 		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
 		if (mpModel->GetIsSeparate())mpModel->mpSeparateAnimation->SetAnimationCount(1.2f);
 		else mpModel->mpAnimation->SetAnimationCount(1.2f);
 		AttackSlideCount = 0;
 		GoPosition = (VSub(mpTarget->GetPosition(), mvPosition));
-		TargetPosition = VScale(GoPosition, 0.5f);
+		TargetPosition = VScale(GoPosition, 2.5f / 30.0f);
 
-		//髫ｰE繝ｻE髫ｰE郢晢ｽｻE逧ｮE譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髯樊ｺｽ蛻､陝ｲE
+		//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻE騾ｧ・ｮE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｯ讓奇ｽｺ・ｽ陋ｻ・､髯晢ｽｲE
 		mpModel->ChangeAnimation(ANIMATION_ATTACKSLIDE);
-		//驛｢譎｢EE驛｢譎｢EE驛｢譎丞ｹｲ郢晢ｽｻ驍ｵE髴域喚髮ｷ驍ｵE繝ｻE驍ｵE郢晢ｽｻ
+		
+		//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴惹ｸ橸ｽｹ・ｲ驛｢譎｢・ｽ・ｻ鬩搾ｽｵE鬮ｴ蝓溷繭鬮ｮ・ｷ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ
 		mpModel->SetLoop(false);
-		//驛｢譎｢EE驛｢譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE髯溷供E蠕窪髯溯ｼ忍繝ｻEE逧ｮE譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE驍ｵE繝ｻE髫ｰ魃会ｽｽE驍ｵE郢晢ｽｻ
+		//鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬮ｯ貅ｷ萓妣陟慕ｪｪ鬮ｯ貅ｯ・ｼ蠢咲ｹ晢ｽｻEE騾ｧ・ｮE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩搾ｽｵE郢晢ｽｻE鬮ｫ・ｰ鬲・ｼ夲ｽｽ・ｽE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 	}
@@ -736,10 +744,11 @@ void Player3D::AttackSlide()
 		mfTargetAngle = atan2f(GoPosition.x, GoPosition.z);
 
 
-		////////////////驛｢E繝ｻE驛｢譎｢EE驛｢E繝ｻE驛｢譎牙愛陋ｻE髫ｰE郢晢ｽｻ郢晢ｽｻ髯溯ｶ｣EE髫ｶ轣倩｡ｷ繝ｻE繝ｻE髯ｷ髦ｪ繝ｻ///////////////
-		if (AttackSlideCount < 5)
+		////////////////鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴守甥諢幃刹・ｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬮ｯ貅ｯ・ｶ・｣EE鬮ｫ・ｶ霓｣蛟ｩ・｡・ｷ郢晢ｽｻE郢晢ｽｻE鬮ｯ・ｷ鬮ｦ・ｪ郢晢ｽｻ///////////////
+		if (AttackSlideCount < 30)
 		{
 			mvPosition = VAdd(mvPosition, TargetPosition);
+			Master::mpCamera->AddHorizontalAngle(90.0f / 30.0f);
 		}
 		mpModel->SetPosition(mvPosition);
 	}
@@ -763,8 +772,8 @@ void Player3D::bar()
 	float HpRatio = mfHp / GetAllStatusState(Object3D::Status_Hp);
 
 
-	mfHp = mfHp < 0 ? 0 : mfHp; //HP驍ｵE郢晢ｽｻ髫ｴ蟷｢EE髮畿驍ｵE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驍ｵEEE繝ｻ驛｢E髮区ｧｭ繝ｻ驛｢E陟暮ｯ会ｽｽ繝ｻ
-	mfHp = mfHp > GetAllStatusState(Object3D::Status_Hp) ? GetAllStatusState(Object3D::Status_Hp) : mfHp; //HP驍ｵE隴ｴE隲､蜻ｵ譽忍E髯区ｻゑｽｽE驛｢E陞ｳ螟ｲEE郢晢ｽｻ遶擾ｽｴ驍ｵE繝ｻE驍ｵE郢晢ｽｻ隨ｳ繝ｻEE陝ｲEE遶擾ｽｵ隲､蜻ｵ譽忍E髯区ｻゑｽｽE驛｢E髮区ｧｭ繝ｻ驛｢E陟暮ｯ会ｽｽ繝ｻ
+	mfHp = mfHp < 0 ? 0 : mfHp; //HP鬩搾ｽｵE驛｢譎｢・ｽ・ｻ鬮ｫ・ｴ陝ｷ・｢EE鬮ｮ逡ｿ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵEEE郢晢ｽｻ鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｭ郢晢ｽｻ鬩幢ｽ｢E髯滓坩・ｯ莨夲ｽｽ・ｽ郢晢ｽｻ
+	mfHp = mfHp > GetAllStatusState(Object3D::Status_Hp) ? GetAllStatusState(Object3D::Status_Hp) : mfHp; //HP鬩搾ｽｵE髫ｴ・ｴE髫ｲ・､陷ｻ・ｵ隴ｽ蠢孔鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩幢ｽ｢E髯橸ｽｳ陞滂ｽｲEE驛｢譎｢・ｽ・ｻ驕ｶ謫ｾ・ｽ・ｴ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ髫ｨ・ｳ郢晢ｽｻEE髯晢ｽｲEE驕ｶ謫ｾ・ｽ・ｵ髫ｲ・､陷ｻ・ｵ隴ｽ蠢孔鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｭ郢晢ｽｻ鬩幢ｽ｢E髯滓坩・ｯ莨夲ｽｽ・ｽ郢晢ｽｻ
 	unsigned int Color;
 	unsigned int Color2;
 	Color = GetColor(255, 255, 255);
@@ -778,8 +787,8 @@ void Player3D::bar()
 
 	float DashRatio = DashGuage / MaxDashGauge;
 
-	DashGuage = DashGuage < 0 ? 0 : DashGuage; //HP驍ｵE郢晢ｽｻ髫ｴ蟷｢EE髮畿驍ｵE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驍ｵEEE繝ｻ驛｢E髮区ｧｭ繝ｻ驛｢E陟暮ｯ会ｽｽ繝ｻ
-	DashGuage = DashGuage > MaxDashGauge ? MaxDashGauge : DashGuage; //HP驍ｵE隴ｴE隲､蜻ｵ譽忍E髯区ｻゑｽｽE驛｢E陞ｳ螟ｲEE郢晢ｽｻ遶擾ｽｴ驍ｵE繝ｻE驍ｵE郢晢ｽｻ隨ｳ繝ｻEE陝ｲEE遶擾ｽｵ隲､蜻ｵ譽忍E髯区ｻゑｽｽE驛｢E髮区ｧｭ繝ｻ驛｢E陟暮ｯ会ｽｽ繝ｻ
+	DashGuage = DashGuage < 0 ? 0 : DashGuage; //HP鬩搾ｽｵE驛｢譎｢・ｽ・ｻ鬮ｫ・ｴ陝ｷ・｢EE鬮ｮ逡ｿ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵEEE郢晢ｽｻ鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｭ郢晢ｽｻ鬩幢ｽ｢E髯滓坩・ｯ莨夲ｽｽ・ｽ郢晢ｽｻ
+	DashGuage = DashGuage > MaxDashGauge ? MaxDashGauge : DashGuage; //HP鬩搾ｽｵE髫ｴ・ｴE髫ｲ・､陷ｻ・ｵ隴ｽ蠢孔鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩幢ｽ｢E髯橸ｽｳ陞滂ｽｲEE驛｢譎｢・ｽ・ｻ驕ｶ謫ｾ・ｽ・ｴ鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ髫ｨ・ｳ郢晢ｽｻEE髯晢ｽｲEE驕ｶ謫ｾ・ｽ・ｵ髫ｲ・､陷ｻ・ｵ隴ｽ蠢孔鬮ｯ蛹ｺ・ｻ繧托ｽｽ・ｽE鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｭ郢晢ｽｻ鬩幢ｽ｢E髯滓坩・ｯ莨夲ｽｽ・ｽ郢晢ｽｻ
 	unsigned int Color3;
 	unsigned int Color4;
 	Color3 = GetColor(255, 255, 255);
@@ -790,8 +799,23 @@ void Player3D::bar()
 		pos2.y + size2.y - 1,
 		GetColor(255, 255, 0), true);
 
+	// Slide Attack Cooldown UI
+	float SlideRatio = (float)AttackSlideCount / AttackSlideTime;
+	SlideRatio = SlideRatio > 1.0f ? 1.0f : SlideRatio;
+	VECTOR uiSlidePos = { 30, 820 };
+	VECTOR uiSlideSize = { 140, 20 };
+	DrawBox(uiSlidePos.x, uiSlidePos.y, uiSlidePos.x + uiSlideSize.x, uiSlidePos.y + uiSlideSize.y, GetColor(0, 0, 0), true);
+	DrawBox(uiSlidePos.x + 1, uiSlidePos.y + 1, uiSlidePos.x + uiSlideSize.x * SlideRatio - 1, uiSlidePos.y + uiSlideSize.y - 1, GetColor(0, 255, 255), true);
+	DrawFormatString(uiSlidePos.x + 5, uiSlidePos.y + 2, GetColor(255, 255, 255), "SLIDE");
 
-
+	// Jump Attack Cooldown UI
+	float JumpRatio = (float)AttackJumpCount / AttackJumpTime;
+	JumpRatio = JumpRatio > 1.0f ? 1.0f : JumpRatio;
+	VECTOR uiJumpPos = { 180, 820 };
+	VECTOR uiJumpSize = { 150, 20 };
+	DrawBox(uiJumpPos.x, uiJumpPos.y, uiJumpPos.x + uiJumpSize.x, uiJumpPos.y + uiJumpSize.y, GetColor(0, 0, 0), true);
+	DrawBox(uiJumpPos.x + 1, uiJumpPos.y + 1, uiJumpPos.x + uiJumpSize.x * JumpRatio - 1, uiJumpPos.y + uiJumpSize.y - 1, GetColor(255, 0, 255), true);
+	DrawFormatString(uiJumpPos.x + 5, uiJumpPos.y + 2, GetColor(255, 255, 255), "JUMP");
 
 	mpLevelUp->Draw();
 	mpShortInventory->Draw();
@@ -826,13 +850,13 @@ void Player3D::Test()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_2))
 	{
-		// 髣厄ｽｴ髴郁ｲｻE螳夲ｽｫE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驛｢E郢ｧ繝ｻEE郢晢ｽｻ隨櫓鞫手ｮ抵ｽｫ繝ｻE繝ｻE鬮ｦE繝ｻE ---------------- //
+		// 鬮｣蜴・ｽｽ・ｴ鬮ｴ驛・ｽｲ・ｻE陞ｳ螟ｲ・ｽ・ｫE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢E驛｢・ｧ郢晢ｽｻEE驛｢譎｢・ｽ・ｻ髫ｨ讚馴椨謇具ｽｮ謚ｵ・ｽ・ｫ郢晢ｽｻE郢晢ｽｻE鬯ｮ・ｦE郢晢ｽｻE ---------------- //
 		Item::ItemInformation* itemInfo;
 		itemInfo = new Item::ItemInformation();
 		itemInfo->Count = 2;
 		itemInfo->ID = Item::ItemID::HEAL;
-		itemInfo->Name = "回復薬";
-		mpItemManager->AddItem(itemInfo);
+		itemInfo->Name = "蝗槫ｾｩ阮ｬ";
+		Master::mpItemManager->AddItem(itemInfo);
 
 		// --------------------------------------- //
 
@@ -840,18 +864,18 @@ void Player3D::Test()
 		itemInfo->Count = 1;
 		itemInfo->ID = Item::ItemID::HIGHHEAL;
 		itemInfo->Name = "highheal";
-		mpItemManager->AddItem(itemInfo);
+		Master::mpItemManager->AddItem(itemInfo);
 
 
 		itemInfo = new Item::ItemInformation();
 		itemInfo->Count = 2;
 		itemInfo->ID = Item::ItemID::POWER;
 		itemInfo->Name = "Power";
-		mpItemManager->AddItem(itemInfo);
+		Master::mpItemManager->AddItem(itemInfo);
 
-		// 鬨ｾ繝ｻ繝ｻE・ｦ
-		// 髫ｲE繝ｻE驍ｵE繝ｻE驍ｵEEE驛｢E繝ｻE驛｢譏ｴ繝ｻE蝣､EE闕ｵ譎｢E霑ＵemInformation驛｢E髮区ｧｫ蠕宣辧蜍溷ｹｲ隨櫓EE郢晢ｽｻ
-		// 驍ｵE隴擾ｽｴ繝ｻ讙趣ｽｹE隴ｽ蝸ｾemManager驍ｵE繝ｻE髮九ｑEE驍ｵE陷会ｽｱ遯ｶE驍ｵE郢ｧ繝ｻEE驛｢E郢晢ｽｻ
+		// 鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻE繝ｻ・ｦ
+		// 鬮ｫ・ｲE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵEEE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴擾ｽｴ郢晢ｽｻE陜｣・､EE髣包ｽｵ隴趣ｽ｢E髴托ｼｵemInformation鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｫ陟募ｮ｣霎ｧ陷肴ｺｷ・ｹ・ｲ髫ｨ讚摘E驛｢譎｢・ｽ・ｻ
+		// 鬩搾ｽｵE髫ｴ謫ｾ・ｽ・ｴ郢晢ｽｻ隶呵ｶ｣・ｽ・ｹE髫ｴ・ｽ陜ｸ・ｾemManager鬩搾ｽｵE郢晢ｽｻE鬮ｮ荵晢ｽ薦E鬩搾ｽｵE髯ｷ莨夲ｽｽ・ｱ驕ｯ・ｶE鬩搾ｽｵE驛｢・ｧ郢晢ｽｻEE鬩幢ｽ｢E驛｢譎｢・ｽ・ｻ
 
 		Weapon::WeaponDate* weaponInf;
 		weaponInf = new Weapon::WeaponDate;
@@ -872,14 +896,14 @@ void Player3D::Test()
 	}
 	if (InputManager::CheckDownKey(KEY_INPUT_3))
 	{
-		// 髣厄ｽｴ髴郁ｲｻE螳夲ｽｫE繝ｻE驍ｵE繝ｻE驍ｵE繝ｻE驛｢E郢ｧ繝ｻEE郢晢ｽｻ隨櫓鞫手ｮ抵ｽｫ繝ｻE繝ｻE鬮ｦE繝ｻE ---------------- //
+		// 鬮｣蜴・ｽｽ・ｴ鬮ｴ驛・ｽｲ・ｻE陞ｳ螟ｲ・ｽ・ｫE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢E驛｢・ｧ郢晢ｽｻEE驛｢譎｢・ｽ・ｻ髫ｨ讚馴椨謇具ｽｮ謚ｵ・ｽ・ｫ郢晢ｽｻE郢晢ｽｻE鬯ｮ・ｦE郢晢ｽｻE ---------------- //
 		Item::ItemInformation* itemInfo;
 		
 		itemInfo = new Item::ItemInformation();
 		itemInfo->Count = 6;
 		itemInfo->ID = Item::ItemID::SPEED;
 		itemInfo->Name = "speed";
-		mpItemManager->AddItem(itemInfo);
+		Master::mpItemManager->AddItem(itemInfo);
 		mpHaveMoney->AddMoney(1000);
 		mpLevelUp->AddXp(20);
 
@@ -948,13 +972,12 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 			if (check == pEne->GetEnemycoll())
 			{
 				
-				// 髫ｰE繝ｻE髫ｰE郢晢ｽｻE逧ｮE譎｢EE驛｢E繝ｻE驛｢譎｢EE驛｢譎｢EE&&Attack1
+				// 鬮ｫEE郢晢ｽｻE鬮ｫEE驛｢譎｢EEE騾ｧEE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE&&Attack1
 				if (now == ANIMATION_ATTACK && AttackState == Attack_Normal && !mbjump && !pEne->GetHitjudgment())
 				{
 					pEne->SetHitjudgment(true);
 					pEne->Damage(GetAllStatusState(Object3D::Status_Attack));
-					AttackHitJudgmentflag = true;
-					// 鬨ｾ蛹・E鬯ｮE繝ｻE髫ｰE繝ｻE驛｢E陟暮ｯ会ｽｼ繝ｻEE陝ｶ蜻ｻE繝ｻ
+					// 鬯ｨE陋ｹ繝ｻE鬯ｯEE郢晢ｽｻE鬮ｫEE郢晢ｽｻE鬩幢ｽ｢E髯滓坩E莨夲ｽｽE郢晢ｽｻEE髯晢ｽｶ陷ｻEE郢晢ｽｻ
 					Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);
 					new Effect(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/Damage.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
 				}
@@ -975,7 +998,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				pEne->SetHitjudgment(true);
 				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + mfAttackjump);
 
-				// 鬨ｾ蛹・E鬯ｮE繝ｻE髫ｰE繝ｻE驛｢E陟暮ｯ会ｽｼ繝ｻEE陝ｶ蜻ｻE繝ｻ
+				// 鬯ｨ・ｾ陋ｹ繝ｻE鬯ｯ・ｮE郢晢ｽｻE鬮ｫ・ｰE郢晢ｽｻE鬩幢ｽ｢E髯滓坩・ｯ莨夲ｽｽ・ｼ郢晢ｽｻEE髯晢ｽｶ陷ｻ・ｻE郢晢ｽｻ
 				Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);
 				new Effect(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 30.0f, 0.1f);
 			}
@@ -992,7 +1015,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 			{
 				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + mfAttackSlide);
 				pEne->SetHitjudgment(true);
-				// 鬨ｾ蛹・E鬯ｮE繝ｻE髫ｰE繝ｻE驛｢E陟暮ｯ会ｽｼ繝ｻEE陝ｶ蜻ｻE繝ｻ
+				// 鬯ｨ・ｾ陋ｹ繝ｻE鬯ｯ・ｮE郢晢ｽｻE鬮ｫ・ｰE郢晢ｽｻE鬩幢ｽ｢E髯滓坩・ｯ莨夲ｽｽ・ｼ郢晢ｽｻEE髯晢ｽｶ陷ｻ・ｻE郢晢ｽｻ
 				Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);
 				new Effect(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/Damage.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
 			}
@@ -1048,7 +1071,7 @@ void Player3D::SelectAttack()
 	{
 		DrawFormatString(300, 300, GetColor(255, 255, 255), "%d", ChangeStateCount);
 	}
-	if (!(now==ANIMATION_ATTACK)&& !(now == ANIMATION_ATTACKJUMP)&& !(now == ANIMATION_ATTACKSLIDE))//髯檸萓ｭ隨ｳ繝ｻEE鬮ｮ竏ｵ繝ｻ髯橸ｽｳ陞｢E郢晢ｽｻ髯溷桁EE髮趣ｽ｢繝ｻE
+	if (!(now==ANIMATION_ATTACK)&& !(now == ANIMATION_ATTACKJUMP)&& !(now == ANIMATION_ATTACKSLIDE))//鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E驛｢譎｢・ｽ・ｻ鬮ｯ貅ｷ譯・E鬮ｮ雜｣・ｽ・｢郢晢ｽｻE
 	{
 		auto mpEne = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		for (int i = 0; i < mpEne.size(); i++)
@@ -1074,7 +1097,7 @@ void Player3D::AttackCountClass()
 void Player3D::CollPositionUpdate()
 {
 	AnimationState now = mpModel->GetNowState();
-	// 髯檸萓ｭ隨ｳ繝ｻEE鬮ｮ竏ｵ繝ｻ髯橸ｽｳ陞｢E陝ｲE髫ｴ繝ｻEE
+	// 鬮ｯ讙ｸ關難ｽｭ髫ｨ・ｳ郢晢ｽｻEE鬯ｮ・ｮ遶擾ｽｵ郢晢ｽｻ鬮ｯ讖ｸ・ｽ・ｳ髯橸ｽ｢E髯晢ｽｲE鬮ｫ・ｴ郢晢ｽｻEE
 	mpCapsuleCollider->mvPosition = mvPosition;
 	mpCapsuleCollider->mvPosition2 = VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f));
 

@@ -25,11 +25,11 @@ public:
 	void SetNewEnemyFlag(bool flag) { mbNewEnemyflag = flag; }
 	bool GetNewEnemyFlag() { return mbNewEnemyflag; }
 
-	virtual CapsuleCollider* GetEnemycoll() { return mpCapsuleCollider; }//‚±‚ê‚ªŒ´ˆöHƒJƒvƒZƒ‹ƒRƒ‰ƒCƒ_[‚¾‚¯Á‚¦‚È‚¢
+	virtual CapsuleCollider* GetEnemycoll() { return mpCapsuleCollider; }//ã“ã‚ŒãŒåŸå› ï¼Ÿã‚«ãƒ—ã‚»ãƒ«ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã ã‘æ¶ˆãˆãªã„
 
 private:
-	bool mbHitSizeflag;//“–‚½‚è”»’è—p‚ÌƒTƒCƒY‚ğ‚Á‚Ä‚­‚é‚©‚Ç‚¤‚©‚Ìflag?
-	bool mbNewEnemyflag;//“G‚ğnew‚·‚é‚½‚ß‚Ìƒtƒ‰ƒOHg‚¢•û‚Í‚æ‚­‚í‚©‚ç‚È‚¢
+	bool mbHitSizeflag;//å½“ãŸã‚Šåˆ¤å®šç”¨ã®ã‚µã‚¤ã‚ºã‚’æŒã£ã¦ãã‚‹ã‹ã©ã†ã‹ã®flag?
+	bool mbNewEnemyflag;//æ•µã‚’newã™ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°ï¼Ÿä½¿ã„æ–¹ã¯ã‚ˆãã‚ã‹ã‚‰ãªã„
 
 public:
 	Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2,float Serch3, float xp,int money,bool isSeparateAnim);
@@ -41,7 +41,7 @@ public:
 	void Update()override;
 
 	virtual void Move();
-    virtual void RotationByMove();//ˆÚ“®‚É‚æ‚é‰ñ“]ˆ—
+    virtual void RotationByMove();//ç§»å‹•ã«ã‚ˆã‚‹å›è»¢å‡¦ç†
 	virtual void Damage(float damage);
 	virtual void AttackList();
 	virtual void Attack();
@@ -66,7 +66,7 @@ public:
 	VECTOR GetGoPlayer() { return GoPosition; }
 	void SetGoPlayer(VECTOR goplayer) { GoPosition = goplayer; }
 
-	void SetVPosition(VECTOR pos) { VinitPos = pos; }//‰ŠúƒŠƒXƒ|[ƒ“’n“_‚ÌÀ•W‚ğæ‚Á‚Ä‚¨‚­
+	void SetVPosition(VECTOR pos) { VinitPos = pos; }//åˆæœŸãƒªã‚¹ãƒãƒ¼ãƒ³åœ°ç‚¹ã®åº§æ¨™ã‚’å–ã£ã¦ãŠã
 	VECTOR GetVPosition() { return VinitPos; }
 
 	float GetSize() { return mfSize; }
@@ -93,7 +93,7 @@ protected:
 	SphereCollider* mpAttachCollider;
 	CapsuleCollider* mpCapsuleCollider;
 	SphereCollider* mpSerchCollider;
-	SphereCollider* mpAttackCollider;//UŒ‚‚µn‚ß‚é‰~
+	SphereCollider* mpAttackCollider;//æ”»æ’ƒã—å§‹ã‚ã‚‹å††
 	SphereCollider* mpStopCollider;
 	Model* mpModel;
 	Debug* mpDebug;
@@ -105,51 +105,51 @@ protected:
 	float mfMaxSpeed;
 	float mfAttack;
 
-	int WalkTimer;//“¯‚¶•óŒÉ‚É•à‚«‘±‚¯‚éŠÔ
+	int WalkTimer;//åŒã˜å®åº«ã«æ­©ãç¶šã‘ã‚‹æ™‚é–“
 	int WalkCount;//
 
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
-	VECTOR GoPosition;//Œü‚©‚¤ƒxƒNƒgƒ‹iƒvƒŒƒCƒ„[‚ğŠ´’m‚µ‚½‚Æ‚«)
+	VECTOR GoPosition;//å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ„ŸçŸ¥ã—ãŸã¨ã)
 	VECTOR oldPosition;
-	VECTOR VinitPos;//spown’n“_
+	VECTOR VinitPos;//spownåœ°ç‚¹
 	VECTOR NoPosition;
 	VECTOR moveVec;
 	VECTOR UpMoveVector;
 	VECTOR leftMoveVector;
-	bool mbInvisible;//–³“G‚©‚Ç‚¤‚©
-	int mnAlgorithm;//ƒ‰ƒ“ƒ_ƒ€ˆÚ“®
+	bool mbInvisible;//ç„¡æ•µã‹ã©ã†ã‹
+	int mnAlgorithm;//ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•
 	int AlgHit;
 
 	int AttackInterval;
 	int AttackCount;
 
 	bool Animation;
-	float mfTargetAngle;//–Ú•W‚Ì‰ñ“]’n
-	float mfAngle;//Œ»İ‚Ì‰ñ“]’n
-	const float ROTATE_SPEED = 0.1f;//‰ñ“]‘¬“x
+	float mfTargetAngle;//ç›®æ¨™ã®å›è»¢åœ°
+	float mfAngle;//ç¾åœ¨ã®å›è»¢åœ°
+	const float ROTATE_SPEED = 0.1f;//å›è»¢é€Ÿåº¦
 
-	float mfSize;//“G‚ÌƒTƒCƒY
-	float HitSerch;//‹ß‚­‚ÉƒvƒŒƒCƒ„[‚ª‚¢‚é‚©
-	float HitAttackSerch;//‹ß‚­‚ÉƒvƒŒƒCƒ„[‚ª‚¢‚é‚©&UŒ‚‚Å‚«‚é‹——£‚©
-	float HitStopSerch;//‹ß‚­‚ÉƒvƒŒƒCƒ„[‚ª‚¢‚é&“KØ‚È‹——£‚©
+	float mfSize;//æ•µã®ã‚µã‚¤ã‚º
+	float HitSerch;//è¿‘ãã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã„ã‚‹ã‹
+	float HitAttackSerch;//è¿‘ãã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã„ã‚‹ã‹&æ”»æ’ƒã§ãã‚‹è·é›¢ã‹
+	float HitStopSerch;//è¿‘ãã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã„ã‚‹&é©åˆ‡ãªè·é›¢ã‹
 	bool isDead;
 
 	bool isHitSearch;
 	bool isHitAttackSearch;
 	bool isHitSerchStop;
-	bool isHitAttack;//UŒ‚‚ª“–‚½‚Á‚½‚©
+	bool isHitAttack;//æ”»æ’ƒãŒå½“ãŸã£ãŸã‹
 
-	int mnChance;//inventory‚ğ—‚Æ‚·Šm—¦
-	bool mbWeapon =false;//weapon‚ğ—‚Æ‚·‚©”Û‚©
-	bool mbItem=true;//item‚ğ—‚Æ‚·‚©”Û‚©
+	int mnChance;//inventoryã‚’è½ã¨ã™ç¢ºç‡
+	bool mbWeapon =false;//weaponã‚’è½ã¨ã™ã‹å¦ã‹
+	bool mbItem=true;//itemã‚’è½ã¨ã™ã‹å¦ã‹
 
-	bool AttackHitJudgmentflag;//UŒ‚‚ªˆê‰ñ“–‚½‚Á‚½‚ç‚»‚Ì“G‚É‘Î‚µ‚ÄUŒ‚‚ªd•¡‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+	bool AttackHitJudgmentflag;//æ”»æ’ƒãŒä¸€å›å½“ãŸã£ãŸã‚‰ãã®æ•µã«å¯¾ã—ã¦æ”»æ’ƒãŒé‡è¤‡ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 
 	bool HitJudgmentflag_Player;
 	float mfHaveXp;
 	int mfHaveMoney;
 	/// <summary>
-	/// ///////////ƒ`ƒ…[ƒgƒŠƒAƒ‹
+	/// ///////////ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 	/// </summary>
 
 	

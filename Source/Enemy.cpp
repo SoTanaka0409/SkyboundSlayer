@@ -478,13 +478,12 @@ void Enemy::DeathColliderPosition()
 	if (mpStopCollider != nullptr)
 	{
 		mpStopCollider->SetDeleteFlag(true);
+		mpStopCollider->mvPosition = pos;
 	}
 	if (mpAttackCollider != nullptr)
 	{
 		mpAttackCollider->mvPosition = pos;
 	}
-	
-	mpStopCollider->mvPosition = pos;
 
 }
 

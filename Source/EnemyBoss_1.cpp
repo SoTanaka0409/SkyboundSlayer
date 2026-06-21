@@ -28,12 +28,14 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 	//,Animation(false)
 {
 	mbMagic = true;
-	mnChance = 30;//アイテムのドロップ確率
+	mAttackType = 0;
+	mAttack1ComboCount = 0;
+	mnChance = 30;//繧｢繧､繝・Β縺ｮ繝峨Ο繝・・遒ｺ邇・
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
 	
-	//モデルの生成
+	//繝｢繝・Ν縺ｮ逕滓・
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
@@ -76,7 +78,7 @@ void EnemyBoss_1::Update()
 			}
 
 			mpModel->Update();
-			//mpDH->Update();//drawHpのアップデートを呼ぶ
+			//mpDH->Update();//drawHp縺ｮ繧｢繝・・繝・・繝医ｒ蜻ｼ縺ｶ
 			CollPositionUpdate();
 			mpJumpAttackCoiider->mvPosition = mvPosition;
 
@@ -121,34 +123,65 @@ void EnemyBoss_1::Attack()
 	if (AttackCount >= AttackInterval && isHitAttackSearch)
 	{
 		AttackCount = 0;
-		//攻撃モーションに変更
-		mpModel->ChangeAnimation(ANIMATION_ATTACKMAGIC);
-		//ループはさせない
-		mpModel->SetLoop(false);
-		//モーション後は待機モーションに戻す
-		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		isHitAttackSearch = false;
-		new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
-		new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition,sinf(30)), 0, 150);
-		new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition, cosf(30)), 0, 150);
+		
+		// Decide random attack type (0: 3x Magic, 1: Single Magic, 2: Jump Attack)
+		mAttackType = GetRand(2);
+		
+		if (mAttackType == 0)
+		{
+			mAttack1ComboCount = 3;
+		}
+		else if (mAttackType == 1)
+		{
+			mpModel->ChangeAnimation(ANIMATION_ATTACKMAGIC);
+			mpModel->SetLoop(false);
+			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition,sinf(30)), 0, 150);
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition, cosf(30)), 0, 150);
+		}
+		else if (mAttackType == 2)
+		{
+			mpModel->ChangeAnimation(ANIMATION_ATTACK);
+			mpModel->SetLoop(false);
+			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
+		}
 	}
-	if (!(now == ANIMATION_ATTACKMAGIC))
+
+	if (mAttackType == 0 && mAttack1ComboCount > 0)
 	{
-		AttackCount++;
-		AttackHitJudgmentflag = false;//当たり判定の復活
+		if (now == ANIMATION_NEUTRAL || now == ANIMATION_RUN)
+		{
+			mpModel->ChangeAnimation(ANIMATION_ATTACKMAGIC);
+			mpModel->SetLoop(false);
+			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
+			
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition,sinf(30)), 0, 150);
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition, cosf(30)), 0, 150);
+			
+			mAttack1ComboCount--;
+		}
 	}
 
-
-
+	if (!(now == ANIMATION_ATTACKMAGIC) && !(now == ANIMATION_ATTACK))
+	{
+		if (mAttack1ComboCount <= 0)
+		{
+			AttackCount++;
+		}
+		AttackHitJudgmentflag = false;
+	}
 }
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
-{//当たった瞬間の処理
+{//蠖薙◆縺｣縺溽椪髢薙・蜃ｦ逅・
 	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
 		if (collider == mpJumpAttackCoiider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-		{//mpModelの番号もあっている、けどこのif文に入らない
+		{//mpModel縺ｮ逡ｪ蜿ｷ繧ゅ≠縺｣縺ｦ縺・ｋ縲√￠縺ｩ縺薙・if譁・↓蜈･繧峨↑縺・
 			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
@@ -157,7 +190,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 				{
 
 					pPlayer->Damage(mfAttack);
-					AttackHitJudgmentflag = true;//当たったよー
+					AttackHitJudgmentflag = true;//蠖薙◆縺｣縺溘ｈ繝ｼ
 				}
 			}
 
@@ -171,9 +204,9 @@ void EnemyBoss_1::DeathEnemy()
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	isDead = true;
 	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//ループはさせない
+	//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
 	mpModel->SetLoop(false);
-	//モーション後は待機モーションに戻す
+	//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
 	mpModel->SetLoopFinishState(ANIMATION_MAX);
 	DeathColliderPosition();
 
@@ -194,5 +227,14 @@ void EnemyBoss_1::DeathEnemy()
 	mpModel->Update();
 
 
+}
+
+void EnemyBoss_1::Delete()
+{
+	Enemy::Delete();
+	if (mpJumpAttackCoiider != nullptr)
+	{
+		mpJumpAttackCoiider->SetDeleteFlag(true);
+	}
 }
 

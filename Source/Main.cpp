@@ -31,10 +31,10 @@
 #include"Chat.h"
 #include"Save.h"
 /**
-* @note ���t�@�����X https://dxlib.xsrv.jp/dxfunc.html
+* @note リファレンス https://dxlib.xsrv.jp/dxfunc.html
 */
 
-//�Q�[���̂RD���f��   metaseq316
+//ゲームの３Dモデル   metaseq316
 //https://www.d5render.com/ja/workflow/blender?utm_campaign=bingsearchILJPblender&utm_source=bing&utm_medium=cpc&msclkid=929170cec1521e953f1c187910ba1cae
 
 
@@ -42,14 +42,14 @@
 /**
 /**
 * @fn WinMain
-* @brief Main�֐�
+* @brief Main関数
 * @param[in] HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
-* @return int 0 ����I���^-1 �G���[
-* @details Main�֐�
+* @return int 0 正常終了／-1 エラー
+* @details Main関数
 */
 
-//Master�N���X�̐ÓI�����o�ϐ���`
-SceneManager* Master::mpSceneManager = new SceneManager();//�Ăяo��
+//Masterクラスの静的メンバ変数定義
+SceneManager* Master::mpSceneManager = new SceneManager();//呼び出し
 SoundManager* Master::mpSoundManager = new SoundManager();
 WeaponManager* Master::mpWeaponManager = new WeaponManager();
 Weapon* Master::mpWeapon = new Weapon();
@@ -91,51 +91,51 @@ int Master::GameClearCount = 0;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	// �E�C���h�E���[�h�ŋN��
+	// ウインドウモードで起動
 	ChangeWindowMode(true);
 
 	SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32);
 	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	
-	// DX���C�u����������
+	// DXライブラリ初期化
 	if (DxLib_Init() == -1)
 	{
 		return -1;
 	}
 
-	// --- �S�̂̃��C�e�B���O�i�����E���z���j�ݒ� ---
+	// --- 全体のライティング（環境光・太陽光）設定 ---
 	SetLightEnable(TRUE);
-	// �����iAmbColor�j���������߂ɐݒ肵�A�e�ɂȂ�₷�������i��ʂ⑤�ʁj���^�����ɒ��܂Ȃ��悤�ɂ���
+	// 環境光（AmbColor）を少し高めに設定し、影になりやすい部分（底面や側面）が真っ黒に沈まないようにする
 	SetLightAmbColor(GetColorF(0.6f, 0.6f, 0.6f, 1.0f));
-	// ���z���i�f�B���N�V���i�����C�g�j�̌������΂߉��Ɍ�����
+	// 太陽光（ディレクショナルライト）の向きを斜め下に向ける
 	SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
-	// ���z���̐F�i�������݂����������邢�F�j
+	// 太陽光の色（少し白みがかった明るい色）
 	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
 	// ------------------------------------------------
 
 
-	//BGM�̓ǂݍ���
+	//BGMの読み込み
 
-	//�T�E���h�}�l�[�W���[�̏�����
-	Master::mpSoundManager->Initialize();//���ׂẴT�E���h���ǂݍ��܂�ru----
+	//サウンドマネージャーの初期化
+	Master::mpSoundManager->Initialize();//すべてのサウンドが読み込まれru----
 
-	//�V�[���}�l�[�W���[�̐����Ə�����
+	//シーンマネージャーの生成と初期化
 	Master::mpSceneManager->Initialize();
 
 	Master::mpScoreManager->Initialize();
 
-	//�J�����̍X�V
+	//カメラの更新
 	Master::mpCamera->Initialize();
 
 	
 
 
 
-	//�`���ݒ�𗠉�ʂɐݒ肷��
+	//描画先設定を裏画面に設定する
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//Z�o�b�t�@�ɏ������ޏ���
+	//Zバッファに書き込む準備
 	SetUseZBufferFlag(true);
 	SetWriteZBufferFlag(true);
 
@@ -143,25 +143,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	int animationCounter = 0;
 	int textureCurrentNum = 0;
 
-	//�Q�[���̃��C�����[�v
+	//ゲームのメインループ
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 
-		//��ʂ�����������
+		//画面を初期化する
 		ClearDrawScreen();
 		int time = GetNowCount();
 
 		Master::mpDrawHp->Update();
 		Master::mpCamera->Update();
 		
-		Master::mpInfClassManager->Update();
-		
-		
-
-		//�X�V
+		//更新
 		Master::mpSceneManager->Update();
+		Master::mpInfClassManager->Update();
 	
-		//�`��
+		//描画
 		Master::mpSceneManager->Draw();
 		Master::mpScoreManager->Draw();
 
@@ -170,27 +167,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 
 
-		//����ʂ̓��e��\��ʂɉf��
+		//裏画面の内容を表画面に映す
 		ScreenFlip();
 
-		//�P�V�~���b�i�b���Ԗ�U�O�t���[�����������ꍇ�P�t���[��������̌o�ߎ���
-		//�o�߂���܂ł����ő҂�
+		//１７ミリ秒（秒数間訳６０フレームだったっ場合１フレーム当たりの経過時間
+		//経過するまでここで待つ
 		while (GetNowCount() - time < 17)
 		{
-			//�҂����Ȃ̂ł����ɂ͉��������Ȃ�
+			//待つだけなのでここには何も書かない
 		}
 
-		//�폜����K�v�̂���I�u�W�F�N�g������΍폜����
+		//削除する必要のあるオブジェクトがあれば削除する
 		ColliderManager::GetInstance()->DeleteAllColliderIfNeeded();
 		Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
+		Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
 		
 
-		//���[�v���钼�O�ɃV�[���J�ڃ`�F�b�N�����Ă���
+		//ループする直前にシーン遷移チェックを入れておく
 		Master::mpSceneManager->ChangeSceneIfNeeded();
 
 		
 	}
-	//�I������
+	//終了処理
 	Master::mpSceneManager->Finalize();
 	delete Master::mpSceneManager;
 	Master::mpSoundManager->Finalize();
@@ -205,10 +203,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-	// DX���C�u�����g�p�̏I��
+	// DXライブラリ使用の終了
 	DxLib_End();
 
-	// �\�t�g�̏I��
+	// ソフトの終了
 	return 0;
 }
 

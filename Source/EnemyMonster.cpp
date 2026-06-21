@@ -15,7 +15,7 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	, mJumpTimer(0)
 	, mHasLandedHit(false)
 	, mJumpVelocity(0.0f)
-	, mGravity(2.0f)
+	, mGravity(4.0f)
 	, mForwardSpeed(20.0f)
 {
 	mnChance = 20; // Drop chance
@@ -100,7 +100,7 @@ void EnemyMonster::Attack()
 	if (mAttackState == AttackState::None)
 	{
 		// Calculate the exact fixed jump distance
-		float jumpTime = (40.0f / mGravity) * 2.0f; // 40.0f frames
+		float jumpTime = (80.0f / mGravity) * 2.0f; // 40.0f frames
 		float maxJumpDistance = jumpTime * 20.0f; // 800.0f
 		
 		auto playerObj = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
@@ -152,7 +152,7 @@ void EnemyMonster::Attack()
 		{
 		
 			mAttackState = AttackState::Jumping;
-			mJumpVelocity = 40.0f; // Initial upward velocity
+			mJumpVelocity = 80.0f; // Initial upward velocity
 			mJumpStartY = mvPosition.y; // Record start height
 
 			// Dynamically adjust forward speed so the landing point is exactly the player
@@ -246,4 +246,13 @@ void EnemyMonster::DeathEnemy()
 	
 	Delete();
 	SetDeleteFlag(true);
+}
+
+void EnemyMonster::Delete()
+{
+	Enemy::Delete();
+	if (mpLandingAttackCollider != nullptr)
+	{
+		mpLandingAttackCollider->SetDeleteFlag(true);
+	}
 }
