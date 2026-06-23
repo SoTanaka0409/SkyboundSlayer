@@ -45,7 +45,7 @@ public:
 	void Update()override;
 	void ManagerUpdate();
 
-
+	void if_StageOut();
 	void MoveEx();
 
 	void SelectAttack();
@@ -70,6 +70,8 @@ public:
 	void AttackCountClass();
 	void Evasion();
 	void CollDelete();
+	void mpTargetOn();//targetがいる状態か.これがないとtargetがいなくなった瞬間にnullになる
+
 
 	float GetAngle() { return mfAngle; }
 

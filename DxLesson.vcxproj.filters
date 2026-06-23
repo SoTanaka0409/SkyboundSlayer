@@ -189,9 +189,6 @@
     <ClCompile Include="Source\LevelUp.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\CollsionManager.cpp">
-      <Filter>ソース ファイル\Scene Manager Object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>ソース ファイル\character</Filter>
     </ClCompile>
@@ -206,9 +203,6 @@
     </ClCompile>
     <ClCompile Include="Source\SphereCollider.cpp">
       <Filter>ソース ファイル\Weapon Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Inventory.cpp">
-      <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
     <ClCompile Include="Source\ItemManager.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
@@ -230,9 +224,6 @@
     </ClCompile>
     <ClCompile Include="Source\Shop.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StatShop.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\HaveMoneyClass.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
@@ -285,6 +276,18 @@
     <ClCompile Include="Source\TestCollisionScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneGame.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShortInventory.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StatShop.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource\Player.bmp">
@@ -306,12 +309,6 @@
     </ClInclude>
     <ClInclude Include="Source\Player3D.h">
       <Filter>ヘッダー ファイル\character</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene3D.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneGame.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
       <Filter>ヘッダー ファイル\character</Filter>
@@ -457,14 +454,8 @@
     <ClInclude Include="Source\LevelUp.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CollsionManager.h">
-      <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Enemy.h">
       <Filter>ヘッダー ファイル\character</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Inventory.h">
-      <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\ItemManager.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
@@ -545,6 +536,18 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\Config.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGame.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShortInventory.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

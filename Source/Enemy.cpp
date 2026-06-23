@@ -57,7 +57,7 @@ Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float 
 	mfNormalSpeed = mfSpeed;
 
 	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize/2, 0.0f)), mfSize);
-	mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 30.0f);
+	mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 50.0f);
 	mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//髫ｰ・ｨ繝ｻ・ｵ驛｢・ｧ陷ｻ閧ｲ邊滄ｩ墓得・ｽ・･驍ｵ・ｺ陷ｷ・ｶ繝ｻ邇匁咏ｹ晢ｽｻ
 	mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//髫ｰ・ｨ繝ｻ・ｵ驛｢・ｧ陷ｻ莠･諢幃垈・ｦ郢晢ｽｻ繝ｻ・ｽ髯晏ｶ・ｹ譎｢・ｽ竏ｫ・ｹ・ｧ陷ｿ・･郢晢ｽｻ
 	mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//髫ｰ・ｨ繝ｻ・ｵ驍ｵ・ｺ繝ｻ・ｨ驍ｵ・ｺ繝ｻ・ｮ鬮ｴ閧ｴ霎ｨ陞ｻ・ｬ驛｢・ｧ陷代・・ｽ・ｿ隴擾ｽｴ隨・ｽｽ髯ｷﾂ郢晢ｽｻ

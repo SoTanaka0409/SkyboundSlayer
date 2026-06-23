@@ -35,12 +35,12 @@ void Scene3D::Initialize()
 {
     SceneGame::Initialize();
 
-    const float wallWidth = Config::StageWallWidth;//stageのサイズ
-    const float wallDistance = Config::StageWallDistance;//stageのサイズ main
+    //const float wallWidth = Config::StageWallWidth;//stageのサイズ
+    //const float wallDistance = Config::StageWallDistance;//stageのサイズ main
     const float Spawnpos = 12000.0f;
     VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
 
-    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
+    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, -1000), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
     new StatShop("Resource/3D/Hero.mv1", Config::GetStageCenter()); // ステージの真ん中に配置
     //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトプス,hp,speed,Hitsize,size
        //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size

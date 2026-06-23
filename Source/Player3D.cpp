@@ -159,59 +159,42 @@ void Player3D::Update()
 	///////////////////////////////////////////////
 	
 
-	if (false)
-	{
-		
-		Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);//鬮ｯ・ｷ闔ｨ螟ｲ・ｽ・ｽE鬮ｫ・ｴE髫ｲ讖ｸ・ｽ・ｺ髮趣ｽｬE
-	}
-		
+	
 	
 	if (Master::PauseOn == false)//鬩幢ｽ｢隴弱・驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬮｣蛹・ｽｽ・ｳ郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬮ｯ・ｷ陝�雜｣・ｽ・ｼ隴夲ｽｿE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ郢晢ｽｻ髢ｧ・ｲEE驛｢譎｢・ｽ・ｻ驕ｶ莨∬ｱｪEE髯ｷ・ｷE郢晢ｽｻ郢晢ｽｻ
 	{
-		if (mpTarget != nullptr)
+		if (mpModel != nullptr)
 		{
-			bool isTargetValid = false;
-			auto mpEneList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-			for (int i = 0; i < mpEneList.size(); i++)
+			mpTargetOn();
+			Test();
+			ManagerUpdate();
+			if (InputManager::CheckDownKey(KEY_INPUT_Q))
 			{
-				if (mpTarget == mpEneList.at(i) && !mpTarget->IsDeleteFlag())
-				{
-					isTargetValid = true;
-					break;
-				}
+				ChangeView();
 			}
-			if (!isTargetValid)
-			{
-				mpTarget = nullptr;
-			}
-		}
-		Test();
-		ManagerUpdate();
-		if (InputManager::CheckDownKey(KEY_INPUT_Q))
-		{
-			ChangeView();
-		}
-		////////////////////////鬯ｮ・ｯE髫ｰ逍ｲ・ｺ・ｯE////////////////
-		SelectAttack();
-		Result();
-		ResetNUETRAL();
-		//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴弱・隲帷阜鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
-		CollPositionUpdate();
-		Evasion();
-		//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
-		SelectAttack();
-		//鬯ｩ蜍溪・EE鬮ｯ・ｷ隶手ｴ具ｽｾ蟶ｷ・ｹ譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
-		MoveEx();
-		//鬮ｯ諛・ｻｸE郢晢ｽｻEE郢晢ｽｻE鬮ｯ・ｷ郢晢ｽｻEE鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
-		RotationByMove();
-		EnemySerch();
+			////////////////////////鬯ｮ・ｯE髫ｰ逍ｲ・ｺ・ｯE////////////////
 
-		if (mpLevelUp->GetLevelUp())
-		{ 
-			Master::mpSoundManager->PlaySE(SoundManager::SE_LEVELUP);
-			mfHp = GetAllStatusState(Object3D::Status_Hp);//hp鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｭ郢晢ｽｻ鬮ｯ諛・ｻｸEE郢晢ｽｻ郢晢ｽｻEE髯晢ｽｶ陷ｻ・ｻE郢晢ｽｻ
+			Result();
+			ResetNUETRAL();
+			//鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴弱・隲帷阜鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
+			
+			Evasion();
+			//鬮ｫ・ｰE郢晢ｽｻE鬮ｫ・ｰE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
+			SelectAttack();
+			//鬯ｩ蜍溪・EE鬮ｯ・ｷ隶手ｴ具ｽｾ蟶ｷ・ｹ譎｢・ｽ・ｻ鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
+			MoveEx();
+			CollPositionUpdate();
+			//鬮ｯ諛・ｻｸE郢晢ｽｻEE郢晢ｽｻE鬮ｯ・ｷ郢晢ｽｻEE鬯ｨ・ｾ郢晢ｽｻ郢晢ｽｻ
+			RotationByMove();
+			EnemySerch();
+
+			if (mpLevelUp->GetLevelUp())
+			{
+				Master::mpSoundManager->PlaySE(SoundManager::SE_LEVELUP);
+				mfHp = GetAllStatusState(Object3D::Status_Hp);//hp鬩幢ｽ｢E鬮ｮ蛹ｺ・ｧ・ｭ郢晢ｽｻ鬮ｯ諛・ｻｸEE郢晢ｽｻ郢晢ｽｻEE髯晢ｽｶ陷ｻ・ｻE郢晢ｽｻ
+			}
+			mpModel->Update();
 		}
-		mpModel->Update();
 	}
 
 }
@@ -446,10 +429,8 @@ void Player3D::MoveEx()
 						vertex.at(3).pos, vertex.at(1).pos, vertex.at(2).pos)
 					)
 				{
-					int WallFontSize = GetFontSize();
-					SetFontSize(40);
-// removed
-// removed
+					
+
 					// 鬮ｯ讖ｸ・ｽ・｢驕ｶ荳橸ｽ｣・ｺ郢晢ｽｻ鬮ｮ蜿冶・EE鬩搾ｽｵE郢晢ｽｻE鬩搾ｽｵE郢晢ｽｻE鬯ｮ・ｯE髯滓坩・ｯ莨夲ｽｽ・ｿE鬩幢ｽ｢E髯具ｽｹE驕ｶ蛹・ｽｽ・ｧ鬩搾ｽｵE郢晢ｽｻE鬩幢ｽ｢隴主・蜃ｽ驍ｵ・ｺ鬩｢謳ｾ・ｽ・ｹ隴主・讓檸隴主承E鬮ｮ蛹ｺ・ｧ・ｫ陟募ｮ｣霎ｧ髴亥ｿ・
 					VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 鬮ｯ讖ｸ・ｽ・｢驕ｶ謫ｾ・ｽ・ｵ郢晢ｽｻE郢晢ｽｻE鬩搾ｽｵE驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸E
 					float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 鬯ｩ蜍溪・EE鬮ｯ・ｷ隶主･・ｽｽ・｢霓｣蛛・ｽｽ・ｩE鬮ｯ・ｷE髣比ｼ夲ｽｽ・｣驛｢譎｢・ｽ・ｻ鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴主・讓檸隴主承E郢晢ｽｻE鬮ｯ・ｷE髫ｶ谿ｺE郢晢ｽｻE鬩幢ｽ｢隴主・蜃ｽ驍ｵ・ｺ鬩｢謳ｾ・ｽ・ｹ隴主・讓檸隴主承E郢晢ｽｻE鬩搾ｽｵE驕ｶ荵怜款EE驕ｶ荳橸ｽ｣・ｹ郢晢ｽｻ鬮ｮ荳ｻ・｢鞫倡ｹ晢ｽｻE髯橸ｽ｢E驕ｶ髮・ｿｽ・､EE郢晢ｽｻE鬮ｯ・ｷ驛｢譎｢・ｽ・ｻ郢晢ｽｻE鬯ｮ・ｦE郢晢ｽｻ陞ｳ螟ｲ・ｽ・ｱ陟托ｽｱEEE遶擾ｽｫEE驛｢譎｢・ｽ・ｻ
@@ -471,7 +452,7 @@ void Player3D::MoveEx()
 
 	}
 
-
+	if_StageOut();
 
 	mpModel->SetPosition(mvPosition);
 	mpModel->SetRotation(mvRotation);
@@ -482,9 +463,33 @@ void Player3D::Damage(float damage)
 {
 	AnimationState now = mpModel->GetNowState();
 	if (mnInvincibleTimer > 0) return; // 髴取ｻゑｽｽ・｡髫ｰ・ｨE髫ｴ蠑ｱ・玖将・｣髣包ｽｳE驍ｵ・ｺE驛｢譎会ｽｹ譎｢・ｽ・｡驛｢譎｢・ｽ・ｼ驛｢・ｧE髴取ｻゑｽｽ・｡髯ｷ莨夲ｽｽ・ｹ
-	if (damage - mpEquipmentManager->GetDamage() <= 0) { mfHp -= 1; return; }//髫ｴ蟷・割陟托ｽｱ邵ｲ蝣､・ｹ・ｧ郢ｧ闌ｨ・ｽ・ｸ陝ｶ蜻ｻ・ｽ閾･・ｸ・ｺ郢晢ｽｻ
+	//if (damage - mpEquipmentManager->GetDamage() <= 0) { mfHp -= 1; return; }//髫ｴ蟷・割陟托ｽｱ邵ｲ蝣､・ｹ・ｧ郢ｧ闌ｨ・ｽ・ｸ陝ｶ蜻ｻ・ｽ閾･・ｸ・ｺ郢晢ｽｻ
 	if (now == ANIMATION_SLIDE || now == ANIMATION_ATTACKSLIDE)return;
 	mfHp -= (damage-mpEquipmentManager->GetDamage());//鬮ｯ・ｬ郢晢ｽｻE驍ｵ・ｺ陷会ｽｱ遯ｶ・ｻ驍ｵ・ｺ郢晢ｽｻE驛｢譎会ｽｹ譎｢・ｽ・｡驛｢譎｢・ｽ・ｼ驛｢・ｧE髯具ｽｻ郢晢ｽｻ郢晢ｿｽ驛｢譎｢・ｽ・｡驛｢譎｢・ｽ・ｼ驛｢・ｧE驛｢・ｧ陷ｻ闌ｨ・ｽ・ｸ陝ｶ蜻ｻ・ｽ閾･・ｸ・ｺ郢晢ｽｻ
+
+}
+
+void Player3D::if_StageOut()
+{
+	float radiusX = Config::StageVector_x; // X方向（横）の限界の広さ
+	float radiusZ = Config::StageVector_z; // Z方向（奥）の限界の広さ
+
+	VECTOR center = VGet(Config::GetStageCenter().x, 0, Config::GetStageCenter().z);
+
+	VECTOR centerPos = VGet(center.x, mvPosition.y, center.z); // 中心座標
+	//中心から現在地までの差（距離）をXとZそれぞれで出す
+	float dx = mvPosition.x - centerPos.x;
+	float dz = mvPosition.z - centerPos.z;
+	//それぞれの半径で割って、一時的に「半径1の真ん丸な円」の世界に変換する
+	float normX = dx / radiusX;
+	float normZ = dz / radiusZ;
+	//その「半径1の円」の世界での、中心からの距離を計算する
+	float distance = sqrtf(normX * normX + normZ * normZ);
+	//距離が 1.0 を超えていたら（楕円の外にはみ出していたら）
+	if (distance > 1.0f)
+	{
+		mvPosition = mvOldPosition;
+	}
 
 }
 
@@ -506,6 +511,7 @@ void Player3D::Evasion()
 		// 髯懃軸・ｨ・｣遶擾ｽｩ鬯ｨ・ｾ雋・ｽｷEE郢晢ｽｻ鬩帙・隴取ｧｫ・ｱ・ｬ郢晢ｽｻ陝ｲ・ｨ遶企豪・ｹ・ｧE驛｢謌ｲ郢晢ｽｻ驛｢・ｧE驛｢譎｢・ｽ・ｬ驛｢譎｢・ｽ・ｼ驛｢譎臥櫨郢晢ｽｻ驛｢・ｧ陞ｳ螟ｲ・ｽ・ｶE驍ｵ・ｺ郢晢ｽｻ
 		mvPosition = VAdd(mvPosition, VScale(oldmoveVec, mfEvasionSpeed + mfUpgradeEvasionSpeed));
 		mpModel->SetPosition(mvPosition);
+		if_StageOut();
 	}
 
 
@@ -1024,6 +1030,26 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 	
 
 
+}
+void Player3D::mpTargetOn()
+{
+	if (mpTarget != nullptr)
+	{
+		bool isTargetValid = false;
+		auto mpEneList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+		for (int i = 0; i < mpEneList.size(); i++)
+		{
+			if (mpTarget == mpEneList.at(i) && !mpTarget->IsDeleteFlag())
+			{
+				isTargetValid = true;
+				break;
+			}
+		}
+		if (!isTargetValid)
+		{
+			mpTarget = nullptr;
+		}
+	}
 }
 
 void Player3D::OnExit(Collider* collider, Collider* check)
