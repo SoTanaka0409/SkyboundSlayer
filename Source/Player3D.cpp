@@ -627,7 +627,7 @@ void Player3D::Attack()
 	{
 		AttackState = Attack_Normal;
 		
-		if (AttackCount == 10 || AttackCount == 20)
+		if (AttackCount % 5 == 0)
 		{
 			for (int i = 0; i < pObjList.size(); i++)
 			{
@@ -975,7 +975,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				// 鬮ｫEE郢晢ｽｻE鬮ｫEE驛｢譎｢EEE騾ｧEE隴趣ｽ｢EE鬩幢ｽ｢E郢晢ｽｻE鬩幢ｽ｢隴趣ｽ｢EE鬩幢ｽ｢隴趣ｽ｢EE&&Attack1
 				if (now == ANIMATION_ATTACK && AttackState == Attack_Normal && !mbjump && !pEne->GetHitjudgment())
 				{
-					pEne->SetHitjudgment(true);
+					
 					pEne->Damage(GetAllStatusState(Object3D::Status_Attack));
 					// 鬯ｨE陋ｹ繝ｻE鬯ｯEE郢晢ｽｻE鬮ｫEE郢晢ｽｻE鬩幢ｽ｢E髯滓坩E莨夲ｽｽE郢晢ｽｻEE髯晢ｽｶ陷ｻEE郢晢ｽｻ
 					Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);

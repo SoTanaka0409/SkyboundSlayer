@@ -154,6 +154,9 @@
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
     <ClCompile Include="Source\Effect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EffekseerManager.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
     <ClCompile Include="Source\effect_r.cpp">
@@ -431,6 +434,9 @@
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Effect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EffekseerManager.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\DrawHp.h">

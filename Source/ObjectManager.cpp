@@ -81,7 +81,7 @@ void ObjectManager::AddObject(Object3D* object3D)
 //3Dオブジェクトの全削除
 void ObjectManager::DeleteAll3D()
 {
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end();/*ここは空っななおで注意*/)
+	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); /* ここは空なので注意 */)
 	{
 		
 
@@ -164,7 +164,7 @@ void ObjectManager::AddObject(Object2D* object2D)
 void ObjectManager::DeleteAll2D()
 {
 	Master::mpInfClassManager->LogList.clear();
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end();/*ここは空っななおで注意*/)
+	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); /* ここは空なので注意 */)
 	{
 		Object2D* temp = *itr;
 
@@ -180,7 +180,7 @@ void ObjectManager::DeleteAll2D()
 //削除する必要のあるオブジェクトがあれば削除する
 void ObjectManager::DeleteAll2DIfNeeded()
 {
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end();/*ここは空っななおで注意*/)
+	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); /* ここは空なので注意 */)
 	{
 		if ((*itr)->IsDeleteFlag() == true)//省略すると(*itr)->IsDeleteFlag()
 		{

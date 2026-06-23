@@ -112,6 +112,7 @@ public:
 	Model* mpModel;//モデルクラスのポインタ
 	ShortInventory* mpShortInventory;
 	BuffManager* mpBuffManager;
+	ItemManager* mpItemManager;
 	WeaponManager* mpWeaponManager;
 	HaveMoneyClass* mpHaveMoney;
 	EquipmentManager* mpEquipmentManager;

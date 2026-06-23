@@ -277,7 +277,7 @@ void Shop::Buyclass()
 			}
 
 		}
-		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円", (*list)->Name.c_str(), (*list)->price);
+		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円 ", (*list)->Name.c_str(), (*list)->price);
 		mnShopListCount++;
 	}
 	for (auto list = mpWeaponManager->mDateList.begin(); list != mpWeaponManager->mDateList.end(); list++)
@@ -294,7 +294,7 @@ void Shop::Buyclass()
 			}
 
 		}
-		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円", (*list)->name.c_str(), (*list)->price);
+		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円 ", (*list)->name.c_str(), (*list)->price);
 		mnShopListCount++;
 	}
 	for (auto list = mpEquipmentManager->mDateList.begin(); list != mpEquipmentManager->mDateList.end(); list++)
@@ -312,7 +312,7 @@ void Shop::Buyclass()
 			}
 
 		}
-		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円", (*list)->name.c_str(), (*list)->price);
+		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円 ", (*list)->name.c_str(), (*list)->price);
 		mnShopListCount++;
 	}
 	mnShopListCount = 0;
@@ -335,7 +335,7 @@ void Shop::OnEnter(Collider* collider, Collider* check)
 		if (collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
 			Master::NearShopOn = true;
-			Master::mpChat->Draw("矢印キーで選択、Gで決定");
+			Master::mpChat->Draw("矢印キーで選択、Gで決定 ");
 			if (InputManager::CheckDownKey(KEY_INPUT_RETURN)&&!Master::ShopClassOn)
 			{
 				Master::ShopClassOn = true;

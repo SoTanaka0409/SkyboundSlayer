@@ -1,4 +1,4 @@
-#include"Enemy.h"
+﻿#include"Enemy.h"
 #include"Model.h"
 #include"Master.h"
 #include"Player3D.h"
@@ -49,7 +49,7 @@ Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float 
 	//,Animation(false)
 {
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//郢晢ｽ｢郢昴・ﾎ晉ｸｺ・ｮ騾墓ｻ薙・
+	//驛｢譎｢・ｽ・｢驛｢譏ｴ繝ｻ・取刮・ｸ・ｺ繝ｻ・ｮ鬨ｾ蠅難ｽｻ阮吶・
 	mpModel = new Model(filename, initPos, isSeparateAnim);
 	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
 	VinitPos = initPos;
@@ -58,12 +58,12 @@ Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float 
 
 	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize/2, 0.0f)), mfSize);
 	mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 30.0f);
-	mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//隰ｨ・ｵ郢ｧ蜻育粟驕擾ｽ･邵ｺ蜷ｶ・玖怙繝ｻ
-	mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//隰ｨ・ｵ郢ｧ蜻亥愛隰ｦ繝ｻ・�陝倶ｹ晢ｽ∫ｹｧ蜿･繝ｻ
-	mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//隰ｨ・ｵ邵ｺ・ｨ邵ｺ・ｮ髴肴辨螻ｬ郢ｧ蜑・ｽｿ譏ｴ笆ｽ陷繝ｻ
-	//new DrawHp("",  //騾包ｽｻ陷剃ｸ樣倹
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//闕ｳ・ｭ陟｢繝ｻ・ｺ・ｧ隶薙・
-	  // 郢ｧ・ｳ郢晢ｽｩ郢ｧ・､郢晉ｹ晢ｽｼ騾墓ｻ薙・
+	mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//髫ｰ・ｨ繝ｻ・ｵ驛｢・ｧ陷ｻ閧ｲ邊滄ｩ墓得・ｽ・･驍ｵ・ｺ陷ｷ・ｶ繝ｻ邇匁咏ｹ晢ｽｻ
+	mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//髫ｰ・ｨ繝ｻ・ｵ驛｢・ｧ陷ｻ莠･諢幃垈・ｦ郢晢ｽｻ繝ｻ・ｽ髯晏ｶ・ｹ譎｢・ｽ竏ｫ・ｹ・ｧ陷ｿ・･郢晢ｽｻ
+	mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//髫ｰ・ｨ繝ｻ・ｵ驍ｵ・ｺ繝ｻ・ｨ驍ｵ・ｺ繝ｻ・ｮ鬮ｴ閧ｴ霎ｨ陞ｻ・ｬ驛｢・ｧ陷代・・ｽ・ｿ隴擾ｽｴ隨・ｽｽ髯ｷﾂ郢晢ｽｻ
+	//new DrawHp("",  //鬨ｾ蛹・ｽｽ・ｻ髯ｷ蜑・ｽｸ讓｣蛟ｹ
+	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//髣包ｽｳ繝ｻ・ｭ髯滂ｽ｢郢晢ｽｻ繝ｻ・ｺ繝ｻ・ｧ髫ｶ阮吶・
+	  // 驛｢・ｧ繝ｻ・ｳ驛｢譎｢・ｽ・ｩ驛｢・ｧ繝ｻ・､驛｢譎会ｽｹ譎｢・ｽ・ｼ鬨ｾ蠅難ｽｻ阮吶・
 	
 	
 }
@@ -85,15 +85,15 @@ void Enemy::Update()
 	
 		if (mpModel != nullptr)
 		{
-			DeathEnemy();//隰ｨ・ｵ郢ｧ雋槫・・�邵ｺ貅倪・邵ｺ髦ｪ竊鍋ｹｧ・ｯ郢晢ｽｪ郢ｧ・｢邵ｺ蜷ｶ・狗ｸｺ貅假ｽ∫ｸｺ・ｮ郢ｧ・ｫ郢ｧ・ｦ郢晢ｽｳ郢晏現・定ｲょｸ呻ｽ臥ｸｺ繝ｻ
+			DeathEnemy();//髫ｰ・ｨ繝ｻ・ｵ驛｢・ｧ髮区ｧｫ繝ｻ繝ｻ・ｽ驍ｵ・ｺ雋・ｪ繝ｻ驍ｵ・ｺ鬮ｦ・ｪ遶企豪・ｹ・ｧ繝ｻ・ｯ驛｢譎｢・ｽ・ｪ驛｢・ｧ繝ｻ・｢驍ｵ・ｺ陷ｷ・ｶ繝ｻ迢暦ｽｸ・ｺ雋・∞・ｽ竏ｫ・ｸ・ｺ繝ｻ・ｮ驛｢・ｧ繝ｻ・ｫ驛｢・ｧ繝ｻ・ｦ驛｢譎｢・ｽ・ｳ驛｢譎冗樟繝ｻ螳夲ｽｲ繧・ｽｸ蜻ｻ・ｽ閾･・ｸ・ｺ郢晢ｽｻ
 			Attack();
 			CollPositionUpdate();
 			RotationByMove();
 			Move();
-			/////陟托ｽｾm郢ｧ蜻磯□邵ｺ・､陷・ｽｦ騾・・
+			/////髯滓汚・ｽ・ｾm驛｢・ｧ陷ｻ逎ｯ笆｡驍ｵ・ｺ繝ｻ・､髯ｷ繝ｻ・ｽ・ｦ鬨ｾ繝ｻ繝ｻ
 		
 			mpModel->Update();
-			//mpDH->Update();//drawHp邵ｺ・ｮ郢ｧ・｢郢昴・繝ｻ郢昴・繝ｻ郢晏現・定惱・ｼ邵ｺ・ｶ
+			//mpDH->Update();//drawHp驍ｵ・ｺ繝ｻ・ｮ驛｢・ｧ繝ｻ・｢驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢譎冗樟繝ｻ螳壽Τ繝ｻ・ｼ驍ｵ・ｺ繝ｻ・ｶ
 			
 		}
 
@@ -144,11 +144,11 @@ void Enemy::Attack()
 	{
 		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
 		AttackCount = 0;
-		//隰ｾ・ｻ隰ｦ繝ｻﾎ皮ｹ晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ邵ｺ・ｫ陞溽判蟲ｩ
+		//髫ｰ・ｾ繝ｻ・ｻ髫ｰ・ｦ郢晢ｽｻ・守坩・ｹ譎｢・ｽ・ｼ驛｢・ｧ繝ｻ・ｷ驛｢譎｢・ｽ・ｧ驛｢譎｢・ｽ・ｳ驍ｵ・ｺ繝ｻ・ｫ髯樊ｺｽ蛻､陝ｲ・ｩ
 		mpModel->ChangeAnimation(ANIMATION_ATTACK);
-		//郢晢ｽｫ郢晢ｽｼ郢晏干繝ｻ邵ｺ霈披雷邵ｺ・ｪ邵ｺ繝ｻ
+		//驛｢譎｢・ｽ・ｫ驛｢譎｢・ｽ・ｼ驛｢譎丞ｹｲ郢晢ｽｻ驍ｵ・ｺ髴域喚髮ｷ驍ｵ・ｺ繝ｻ・ｪ驍ｵ・ｺ郢晢ｽｻ
 		mpModel->SetLoop(false);
-		//郢晢ｽ｢郢晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ陟募ｾ後・陟輔・・ｩ貅佩皮ｹ晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ邵ｺ・ｫ隰鯉ｽｻ邵ｺ繝ｻ
+		//驛｢譎｢・ｽ・｢驛｢譎｢・ｽ・ｼ驛｢・ｧ繝ｻ・ｷ驛｢譎｢・ｽ・ｧ驛｢譎｢・ｽ・ｳ髯溷供・ｾ蠕後・髯溯ｼ斐・繝ｻ・ｩ雋・ｽｩ逧ｮ・ｹ譎｢・ｽ・ｼ驛｢・ｧ繝ｻ・ｷ驛｢譎｢・ｽ・ｧ驛｢譎｢・ｽ・ｳ驍ｵ・ｺ繝ｻ・ｫ髫ｰ魃会ｽｽ・ｻ驍ｵ・ｺ郢晢ｽｻ
 		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		isHitAttackSearch = false;
 	}
@@ -169,110 +169,33 @@ void Enemy::Move()
 {
 	AnimationState now = mpModel->GetNowState();
 	if (now == ANIMATION_ATTACK||now==ANIMATION_ATTACKMAGIC||now==ANIMATION_ATTACKJUMP)return;
-	if (Master::SafePointOn)mvPosition = VinitPos;//郢ｧ繧・ｼ�郢晏干ﾎ樒ｹｧ・､郢晢ｽ､郢晢ｽｼ邵ｺ謔滂ｽｮ迚吶・陜ｨ・ｰ陝ｶ・ｯ邵ｺ・ｫ邵ｺ繝ｻ・狗ｸｺ・ｪ郢ｧ迚吶・隴帶ｺ倥・郢ｧ・ｹ邵ｺ・ｫ隰鯉ｽｻ郢ｧ繝ｻ
+	if (Master::SafePointOn)mvPosition = VinitPos;//驛｢・ｧ郢ｧ繝ｻ・ｼ・ｽ驛｢譎丞ｹｲ・取ｨ抵ｽｹ・ｧ繝ｻ・､驛｢譎｢・ｽ・､驛｢譎｢・ｽ・ｼ驍ｵ・ｺ隰疲ｻゑｽｽ・ｮ霑壼生繝ｻ髯懶ｽｨ繝ｻ・ｰ髯晢ｽｶ繝ｻ・ｯ驍ｵ・ｺ繝ｻ・ｫ驍ｵ・ｺ郢晢ｽｻ繝ｻ迢暦ｽｸ・ｺ繝ｻ・ｪ驛｢・ｧ霑壼生繝ｻ髫ｴ蟶ｶ・ｺ蛟･繝ｻ驛｢・ｧ繝ｻ・ｹ驍ｵ・ｺ繝ｻ・ｫ髫ｰ魃会ｽｽ・ｻ驛｢・ｧ郢晢ｽｻ
 	
 
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
-	 moveVec = VGet(0.0f, 0.0f, 0.0f);
-	 UpMoveVector = VGet(0.0f, 0.0f, 0.0f);
-	 leftMoveVector = VGet(0.0f, 0.0f, 0.0f);
+	moveVec = VGet(0.0f, 0.0f, 0.0f);
 	{
-		//闕ｳ鬆大ｩｿ陷ｷ莉｣竏育ｸｺ・ｮ驕假ｽｻ陷崎ｼ斐・郢ｧ・ｯ郢晏現ﾎ晉ｸｺ・ｯ邵ｲ竏壹″郢晢ｽ｡郢晢ｽｩ髫穂ｹ溘○隴・ｽｹ陷ｷ莉｣ﾂｰ郢ｧ隰∬ｬ御ｻ吶・郢ｧ蜻域�｢邵ｺ繝ｻ笳・ｹｧ繧・・邵ｺ・ｨ邵ｺ蜷ｶ・・
-		UpMoveVector = VSub(Master::mpCamera->GetlookAtPosition(), Master::mpCamera->GetPosition());
-		UpMoveVector.y = 0.0f;
-
-		//陝ｾ・ｦ隴・ｽｹ陷ｷ莉｣竏育ｸｺ・ｮ驕假ｽｻ陷崎ｼ斐・郢ｧ・ｯ郢晏現ﾎ晉ｸｺ蠕娯或・ｸ鬆大ｩｿ陷ｷ莉｣繝ｻ驕假ｽｻ陷崎ｼ斐・郢ｧ・ｯ郢晏現ﾎ晉ｸｺ・ｨ邵ｲ縲・怕・ｸ邵ｺ・ｮ郢晏干ﾎ帷ｹｧ・ｹ隴・ｽｹ陷ｷ莉｣竏育ｸｺ・ｮ郢晏生縺醍ｹ晏現ﾎ晢ｽｫ陜吶ｉ蟲ｩ邵ｺ・ｪ隴・ｽｹ陷ｷ謇假ｽｼ莠･・､荵滂ｽｩ謳ｾ・ｼ繝ｻ
-		leftMoveVector = VCross(UpMoveVector, VGet(0.0f, 1.0f, 0.0f));
-		leftMoveVector.y = 0.0f;
-
-
-		//驕假ｽｻ陷崎ｼ斐・郢ｧ・ｯ郢晏現ﾎ晉ｸｺ・ｯ驕假ｽｻ陷肴坩郢ｧ雋槫・陷ｻ・ｳ邵ｺ蜉ｱ竊醍ｸｺ繝ｻ繝ｻ邵ｺ・ｧ邵ｲ竏ｵ・ｭ・｣髫穂ｸ槫密邵ｺ蜉ｱ窶ｻ邵ｺ鄙ｫ・･(郢晏生縺醍ｹ晏現ﾎ晉ｸｺ・ｮ鬮滂ｽｷ邵ｺ霈費ｽ偵・莉｣竊鍋ｸｺ蜷ｶ・狗ｸｺ阮吮・)
-		UpMoveVector = VNorm(UpMoveVector);
-		leftMoveVector = VNorm(leftMoveVector);
 	}
-
-
-	//////////////驕假ｽｻ陷榊｢灘ｩｿ陷ｷ莉｣竊堤ｹｧ・ｹ郢晄鱒繝ｻ郢晏ｳｨ繝ｻ陷・ｽｦ騾・・///////////////
 	{
-		WalkCount++;
-		if (isHitSerchStop)
-		{
-			mfSpeed = 0;///鬨ｾ・ｲ邵ｺ・ｾ邵ｺ・ｪ邵ｺ繝ｻ・育ｸｺ繝ｻ竊鍋ｸｺ蜷ｶ・・
-		}
-		else
-		{
-			mfSpeed = mfNormalSpeed;
-		}
-		if (WalkTimer < WalkCount)
-		{
-			WalkTimer = rand()%300;//譁ｹ蜷題ｻ｢謠帙ち繧､繝槭・
-			mnAlgorithm = rand()%8; // 0-3: 豁ｩ縺・ 4-7: 遶九■豁｢縺ｾ繧・
-			WalkCount = 0;
-		}
-
-		if (mnAlgorithm == 0)//蟾ｦ譁ｹ蜷代∈縺ｮ遘ｻ蜍・
-		{
-			moveVec = VAdd(moveVec, leftMoveVector);
-		}
-		else if (mnAlgorithm == 1)//蜿ｳ譁ｹ蜷代∈縺ｮ遘ｻ蜍・
-		{
-			moveVec = VAdd(moveVec, VScale(leftMoveVector, -1.0f));
-		}
-		else if (mnAlgorithm == 2)//螂･譁ｹ蜷代∈縺ｮ遘ｻ蜍・
-		{
-			moveVec = VAdd(moveVec, UpMoveVector);
-		}
-		else if (mnAlgorithm == 3)//謇句燕譁ｹ蜷代∈縺ｮ遘ｻ蜍・
-		{
-			moveVec = VAdd(moveVec, VScale(UpMoveVector, -1.0f));
-		}
-		else
-		{
-			// mnAlgorithm縺・4・・ 縺ｮ蝣ｴ蜷医・菴輔ｂ縺励↑縺・ｼ育ｫ九■豁｢縺ｾ繧具ｼ・
-		}
-
-
-
+		if (isHitSerchStop) { mfSpeed = 0; } else { mfSpeed = mfNormalSpeed; }
+		
 		GoPosition = VSub(pPlayer->GetPosition(), mvPosition);
-		GoPosition = VNorm(GoPosition);///郢晏干ﾎ樒ｹｧ・､郢晢ｽ､郢晢ｽｼ邵ｺ・ｸ陷ｷ莉｣ﾂｰ邵ｺ繝ｻ繝ｻ騾・・
-
+		GoPosition.y = 0.0f; // Fix Y axis movement
+		if (VSquareSize(GoPosition) > 0.0001f) GoPosition = VNorm(GoPosition);
+		moveVec = GoPosition;
 
 		bool isMove = (moveVec.x != 0.0f || moveVec.z != 0.0f);
-		if (isMove || isHitSearch)
-		{
-			mpModel->ChangeAnimation(ANIMATION_RUN);
+		if (isMove) { mpModel->ChangeAnimation(ANIMATION_RUN); mfTargetAngle = atan2f(moveVec.x, moveVec.z); }
+		else { mpModel->ChangeAnimation(ANIMATION_NEUTRAL); }
 
-			//驕假ｽｻ陷榊｢灘ｩｿ陷ｷ莉｣・定ｱ・ｽ｣髫穂ｸ槫密邵ｺ蜉ｱ窶ｻ邵ｺ鄙ｫ・･
-			if (isHitSearch == false)
-			{
-				mfTargetAngle = atan2f(moveVec.x, moveVec.z);
-			}
-			if (isHitSearch)
-			{
-				mfTargetAngle = atan2f(GoPosition.x, GoPosition.z);
-			}
-
-		}
-		else
-		{
-			mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
-		}
-		VECTOR oldPosition = mvPosition;//陷第ｦ雁ｱ鍋ｸｺ・ｮ陟趣ｽｧ隶灘生・定叉隴鯉ｽｦ闖ｫ譎・亜
-		if (isHitSearch == false)
-		{
-			mvPosition = VAdd(mvPosition, VScale(moveVec, mfSpeed));
-		}
-		if (isHitSearch)
-		{
-			mvPosition = VAdd(mvPosition, VScale(GoPosition, mfSpeed));
-
-		}
+		VECTOR oldPosition = mvPosition;
+		mvPosition = VAdd(mvPosition, VScale(moveVec, mfSpeed));
 		//////////////////////////////////////////////////////
 
 		VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
-		//郢ｧ・ｹ郢昴・繝ｻ郢ｧ・ｸ邵ｺ・ｨ邵ｺ・ｮ陟冶侭笳・ｹｧ髮∵・陞ｳ螢ｹ・堤ｸｺ蜷ｶ・・
+		//驛｢・ｧ繝ｻ・ｹ驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢・ｧ繝ｻ・ｸ驍ｵ・ｺ繝ｻ・ｨ驍ｵ・ｺ繝ｻ・ｮ髯溷・萓ｭ隨ｳ繝ｻ・ｹ・ｧ鬮ｮ竏ｵ繝ｻ髯橸ｽｳ陞｢・ｹ繝ｻ蝣､・ｸ・ｺ陷ｷ・ｶ繝ｻ繝ｻ
 		hitPos = VGet(0.0f, 0.0f, 0.0f);
 		bool isHit = false;
 
@@ -283,16 +206,16 @@ void Enemy::Move()
 			Stage* pStage = dynamic_cast<Stage*>(obj);
 			if (pStage != nullptr)
 			{
-				//郢ｧ・ｹ郢昴・繝ｻ郢ｧ・ｸ邵ｺ・ｨ郢晏干ﾎ樒ｹｧ・､郢晢ｽ､郢晢ｽｼ邵ｺ・ｮ郢ｧ・ｫ郢晏干縺晉ｹ晢ｽｫ邵ｺ謔滂ｽｽ阮吮螺邵ｺ・｣邵ｺ・ｦ邵ｺ繝ｻ・玖撻・ｴ陷ｷ繝ｻ
+				//驛｢・ｧ繝ｻ・ｹ驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢・ｧ繝ｻ・ｸ驍ｵ・ｺ繝ｻ・ｨ驛｢譎丞ｹｲ・取ｨ抵ｽｹ・ｧ繝ｻ・､驛｢譎｢・ｽ・､驛｢譎｢・ｽ・ｼ驍ｵ・ｺ繝ｻ・ｮ驛｢・ｧ繝ｻ・ｫ驛｢譎丞ｹｲ邵ｺ譎会ｽｹ譎｢・ｽ・ｫ驍ｵ・ｺ隰疲ｻゑｽｽ・ｽ髦ｮ蜷ｮ陞ｺ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ繝ｻ邇匁捗繝ｻ・ｴ髯ｷ・ｷ郢晢ｽｻ
 				if (pStage->CheckHit_Capsule(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)), 40.0f))
 				{
-					//陟冶侭笳・ｸｺ・｣邵ｺ・ｦ邵ｺ繝ｻ・狗ｸｺ・ｧ邵ｺ繧・ｽ咲ｸｺ繝ｻ繝ｻ郢晢ｽｪ郢ｧ・ｴ郢晢ｽｳ邵ｺ・ｨ邵ｺ・ｮ隰暦ｽ･髫暦ｽｦ霓､・ｹ郢ｧ蜻茨ｽｱ繧・ｽ∫ｹｧ繝ｻ
+					//髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ繝ｻ迢暦ｽｸ・ｺ繝ｻ・ｧ驍ｵ・ｺ郢ｧ繝ｻ・ｽ蜥ｲ・ｸ・ｺ郢晢ｽｻ郢晢ｽｻ驛｢譎｢・ｽ・ｪ驛｢・ｧ繝ｻ・ｴ驛｢譎｢・ｽ・ｳ驍ｵ・ｺ繝ｻ・ｨ驍ｵ・ｺ繝ｻ・ｮ髫ｰ證ｦ・ｽ・･鬮ｫ證ｦ・ｽ・ｦ髴難ｽ､繝ｻ・ｹ驛｢・ｧ陷ｻ闌ｨ・ｽ・ｱ郢ｧ繝ｻ・ｽ竏ｫ・ｹ・ｧ郢晢ｽｻ
 					hitPos = pStage->CheckHit_Line(
-						VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),//enemy邵ｺ・ｮ髢ｹ譎擾ｽｽ阮吮螺郢ｧ繝ｻ陞溷｣ｼ繝ｻ)邵ｺ・ｨ
-						VAdd(mvPosition, VGet(0.0f, -40.0f, 0.0f))//enemy邵ｺ・ｮ陝・ｻ｣・�闕ｳ荵昶旺邵ｺ貅假ｽ顔ｹｧ蝣､・ｷ螢ｼ繝ｻ邵ｺ・ｨ邵ｺ蜉ｱ窶ｻ隰悶・・ｮ繝ｻ
+						VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),//enemy驍ｵ・ｺ繝ｻ・ｮ鬮｢・ｹ隴取得・ｽ・ｽ髦ｮ蜷ｮ陞ｺ驛｢・ｧ郢晢ｽｻ髯樊ｺｷ・｣・ｼ郢晢ｽｻ)驍ｵ・ｺ繝ｻ・ｨ
+						VAdd(mvPosition, VGet(0.0f, -40.0f, 0.0f))//enemy驍ｵ・ｺ繝ｻ・ｮ髯昴・・ｻ・｣繝ｻ・ｽ髣包ｽｳ闕ｵ譏ｶ譌ｺ驍ｵ・ｺ雋・∞・ｽ鬘費ｽｹ・ｧ陜｣・､繝ｻ・ｷ陞｢・ｼ郢晢ｽｻ驍ｵ・ｺ繝ｻ・ｨ驍ｵ・ｺ陷会ｽｱ遯ｶ・ｻ髫ｰ謔ｶ繝ｻ繝ｻ・ｮ郢晢ｽｻ
 					);
 
-					//陟冶侭笳・ｸｺ・｣邵ｺ貅ｷ諢幄楜螢ｹ・定愾謔ｶ笆ｲ邵ｺ・ｦ邵ｺ鄙ｫ・･
+					//髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ雋・ｽｷ隲｢蟷・･懆椶・ｹ繝ｻ螳壽╂隰費ｽｶ隨・ｽｲ驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ驗呻ｽｫ繝ｻ・･
 					isHit = true;
 				}
 			}
@@ -300,13 +223,13 @@ void Enemy::Move()
 
 		if (isHit)
 		{
-			//陜ｨ・ｰ鬮ｱ・｢邵ｺ・ｫ雎撰ｽｿ邵ｺ・｣邵ｺ・ｦ雎・ｽｩ邵ｺ繝ｻ窶ｻ邵ｺ繝ｻ・玖ｿ･・ｶ隲ｷ荵昶・邵ｺ蜉ｱ窶ｻ邵ｲ縲・�趣ｽｧ隶灘生・堤ｹｧ・ｹ郢昴・繝ｻ郢ｧ・ｸ邵ｺ・ｫ陷ｷ蛹ｻ・冗ｸｺ蟶呻ｽ・
+			//髯懶ｽｨ繝ｻ・ｰ鬯ｮ・ｱ繝ｻ・｢驍ｵ・ｺ繝ｻ・ｫ髮取腸・ｽ・ｿ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ髮弱・・ｽ・ｩ驍ｵ・ｺ郢晢ｽｻ遯ｶ・ｻ驍ｵ・ｺ郢晢ｽｻ繝ｻ邇厄ｽｿ・･繝ｻ・ｶ髫ｲ・ｷ闕ｵ譏ｶ繝ｻ驍ｵ・ｺ陷会ｽｱ遯ｶ・ｻ驍ｵ・ｲ邵ｲ繝ｻ・ｽ雜｣・ｽ・ｧ髫ｶ轣倡函繝ｻ蝣､・ｹ・ｧ繝ｻ・ｹ驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢・ｧ繝ｻ・ｸ驍ｵ・ｺ繝ｻ・ｫ髯ｷ・ｷ陋ｹ・ｻ繝ｻ蜀暦ｽｸ・ｺ陝ｶ蜻ｻ・ｽ繝ｻ
 			mvPosition.y = hitPos.y;
 		}
 		if (isHit == false)
 		{
-			//髫補扱髫ｼ陜溘・
-			mvPosition.y += -4.0f;//髣懶ｽｽ闕ｳ荵昶・郢ｧ遏ｩ貅ｷ・ｺ・ｦ
+			//鬮ｫ陬懈桶鬮ｫ・ｼ髯懈ｺ倥・
+			mvPosition.y += -4.0f;//鬮｣諛ｶ・ｽ・ｽ髣包ｽｳ闕ｵ譏ｶ繝ｻ驛｢・ｧ驕擾ｽｩ雋・ｽｷ繝ｻ・ｺ繝ｻ・ｦ
 			if (mvPosition.y <= 0.0f)
 			{
 				mvPosition.y = oldPosition.y;
@@ -315,8 +238,8 @@ void Enemy::Move()
 		auto walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
 		if (!walls.empty())
 		{
-			// 陟冶侭笳・ｸｺ・｣邵ｺ・ｦ邵ｺ繝ｻ・玖椶竏夲ｽ帝坡・ｿ邵ｺ・ｹ郢ｧ繝ｻ
-			// hint: 霑ｴ・ｾ霑･・ｶ邵ｺ・ｮ陷・ｽｦ騾・・縲堤ｸｺ・ｯ1隴ｫ螢ｹ繝ｻ陞｢竏夲ｼ�邵ｺ蛹ｺ諤咎お繧牙飭邵ｺ・ｫ陋ｻ・､陞ｳ螢ｹ・・ｹｧ蠕娯・邵ｺ繝ｻ繝ｻ邵ｺ・ｧ邵ｲ繝ｻ隴ｫ螟ｲ・ｼ莠包ｽｻ・･闕ｳ螂・ｽｼ蟲ｨ竊楢�冶侭笳・ｸｺ・｣邵ｺ・ｦ邵ｺ繝ｻ笳・撻・ｴ陷ｷ蛹ｻ繝ｻ陷・ｽｦ騾・・・帝蔓繝ｻ竏ｴ郢ｧ繝ｻ
+			// 髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ繝ｻ邇匁､ｶ遶丞､ｲ・ｽ蟶晏擅繝ｻ・ｿ驍ｵ・ｺ繝ｻ・ｹ驛｢・ｧ郢晢ｽｻ
+			// hint: 髴托ｽｴ繝ｻ・ｾ髴托ｽ･繝ｻ・ｶ驍ｵ・ｺ繝ｻ・ｮ髯ｷ繝ｻ・ｽ・ｦ鬨ｾ繝ｻ繝ｻ邵ｲ蝣､・ｸ・ｺ繝ｻ・ｯ1髫ｴ・ｫ陞｢・ｹ郢晢ｽｻ髯橸ｽ｢遶丞､ｲ・ｼ・ｽ驍ｵ・ｺ陋ｹ・ｺ隲､蜥弱♀郢ｧ迚咎｣ｭ驍ｵ・ｺ繝ｻ・ｫ髯具ｽｻ繝ｻ・､髯橸ｽｳ陞｢・ｹ繝ｻ繝ｻ・ｹ・ｧ陟募ｨｯ繝ｻ驍ｵ・ｺ郢晢ｽｻ郢晢ｽｻ驍ｵ・ｺ繝ｻ・ｧ驍ｵ・ｲ郢晢ｽｻ髫ｴ・ｫ陞滂ｽｲ繝ｻ・ｼ闔蛹・ｽｽ・ｻ繝ｻ・･髣包ｽｳ陞ゅ・・ｽ・ｼ陝ｲ・ｨ遶頑･｢・ｽ蜀ｶ萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ隨ｳ繝ｻ謦ｻ繝ｻ・ｴ髯ｷ・ｷ陋ｹ・ｻ郢晢ｽｻ髯ｷ繝ｻ・ｽ・ｦ鬨ｾ繝ｻ繝ｻ繝ｻ蟶晁箔郢晢ｽｻ遶擾ｽｴ驛｢・ｧ郢晢ｽｻ
 			for (int i = 0; i < walls.size(); i++)
 			{
 				Wall* wall = dynamic_cast<Wall*>(walls.at(i));
@@ -324,7 +247,7 @@ void Enemy::Move()
 				{
 					std::vector<VERTEX3D> vertex = wall->GetVertex();
 
-					// 郢晏干ﾎ樒ｹｧ・､郢晢ｽ､郢晢ｽｼ郢ｧ雋樊｡∫ｹｧ郢ｧ蛹ｻ竕ｧ邵ｺ・ｪ郢ｧ・ｫ郢晏干縺晉ｹ晢ｽｫ陜吩ｹ昴・陋ｻ・､陞ｳ螢ｹ竊堤ｸｲ竏晢ｽ｣竏壹・闕ｳ闃ｽ・ｧ雋橸ｽｽ・｢郢晄亢ﾎ懃ｹｧ・ｴ郢晢ｽｳ邵ｺ・ｨ邵ｺ・ｮ陟冶侭笳・ｹｧ髮∵・陞ｳ螢ｹ・帝勗蠕娯鴬
+					// 驛｢譎丞ｹｲ・取ｨ抵ｽｹ・ｧ繝ｻ・､驛｢譎｢・ｽ・､驛｢譎｢・ｽ・ｼ驛｢・ｧ髮区ｨ奇ｽ｡竏ｫ・ｹ・ｧ驛｢・ｧ陋ｹ・ｻ遶包ｽｧ驍ｵ・ｺ繝ｻ・ｪ驛｢・ｧ繝ｻ・ｫ驛｢譎丞ｹｲ邵ｺ譎会ｽｹ譎｢・ｽ・ｫ髯懷姓・ｹ譏ｴ繝ｻ髯具ｽｻ繝ｻ・､髯橸ｽｳ陞｢・ｹ遶雁､・ｸ・ｲ遶乗劼・ｽ・｣遶丞｣ｹ繝ｻ髣包ｽｳ髣・ｽｽ繝ｻ・ｧ髮区ｩｸ・ｽ・ｽ繝ｻ・｢驛｢譎・ｺ｢・取㏍・ｹ・ｧ繝ｻ・ｴ驛｢譎｢・ｽ・ｳ驍ｵ・ｺ繝ｻ・ｨ驍ｵ・ｺ繝ｻ・ｮ髯溷・萓ｭ隨ｳ繝ｻ・ｹ・ｧ鬮ｮ竏ｵ繝ｻ髯橸ｽｳ陞｢・ｹ繝ｻ蟶晏距陟募ｨｯ魘ｬ
 					if (HitCheck_Capsule_Triangle(
 						mvPosition,
 						VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
@@ -340,12 +263,12 @@ void Enemy::Move()
 
 
 
-						// 陞｢竏壺・雎撰ｽｿ邵ｺ・｣邵ｺ・ｦ髯ｦ蠕鯉ｿ･郢ｧ蛹ｻ竕ｧ邵ｺ・ｪ郢晏生縺醍ｹ晏現ﾎ晉ｹｧ雋槫徐陟輔・
-						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 陞｢竏ｵ・ｲ・ｿ邵ｺ繝ｻ繝ｻ郢ｧ・ｯ郢晏現ﾎ・
-						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 驕假ｽｻ陷榊｢灘ｩｿ陷ｷ莉｣繝ｻ郢ｧ・ｯ郢晏現ﾎ晉ｸｺ・ｮ陷ｿ讎奇ｽｯ・ｾ郢晏生縺醍ｹ晏現ﾎ晉ｸｺ・ｨ邵ｲ竏晢ｽ｣竏壹・雎墓・・ｷ螢ｹ竊堤ｸｺ・ｮ陷繝ｻ・ｩ髦ｪ・定ｱ弱ｅ・∫ｹｧ繝ｻ
-						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 陞｢竏ｵ・ｲ・ｿ邵ｺ繝ｻ繝ｻ郢ｧ・ｯ郢晏現ﾎ晉ｹｧ螳夲ｽｨ閧ｲ・ｮ繝ｻ
+						// 髯橸ｽ｢遶丞｣ｺ繝ｻ髮取腸・ｽ・ｿ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ鬮ｯ・ｦ陟暮ｯ会ｽｿ・･驛｢・ｧ陋ｹ・ｻ遶包ｽｧ驍ｵ・ｺ繝ｻ・ｪ驛｢譎冗函邵ｺ驢搾ｽｹ譎冗樟・取刮・ｹ・ｧ髮区ｧｫ蠕宣辧霈斐・
+						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 髯橸ｽ｢遶擾ｽｵ繝ｻ・ｲ繝ｻ・ｿ驍ｵ・ｺ郢晢ｽｻ郢晢ｽｻ驛｢・ｧ繝ｻ・ｯ驛｢譎冗樟・弱・
+						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 鬩募∞・ｽ・ｻ髯ｷ讎奇ｽ｢轣假ｽｩ・ｿ髯ｷ・ｷ闔会ｽ｣郢晢ｽｻ驛｢・ｧ繝ｻ・ｯ驛｢譎冗樟・取刮・ｸ・ｺ繝ｻ・ｮ髯ｷ・ｿ隶主･・ｽｽ・ｯ繝ｻ・ｾ驛｢譎冗函邵ｺ驢搾ｽｹ譎冗樟・取刮・ｸ・ｺ繝ｻ・ｨ驍ｵ・ｲ遶乗劼・ｽ・｣遶丞｣ｹ繝ｻ髮主｢薙・繝ｻ・ｷ陞｢・ｹ遶雁､・ｸ・ｺ繝ｻ・ｮ髯ｷﾂ郢晢ｽｻ繝ｻ・ｩ鬮ｦ・ｪ繝ｻ螳夲ｽｱ蠑ｱ・・・竏ｫ・ｹ・ｧ郢晢ｽｻ
+						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 髯橸ｽ｢遶擾ｽｵ繝ｻ・ｲ繝ｻ・ｿ驍ｵ・ｺ郢晢ｽｻ郢晢ｽｻ驛｢・ｧ繝ｻ・ｯ驛｢譎冗樟・取刮・ｹ・ｧ陞ｳ螟ｲ・ｽ・ｨ髢ｧ・ｲ繝ｻ・ｮ郢晢ｽｻ
 
-						// 闕ｳ隴鯉ｽｦ陟趣ｽｧ隶灘生・定ｬ鯉ｽｻ邵ｺ蜉ｱ窶ｻ邵ｺ荵晢ｽ芽椶竏壺・雎撰ｽｿ邵ｺ・｣邵ｺ・ｦ雎・ｽｩ邵ｺ荳奇ｽ育ｸｺ繝ｻ竊鍋ｸｺ蜷ｶ・・
+						// 髣包ｽｳ髫ｴ魃会ｽｽ・ｦ髯溯ｶ｣・ｽ・ｧ髫ｶ轣倡函繝ｻ螳夲ｽｬ魃会ｽｽ・ｻ驍ｵ・ｺ陷会ｽｱ遯ｶ・ｻ驍ｵ・ｺ闕ｵ譎｢・ｽ闃ｽ讀ｶ遶丞｣ｺ繝ｻ髮取腸・ｽ・ｿ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ髮弱・・ｽ・ｩ驍ｵ・ｺ闕ｳ螂・ｽｽ閧ｲ・ｸ・ｺ郢晢ｽｻ遶企豪・ｸ・ｺ陷ｷ・ｶ繝ｻ繝ｻ
 						mvPosition = oldPosition;
 						mvPosition = VAdd(mvPosition, VScale(slide, mfSpeed));
 					}
@@ -364,11 +287,11 @@ void Enemy::Move()
 
 void Enemy::RotationByMove()
 {
-	//霑ｴ・ｾ陜ｨ・ｨ邵ｺ・ｮ陜玲ｫ・ｽｻ・｢陋滂ｽ､邵ｺ荵晢ｽ蛾ｶ・ｮ隶灘生繝ｻ陜玲ｫ・ｽｻ・｢陋滂ｽ､邵ｺ・ｮ陝ｾ・ｮ陋ｻ繝ｻ・定ｱ弱ｅ・∫ｹｧ繝ｻ
+	//髴托ｽｴ繝ｻ・ｾ髯懶ｽｨ繝ｻ・ｨ驍ｵ・ｺ繝ｻ・ｮ髯懃軸・ｫ繝ｻ・ｽ・ｻ繝ｻ・｢髯区ｻゑｽｽ・､驍ｵ・ｺ闕ｵ譎｢・ｽ陋ｾﾂ・ｶ繝ｻ・ｮ髫ｶ轣倡函郢晢ｽｻ髯懃軸・ｫ繝ｻ・ｽ・ｻ繝ｻ・｢髯区ｻゑｽｽ・､驍ｵ・ｺ繝ｻ・ｮ髯晢ｽｾ繝ｻ・ｮ髯具ｽｻ郢晢ｽｻ繝ｻ螳夲ｽｱ蠑ｱ・・・竏ｫ・ｹ・ｧ郢晢ｽｻ
 	float subAngle = mfTargetAngle - mfAngle;
 
-	//邵ｺ繧・ｽ玖ｭ・ｽｹ陷ｷ莉｣ﾂｰ郢ｧ蟲ｨ竕�郢ｧ蛹ｺ蟀ｿ陷ｷ莉｣繝ｻ陝ｾ・ｮ邵ｺ魃会ｽｼ謇假ｽｼ蛛・ｽｼ莉呻ｽｺ・ｦ闔会ｽ･闕ｳ螂・ｽｼ莠包ｽｻ・･闕ｳ蜈ｷ・ｼ蟲ｨ竊鍋ｸｺ・ｪ郢ｧ荵晢ｼ・ｸｺ・ｨ邵ｺ蠕娯・邵ｺ繝ｻ繝ｻ邵ｺ螢ｹ竊醍ｸｺ・ｮ邵ｺ・ｧ
-	//陝ｾ・ｮ邵ｺ・ｮ陋滂ｽ､邵ｺ魃会ｽｼ謇假ｽｼ蛛・ｽｼ陜会ｽｻ・･闕ｳ螂・ｽｼ莠包ｽｻ・･闕ｳ蜈ｷ・ｼ蟲ｨ竊鍋ｸｺ・ｪ邵ｺ・｣邵ｺ・ｦ邵ｺ繝ｻ笳・ｹｧ閾･豬｣雎・ｽ｣邵ｺ蜷ｶ・・
+	//驍ｵ・ｺ郢ｧ繝ｻ・ｽ邇厄ｽｭ繝ｻ・ｽ・ｹ髯ｷ・ｷ闔会ｽ｣・ゑｽｰ驛｢・ｧ陝ｲ・ｨ遶包ｿｽ驛｢・ｧ陋ｹ・ｺ陝・ｿ髯ｷ・ｷ闔会ｽ｣郢晢ｽｻ髯晢ｽｾ繝ｻ・ｮ驍ｵ・ｺ鬲・ｼ夲ｽｽ・ｼ隰・∞・ｽ・ｼ陋帙・・ｽ・ｼ闔牙遜・ｽ・ｺ繝ｻ・ｦ髣比ｼ夲ｽｽ・･髣包ｽｳ陞ゅ・・ｽ・ｼ闔蛹・ｽｽ・ｻ繝ｻ・･髣包ｽｳ陷茨ｽｷ繝ｻ・ｼ陝ｲ・ｨ遶企豪・ｸ・ｺ繝ｻ・ｪ驛｢・ｧ闕ｵ譎｢・ｼ繝ｻ・ｸ・ｺ繝ｻ・ｨ驍ｵ・ｺ陟募ｨｯ繝ｻ驍ｵ・ｺ郢晢ｽｻ郢晢ｽｻ驍ｵ・ｺ陞｢・ｹ遶企・・ｸ・ｺ繝ｻ・ｮ驍ｵ・ｺ繝ｻ・ｧ
+	//髯晢ｽｾ繝ｻ・ｮ驍ｵ・ｺ繝ｻ・ｮ髯区ｻゑｽｽ・､驍ｵ・ｺ鬲・ｼ夲ｽｽ・ｼ隰・∞・ｽ・ｼ陋帙・・ｽ・ｼ髯應ｼ夲ｽｽ・ｻ繝ｻ・･髣包ｽｳ陞ゅ・・ｽ・ｼ闔蛹・ｽｽ・ｻ繝ｻ・･髣包ｽｳ陷茨ｽｷ繝ｻ・ｼ陝ｲ・ｨ遶企豪・ｸ・ｺ繝ｻ・ｪ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ隨ｳ繝ｻ・ｹ・ｧ髢ｾ・･雎ｬ・｣髮弱・・ｽ・｣驍ｵ・ｺ陷ｷ・ｶ繝ｻ繝ｻ
 	if (subAngle < -DX_PI_F)
 	{
 		subAngle += DX_TWO_PI_F;
@@ -378,7 +301,7 @@ void Enemy::RotationByMove()
 		subAngle -= DX_TWO_PI_F;
 	}
 
-	//髫苓ｲ橸ｽｺ・ｦ邵ｺ・ｮ陝ｾ・ｮ陋ｻ繝ｻ・定�戊・繝ｻ竊薙・闊娯・髴台ｻ｣笆ｼ邵ｺ莉｣・・
+	//鬮ｫ闍難ｽｲ讖ｸ・ｽ・ｺ繝ｻ・ｦ驍ｵ・ｺ繝ｻ・ｮ髯晢ｽｾ繝ｻ・ｮ髯具ｽｻ郢晢ｽｻ繝ｻ螳夲ｿｽ謌翫・郢晢ｽｻ遶願侭繝ｻ髣雁ｨｯ繝ｻ鬮ｴ蜿ｰ・ｻ・｣隨・ｽｼ驍ｵ・ｺ闔会ｽ｣繝ｻ繝ｻ
 	if (subAngle > 0.0f)
 	{
 		subAngle -= ROTATE_SPEED;
@@ -395,12 +318,12 @@ void Enemy::RotationByMove()
 			subAngle = 0.0f;
 		}
 	}
-	//闔蛾宦鬮・ｸｺ繝ｻ窶ｻ邵ｺ・ｻ邵ｺ蜉ｱ・樣囓雋橸ｽｺ・ｦ郢ｧ蝣､閧・怎・ｺ
+	//髣碑崟螳ｦ鬯ｮ繝ｻ・ｸ・ｺ郢晢ｽｻ遯ｶ・ｻ驍ｵ・ｺ繝ｻ・ｻ驍ｵ・ｺ陷会ｽｱ繝ｻ讓｣蝗馴寞讖ｸ・ｽ・ｺ繝ｻ・ｦ驛｢・ｧ陜｣・､髢ｧ繝ｻ諤弱・・ｺ
 	mfAngle = mfTargetAngle - subAngle;
 
-	//陜玲ｫ・ｽｻ・｢陋滂ｽ､郢ｧ螳夲ｽｨ・ｭ陞ｳ繝ｻ
+	//髯懃軸・ｫ繝ｻ・ｽ・ｻ繝ｻ・｢髯区ｻゑｽｽ・､驛｢・ｧ陞ｳ螟ｲ・ｽ・ｨ繝ｻ・ｭ髯橸ｽｳ郢晢ｽｻ
 	mvRotation.y = mfAngle + DX_PI_F;
-	//郢晢ｽ｢郢昴・ﾎ晉ｸｺ・ｫ闔ｨ譏ｴ竏ｴ郢ｧ繝ｻ
+	//驛｢譎｢・ｽ・｢驛｢譏ｴ繝ｻ・取刮・ｸ・ｺ繝ｻ・ｫ髣費ｽｨ隴擾ｽｴ遶擾ｽｴ驛｢・ｧ郢晢ｽｻ
 	mpModel->SetRotation(mvRotation);
 
 
@@ -426,10 +349,10 @@ void Enemy::DeathEnemy()
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	
 	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//郢晢ｽｫ郢晢ｽｼ郢晏干繝ｻ邵ｺ霈披雷邵ｺ・ｪ邵ｺ繝ｻ
+	//驛｢譎｢・ｽ・ｫ驛｢譎｢・ｽ・ｼ驛｢譎丞ｹｲ郢晢ｽｻ驍ｵ・ｺ髴域喚髮ｷ驍ｵ・ｺ繝ｻ・ｪ驍ｵ・ｺ郢晢ｽｻ
 	mpModel->SetLoop(false);
-	//郢晢ｽ｢郢晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ陟募ｾ後・陟輔・・ｩ貅佩皮ｹ晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ邵ｺ・ｫ隰鯉ｽｻ邵ｺ繝ｻ
-	//郢昴・繝ｻ郢昴・繝ｻ郢ｧ・ｼ郢晢ｽｧ郢昴・繝ｻ陟輔・繝ｻ陟輔・・ｩ貅佩皮ｹ昴・繝ｻ郢ｧ・ｼ郢晢ｽｧ郢昴・繝ｻ邵ｺ・ｫ隰鯉ｽｻ邵ｺ繝ｻ
+	//驛｢譎｢・ｽ・｢驛｢譎｢・ｽ・ｼ驛｢・ｧ繝ｻ・ｷ驛｢譎｢・ｽ・ｧ驛｢譎｢・ｽ・ｳ髯溷供・ｾ蠕後・髯溯ｼ斐・繝ｻ・ｩ雋・ｽｩ逧ｮ・ｹ譎｢・ｽ・ｼ驛｢・ｧ繝ｻ・ｷ驛｢譎｢・ｽ・ｧ驛｢譎｢・ｽ・ｳ驍ｵ・ｺ繝ｻ・ｫ髫ｰ魃会ｽｽ・ｻ驍ｵ・ｺ郢晢ｽｻ
+	//驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢・ｧ繝ｻ・ｼ驛｢譎｢・ｽ・ｧ驛｢譏ｴ繝ｻ郢晢ｽｻ髯溯ｼ斐・郢晢ｽｻ髯溯ｼ斐・繝ｻ・ｩ雋・ｽｩ逧ｮ・ｹ譏ｴ繝ｻ郢晢ｽｻ驛｢・ｧ繝ｻ・ｼ驛｢譎｢・ｽ・ｧ驛｢譏ｴ繝ｻ郢晢ｽｻ驍ｵ・ｺ繝ｻ・ｫ髫ｰ魃会ｽｽ・ｻ驍ｵ・ｺ郢晢ｽｻ
 	mpModel->SetLoopFinishState(ANIMATION_MAX);
 	
 	Delete();
@@ -487,7 +410,7 @@ void Enemy::DeathColliderPosition()
 
 }
 
-void Enemy::OnEnter(Collider* collider, Collider* check)//陝ｾ・ｦ陋幢ｽｴ.
+void Enemy::OnEnter(Collider* collider, Collider* check)//髯晢ｽｾ繝ｻ・ｦ髯句ｹ｢・ｽ・ｴ.
 {
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	if (mfHp <= 0)return;
@@ -508,7 +431,7 @@ void Enemy::OnEnter(Collider* collider, Collider* check)//陝ｾ・ｦ陋幢ｽ�
 		}
 		if (collider == mpAttackCollider && player->GetCollisionCollider() == check)
 		{
-			isHitAttackSearch = true;//隰ｾ・ｻ隰ｦ繝ｻ蟷戊沂荵昴Ψ郢晢ｽｩ郢ｧ・ｰ
+			isHitAttackSearch = true;//髫ｰ・ｾ繝ｻ・ｻ髫ｰ・ｦ郢晢ｽｻ陝ｷ謌頑ｲり嵯譏ｴﾎｨ驛｢譎｢・ｽ・ｩ驛｢・ｧ繝ｻ・ｰ
 
 		}
 		if (collider == mpStopCollider && player->GetCollisionCollider() == check)
@@ -516,15 +439,15 @@ void Enemy::OnEnter(Collider* collider, Collider* check)//陝ｾ・ｦ陋幢ｽ�
 			isHitSerchStop = true;
 		}
 	}
-	//陟冶侭笳・ｸｺ・｣邵ｺ・ｦ邵ｺ繝ｻ・矩ｫ｢謐ｺ蜃ｾ邵ｺ・ｮ陷・ｽｦ騾・・
+	//髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ繝ｻ遏ｩ・ｫ・｢隰撰ｽｺ陷・ｽｾ驍ｵ・ｺ繝ｻ・ｮ髯ｷ繝ｻ・ｽ・ｦ鬨ｾ繝ｻ繝ｻ
 }
 
 void Enemy::OnTrigger(Collider* collider, Collider* check)
-{//陟冶侭笳・ｸｺ・｣邵ｺ貅ｽ讀ｪ鬮｢阮吶・陷・ｽｦ騾・・
+{//髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ雋・ｽｽ隶・ｪ鬯ｮ・｢髦ｮ蜷ｶ繝ｻ髯ｷ繝ｻ・ｽ・ｦ鬨ｾ繝ｻ繝ｻ
 	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-	{//mpModel邵ｺ・ｮ騾｡・ｪ陷ｿ・ｷ郢ｧ繧・旺邵ｺ・｣邵ｺ・ｦ邵ｺ繝ｻ・狗ｸｲ竏夂ｸｺ・ｩ邵ｺ阮吶・if隴√・竊楢怦・･郢ｧ蟲ｨ竊醍ｸｺ繝ｻ
+	{//mpModel驍ｵ・ｺ繝ｻ・ｮ鬨ｾ・｡繝ｻ・ｪ髯ｷ・ｿ繝ｻ・ｷ驛｢・ｧ郢ｧ繝ｻ譌ｺ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ繝ｻ迢暦ｽｸ・ｲ遶丞､ゑｽｸ・ｺ繝ｻ・ｩ驍ｵ・ｺ髦ｮ蜷ｶ繝ｻif髫ｴ竏壹・遶頑･｢諤ｦ繝ｻ・･驛｢・ｧ陝ｲ・ｨ遶企・・ｸ・ｺ郢晢ｽｻ
 		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 		if (player == nullptr)return;
 		if (check == player->GetCollisionCollider())
@@ -533,7 +456,7 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 			{
 
 				player->Damage(mfAttack);
-				AttackHitJudgmentflag = true;//陟冶侭笳・ｸｺ・｣邵ｺ貅假ｽ育ｹ晢ｽｼ
+				AttackHitJudgmentflag = true;//髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ雋・∞・ｽ閧ｲ・ｹ譎｢・ｽ・ｼ
 			}
 		}
 	}
@@ -559,7 +482,7 @@ void Enemy::OnExit(Collider* collider, Collider* check)
 			}
 			if (collider == mpAttackCollider && player->GetCollisionCollider() == check)
 			{
-				isHitAttackSearch = false;//隰ｾ・ｻ隰ｦ繝ｻ蟷戊沂荵昴Ψ郢晢ｽｩ郢ｧ・ｰ
+				isHitAttackSearch = false;//髫ｰ・ｾ繝ｻ・ｻ髫ｰ・ｦ郢晢ｽｻ陝ｷ謌頑ｲり嵯譏ｴﾎｨ驛｢譎｢・ｽ・ｩ驛｢・ｧ繝ｻ・ｰ
 
 			}
 			if (collider == mpStopCollider && player->GetCollisionCollider() == check)
