@@ -25,11 +25,11 @@ public:
 	void SetNewEnemyFlag(bool flag) { mbNewEnemyflag = flag; }
 	bool GetNewEnemyFlag() { return mbNewEnemyflag; }
 
-	virtual CapsuleCollider* GetEnemycoll() { return mpCapsuleCollider; }//これが原因？カプセルコライダーだけ消えない
+	virtual CapsuleCollider* GetEnemycoll() { return mpCapsuleCollider; }//これが原因�E�カプセルコライダーだけ消えなぁE
 
 private:
-	bool mbHitSizeflag;//当たり判定用のサイズを持ってくるかどうかのflag?
-	bool mbNewEnemyflag;//敵をnewするためのフラグ？使い方はよくわからない
+	bool mbHitSizeflag;//当たり判定用のサイズを持ってくるかどぁE��のflag?
+	bool mbNewEnemyflag;//敵をnewするためのフラグ�E�使ぁE��はよくわからなぁE
 
 public:
 	Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2,float Serch3, float xp,int money,bool isSeparateAnim);
@@ -41,7 +41,7 @@ public:
 	void Update()override;
 
 	virtual void Move();
-    virtual void RotationByMove();//移動による回転処理
+    virtual void RotationByMove();//移動による回転処琁E
 	virtual void Damage(float damage);
 	virtual void AttackList();
 	virtual void Attack();
@@ -51,6 +51,7 @@ public:
 
 
 	virtual void DeathEnemy();
+	virtual void GiveRewards();
 	virtual void CollPositionUpdate();
 
 
@@ -66,7 +67,7 @@ public:
 	VECTOR GetGoPlayer() { return GoPosition; }
 	void SetGoPlayer(VECTOR goplayer) { GoPosition = goplayer; }
 
-	void SetVPosition(VECTOR pos) { VinitPos = pos; }//初期リスポーン地点の座標を取っておく
+	void SetVPosition(VECTOR pos) { VinitPos = pos; }//初期リスポ�Eン地点の座標を取っておく
 	VECTOR GetVPosition() { return VinitPos; }
 
 	float GetSize() { return mfSize; }
@@ -93,7 +94,7 @@ protected:
 	SphereCollider* mpAttachCollider;
 	CapsuleCollider* mpCapsuleCollider;
 	SphereCollider* mpSerchCollider;
-	SphereCollider* mpAttackCollider;//攻撃し始める円
+	SphereCollider* mpAttackCollider;//攻撁E��始める�E
 	SphereCollider* mpStopCollider;
 	Model* mpModel;
 	Debug* mpDebug;
@@ -105,45 +106,45 @@ protected:
 	float mfMaxSpeed;
 	float mfAttack;
 
-	int WalkTimer;//同じ宝庫に歩き続ける時間
+	int WalkTimer;//同じ宝庫に歩き続ける時閁E
 	int WalkCount;//
 
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
-	VECTOR GoPosition;//向かうベクトル（プレイヤーを感知したとき)
+	VECTOR GoPosition;//向かぁE�Eクトル�E��Eレイヤーを感知したとぁE
 	VECTOR oldPosition;
 	VECTOR VinitPos;//spown地点
 	VECTOR NoPosition;
 	VECTOR moveVec;
 	VECTOR UpMoveVector;
 	VECTOR leftMoveVector;
-	bool mbInvisible;//無敵かどうか
-	int mnAlgorithm;//ランダム移動
+	bool mbInvisible;//無敵かどぁE��
+	int mnAlgorithm;//ランダム移勁E
 	int AlgHit;
 
 	int AttackInterval;
 	int AttackCount;
 
 	bool Animation;
-	float mfTargetAngle;//目標の回転地
+	float mfTargetAngle;//目標�E回転地
 	float mfAngle;//現在の回転地
 	const float ROTATE_SPEED = 0.1f;//回転速度
 
 	float mfSize;//敵のサイズ
 	float HitSerch;//近くにプレイヤーがいるか
-	float HitAttackSerch;//近くにプレイヤーがいるか&攻撃できる距離か
-	float HitStopSerch;//近くにプレイヤーがいる&適切な距離か
+	float HitAttackSerch;//近くにプレイヤーがいるか&攻撁E��きる距離ぁE
+	float HitStopSerch;//近くにプレイヤーがいめE適刁E��距離ぁE
 	bool isDead;
 
 	bool isHitSearch;
 	bool isHitAttackSearch;
 	bool isHitSerchStop;
-	bool isHitAttack;//攻撃が当たったか
+	bool isHitAttack;//攻撁E��当たったか
 
-	int mnChance;//inventoryを落とす確率
-	bool mbWeapon =false;//weaponを落とすか否か
-	bool mbItem=true;//itemを落とすか否か
+	int mnChance;//inventoryを落とす確玁E
+	bool mbWeapon =false;//weaponを落とすか否ぁE
+	bool mbItem=true;//itemを落とすか否ぁE
 
-	bool AttackHitJudgmentflag;//攻撃が一回当たったらその敵に対して攻撃が重複しないようにする
+	bool AttackHitJudgmentflag;//攻撁E��一回当たったらそ�E敵に対して攻撁E��重褁E��なぁE��ぁE��する
 
 	bool HitJudgmentflag_Player;
 	float mfHaveXp;
@@ -155,3 +156,4 @@ protected:
 	
 
 };
+

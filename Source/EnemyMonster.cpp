@@ -232,17 +232,11 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 
 void EnemyMonster::DeathEnemy()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-	isDead = true;
+		isDead = true;
 
-	DeathColliderPosition();
+		DeathColliderPosition();
 
-	if (mbItem && GetRand(100) < mnChance) { Item::ItemInformation* info = new Item::ItemInformation(); info->ID = Item::HEAL; info->Count = 1; info->Name = "HEAL"; Master::mpItemManager->AddItem(info); }
-	if (player != nullptr) {
-		player->mpHaveMoney->AddMoney(mfHaveMoney);
-		player->mpLevelUp->AddXp(mfHaveXp);
-	}
+		GiveRewards();
 	
 	Delete();
 	SetDeleteFlag(true);
@@ -256,3 +250,4 @@ void EnemyMonster::Delete()
 		mpLandingAttackCollider->SetDeleteFlag(true);
 	}
 }
+

@@ -30,12 +30,12 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 	mbMagic = true;
 	mAttackType = 0;
 	mAttack1ComboCount = 0;
-	mnChance = 30;//繧｢繧､繝・Β縺ｮ繝峨Ο繝・・遒ｺ邇・
+	mnChance = 30;//郢ｧ・｢郢ｧ・､郢昴・ﾎ堤ｸｺ・ｮ郢晏ｳｨﾎ溽ｹ昴・繝ｻ驕抵ｽｺ驍・・
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
 	
-	//繝｢繝・Ν縺ｮ逕滓・
+	//郢晢ｽ｢郢昴・ﾎ晉ｸｺ・ｮ騾墓ｻ薙・
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
@@ -78,7 +78,7 @@ void EnemyBoss_1::Update()
 			}
 
 			mpModel->Update();
-			//mpDH->Update();//drawHp縺ｮ繧｢繝・・繝・・繝医ｒ蜻ｼ縺ｶ
+			//mpDH->Update();//drawHp邵ｺ・ｮ郢ｧ・｢郢昴・繝ｻ郢昴・繝ｻ郢晏現・定惱・ｼ邵ｺ・ｶ
 			CollPositionUpdate();
 			mpJumpAttackCoiider->mvPosition = mvPosition;
 
@@ -175,13 +175,13 @@ void EnemyBoss_1::Attack()
 	}
 }
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
-{//蠖薙◆縺｣縺溽椪髢薙・蜃ｦ逅・
+{//陟冶侭笳・ｸｺ・｣邵ｺ貅ｽ讀ｪ鬮｢阮吶・陷・ｽｦ騾・・
 	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
 	AnimationState now = mpModel->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
 		if (collider == mpJumpAttackCoiider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-		{//mpModel縺ｮ逡ｪ蜿ｷ繧ゅ≠縺｣縺ｦ縺・ｋ縲√￠縺ｩ縺薙・if譁・↓蜈･繧峨↑縺・
+		{//mpModel邵ｺ・ｮ騾｡・ｪ陷ｿ・ｷ郢ｧ繧・旺邵ｺ・｣邵ｺ・ｦ邵ｺ繝ｻ・狗ｸｲ竏夲ｿ邵ｺ・ｩ邵ｺ阮吶・if隴√・竊楢怦・･郢ｧ蟲ｨ竊醍ｸｺ繝ｻ
 			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
@@ -190,7 +190,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 				{
 
 					pPlayer->Damage(mfAttack);
-					AttackHitJudgmentflag = true;//蠖薙◆縺｣縺溘ｈ繝ｼ
+					AttackHitJudgmentflag = true;//陟冶侭笳・ｸｺ・｣邵ｺ貅假ｽ育ｹ晢ｽｼ
 				}
 			}
 
@@ -200,23 +200,17 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 
 void EnemyBoss_1::DeathEnemy()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	isDead = true;
 	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
+	//郢晢ｽｫ郢晢ｽｼ郢晏干繝ｻ邵ｺ霈披雷邵ｺ・ｪ邵ｺ繝ｻ
 	mpModel->SetLoop(false);
-	//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
+	//郢晢ｽ｢郢晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ陟募ｾ後・陟輔・・ｩ貅佩皮ｹ晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ邵ｺ・ｫ隰鯉ｽｻ邵ｺ繝ｻ
 	mpModel->SetLoopFinishState(ANIMATION_MAX);
 	DeathColliderPosition();
 
 	if (mpModel->IsAnimationLoopFinish())
 	{
-		if (mbItem && GetRand(100) < mnChance) { Item::ItemInformation* info = new Item::ItemInformation(); info->ID = Item::HEAL; info->Count = 1; info->Name = "HEAL"; Master::mpItemManager->AddItem(info); }
-		if (player != nullptr) {
-			player->mpHaveMoney->AddMoney(mfHaveMoney);
-			player->mpLevelUp->AddXp(mfHaveXp);
-		}
+		GiveRewards();
 		Master::GameClearCount++;
 		
 		Delete();
@@ -237,4 +231,6 @@ void EnemyBoss_1::Delete()
 		mpJumpAttackCoiider->SetDeleteFlag(true);
 	}
 }
+
+
 

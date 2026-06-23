@@ -22,14 +22,14 @@ Shop::Shop(std::string filename, VECTOR vec)
 	mpItemManager = new ItemManager();
 	mpEquipmentManager = new EquipmentManager();
 	mpShopIn = new SphereCollider(this, vec, r);
-	mpSafeZoon = new SphereCollider(this, vec, 1000);//邵ｺ阮吶・郢ｧ・ｾ郢晢ｽｼ郢晢ｽｳ邵ｺ・ｯ髫假ｽｲ郢ｧ荳奇ｽ檎ｸｺ・ｪ邵ｺ繝ｻ
+	mpSafeZoon = new SphereCollider(this, vec, 1000);//邵�E�阮吶・郢�E�・�E�郢晢�E��E�郢晢�E��E�邵�E�・�E�髫偁E���E�郢�E�荳奁E��檎ｸ�E�・�E�邵�E�繝ｻ
 	
 	Item::ItemInformation* itemInfo;
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count =99;
 	itemInfo->ID = Item::ItemID::HEAL;
-	itemInfo->Name = "鬯ｮ蛟｡・ｴ螢ｼ螻楢?包ｽｩ髦ｮ・ｬ";
-	itemInfo->Name = "蝗槫ｾｩ阮ｬ";
+	itemInfo->Name = "鬯�E�蛟｡・�E�螢�E�螻楢?匁E���E�髦�E�・�E�";
+	itemInfo->Name = "蝗槫�E��E�阮�E�";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
@@ -38,29 +38,29 @@ Shop::Shop(std::string filename, VECTOR vec)
 
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count = 99;
-	itemInfo->Name = "鬮倡ｴ壼屓蠕ｩ阮ｬ";
-	itemInfo->Name = "鬯ｮ蛟｡・ｴ螢ｼ螻楢?包ｽｩ髦ｮ・ｬ";
+	itemInfo->Name = "鬮倡�E�壼屓蠕ｩ阮�E�";
+	itemInfo->Name = "鬯�E�蛟｡・�E�螢�E�螻楢?匁E���E�髦�E�・�E�";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
 
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count = 99;
-	itemInfo->Name = "謾ｻ謦・鴨UP";
-	itemInfo->Name = "隰ｾ・ｻ隰ｦ繝ｻ魘ｨUP";
+	itemInfo->Name = "謾�E�謦・鴨UP";
+	itemInfo->Name = "隰�E�・�E�隰�E�繝ｻ魘ｨUP";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count = 6;
 	itemInfo->ID = Item::ItemID::SPEED;
-	itemInfo->Name = "繧ｹ繝斐・繝蔚P";
+	itemInfo->Name = "繧�E�繝斐・繝蔚P";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
-	// 騾・・ﾎｦ
-	// 隲｡・ｾ邵ｺ・｣邵ｺ貅倥＞郢ｧ・､郢昴・ﾎ堤ｸｺ荵晢ｽ迂temInformation郢ｧ雋槫徐陟募干笘・ｹｧ繝ｻ
-	// 邵ｺ譏ｴ・檎ｹｧ譽嗾emManager邵ｺ・ｫ雋ゑｽ｡邵ｺ蜉ｱ窶ｻ邵ｺ繧・ｿ｡郢ｧ繝ｻ
+	// 騾・・�E�ｦ
+	// 隲�E�・�E�邵�E�・�E�邵�E�貁E���E�郢�E�・�E�郢昴・�E�堤�E��E�荵晢�E�迂temInformation郢�E�雋槫徐陟募干笘�E�E��E�繝ｻ
+	// 邵�E�譏ｴ・檎ｹ�E�譽嗾emManager邵�E�・�E�雋ゑ�E��E�邵�E�蜉ｱ窶�E�邵�E�繧・�E��E�郢�E�繝ｻ
 
 	Weapon::WeaponDate* weaponInf;
 	weaponInf = new Weapon::WeaponDate;
@@ -137,7 +137,7 @@ Shop::Shop(std::string filename, VECTOR vec)
 	mpEquipmentManager->AddEquipment(equipmentInf);
 	
 
-	//// 闖ｴ霈費ｽ定ｫ｡・ｾ邵ｺ・｣邵ｺ・ｦ郢ｧ繧・ｽｿ繝ｻ笘・摎讒ｫ・ｾ・ｩ髦ｮ・ｬ ---------------- //
+	//// 闖ｴ霈費�E�定ｫ�E�・�E�邵�E�・�E�邵�E�・�E�郢�E�繧・�E��E�繝ｻ笘�E摎讒ｫ・�E�・�E�髦�E�・�E� ---------------- //
 
 	mpTexture = new Texture("Resource/2D/Shop.png", VGet(500, 500, 0), true);
 	mpTexture2 = new Texture("Resource/2D/Chat.png", VGet(500, 700, 0), true);
@@ -179,7 +179,7 @@ void Shop::Draw()
 
 	if (Master::ShopClassOn)
 	{
-		//髮会ｽｼ陷茨ｽ･邵ｺ蜷ｶ・狗ｸｺ・ｨ邵ｺ髦ｪ繝ｻ騾包ｽｻ陷剃ｸ岩・雎趣ｽｺ陞ｳ螟ょ愛鬮ｱ・｢邵ｺ・ｮ髯ｦ・ｨ驕会ｽｺ
+		//髮会ｽ�E�陷茨�E��E�邵�E�蜷�E�・狗ｸ�E�・�E�邵�E�髦�E�繝ｻ騾匁E���E�陷剁E��岩・雎趣�E��E�陞ｳ螟ょ愛鬮�E�・�E�邵�E�・�E�髯�E�・�E�驕会ｽ�E�
 		
 		player->mpHaveMoney->Draw();
 	}
@@ -189,7 +189,7 @@ void Shop::Draw()
 		VECTOR DrawNameWorld = ConvWorldPosToScreenPos(DrawName3D);
 
 		
-		DrawFormatString(DrawNameWorld.x, DrawNameWorld.y, GetColor(255, 0, 0), "Shop::Enter郢ｧ蜻域ｬｾ邵ｺ蜉ｱ窶ｻ邵ｺ・ｭ");
+		DrawFormatString(DrawNameWorld.x, DrawNameWorld.y, GetColor(255, 0, 0), "Shop::Enter郢�E�蜻域ｬ�E�邵�E�蜉ｱ窶�E�邵�E�・�E�");
 
 		mpModel->Draw();
 	}
@@ -214,7 +214,7 @@ void Shop::Update()
 	{
 		mpTexture->Draw();
 		Selectclass();
-		Buyclass();//隴崢陋ｻ譏ｴ繝ｻbuy郢ｧ・ｯ郢晢ｽｩ郢ｧ・ｹ邵ｺ・ｮ邵ｺ・ｿ
+		Buyclass();//隴崢陋ｻ譏ｴ繝ｻbuy郢�E�・�E�郢晢�E��E�郢�E�・�E�邵�E�・�E�邵�E�・�E�
 		
 	}
 	movePosition();
@@ -239,12 +239,12 @@ void Shop::Selectclass()
 	if (InputManager::CheckDownKey(KEY_INPUT_UP))
 	{
 		Select--;
-		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//陷会ｽｹ隴ｫ諞ｺ豬ｹ
+		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//陷会ｽ�E�隴�E�諞ｺ豬�E�
 	}
 	if (InputManager::CheckDownKey(KEY_INPUT_DOWN))
 	{
 		Select++;
-		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//陷会ｽｹ隴ｫ諞ｺ豬ｹ
+		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//陷会ｽ�E�隴�E�諞ｺ豬�E�
 	}
 	if (Select > SelectMax)Select = SelectMax;
 	if (Select < SelectMin) Select = SelectMin;
@@ -267,17 +267,15 @@ void Shop::Buyclass()
 		{
 			DrawBox(X, Y + 40 * mnShopListCount, X+300,Y+30 + 40 * mnShopListCount, GetColor(0,0,0), true);
 			if (InputManager::CheckDownKey(KEY_INPUT_G))
+			if (InputManager::CheckDownKey(KEY_INPUT_G))
 			{
-				
-				if (player->mpHaveMoney->HaveMoney() < (*list)->price) { Master::mpInfClassManager->LogList.push_back(new InfClass(400,"マネーが足りません",5)); return; }
+				if (!TryPurchase(player, (*list)->price)) return;
 				(*list)->Count = 1;
 				Master::mpItemManager->AddItem((*list));
-				player->mpHaveMoney->PullMoney((*list)->price);
-				Master::mpSoundManager->PlaySE(SoundManager::SE_SHOP);//効果音
 			}
 
 		}
-		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円 ", (*list)->Name.c_str(), (*list)->price);
+		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d冁E", (*list)->Name.c_str(), (*list)->price);
 		mnShopListCount++;
 	}
 	for (auto list = mpWeaponManager->mDateList.begin(); list != mpWeaponManager->mDateList.end(); list++)
@@ -286,15 +284,13 @@ void Shop::Buyclass()
 		{
 			DrawBox(X, Y + 40 * mnShopListCount, X + 300, Y + 30 + 40 * mnShopListCount, GetColor(0, 0, 0), true);
 			if (InputManager::CheckDownKey(KEY_INPUT_G))
+			if (InputManager::CheckDownKey(KEY_INPUT_G))
 			{
-				if (player->mpHaveMoney->HaveMoney() < (*list)->price) { Master::mpInfClassManager->LogList.push_back(new InfClass(400, "マネーが足りません", 5)); return; }
-				Master::mpSoundManager->PlaySE(SoundManager::SE_SHOP);//効果音
+				if (!TryPurchase(player, (*list)->price)) return;
 				player->mpWeaponManager->AddWeapon((*list));
-				player->mpHaveMoney->PullMoney((*list)->price);
 			}
-
 		}
-		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円 ", (*list)->name.c_str(), (*list)->price);
+		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d冁E", (*list)->name.c_str(), (*list)->price);
 		mnShopListCount++;
 	}
 	for (auto list = mpEquipmentManager->mDateList.begin(); list != mpEquipmentManager->mDateList.end(); list++)
@@ -303,16 +299,13 @@ void Shop::Buyclass()
 		{
 			DrawBox(X, Y + 40 * mnShopListCount, X + 300, Y + 30 + 40 * mnShopListCount, GetColor(0, 0, 0), true);
 			if (InputManager::CheckDownKey(KEY_INPUT_G))
+			if (InputManager::CheckDownKey(KEY_INPUT_G))
 			{
-				
-				if (player->mpHaveMoney->HaveMoney() < (*list)->price) { Master::mpInfClassManager->LogList.push_back(new InfClass(400, "マネーが足りません", 5)); return; }
+				if (!TryPurchase(player, (*list)->price)) return;
 				player->mpEquipmentManager->AddEquipment((*list));
-				player->mpHaveMoney->PullMoney((*list)->price);
-				Master::mpSoundManager->PlaySE(SoundManager::SE_SHOP);//効果音
 			}
-
 		}
-		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d円 ", (*list)->name.c_str(), (*list)->price);
+		DrawFormatString(X, Y + 40 * mnShopListCount, GetColor(255, 255, 255), "%s:%d冁E", (*list)->name.c_str(), (*list)->price);
 		mnShopListCount++;
 	}
 	mnShopListCount = 0;
@@ -335,7 +328,7 @@ void Shop::OnEnter(Collider* collider, Collider* check)
 		if (collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
 			Master::NearShopOn = true;
-			Master::mpChat->Draw("矢印キーで選択、Gで決定 ");
+			Master::mpChat->Draw("矢印キーで選択、Gで決宁E");
 			if (InputManager::CheckDownKey(KEY_INPUT_RETURN)&&!Master::ShopClassOn)
 			{
 				Master::ShopClassOn = true;
@@ -388,4 +381,16 @@ void Shop::OnExit(Collider* collider, Collider* check)
 
 	}
 	Master::mpChat->Reset();
+}
+
+bool Shop::TryPurchase(Player3D* player, int price)
+{
+	if (player->mpHaveMoney->HaveMoney() < price)
+	{
+		Master::mpInfClassManager->LogList.push_back(new InfClass(400, "�}�l�[������܂���", 5));
+		return false;
+	}
+	player->mpHaveMoney->PullMoney(price);
+	Master::mpSoundManager->PlaySE(SoundManager::SE_SHOP);
+	return true;
 }

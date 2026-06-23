@@ -14,6 +14,7 @@
 class SphereCollider;
 class CapsuleCollider;
 
+class Player3D;
 class Shop:public Object3D
 {
 
@@ -33,6 +34,7 @@ public:
 	void Buyclass();
 
 	void Sellclass();
+	bool TryPurchase(Player3D* player, int price);
 
 	virtual void OnEnter(Collider* collider, Collider* check) override;
 	virtual void OnTrigger(Collider* collider, Collider* check) override;

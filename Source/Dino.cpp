@@ -120,43 +120,8 @@ void Dino::Move()
 		mvPosition = VAdd(mvPosition, VScale(moveVec, mnSpeed));
 		VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
 		//ステージとの当たり判定をする
-		hitPos = VGet(0.0f, 0.0f, 0.0f);
-		bool isHit = false;
-		auto obj = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Stage);
-		if (obj != nullptr)
-		{
-			Stage* pStage = dynamic_cast<Stage*>(obj);
-			if (pStage != nullptr)
-			{
-				//ステージとプレイヤーのカプセルが当たっている場合
-				if (pStage->CheckHit_Capsule(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)), 40.0f))
-				{
-					//当たっているであろうポリゴンとの接触点を求める
-					hitPos = pStage->CheckHit_Line(
-						VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),//プレイヤーの膝当たり(多分)と
-						VAdd(mvPosition, VGet(0.0f, -40.0f, 0.0f))//プレイヤーの少し下あたりを線分として指定
-					);
-
-					//当たった判定を取っておく
-					isHit = true;
-				}
-			}
-		}
-
-		if (isHit)
-		{
-			//地面に沿って歩いている状態として、Y座標をステージに合わせる
-			mvPosition.y = hitPos.y;
-		}
-		if (isHit == false)
-		{
-			//要改善
-			mvPosition.y += -4.0f;//落下する速度
-			if (mvPosition.y <= 0.0f)
-			{
-				mvPosition.y = oldPosition.y;
-			}
-		}
+		// 地形に沿う処理
+		TerrainFollow(0.0f, 150.0f, 40.0f, 150.0f, -40.0f, 4.0f);
 		bool hitwall = false;
 		bool hitwalls = false;
 		auto walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
