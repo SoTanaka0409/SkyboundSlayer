@@ -19,6 +19,8 @@ class Shop:public Object3D
 {
 
 public:
+	enum class ShopState { WAIT_PHASE, WALKING_IN, ARRIVED, WALKING_OUT };
+
 	Shop(std::string filename,VECTOR vec);
 
 	~Shop();
@@ -27,6 +29,9 @@ public:
 
 	void Update();
 	void movePosition();
+
+	void StartWalkingIn();
+	void StartWalkingOut();
 
 	void Selectclass();
 	void Firstclass();
@@ -56,6 +61,8 @@ private:
 	int Y;
 	int X;
 	VECTOR oldPosition;
+	VECTOR mTargetPosition;
+	ShopState mShopState;
 	bool InShop=false;
 	float r;
 	int mnShopListCount;

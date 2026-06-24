@@ -1,4 +1,5 @@
 #include "StatShop.h"
+#include "ModelUtility.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -23,7 +24,9 @@ namespace
 }
 
 StatShop::StatShop(std::string filename, VECTOR vec)
-	: Object3D(vec)
+	: Object3D(VGet(vec.x, vec.y, vec.z + 4000.0f))
+	, mTargetPosition(vec)
+	, mShopState(ShopState::WAIT_PHASE)
 	, mnSelect(0)
 	, mnSelectMax(4)
 	, mnSelectMin(0)
@@ -33,9 +36,10 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	, mnLevelEvasionSpeed(0)
 	, mnLevelEvasionInvincibility(0)
 {
-	mpModel = new Model(filename, vec, false);
-	mpShopIn = new SphereCollider(this, vec, 200.0f);
-	mpSafeZoon = new SphereCollider(this, vec, 1000.0f); // �G���߂Â��Ȃ��Z�[�t�]�[��
+	SetTag(Tag3D_Shop);
+	mpModel = new Model(filename, mvPosition, false);
+	mpShopIn = new SphereCollider(this, mvPosition, 200.0f);
+	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 敵が近づけないセーフゾーン
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
@@ -63,6 +67,7 @@ StatShop::~StatShop()
 
 void StatShop::Draw()
 {
+	if (mShopState == ShopState::WAIT_PHASE) return;
 	if (!IsShopPhaseActive()) return;
 
 	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
@@ -72,7 +77,7 @@ void StatShop::Draw()
 	{
 		player->mpHaveMoney->Draw();
 
-		// �w�i��UI
+		// 背景やUI
 		DrawExtendGraph(300, 100, 1620, 800, mnBgImageHandle, TRUE);
 		
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
@@ -101,7 +106,7 @@ void StatShop::Draw()
 			int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 			if (i == mnSelect) DrawFormatString(330, 250 + i * 60, color, ">");
 			
-			// �A�C�R���`�� (40x40 �T�C�Y�ɏk�����ĕ\��)
+			// アイコン描画 (40x40 サイズに縮小して表示)
 			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
 
 			DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
@@ -122,7 +127,10 @@ void StatShop::Draw()
 
 void StatShop::Update()
 {
-	if (!IsShopPhaseActive()) return;
+	if (mShopState == ShopState::WAIT_PHASE) return;
+	
+	// WALKING_OUTの時は、フェーズが終了していても移動処理を続ける必要があるため、ここで分岐します。
+	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
 	SceneGame* sceneGame = dynamic_cast<SceneGame*>(currentScene);
@@ -147,10 +155,78 @@ void StatShop::Update()
 		}
 	}
 
+	movePosition();
+}
+
+void StatShop::movePosition()
+{
+	if (mShopState == ShopState::WALKING_IN)
+	{
+		VECTOR dir = VSub(mTargetPosition, mvPosition);
+		dir.y = 0.0f;
+		float dist = VSize(dir);
+		if (dist < 10.0f)
+		{
+			mvPosition.x = mTargetPosition.x;
+			mvPosition.z = mTargetPosition.z;
+			mShopState = ShopState::ARRIVED;
+			mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
+		}
+		else
+		{
+			VECTOR nDir = VNorm(dir);
+			mvPosition = VAdd(mvPosition, VScale(nDir, 4.0f));
+			mpModel->ChangeAnimation(ANIMATION_WALKING);
+		}
+	}
+	else if (mShopState == ShopState::WALKING_OUT)
+	{
+		VECTOR startPos = VGet(mTargetPosition.x, mTargetPosition.y, mTargetPosition.z + 4000.0f);
+		VECTOR dir = VSub(startPos, mvPosition);
+		dir.y = 0.0f;
+		float dist = VSize(dir);
+		if (dist < 10.0f)
+		{
+			mShopState = ShopState::WAIT_PHASE;
+			mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
+		}
+		else
+		{
+			VECTOR nDir = VNorm(dir);
+			mvPosition = VAdd(mvPosition, VScale(nDir, 4.0f));
+			mpModel->ChangeAnimation(ANIMATION_WALKING);
+		}
+	}
+	else if (mShopState == ShopState::ARRIVED)
+	{
+		if (mvPosition.y > mTargetPosition.y) mvPosition.y -= 2.0f;
+		mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
+	}
+
+	// 待機中や退場完了後は、当たり判定を画面外（現在の位置）に移動させる
 	mpShopIn->mvPosition = mvPosition;
 	mpSafeZoon->mvPosition = mvPosition;
-	mpModel->Update();
+	
 	mpModel->SetPosition(mvPosition);
+	mpModel->Update();
+}
+
+void StatShop::StartWalkingIn()
+{
+	if (mShopState == ShopState::WAIT_PHASE || mShopState == ShopState::WALKING_OUT)
+	{
+		mShopState = ShopState::WALKING_IN;
+		mvPosition = VGet(mTargetPosition.x, mTargetPosition.y, mTargetPosition.z + 4000.0f);
+	}
+}
+
+void StatShop::StartWalkingOut()
+{
+	if (mShopState == ShopState::ARRIVED || mShopState == ShopState::WALKING_IN)
+	{
+		mShopState = ShopState::WALKING_OUT;
+		Master::StatShopClassOn = false;
+	}
 }
 
 int StatShop::GetCost(int level)

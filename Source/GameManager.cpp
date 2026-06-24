@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Player3D.h"
 #include "Enemy.h"
+#include "StatShop.h"
 #include <cmath>
 #include <DxLib.h>
 
@@ -34,6 +35,12 @@ void GameManager::Update()
         if (mCurrentPhase != Phase::SHOP_3) {
             mShopTimer--;
             if (mShopTimer <= 0) {
+                auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+                for (auto s : shops) {
+                    StatShop* shop = dynamic_cast<StatShop*>(s);
+                    if (shop) shop->StartWalkingOut();
+                }
+
                 if (mCurrentPhase == Phase::SHOP_1) {
                     mCurrentPhase = Phase::PHASE_2;
                 } else if (mCurrentPhase == Phase::SHOP_2) {
@@ -55,6 +62,11 @@ void GameManager::Update()
                 
                 float dist = VSize(VSub(playerPos, teleporterPos));
                 if (dist < 150.0f) { // 150 radius to enter
+                    auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+                    for (auto s : shops) {
+                        StatShop* shop = dynamic_cast<StatShop*>(s);
+                        if (shop) shop->StartWalkingOut();
+                    }
                     mCurrentPhase = Phase::BOSS;
                     SpawnPhaseEnemies();
                 }
@@ -64,6 +76,7 @@ void GameManager::Update()
         auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
         if (enemies.empty())
         {
+            Phase oldPhase = mCurrentPhase;
             if (mCurrentPhase == Phase::PHASE_1) {
                 mCurrentPhase = Phase::SHOP_1;
                 mShopTimer = 60 * 20; // 20秒
@@ -75,6 +88,14 @@ void GameManager::Update()
                 mShopTimer = 60 * 20; // 20秒
             } else if (mCurrentPhase == Phase::BOSS) {
                 mCurrentPhase = Phase::CLEAR;
+            }
+
+            if (oldPhase != mCurrentPhase && (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)) {
+                auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+                for (auto s : shops) {
+                    StatShop* shop = dynamic_cast<StatShop*>(s);
+                    if (shop) shop->StartWalkingIn();
+                }
             }
         }
     }

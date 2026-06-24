@@ -8,11 +8,16 @@ class SphereCollider;
 class StatShop : public Object3D
 {
 public:
+	enum class ShopState { WAIT_PHASE, WALKING_IN, ARRIVED, WALKING_OUT };
 	StatShop(std::string filename, VECTOR vec);
 	~StatShop();
 
 	void Draw() override;
 	void Update() override;
+
+	void StartWalkingIn();
+	void StartWalkingOut();
+	void movePosition();
 
 	virtual void OnEnter(Collider* collider, Collider* check) override;
 	virtual void OnTrigger(Collider* collider, Collider* check) override;
@@ -27,6 +32,9 @@ private:
 	SphereCollider* mpShopIn;
 	SphereCollider* mpSafeZoon;
 	
+	VECTOR mTargetPosition;
+	ShopState mShopState;
+
 	int mnSelect;
 	int mnSelectMax;
 	int mnSelectMin;

@@ -412,7 +412,7 @@ void Player3D::MoveEx()
 
 	}
 
-	if_StageOut();
+	//if_StageOut();
 
 	mpModel->SetPosition(mvPosition);
 	mpModel->SetRotation(mvRotation);
@@ -433,7 +433,13 @@ void Player3D::if_StageOut()
 {
 	float radiusX = Config::StageVector_x; // X譁ｹ蜷托ｼ域ｨｪ・峨・髯千阜縺ｮ蠎・＆
 	float radiusZ = Config::StageVector_z; // Z譁ｹ蜷托ｼ亥･･・峨・髯千阜縺ｮ蠎・＆
+	auto scene = Master::mpSceneManager->GetCurrentScene();
+	SceneGame* game = dynamic_cast<SceneGame*>(scene);
+	if (game->IsBattlePhase() && game->mpGameManager->GetCurrentPhase() == GameManager::Phase::BOSS)
+	{
 
+	}
+	
 	VECTOR center = VGet(Config::GetStageCenter().x, 0, Config::GetStageCenter().z);
 
 	VECTOR centerPos = VGet(center.x, mvPosition.y, center.z); // 荳ｭ蠢・ｺｧ讓・
@@ -471,7 +477,7 @@ void Player3D::Evasion()
 		// 鬮ｯ諛・ｻｸ繝ｻ・ｨ繝ｻ・｣驕ｶ謫ｾ・ｽ・ｩ鬯ｯ・ｨ繝ｻ・ｾ髮九・・ｽ・ｷEE驛｢譎｢・ｽ・ｻ鬯ｩ蟶吶・髫ｴ蜿厄ｽｧ・ｫ繝ｻ・ｱ繝ｻ・ｬ驛｢譎｢・ｽ・ｻ髯晢ｽｲ繝ｻ・ｨ驕ｶ莨∬ｱｪ繝ｻ・ｹ繝ｻ・ｧE鬩幢ｽ｢隰鯉ｽｲ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢繝ｻ・ｧE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｬ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｼ鬩幢ｽ｢隴手・讚ｨ驛｢譎｢・ｽ・ｻ鬩幢ｽ｢繝ｻ・ｧ髯橸ｽｳ陞滂ｽｲ繝ｻ・ｽ繝ｻ・ｶE鬩搾ｽｵ繝ｻ・ｺ驛｢譎｢・ｽ・ｻ
 		mvPosition = VAdd(mvPosition, VScale(oldmoveVec, mfEvasionSpeed + mfUpgradeEvasionSpeed));
 		mpModel->SetPosition(mvPosition);
-		if_StageOut();
+		//if_StageOut();
 	}
 
 

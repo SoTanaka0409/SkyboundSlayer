@@ -23,7 +23,8 @@ public:
 		Tag3D_Obj=2900,
 		Tag3D_DinoFriend=3000,
 		Tag3D_Object = 3050,
-		Tag3D_RideDino=3500,	
+		Tag3D_RideDino=3500,
+		Tag3D_Shop=4000,
 	};
 	enum StatusState
 	{
