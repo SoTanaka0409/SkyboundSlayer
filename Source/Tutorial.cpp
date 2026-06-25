@@ -120,7 +120,7 @@ void TutorialScene::Initialize()
 
 void TutorialScene::Update()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
 	Scene::Update();

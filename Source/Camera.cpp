@@ -64,7 +64,7 @@ void Camera::Update()
 	VECTOR temp; //作業用変数
 	if (mpTarget == nullptr)
 	{
-		mpTarget = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+		mpTarget = Master::mpPlayer;
 
 	}
 	if(Camera1==true)
@@ -79,7 +79,7 @@ void Camera::Update()
 		temp.z = -(distance * cosf(mfVerticalAngle / 180.0f * DX_PI_F) * cosf(mfHorizontalAngle / 180.0f * DX_PI_F));
 		dir = VGet(sinf(mfVerticalAngle), 0.0f, cosf(mfVerticalAngle));
 		VECTOR dir2 = VGet(sinf(mfHorizontalAngle), 0.0f, cosf(mfHorizontalAngle));
-		auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
+		auto mpPlayer = Master::mpPlayer;
 		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 		
 		
@@ -118,14 +118,14 @@ void Camera::Update()
 		
 		
 		
-		auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+		auto mpPlayer = Master::mpPlayer;
 		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 		
 		UpdateRotation();
 		//ターゲットがいなかったら
 		/*if (mpTarget == nullptr)
 		{
-			mpTarget = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+			mpTarget = Master::mpPlayer;
 		}*/
 		if (mpTarget != nullptr)
 		{

@@ -81,18 +81,11 @@ void ObjectManager::AddObject(Object3D* object3D)
 //3Dオブジェクトの全削除
 void ObjectManager::DeleteAll3D()
 {
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); /* ここは空なので注意 */)
+	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
 	{
-		
-
-		//リストから削除
-		itr = mObject3DList.erase(itr);
-
-		itr++;
-		DeleteAll3DIfNeeded();
+		delete *itr;
 	}
-
-
+	mObject3DList.clear();
 }
 
 Object3D* ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)

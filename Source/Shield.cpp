@@ -17,7 +17,7 @@ Shield::Shield(std::string filename, VECTOR initPos,int hp)
 {
 	SetTag(Object3D::Tag_3D_Shield);
 	mpModel=new Model(filename, initPos, 1.0f);
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
 	mvPosition = pPlayer->GetPosition();
@@ -25,7 +25,7 @@ Shield::Shield(std::string filename, VECTOR initPos,int hp)
 
 Shield::~Shield()
 {
-	if (mpModel == nullptr)
+	if (mpModel != nullptr)
 	{
 		delete mpModel;
 	}
@@ -33,7 +33,7 @@ Shield::~Shield()
 
 void Shield::Update()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 	mvPosition = pPlayer->GetPosition();
 }

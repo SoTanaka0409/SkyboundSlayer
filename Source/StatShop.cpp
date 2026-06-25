@@ -39,7 +39,7 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	SetTag(Tag3D_Shop);
 	mpModel = new Model(filename, mvPosition, false);
 	mpShopIn = new SphereCollider(this, mvPosition, 200.0f);
-	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 敵が近づけないセーフゾーン
+	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 敵が近づけなぁE��ーフゾーン
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
@@ -70,7 +70,7 @@ void StatShop::Draw()
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	if (!IsShopPhaseActive()) return;
 
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 
 	if (Master::StatShopClassOn)
@@ -129,7 +129,7 @@ void StatShop::Update()
 {
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	
-	// WALKING_OUTの時は、フェーズが終了していても移動処理を続ける必要があるため、ここで分岐します。
+	// WALKING_OUTの時�E、フェーズが終亁E��てぁE��も移動�E琁E��続ける忁E��があるため、ここで刁E��します、E
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -203,7 +203,7 @@ void StatShop::movePosition()
 		mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
 	}
 
-	// 待機中や退場完了後は、当たり判定を画面外（現在の位置）に移動させる
+	// 征E��中めE��場完亁E���E、当たり判定を画面外（現在の位置�E�に移動させる
 	mpShopIn->mvPosition = mvPosition;
 	mpSafeZoon->mvPosition = mvPosition;
 	
@@ -253,7 +253,7 @@ void StatShop::SelectClass()
 
 void StatShop::BuyClass()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 
 	bool isMouseDown = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;

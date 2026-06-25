@@ -24,7 +24,7 @@ Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float 
 
 Magic::~Magic()
 {
-	if (mpModel == nullptr)
+	if (mpModel != nullptr)
 	{
 		delete mpModel;
 	}

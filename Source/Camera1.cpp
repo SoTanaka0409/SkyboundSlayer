@@ -43,13 +43,13 @@ void Camera1::Initialize()
 
 void Camera1::Update()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 	UpdateRotation();
 	//ターゲットがいなかったら
 	if (mpTarget == nullptr)
 	{
-		mpTarget = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+		mpTarget = Master::mpPlayer;
 	}
 	if (mpTarget != nullptr)
 	{

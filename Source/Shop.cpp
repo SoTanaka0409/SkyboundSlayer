@@ -25,14 +25,14 @@ Shop::Shop(std::string filename, VECTOR vec)
 	mpItemManager = new ItemManager();
 	mpEquipmentManager = new EquipmentManager();
 	mpShopIn = new SphereCollider(this, vec, r);
-	mpSafeZoon = new SphereCollider(this, vec, 1000);//驍ｵ・ｺ髦ｮ蜷ｶ繝ｻ驛｢・ｧ繝ｻ・ｾ驛｢譎｢・ｽ・ｼ驛｢譎｢・ｽ・ｳ驍ｵ・ｺ繝ｻ・ｯ鬮ｫ蛛・ｽｽ・ｲ驛｢・ｧ闕ｳ螂・ｽｽ讙趣ｽｸ・ｺ繝ｻ・ｪ驍ｵ・ｺ郢晢ｽｻ
+	mpSafeZoon = new SphereCollider(this, vec, 1000);//驍ｵ・�E�髦�E�蜷�E�繝ｻ驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驍ｵ・�E�繝ｻ・�E�鬮�E�蛛�E�E��E�・�E�驛｢・�E�闕ｳ螂�E�E��E�讙趣�E��E�・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�
 	
 	Item::ItemInformation* itemInfo;
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count =99;
 	itemInfo->ID = Item::ItemID::HEAL;
-	itemInfo->Name = "鬯ｯ・ｮ陋滂ｽ｡繝ｻ・ｴ陞｢・ｼ陞ｻ讌｢?蛹・ｽｽ・ｩ鬮ｦ・ｮ繝ｻ・ｬ";
-	itemInfo->Name = "陜玲ｧｫ・ｾ・ｩ髦ｮ・ｬ";
+	itemInfo->Name = "鬯�E�・�E�陋滂ｽ�E�繝ｻ・�E�陞｢・�E�陞ｻ讌｢?蛹・�E��E�・�E�鬮�E�・�E�繝ｻ・�E�";
+	itemInfo->Name = "陜玲�E��E�・�E�・�E�髦�E�・�E�";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
@@ -41,29 +41,29 @@ Shop::Shop(std::string filename, VECTOR vec)
 
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count = 99;
-	itemInfo->Name = "鬯ｮ蛟｡・ｴ螢ｼ螻楢�包ｽｩ髦ｮ・ｬ";
-	itemInfo->Name = "鬯ｯ・ｮ陋滂ｽ｡繝ｻ・ｴ陞｢・ｼ陞ｻ讌｢?蛹・ｽｽ・ｩ鬮ｦ・ｮ繝ｻ・ｬ";
+	itemInfo->Name = "鬯�E�蛟｡・�E�螢�E�螻楢�E�匁E���E�髦�E�・�E�";
+	itemInfo->Name = "鬯�E�・�E�陋滂ｽ�E�繝ｻ・�E�陞｢・�E�陞ｻ讌｢?蛹・�E��E�・�E�鬮�E�・�E�繝ｻ・�E�";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
 
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count = 99;
-	itemInfo->Name = "隰ｾ・ｻ隰ｦ繝ｻ魘ｨUP";
-	itemInfo->Name = "髫ｰ・ｾ繝ｻ・ｻ髫ｰ・ｦ郢晢ｽｻ鬲假ｽｨUP";
+	itemInfo->Name = "隰�E�・�E�隰�E�繝ｻ魘ｨUP";
+	itemInfo->Name = "髫�E�・�E�繝ｻ・�E�髫�E�・�E�郢晢�E��E�鬲偁E���E�UP";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
 	itemInfo = new Item::ItemInformation();
 	itemInfo->Count = 6;
 	itemInfo->ID = Item::ItemID::SPEED;
-	itemInfo->Name = "郢ｧ・ｹ郢晄鱒繝ｻ郢晁爆P";
+	itemInfo->Name = "郢�E�・�E�郢晁E��繝ｻ郢晁�EP";
 	itemInfo->isLog = true;
 	mpItemManager->AddItem(itemInfo);
 
-	// 鬨ｾ繝ｻ繝ｻ・趣ｽｦ
-	// 髫ｲ・｡繝ｻ・ｾ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ雋・･・樣Δ・ｧ繝ｻ・､驛｢譏ｴ繝ｻ・主�､・ｸ・ｺ闕ｵ譎｢・ｽ霑ＵemInformation驛｢・ｧ髮区ｧｫ蠕宣辧蜍溷ｹｲ隨倥・・ｹ・ｧ郢晢ｽｻ
-	// 驍ｵ・ｺ隴擾ｽｴ繝ｻ讙趣ｽｹ・ｧ隴ｽ蝸ｾemManager驍ｵ・ｺ繝ｻ・ｫ髮九ｑ・ｽ・｡驍ｵ・ｺ陷会ｽｱ遯ｶ・ｻ驍ｵ・ｺ郢ｧ繝ｻ・ｿ・｡驛｢・ｧ郢晢ｽｻ
+	// 鬨�E�繝ｻ繝ｻ・趣�E��E�
+	// 髫�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�雋�E�E�・樣Δ�E�E�繝ｻ・�E�驛｢譏ｴ繝ｻ・主�E��E�・�E�・�E�闕ｵ譎｢・�E�霑ＵemInformation驛｢・�E�髮区�E��E�蠕宣辧蜍溷�E��E�隨倥・・�E�・�E�郢晢�E��E�
+	// 驍ｵ・�E�隴擾�E��E�繝ｻ讙趣�E��E�・�E�隴�E�蝸�E�emManager驍ｵ・�E�繝ｻ・�E�髮九ｑ�E�E�・�E�驍ｵ・�E�陷会ｽ�E�遯�E�・�E�驍ｵ・�E�郢�E�繝ｻ・�E�・�E�驛｢・�E�郢晢�E��E�
 
 	Weapon::WeaponDate* weaponInf;
 	weaponInf = new Weapon::WeaponDate;
@@ -140,7 +140,7 @@ Shop::Shop(std::string filename, VECTOR vec)
 	mpEquipmentManager->AddEquipment(equipmentInf);
 	
 
-	//// 髣厄ｽｴ髴郁ｲｻ・ｽ螳夲ｽｫ・｡繝ｻ・ｾ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驛｢・ｧ郢ｧ繝ｻ・ｽ・ｿ郢晢ｽｻ隨倥・鞫手ｮ抵ｽｫ繝ｻ・ｾ繝ｻ・ｩ鬮ｦ・ｮ繝ｻ・ｬ ---------------- //
+	//// 髣厁E���E�髴郁E���E�・�E�螳夲�E��E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驛｢・�E�郢�E�繝ｻ・�E�・�E�郢晢�E��E�隨倥・鞫手ｮ抵�E��E�繝ｻ・�E�繝ｻ・�E�鬮�E�・�E�繝ｻ・�E� ---------------- //
 
 	mpTexture = new Texture("Resource/2D/Shop.png", VGet(500, 500, 0), true);
 	mpTexture2 = new Texture("Resource/2D/Chat.png", VGet(500, 700, 0), true);
@@ -168,7 +168,7 @@ void Shop::Draw()
 {
 	if (mShopState == ShopState::WAIT_PHASE) return;
 
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -184,7 +184,7 @@ void Shop::Draw()
 
 	if (Master::ShopClassOn)
 	{
-		//鬮ｮ莨夲ｽｽ・ｼ髯ｷ闌ｨ・ｽ・･驍ｵ・ｺ陷ｷ・ｶ繝ｻ迢暦ｽｸ・ｺ繝ｻ・ｨ驍ｵ・ｺ鬮ｦ・ｪ郢晢ｽｻ鬨ｾ蛹・ｽｽ・ｻ髯ｷ蜑・ｽｸ蟯ｩ繝ｻ髮手ｶ｣・ｽ・ｺ髯橸ｽｳ陞溘ｇ諢幃ｬｮ・ｱ繝ｻ・｢驍ｵ・ｺ繝ｻ・ｮ鬮ｯ・ｦ繝ｻ・ｨ鬩穂ｼ夲ｽｽ・ｺ
+		//鬮�E�莨夲�E��E�・�E�髯�E�闌ｨ・�E�・�E�驍ｵ・�E�陷�E�・�E�繝ｻ迢暦�E��E�・�E�繝ｻ・�E�驍ｵ・�E�鬮�E�・�E�郢晢�E��E�鬨�E�蛹・�E��E�・�E�髯�E�蜑�E�E��E�蟯�E�繝ｻ髮手ｶ�E�・�E�・�E�髯橸�E��E�陞溘ａE��幁E���E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�鬮�E�・�E�繝ｻ・�E�鬩穂ｼ夲�E��E�・�E�
 		
 		player->mpHaveMoney->Draw();
 	}
@@ -194,7 +194,7 @@ void Shop::Draw()
 		VECTOR DrawNameWorld = ConvWorldPosToScreenPos(DrawName3D);
 
 		
-		DrawFormatString(DrawNameWorld.x, DrawNameWorld.y, GetColor(255, 0, 0), "Shop::Enter驛｢・ｧ陷ｻ蝓滂ｽｬ・ｾ驍ｵ・ｺ陷会ｽｱ遯ｶ・ｻ驍ｵ・ｺ繝ｻ・ｭ");
+		DrawFormatString(DrawNameWorld.x, DrawNameWorld.y, GetColor(255, 0, 0), "Shop::Enter驛｢・�E�陷�E�蝓滂ｽ�E�・�E�驍ｵ・�E�陷会ｽ�E�遯�E�・�E�驍ｵ・�E�繝ｻ・�E�");
 
 		mpModel->Draw();
 	}
@@ -220,7 +220,7 @@ void Shop::Update()
 	{
 		mpTexture->Draw();
 		Selectclass();
-		Buyclass();//髫ｴ蟠｢ﾂ髯具ｽｻ隴擾ｽｴ郢晢ｽｻbuy驛｢・ｧ繝ｻ・ｯ驛｢譎｢・ｽ・ｩ驛｢・ｧ繝ｻ・ｹ驍ｵ・ｺ繝ｻ・ｮ驍ｵ・ｺ繝ｻ・ｿ
+		Buyclass();//髫�E�蟠�E��E�髯具�E��E�隴擾�E��E�郢晢�E��E�buy驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�
 		
 	}
 	movePosition();
@@ -304,12 +304,12 @@ void Shop::Selectclass()
 	if (InputManager::CheckDownKey(KEY_INPUT_UP))
 	{
 		Select--;
-		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//髯ｷ莨夲ｽｽ・ｹ髫ｴ・ｫ隲橸ｽｺ雎ｬ・ｹ
+		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//髯�E�莨夲�E��E�・�E�髫�E�・�E�隲橸�E��E�雎ｬ・�E�
 	}
 	if (InputManager::CheckDownKey(KEY_INPUT_DOWN))
 	{
 		Select++;
-		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//髯ｷ莨夲ｽｽ・ｹ髫ｴ・ｫ隲橸ｽｺ雎ｬ・ｹ
+		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//髯�E�莨夲�E��E�・�E�髫�E�・�E�隲橸�E��E�雎ｬ・�E�
 	}
 	if (Select > SelectMax)Select = SelectMax;
 	if (Select < SelectMin) Select = SelectMin;
@@ -323,7 +323,7 @@ void Shop::Sellclass()
 
 void Shop::Buyclass()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	SelectMax = mpWeaponManager->mDateList.size() + mpItemManager->mItemList.size()+mpEquipmentManager->mDateList.size()-1;
 	for (auto list = mpItemManager->mItemList.begin(); list != mpItemManager->mItemList.end(); list++)
@@ -385,7 +385,7 @@ void Shop::Buyclass()
 void Shop::OnEnter(Collider* collider, Collider* check)
 {
 	if (IsDeleteFlag())return;
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	
 	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
@@ -393,7 +393,7 @@ void Shop::OnEnter(Collider* collider, Collider* check)
 		if (collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
 			Master::NearShopOn = true;
-			Master::mpChat->Draw("遏｢蜊ｰ繧ｭ繝ｼ縺ｧ驕ｸ謚槭；縺ｧ豎ｺ螳・");
+			Master::mpChat->Draw("遏｢蜊ｰ繧�E�繝ｼ縺�E�驕ｸ謚槭�E�縺�E�豎ｺ螳・");
 			if (InputManager::CheckDownKey(KEY_INPUT_RETURN)&&!Master::ShopClassOn)
 			{
 				Master::ShopClassOn = true;

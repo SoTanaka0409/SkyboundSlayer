@@ -18,7 +18,7 @@ DrawCircle1::DrawCircle1(std::string filename, VECTOR centerPos)
 	//
 	mnGraphHandle = LoadGraph(filename.c_str());
 
-    auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+    auto mpPlayer = Master::mpPlayer;
     auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
    //ANVN 
     OldPosition = pPlayer->GetPosition();

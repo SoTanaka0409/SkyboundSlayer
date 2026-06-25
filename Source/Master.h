@@ -35,9 +35,11 @@
 // を、どこからも参照できるようにしておきたいので
 // こういったクラスを作る
 //
+class Player3D;
 class Master
 {
 public:
+	static Player3D* mpPlayer;
 	static SceneManager* mpSceneManager;  //シーンマネージャーポインタ
 	static SoundManager* mpSoundManager;  //サウンドマネージャーのポインタ
 	static ScoreManager* mpScoreManager;//スコアマネージャーのポインタ

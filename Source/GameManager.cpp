@@ -52,7 +52,7 @@ void GameManager::Update()
         else
         {
             // SHOP_3: No time limit. Wait for player to enter teleporter.
-            auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+            auto p = Master::mpPlayer;
             if (p) {
                 Player3D* player = dynamic_cast<Player3D*>(p);
                 VECTOR playerPos = player->GetPosition();
@@ -79,13 +79,13 @@ void GameManager::Update()
             Phase oldPhase = mCurrentPhase;
             if (mCurrentPhase == Phase::PHASE_1) {
                 mCurrentPhase = Phase::SHOP_1;
-                mShopTimer = 60 * 20; // 20秒
+                mShopTimer = 60 * 20; // 20私E
             } else if (mCurrentPhase == Phase::PHASE_2) {
                 mCurrentPhase = Phase::SHOP_2;
-                mShopTimer = 60 * 20; // 20秒
+                mShopTimer = 60 * 20; // 20私E
             } else if (mCurrentPhase == Phase::PHASE_3) {
                 mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20秒
+                mShopTimer = 60 * 20; // 20私E
             } else if (mCurrentPhase == Phase::BOSS) {
                 mCurrentPhase = Phase::CLEAR;
             }
@@ -172,9 +172,9 @@ void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 
 void GameManager::SpawnPhaseEnemies()
 {
-    auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+    auto p = Master::mpPlayer;
     Player3D* player = dynamic_cast<Player3D*>(p);
-    // 敵がステージから外れて落下・埋没しないように、Configのステージ中心座標を湧き位置の基準とする
+    // 敵がスチE�Eジから外れて落下�E埋没しなぁE��ぁE��、ConfigのスチE�Eジ中忁E��標を湧き位置の基準とする
     VECTOR centerPos = Config::GetStageCenter();
     if (player != nullptr)
     {
@@ -205,7 +205,7 @@ void GameManager::SpawnPhaseEnemies()
         mpEnemyManager->NewEnemyList(e);
     }
     else if (mCurrentPhase == Phase::PHASE_2) {
-        // Wave 2: 魔法兵士
+        // Wave 2: 魔法�E士
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
         e1.spawnCenter = centerPos;
@@ -269,7 +269,7 @@ void GameManager::SpawnPhaseEnemies()
         ApplyDifficultyMultipliers(e_heavy);
         mpEnemyManager->NewEnemyList(e_heavy);
 
-        // Wave 3: 魔法兵士
+        // Wave 3: 魔法�E士
         EnemyManager::enemydate e_magic;
         e_magic.filename = "Resource/Model/T.mv1";
         e_magic.spawnCenter = centerPos;

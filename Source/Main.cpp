@@ -1,4 +1,4 @@
-﻿
+
 #include "DxLib.h"
 #include "Config.h"
 #include"Texture.h"
@@ -32,10 +32,10 @@
 #include"Chat.h"
 #include"Save.h"
 /**
-* @note 繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ https://dxlib.xsrv.jp/dxfunc.html
+* @note リファレンス https://dxlib.xsrv.jp/dxfunc.html
 */
 
-//繧ｲ繝ｼ繝縺ｮ・泥繝｢繝・Ν   metaseq316
+//ゲームの�E�DモチE��   metaseq316
 //https://www.d5render.com/ja/workflow/blender?utm_campaign=bingsearchILJPblender&utm_source=bing&utm_medium=cpc&msclkid=929170cec1521e953f1c187910ba1cae
 
 
@@ -43,14 +43,15 @@
 /**
 /**
 * @fn WinMain
-* @brief Main髢｢謨ｰ
+* @brief Main関数
 * @param[in] HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
-* @return int 0 豁｣蟶ｸ邨ゆｺ・ｼ・1 繧ｨ繝ｩ繝ｼ
-* @details Main髢｢謨ｰ
+* @return int 0 正常終亁E��E1 エラー
+* @details Main関数
 */
 
-//Master繧ｯ繝ｩ繧ｹ縺ｮ髱咏噪繝｡繝ｳ繝仙､画焚螳夂ｾｩ
-SceneManager* Master::mpSceneManager = new SceneManager();//蜻ｼ縺ｳ蜃ｺ縺・
+//Masterクラスの静的メンバ変数定義
+Player3D* Master::mpPlayer = nullptr;
+SceneManager* Master::mpSceneManager = new SceneManager();//呼び出ぁE
 SoundManager* Master::mpSoundManager = new SoundManager();
 WeaponManager* Master::mpWeaponManager = new WeaponManager();
 Weapon* Master::mpWeapon = new Weapon();
@@ -92,52 +93,52 @@ int Master::GameClearCount = 0;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	// 繧ｦ繧､繝ｳ繝峨え繝｢繝ｼ繝峨〒襍ｷ蜍・
+	// ウインドウモードで起勁E
 	ChangeWindowMode(true);
 
 	SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32);
 	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	
-	// DX繝ｩ繧､繝悶Λ繝ｪ蛻晄悄蛹・
+	// DXライブラリ初期匁E
 	if (DxLib_Init() == -1)
 	{
 		return -1;
 	}
 	EffekseerManager::GetInstance()->Init();
 
-	// --- 蜈ｨ菴薙・繝ｩ繧､繝・ぅ繝ｳ繧ｰ・育腸蠅・・繝ｻ螟ｪ髯ｽ蜈会ｼ芽ｨｭ螳・---
+	// --- 全体�EライチE��ング�E�環墁E�E・太陽光）設宁E---
 	SetLightEnable(TRUE);
-	// 迺ｰ蠅・・・・mbColor・峨ｒ蟆代＠鬮倥ａ縺ｫ險ｭ螳壹＠縲∝ｽｱ縺ｫ縺ｪ繧翫ｄ縺吶＞驛ｨ蛻・ｼ亥ｺ暮擇繧・・髱｢・峨′逵溘▲鮟偵↓豐医∪縺ｪ縺・ｈ縺・↓縺吶ｋ
+	// 環墁E�E�E�EmbColor�E�を少し高めに設定し、影になりやすい部刁E��底面めE�E面�E�が真っ黒に沈まなぁE��ぁE��する
 	SetLightAmbColor(GetColorF(0.6f, 0.6f, 0.6f, 1.0f));
-	// 螟ｪ髯ｽ蜈会ｼ医ョ繧｣繝ｬ繧ｯ繧ｷ繝ｧ繝翫Ν繝ｩ繧､繝茨ｼ峨・蜷代″繧呈万繧∽ｸ九↓蜷代￠繧・
+	// 太陽光（ディレクショナルライト）�E向きを斜め下に向けめE
 	SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
-	// 螟ｪ髯ｽ蜈峨・濶ｲ・亥ｰ代＠逋ｽ縺ｿ縺後°縺｣縺滓・繧九＞濶ｲ・・
+	// 太陽光�E色�E�少し白みがかった�Eるい色�E�E
 	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
 	// ------------------------------------------------
 
 
-	//BGM縺ｮ隱ｭ縺ｿ霎ｼ縺ｿ
+	//BGMの読み込み
 
-	//繧ｵ繧ｦ繝ｳ繝峨・繝阪・繧ｸ繝｣繝ｼ縺ｮ蛻晄悄蛹・
-	Master::mpSoundManager->Initialize();//縺吶∋縺ｦ縺ｮ繧ｵ繧ｦ繝ｳ繝峨′隱ｭ縺ｿ霎ｼ縺ｾ繧罫u----
+	//サウンド�Eネ�Eジャーの初期匁E
+	Master::mpSoundManager->Initialize();//すべてのサウンドが読み込まれru----
 
-	//繧ｷ繝ｼ繝ｳ繝槭ロ繝ｼ繧ｸ繝｣繝ｼ縺ｮ逕滓・縺ｨ蛻晄悄蛹・
+	//シーンマネージャーの生�Eと初期匁E
 	Master::mpSceneManager->Initialize();
 
 	Master::mpScoreManager->Initialize();
 
-	//繧ｫ繝｡繝ｩ縺ｮ譖ｴ譁ｰ
+	//カメラの更新
 	Master::mpCamera->Initialize();
 
 	
 
 
 
-	//謠冗判蜈郁ｨｭ螳壹ｒ陬冗判髱｢縺ｫ險ｭ螳壹☆繧・
+	//描画先設定を裏画面に設定すめE
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//Z繝舌ャ繝輔ぃ縺ｫ譖ｸ縺崎ｾｼ繧貅門ｙ
+	//Zバッファに書き込む準備
 	SetUseZBufferFlag(true);
 	SetWriteZBufferFlag(true);
 
@@ -145,23 +146,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	int animationCounter = 0;
 	int textureCurrentNum = 0;
 
-	//繧ｲ繝ｼ繝縺ｮ繝｡繧､繝ｳ繝ｫ繝ｼ繝・
+	//ゲームのメインルーチE
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 
-		//逕ｻ髱｢繧貞・譛溷喧縺吶ｋ
+		//画面を�E期化する
 		ClearDrawScreen();
 		int time = GetNowCount();
 
 		Master::mpDrawHp->Update();
 		Master::mpCamera->Update();
 		
-		//譖ｴ譁ｰ
+		//更新
 		Master::mpSceneManager->Update();
 		Master::mpInfClassManager->Update();
 		EffekseerManager::GetInstance()->Update();
 	
-		//謠冗判
+		//描画
 		Master::mpSceneManager->Draw();
 		Master::mpScoreManager->Draw();
 		EffekseerManager::GetInstance()->Draw();
@@ -171,28 +172,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 
 
-		//陬冗判髱｢縺ｮ蜀・ｮｹ繧定｡ｨ逕ｻ髱｢縺ｫ譏縺・
+		//裏画面の冁E��を表画面に映ぁE
 		ScreenFlip();
 
-		//・托ｼ励Α繝ｪ遘抵ｼ育ｧ呈焚髢楢ｨｳ・厄ｼ舌ヵ繝ｬ繝ｼ繝縺縺｣縺溘▲蝣ｴ蜷茨ｼ代ヵ繝ｬ繝ｼ繝蠖薙◆繧翫・邨碁℃譎る俣
-		//邨碁℃縺吶ｋ縺ｾ縺ｧ縺薙％縺ｧ蠕・▽
+		//�E�７ミリ秒（秒数間訳�E�０フレームだったっ場合１フレーム当たり�E経過時間
+		//経過するまでここで征E��
 		while (GetNowCount() - time < 17)
 		{
-			//蠕・▽縺縺代↑縺ｮ縺ｧ縺薙％縺ｫ縺ｯ菴輔ｂ譖ｸ縺九↑縺・
+			//征E��だけなのでここには何も書かなぁE
 		}
 
-		//蜑企勁縺吶ｋ蠢・ｦ√・縺ゅｋ繧ｪ繝悶ず繧ｧ繧ｯ繝医′縺ゅｌ縺ｰ蜑企勁縺吶ｋ
+		//削除する忁E���Eあるオブジェクトがあれば削除する
 		ColliderManager::GetInstance()->DeleteAllColliderIfNeeded();
 		Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
 		Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
 		
 
-		//繝ｫ繝ｼ繝励☆繧狗峩蜑阪↓繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ繝√ぉ繝・け繧貞・繧後※縺翫￥
+		//ループする直前にシーン遷移チェチE��を�Eれておく
 		Master::mpSceneManager->ChangeSceneIfNeeded();
 
 		
 	}
-	//邨ゆｺ・・逅・
+	//終亁E�E琁E
 	Master::mpSceneManager->Finalize();
 	delete Master::mpSceneManager;
 	Master::mpSoundManager->Finalize();
@@ -207,11 +208,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-	// DX繝ｩ繧､繝悶Λ繝ｪ菴ｿ逕ｨ縺ｮ邨ゆｺ・
+	// DXライブラリ使用の終亁E
 	EffekseerManager::GetInstance()->End();
 	DxLib_End();
 
-	// 繧ｽ繝輔ヨ縺ｮ邨ゆｺ・
+	// ソフトの終亁E
 	return 0;
 }
 

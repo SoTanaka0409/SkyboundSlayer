@@ -103,7 +103,7 @@ void EnemyMonster::Attack()
 		float jumpTime = (80.0f / mGravity) * 2.0f; // 40.0f frames
 		float maxJumpDistance = jumpTime * 20.0f; // 800.0f
 		
-		auto playerObj = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+		auto playerObj = Master::mpPlayer;
 		bool isPlayerInJumpRange = false;
 		if (playerObj) {
 			VECTOR playerPos = playerObj->GetPosition();
@@ -156,7 +156,7 @@ void EnemyMonster::Attack()
 			mJumpStartY = mvPosition.y; // Record start height
 
 			// Dynamically adjust forward speed so the landing point is exactly the player
-			auto playerObj = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+			auto playerObj = Master::mpPlayer;
 			if (playerObj) {
 				VECTOR playerPos = playerObj->GetPosition();
 				VECTOR toPlayer = VSub(playerPos, mvPosition);
@@ -212,7 +212,7 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 {
 	if (mfHp <= 0) return;
 
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	if (mpPlayer == nullptr) return;
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 	if (pPlayer == nullptr) return;

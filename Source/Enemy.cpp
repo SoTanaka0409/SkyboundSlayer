@@ -172,7 +172,7 @@ void Enemy::Move()
 	if (Master::SafePointOn)mvPosition = VinitPos;//é©›ï½¢ãƒ»E§éƒ¢E§ç¹ï½»ãƒ»E¼ãƒ»E½é©›ï½¢è­ä¸ï½¹E²ãƒ»å–ï½¨æŠµE½E¹ãƒ»E§ç¹ï½»ãƒ»E¤é©›ï½¢è­ï½¢ãƒ»E½ãƒ»E¤é©›ï½¢è­ï½¢ãƒ»E½ãƒ»E¼é©ï½µãƒ»Eºéš°ç–²E»ã‚‘ï½½E½ãƒ»E®éœ‘å£¼ç”Ÿç¹ï½»é«¯æ‡¶E½E¨ç¹ï½»ãƒ»E°é«¯æ™¢E½E¶ç¹ï½»ãƒ»E¯é©ï½µãƒ»Eºç¹ï½»ãƒ»E«é©ï½µãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»è¿¢æš¦E½E¸ãƒ»Eºç¹ï½»ãƒ»Eªé©›ï½¢ãƒ»E§éœ‘å£¼ç”Ÿç¹ï½»é««E´èŸ¶E¶ãƒ»Eºè›Ÿï½¥ç¹ï½»é©›ï½¢ãƒ»E§ç¹ï½»ãƒ»E¹é©ï½µãƒ»Eºç¹ï½»ãƒ»E«é««E°é­E¼šï½½E½ãƒ»E»é©›ï½¢ãƒ»E§éƒ¢æ™¢E½E»
 	
 
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
@@ -364,7 +364,7 @@ void Enemy::DeathColliderPosition()
 
 void Enemy::OnEnter(Collider* collider, Collider* check)//é«¯æ™¢E½E¾ç¹ï½»ãƒ»E¦é«¯å¥E¹E¢ãƒ»E½ãƒ»E´.
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	if (mfHp <= 0)return;
 	if (collider == mpCapsuleCollider && check->mpParentObject->GetTag() == Tag3D_Obj)
 	{
@@ -396,7 +396,7 @@ void Enemy::OnEnter(Collider* collider, Collider* check)//é«¯æ™¢E½E¾ç¹ï½»ãƒ»
 
 void Enemy::OnTrigger(Collider* collider, Collider* check)
 {//é«¯æº·ãƒ»è“ï½­éš¨E³ç¹ï½»ãƒ»E¸ãƒ»Eºç¹ï½»ãƒ»E£é©ï½µãƒ»Eºé›‹ãEE½E½éš¶Â€ãƒ»Eªé¬¯E®ãƒ»E¢é«¦E®èœ·E¶ç¹ï½»é«¯E·ç¹ï½»ãƒ»E½ãƒ»E¦é¬¨E¾ç¹ï½»ç¹ï½»
-	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
+	if (mfHp <= 0)return; auto mpPlayer = Master::mpPlayer;
 	AnimationState now = mpModel->GetNowState();
 	if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{//mpModelé©ï½µãƒ»Eºç¹ï½»ãƒ»E®é¬¨E¾ãƒ»E¡ç¹ï½»ãƒ»Eªé«¯E·ãƒ»E¿ç¹ï½»ãƒ»E·é©›ï½¢ãƒ»E§éƒ¢E§ç¹ï½»è­Œï½ºé©ï½µãƒ»Eºç¹ï½»ãƒ»E£é©ï½µãƒ»Eºç¹ï½»ãƒ»E¦é©ï½µãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»è¿¢æš¦E½E¸ãƒ»E²é¶ä¸ï½¤ã‚‘ï½½E¸ãƒ»Eºç¹ï½»ãƒ»E©é©ï½µãƒ»Eºé«¦E®èœ·E¶ç¹ï½»ifé««E´ç«å£¹ãƒ»é¶é ‘ï½¥E¢è«¤E¦ç¹ï½»ãƒ»E¥é©›ï½¢ãƒ»E§é™ï½²ãƒ»E¨é¶ä¼ãEãƒ»E¸ãƒ»Eºéƒ¢æ™¢E½E»
@@ -417,7 +417,7 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 
 void Enemy::OnExit(Collider* collider, Collider* check)
 {
-	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
+	if (mfHp <= 0)return; auto mpPlayer = Master::mpPlayer;
 	AnimationState now = mpModel->GetNowState();
 	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
@@ -506,7 +506,7 @@ void Enemy::Delete()
 
 void Enemy::GiveRewards()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	if (player != nullptr) {
 		player->mpHaveMoney->AddMoney(mfHaveMoney);

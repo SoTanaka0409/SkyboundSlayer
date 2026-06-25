@@ -53,14 +53,7 @@ void DrawHp::Update()
 			int HpBarX = DrawHpBarWorld.x - BarWidth / 2;
 			int HpBarY = DrawHpBarWorld.y - BarHeight / 2;
 
-			auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
-			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
-			bool isHitSearch = HitCheck_Sphere_Capsule(
-				pEne->GetPosition(),//スフィアの中心座標
-				3000,                        //すふぃあの半径
-				pPlayer->GetPosition(),     //カプセルの座標１(下側）
-				VAdd(pPlayer->GetPosition(), VGet(0.0f, 150.0f, 0.0f)),//カプセルの座標２(上側）
-				40.0f);
+			bool isHitSearch = pEne->GetIsHitSearch();
 			if (isHitSearch&&pEne->GetHp()>0)
 			{
 				DrawBox(HpBarX, HpBarY, HpBarX + BarWidth, HpBarY + BarHeight, GetColor(255, 255, 255), FALSE);

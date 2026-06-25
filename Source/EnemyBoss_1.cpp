@@ -30,12 +30,12 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 	mbMagic = true;
 	mAttackType = 0;
 	mAttack1ComboCount = 0;
-	mnChance = 30;//郢ｧ・｢郢ｧ・､郢昴・ﾎ堤ｸｺ・ｮ郢晏ｳｨﾎ溽ｹ昴・繝ｻ驕抵ｽｺ驍・・
+	mnChance = 30;//驛｢・ｧ繝ｻ・｢驛｢・ｧ繝ｻ・､驛｢譏ｴ繝ｻ・主､・ｸ・ｺ繝ｻ・ｮ驛｢譎擾ｽｳ・ｨ・取ｺｽ・ｹ譏ｴ繝ｻ郢晢ｽｻ鬩墓慣・ｽ・ｺ鬩阪・繝ｻ
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
 	
-	//郢晢ｽ｢郢昴・ﾎ晉ｸｺ・ｮ騾墓ｻ薙・
+	//驛｢譎｢・ｽ・｢驛｢譏ｴ繝ｻ・取刮・ｸ・ｺ繝ｻ・ｮ鬨ｾ蠅難ｽｻ阮吶・
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
@@ -78,7 +78,7 @@ void EnemyBoss_1::Update()
 			}
 
 			mpModel->Update();
-			//mpDH->Update();//drawHp邵ｺ・ｮ郢ｧ・｢郢昴・繝ｻ郢昴・繝ｻ郢晏現・定惱・ｼ邵ｺ・ｶ
+			//mpDH->Update();//drawHp驍ｵ・ｺ繝ｻ・ｮ驛｢・ｧ繝ｻ・｢驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢譏ｴ繝ｻ郢晢ｽｻ驛｢譎冗樟繝ｻ螳壽Τ繝ｻ・ｼ驍ｵ・ｺ繝ｻ・ｶ
 			CollPositionUpdate();
 			mpJumpAttackCoiider->mvPosition = mvPosition;
 
@@ -137,9 +137,15 @@ void EnemyBoss_1::Attack()
 			mpModel->ChangeAnimation(ANIMATION_ATTACKMAGIC);
 			mpModel->SetLoop(false);
 			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
+			
+			// Center
 			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
-			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition,sinf(30)), 0, 150);
-			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition, cosf(30)), 0, 150);
+			// Left 30 degrees
+			VECTOR leftGo = VTransform(GoPosition, MGetRotY(-30.0f * DX_PI_F / 180.0f));
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, leftGo, 0, 150);
+			// Right 30 degrees
+			VECTOR rightGo = VTransform(GoPosition, MGetRotY(30.0f * DX_PI_F / 180.0f));
+			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, rightGo, 0, 150);
 		}
 		else if (mAttackType == 2)
 		{
@@ -157,9 +163,8 @@ void EnemyBoss_1::Attack()
 			mpModel->SetLoop(false);
 			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 			
+			// Single magic attack for the 3-hit combo
 			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
-			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition,sinf(30)), 0, 150);
-			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, VScale(GoPosition, cosf(30)), 0, 150);
 			
 			mAttack1ComboCount--;
 		}
@@ -175,13 +180,13 @@ void EnemyBoss_1::Attack()
 	}
 }
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
-{//陟冶侭笳・ｸｺ・｣邵ｺ貅ｽ讀ｪ鬮｢阮吶・陷・ｽｦ騾・・
-	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+{//髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ雋・ｽｽ隶・ｪ鬯ｮ・｢髦ｮ蜷ｶ繝ｻ髯ｷ繝ｻ・ｽ・ｦ鬨ｾ繝ｻ繝ｻ
+	if (mfHp <= 0)return; auto mpPlayer = Master::mpPlayer;
 	AnimationState now = mpModel->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
 		if (collider == mpJumpAttackCoiider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-		{//mpModel邵ｺ・ｮ騾｡・ｪ陷ｿ・ｷ郢ｧ繧・旺邵ｺ・｣邵ｺ・ｦ邵ｺ繝ｻ・狗ｸｲ竏夲ｿ邵ｺ・ｩ邵ｺ阮吶・if隴√・竊楢怦・･郢ｧ蟲ｨ竊醍ｸｺ繝ｻ
+		{//mpModel驍ｵ・ｺ繝ｻ・ｮ鬨ｾ・｡繝ｻ・ｪ髯ｷ・ｿ繝ｻ・ｷ驛｢・ｧ郢ｧ繝ｻ譌ｺ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ繝ｻ迢暦ｽｸ・ｲ遶丞､ｲ・ｿ・ｽ驍ｵ・ｺ繝ｻ・ｩ驍ｵ・ｺ髦ｮ蜷ｶ繝ｻif髫ｴ竏壹・遶頑･｢諤ｦ繝ｻ・･驛｢・ｧ陝ｲ・ｨ遶企・・ｸ・ｺ郢晢ｽｻ
 			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
@@ -190,7 +195,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 				{
 
 					pPlayer->Damage(mfAttack);
-					AttackHitJudgmentflag = true;//陟冶侭笳・ｸｺ・｣邵ｺ貅假ｽ育ｹ晢ｽｼ
+					AttackHitJudgmentflag = true;//髯溷・萓ｭ隨ｳ繝ｻ・ｸ・ｺ繝ｻ・｣驍ｵ・ｺ雋・∞・ｽ閧ｲ・ｹ譎｢・ｽ・ｼ
 				}
 			}
 
@@ -202,9 +207,9 @@ void EnemyBoss_1::DeathEnemy()
 {
 	isDead = true;
 	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//郢晢ｽｫ郢晢ｽｼ郢晏干繝ｻ邵ｺ霈披雷邵ｺ・ｪ邵ｺ繝ｻ
+	//驛｢譎｢・ｽ・ｫ驛｢譎｢・ｽ・ｼ驛｢譎丞ｹｲ郢晢ｽｻ驍ｵ・ｺ髴域喚髮ｷ驍ｵ・ｺ繝ｻ・ｪ驍ｵ・ｺ郢晢ｽｻ
 	mpModel->SetLoop(false);
-	//郢晢ｽ｢郢晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ陟募ｾ後・陟輔・・ｩ貅佩皮ｹ晢ｽｼ郢ｧ・ｷ郢晢ｽｧ郢晢ｽｳ邵ｺ・ｫ隰鯉ｽｻ邵ｺ繝ｻ
+	//驛｢譎｢・ｽ・｢驛｢譎｢・ｽ・ｼ驛｢・ｧ繝ｻ・ｷ驛｢譎｢・ｽ・ｧ驛｢譎｢・ｽ・ｳ髯溷供・ｾ蠕後・髯溯ｼ斐・繝ｻ・ｩ雋・ｽｩ逧ｮ・ｹ譎｢・ｽ・ｼ驛｢・ｧ繝ｻ・ｷ驛｢譎｢・ｽ・ｧ驛｢譎｢・ｽ・ｳ驍ｵ・ｺ繝ｻ・ｫ髫ｰ魃会ｽｽ・ｻ驍ｵ・ｺ郢晢ｽｻ
 	mpModel->SetLoopFinishState(ANIMATION_MAX);
 	DeathColliderPosition();
 

@@ -143,6 +143,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 
 Player3D::~Player3D()
 {
+	if (Master::mpPlayer == this) Master::mpPlayer = nullptr;
 	delete mpModel;
 	delete mpShortInventory;
 	CollDelete();
@@ -435,15 +436,16 @@ void Player3D::if_StageOut()
 	float radiusZ = Config::StageVector_z; // Z譁ｹ蜷托ｼ亥･･・峨・髯千阜縺ｮ蠎・＆
 	auto scene = Master::mpSceneManager->GetCurrentScene();
 	SceneGame* game = dynamic_cast<SceneGame*>(scene);
-	if (game->IsBattlePhase() && game->mpGameManager->GetCurrentPhase() == GameManager::Phase::BOSS)
+	VECTOR centerPos;//stageの真ん中
+	if (game->mpGameManager->GetCurrentPhase() == GameManager::Phase::BOSS)
 	{
-
+		centerPos = VGet(0, 5000, -20000);//空中島の真ん中の地点
+		radiusX = 0;
 	}
-	
-	VECTOR center = VGet(Config::GetStageCenter().x, 0, Config::GetStageCenter().z);
-
-	VECTOR centerPos = VGet(center.x, mvPosition.y, center.z); // 荳ｭ蠢・ｺｧ讓・
-	//荳ｭ蠢・°繧臥樟蝨ｨ蝨ｰ縺ｾ縺ｧ縺ｮ蟾ｮ・郁ｷ晞屬・峨ｒX縺ｨZ縺昴ｌ縺槭ｌ縺ｧ蜃ｺ縺・
+	else
+	{
+		centerPos = VGet(Config::GetStageCenter().x, 0, Config::GetStageCenter().z);//通常のステージ中央
+	}
 	float dx = mvPosition.x - centerPos.x;
 	float dz = mvPosition.z - centerPos.z;
 	//縺昴ｌ縺槭ｌ縺ｮ蜊雁ｾ・〒蜑ｲ縺｣縺ｦ縲∽ｸ譎ら噪縺ｫ縲悟濠蠕・縺ｮ逵溘ｓ荳ｸ縺ｪ蜀・阪・荳也阜縺ｫ螟画鋤縺吶ｋ
@@ -454,8 +456,9 @@ void Player3D::if_StageOut()
 	//霍晞屬縺・1.0 繧定ｶ・∴縺ｦ縺・◆繧会ｼ域･募・縺ｮ螟悶↓縺ｯ縺ｿ蜃ｺ縺励※縺・◆繧会ｼ・
 	if (distance > 1.0f)
 	{
-		mvPosition = mvOldPosition;
+		mvPosition = mvOldPosition;//map外に出たら位置座標を戻す
 	}
+	
 
 }
 

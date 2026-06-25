@@ -54,7 +54,7 @@ void Coin::Update()
         return; // Don't suck yet
     }
 
-    auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+    auto mpPlayer = Master::mpPlayer;
     if (!mpPlayer) return;
 
     Player3D* player = dynamic_cast<Player3D*>(mpPlayer);

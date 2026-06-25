@@ -26,7 +26,7 @@ void ResultScene::Initialize()
 {
 	mpTexture = new Texture("Resource/result.png", VGet(500, 500, 0), true);
 	mpTexture2= new Texture("Resource/street.png", VGet(500, 850, 0), true);
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
 	
@@ -46,7 +46,7 @@ void ResultScene::Draw()
 	};
 	int Size = GetFontSize();
 	/*mpTexture = new Texture("", VGet(0, 0, 0), true);
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);*/
 	
 	

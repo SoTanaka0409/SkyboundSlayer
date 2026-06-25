@@ -14,7 +14,7 @@ Magic_Ene::Magic_Ene(std::string filename, VECTOR initPos, float r, float damage
 }
 Magic_Ene::~Magic_Ene()
 {
-	if (mpModel == nullptr)
+	if (mpModel != nullptr)
 	{
 		delete mpModel;
 	}

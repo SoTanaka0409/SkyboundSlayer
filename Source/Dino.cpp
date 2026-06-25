@@ -88,7 +88,7 @@ void Dino::Move()
 
 
 
-		/*auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
+		/*auto mpPlayer = Master::mpPlayer;
 		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
 		VECTOR GoPosition = VSub(pPlayer->GetPosition(), mvPosition);

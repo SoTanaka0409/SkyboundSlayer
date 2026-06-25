@@ -85,7 +85,7 @@ void StageCollider::OnEnter(Collider* collider, Collider* check)
 			
 		}
 	}
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage‚És‚­
 	{
 		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
@@ -116,7 +116,7 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 {
 	if (Count > 10)
 	{
-		auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+		auto mpPlayer = Master::mpPlayer;
 
 		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage‚És‚­
 		{

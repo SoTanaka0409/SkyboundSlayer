@@ -89,7 +89,7 @@ void WeaponManager::Draw()
 
 void WeaponManager::ChangeWeapon(Weapon::WeaponDate* date)
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	if (player == nullptr) return;
 	

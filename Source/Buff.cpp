@@ -5,7 +5,7 @@
 Buff::Buff(int timer, float effect,Object3D::StatusState type)
 	:Do_buff(true)
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 	efDate.Timer = timer;
 	efDate.Effect = effect;

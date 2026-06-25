@@ -83,7 +83,7 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 
 void ItemManager::UseItem(Item::ItemID id)
 {
-	auto mpplayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpplayer = Master::mpPlayer;
     Player3D* player = dynamic_cast<Player3D*>(mpplayer);
     if (player == nullptr) return;
 	for (auto itr = mItemList.begin(); itr != mItemList.end(); itr++)
@@ -106,7 +106,7 @@ void ItemManager::UseItem(Item::ItemID id)
 
 void ItemManager::Effect(Item::ItemID id)
 {
-    auto mpplayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+    auto mpplayer = Master::mpPlayer;
     Player3D* player = dynamic_cast<Player3D*>(mpplayer);
     if (player == nullptr) return;
 

@@ -36,7 +36,7 @@ void HaveMoneyClass::Draw()
 }
 void HaveMoneyClass::PullMoney(int money)
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	auto mpPlayer = Master::mpPlayer;
 	auto player = dynamic_cast<Player3D*>(mpPlayer);
 	player->mpHaveMoney->AddMoney(-money);
 	
