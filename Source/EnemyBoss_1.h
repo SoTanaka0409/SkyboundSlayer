@@ -37,6 +37,12 @@ private:
 
 	int mAttackType;
 	int mAttack1ComboCount;
+	
+	float mfjumpPower;
+	bool HighPositionFlag;
+	bool mbjumpDown;
+	bool mbjump;
+	bool OnJumpCollider;
 
 
 };

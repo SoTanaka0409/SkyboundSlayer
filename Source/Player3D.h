@@ -93,7 +93,7 @@ public:
 	void AddUpgradeEvasionSpeed(float add) { mfUpgradeEvasionSpeed += add; }
 	void AddUpgradeEvasionInvincibility(int add) { mnUpgradeEvasionInvincibility += add; }
 	// -----------------------
-
+	VECTOR GetFirstPos() { return mvFirstPosition; };
 	bool GetStageOutFlag() { return mbStageOutFlag; }
 
 	void bar();
@@ -140,6 +140,7 @@ private:
 	bool NewShieldFast;
 	float mfTargetAngle;//目標の回転地
 	float mfAngle;//現在の回転地
+	VECTOR mvFirstPosition;
 
 	const float ROTATE_SPEED = 0.2f;//回転速度
 	const float JUMP_POWER = 30.0f;//ジャンプ力

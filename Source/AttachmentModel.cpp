@@ -1,33 +1,43 @@
 #include"AttachmentMOdel.h"
 
-AttachmentModel::AttachmentModel(std::string filename, int parentModelHandle, int parentFrameIndex)
-	:Object3D(VGet(0.0f, 0.0f, 0.0f))//À•W‚ÍƒAƒ^ƒbƒ`æ‚É‚æ‚Á‚Ä•Ï‚í‚é‚Ì‚Å‰Šú‰»
+AttachmentModel::AttachmentModel(std::string filename, int parentModelHandle, int parentFrameIndex, VECTOR offsetPos, VECTOR offsetRot)
+	:Object3D(VGet(0.0f, 0.0f, 0.0f))//åº§æ¨™ã¯ã‚¢ã‚¿ãƒƒãƒå…ˆã«ã‚ˆã£ã¦å¤‰ã‚ã‚‹ã®ã§åˆæœŸåŒ–
 	, mnParentHandle(parentModelHandle)
 	, mnParentFrameIndex(parentFrameIndex)
+	, mOffsetPos(offsetPos)
+	, mOffsetRot(offsetRot)
 {
-	//3dƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
+	//3dãƒ¢ãƒ‡ãƒ«ã®èª­ã¿è¾¼ã¿
 	mnHandle = MV1LoadModel(filename.c_str());
 
 }
 
 AttachmentModel::~AttachmentModel()
 {
-	//ƒ‚ƒfƒ‹‚Ì”jŠü
+	//ãƒ¢ãƒ‡ãƒ«ã®ç ´æ£„
 	MV1DeleteModel(mnHandle);
 }
 
 void AttachmentModel::Update()
 {
-	//ƒAƒ^ƒbƒ`æ‚Ìƒ‚ƒfƒ‹‚ÌƒtƒŒ[ƒ€‚Ìs—ñî•ñ‚ğæ“¾
-	MATRIX matrix = MV1GetFrameLocalWorldMatrix(mnParentHandle, mnParentFrameIndex);
+	//ã‚¢ã‚¿ãƒƒãƒå…ˆã®ãƒ¢ãƒ‡ãƒ«ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®è¡Œåˆ—æƒ…å ±ã‚’å–å¾—
+	MATRIX parentMatrix = MV1GetFrameLocalWorldMatrix(mnParentHandle, mnParentFrameIndex);
 
-	//ã‚ğæ“¾‚µ‚½s—ñî•ñ‚ğ©g‚Éİ’è‚·‚é
-	MV1SetMatrix(mnHandle, matrix);
+	// Offsets
+	MATRIX offsetMatrix = MGetRotY(mOffsetRot.y);
+	offsetMatrix = MMult(offsetMatrix, MGetRotX(mOffsetRot.x));
+	offsetMatrix = MMult(offsetMatrix, MGetRotZ(mOffsetRot.z));
+	offsetMatrix = MMult(offsetMatrix, MGetTranslate(mOffsetPos));
+
+	MATRIX finalMatrix = MMult(offsetMatrix, parentMatrix);
+
+	//ä¸Šã‚’å–å¾—ã—ãŸè¡Œåˆ—æƒ…å ±ã‚’è‡ªèº«ã«è¨­å®šã™ã‚‹
+	MV1SetMatrix(mnHandle, finalMatrix);
 }
 
 void AttachmentModel::Draw()
 {
-	//ƒ‚ƒfƒ‹‚Ì•`‰æ
+	//ãƒ¢ãƒ‡ãƒ«ã®æç”»
 	MV1DrawModel(mnHandle);
 
 }

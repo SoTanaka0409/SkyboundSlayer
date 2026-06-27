@@ -9,15 +9,12 @@
 Magic_Ene::Magic_Ene(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time)
 	:Magic(filename,initPos,r,damage,speed,movevec,count,time)
 {
-	mfAttack = 3;//‚±‚ÌUŒ‚‚Ìƒ_ƒ[ƒW
+	mfAttack = 3;//ã“ã®æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸
 	Master::mpSoundManager->PlaySE(SoundManager::SE_FIRE);
 }
 Magic_Ene::~Magic_Ene()
 {
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-	}
+	// Base class Magic::~Magic() will delete mpModel
 }
 void Magic_Ene::Draw()
 {
@@ -28,8 +25,8 @@ void Magic_Ene::Update()
 {
 	DeleteCount++;
 	Move();
-	mpHitCollider->mvPosition = mvPosition;//“–‚½‚è”»’è‚ÌˆÚ“®
-	if (DeleteCount > DeleteTime)//ŠÔŒo‰ß‚ÅÁ‚¦‚é‚æ‚¤‚É‚·‚é
+	mpHitCollider->mvPosition = mvPosition;//å½“ãŸã‚Šåˆ¤å®šã®ç§»å‹•
+	if (DeleteCount > DeleteTime)//æ™‚é–“çµŒéã§æ¶ˆãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
 	{
 		Death();
 	}
@@ -38,7 +35,7 @@ void Magic_Ene::Update()
 }
 
 
-void Magic_Ene::OnEnter(Collider* collider, Collider* check)//¶‘¤.
+void Magic_Ene::OnEnter(Collider* collider, Collider* check)//å·¦å´.
 {
 	
 	
@@ -48,7 +45,7 @@ void Magic_Ene::OnEnter(Collider* collider, Collider* check)//¶‘¤.
 }
 
 void Magic_Ene::OnTrigger(Collider* collider, Collider* check)
-{//“–‚½‚Á‚½uŠÔ‚Ìˆ—
+{//å½“ãŸã£ãŸç¬é–“ã®å‡¦ç†
 	
 	if (collider == mpHitCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{

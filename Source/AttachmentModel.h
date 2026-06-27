@@ -6,11 +6,11 @@
 class AttachmentModel :public Object3D
 {
 public:
-	//filename ƒ‚ƒfƒ‹‚Ìƒtƒ@ƒCƒ‹ƒpƒX
-	//parentModelHandle ‚­‚Á‚Â‚¯‚½‚¢ƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
-	//parentFrameIndex  ‚­‚Á‚Â‚¯‚½‚¢ƒ‚ƒfƒ‹(‚¨‚âƒ‚ƒfƒ‹j‚Ìƒnƒ“ƒhƒ‹”Ô†
+	//filename ãƒ¢ãƒ‡ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+	//parentModelHandle ãã£ã¤ã‘ãŸã„ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
+	//parentFrameIndex  ãã£ã¤ã‘ãŸã„ãƒ¢ãƒ‡ãƒ«(ãŠã‚„ãƒ¢ãƒ‡ãƒ«ï¼‰ã®ãƒãƒ³ãƒ‰ãƒ«ç•ªå·
 
-	AttachmentModel(std::string filename, int parentModelHandle, int parentFrameIndex);
+	AttachmentModel(std::string filename, int parentModelHandle, int parentFrameIndex, VECTOR offsetPos = VGet(0.0f, 0.0f, 0.0f), VECTOR offsetRot = VGet(0.0f, 0.0f, 0.0f));
 
 	~AttachmentModel();
 
@@ -18,12 +18,14 @@ public:
 
 	void Draw()override;
 
-	//ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹‚Ìæ“¾
+	//ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã®å–å¾—
 	int GetHandle() { return mnHandle; }
 
 private:
-	int mnHandle; //ƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
-	int mnParentHandle; //e‚Ìƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
-	int mnParentFrameIndex; //eƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹”Ô†
+	int mnHandle; //ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
+	int mnParentHandle; //è¦ªã®ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+	int mnParentFrameIndex; //è¦ªãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ç•ªå·
+	VECTOR mOffsetPos;
+	VECTOR mOffsetRot;
 
 };

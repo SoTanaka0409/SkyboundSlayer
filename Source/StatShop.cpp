@@ -24,8 +24,8 @@ namespace
 }
 
 StatShop::StatShop(std::string filename, VECTOR vec)
-	: Object3D(VGet(vec.x, vec.y, vec.z + 4000.0f))
-	, mTargetPosition(vec)
+	: Object3D(vec)
+	, mvStartPosition(vec)
 	, mShopState(ShopState::WAIT_PHASE)
 	, mnSelect(0)
 	, mnSelectMax(4)
@@ -35,11 +35,12 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	, mnLevelSpeed(0)
 	, mnLevelEvasionSpeed(0)
 	, mnLevelEvasionInvincibility(0)
+	
 {
 	SetTag(Tag3D_Shop);
 	mpModel = new Model(filename, mvPosition, false);
 	mpShopIn = new SphereCollider(this, mvPosition, 200.0f);
-	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 敵が近づけなぁE��ーフゾーン
+	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 謨ｵ縺瑚ｿ代▼縺代↑縺・そ繝ｼ繝輔だ繝ｼ繝ｳ
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
@@ -49,6 +50,10 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	mnIconSpeedHandle = LoadGraph("Resource/2D/icon_speed_up.png");
 	mnIconEvasionDistHandle = LoadGraph("Resource/2D/icon_evade_dist_up.png");
 	mnIconEvasionInvHandle = LoadGraph("Resource/2D/icon_evade_inv_up.png");
+
+	auto pPlayer = Master::mpPlayer;
+	auto player = dynamic_cast<Player3D*>(pPlayer);
+	mTargetPosition = player->GetFirstPos();
 }
 
 StatShop::~StatShop()
@@ -61,8 +66,8 @@ StatShop::~StatShop()
 	DeleteGraph(mnIconEvasionInvHandle);
 
 	delete mpModel;
-	delete mpShopIn;
-	delete mpSafeZoon;
+	if (mpShopIn) mpShopIn->SetDeleteFlag(true);
+	if (mpSafeZoon) mpSafeZoon->SetDeleteFlag(true);
 }
 
 void StatShop::Draw()
@@ -73,11 +78,13 @@ void StatShop::Draw()
 	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
 
+	if (!player) return;
+
 	if (Master::StatShopClassOn)
 	{
 		player->mpHaveMoney->Draw();
 
-		// 背景やUI
+		// 閭梧勹繧ФI
 		DrawExtendGraph(300, 100, 1620, 800, mnBgImageHandle, TRUE);
 		
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
@@ -106,7 +113,7 @@ void StatShop::Draw()
 			int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 			if (i == mnSelect) DrawFormatString(330, 250 + i * 60, color, ">");
 			
-			// アイコン描画 (40x40 サイズに縮小して表示)
+			// 繧｢繧､繧ｳ繝ｳ謠冗判 (40x40 繧ｵ繧､繧ｺ縺ｫ邵ｮ蟆上＠縺ｦ陦ｨ遉ｺ)
 			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
 
 			DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
@@ -127,9 +134,10 @@ void StatShop::Draw()
 
 void StatShop::Update()
 {
+	
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	
-	// WALKING_OUTの時�E、フェーズが終亁E��てぁE��も移動�E琁E��続ける忁E��があるため、ここで刁E��します、E
+	// WALKING_OUT縺ｮ譎ゅ・縲√ヵ繧ｧ繝ｼ繧ｺ縺檎ｵゆｺ・＠縺ｦ縺・※繧らｧｻ蜍募・逅・ｒ邯壹￠繧句ｿ・ｦ√′縺ゅｋ縺溘ａ縲√％縺薙〒蛻・ｲ舌＠縺ｾ縺吶・
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -162,6 +170,7 @@ void StatShop::movePosition()
 {
 	if (mShopState == ShopState::WALKING_IN)
 	{
+		
 		VECTOR dir = VSub(mTargetPosition, mvPosition);
 		dir.y = 0.0f;
 		float dist = VSize(dir);
@@ -181,7 +190,7 @@ void StatShop::movePosition()
 	}
 	else if (mShopState == ShopState::WALKING_OUT)
 	{
-		VECTOR startPos = VGet(mTargetPosition.x, mTargetPosition.y, mTargetPosition.z + 4000.0f);
+		VECTOR startPos = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z);
 		VECTOR dir = VSub(startPos, mvPosition);
 		dir.y = 0.0f;
 		float dist = VSize(dir);
@@ -199,11 +208,11 @@ void StatShop::movePosition()
 	}
 	else if (mShopState == ShopState::ARRIVED)
 	{
-		if (mvPosition.y > mTargetPosition.y) mvPosition.y -= 2.0f;
+		if (mvPosition.y > mTargetPosition.y) mvPosition.y -= 5.0f;
 		mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
 	}
 
-	// 征E��中めE��場完亁E���E、当たり判定を画面外（現在の位置�E�に移動させる
+	// 蠕・ｩ滉ｸｭ繧・蝣ｴ螳御ｺ・ｾ後・縲∝ｽ薙◆繧雁愛螳壹ｒ逕ｻ髱｢螟厄ｼ育樟蝨ｨ縺ｮ菴咲ｽｮ・峨↓遘ｻ蜍輔＆縺帙ｋ
 	mpShopIn->mvPosition = mvPosition;
 	mpSafeZoon->mvPosition = mvPosition;
 	
@@ -216,7 +225,7 @@ void StatShop::StartWalkingIn()
 	if (mShopState == ShopState::WAIT_PHASE || mShopState == ShopState::WALKING_OUT)
 	{
 		mShopState = ShopState::WALKING_IN;
-		mvPosition = VGet(mTargetPosition.x, mTargetPosition.y, mTargetPosition.z + 4000.0f);
+		mvPosition = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z );
 	}
 }
 
@@ -255,6 +264,8 @@ void StatShop::BuyClass()
 {
 	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+
+	if (!player) return;
 
 	bool isMouseDown = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
 	bool isMouseClick = (isMouseDown && !mbOldMouseDown);
@@ -322,7 +333,7 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 {
 	if (!IsShopPhaseActive()) return;
 
-	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
+	if (check->mpParentObject && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
 		Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
 		if (pPlayer && collider == mpShopIn && pPlayer->GetCollisionCollider() == check)

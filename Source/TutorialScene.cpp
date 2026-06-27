@@ -55,16 +55,21 @@ TutorialScene::~TutorialScene()
 
 void TutorialScene::Initialize()
 {
+	// éœ§ã®è¨­å®š
+	SetFogEnable(TRUE);
+	SetFogColor(200, 220, 255);
+	SetFogStartEnd(3000.0f, 30000.0f);
+
 	Master::TutorialFlag = true;
 	Master::TutorialClearCount = 5;
 	Master::TutorialCount = 0;
-	new Player3D("Resource/3D/Hero.mv1", VGet(0,0,0), 30.0f, 12.0f, 100000.0f);//ƒWƒƒƒ“ƒvAƒAƒ^ƒbƒNAƒXƒs[ƒhA‚ˆ‚
-	//new Dino2("Resource/3D/spino.mv1", VGet(2400.0f, 300.0f, 1200.0f), 10, 6.0f, 3.0f, 300.0f, 1.0f);//ƒXƒs‚Ì hp,speed,attack,Hitsize,size
-	//new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(2400.0f, 300.0f, -2400.0f), 10, 5.0f, 400.0f, 1.0f);//ƒgƒŠƒPƒ‰ƒgƒvƒX,hp,speed,Hitsize,size
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-6000.0f, 300.0f, -4400.0f), 11, 5.0f, 3000, 2000);//hp.speedƒT[ƒ`‹——£1,2
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-1000.0f, 300.0f, -6000), 18, 5.0f, 3000, 2000);//hp.speed,ƒT[ƒ`‹——£1,2
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-3000.0f, 300.0f, -4000.0f), 22, 5.0f, 3000, 2000);//hp.speed,ƒT[ƒ`‹——£1,2
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-2000.0f, 300.0f, -3400.0f), 19, 5.0f, 3000, 2000);//hp.speed,ƒT[ƒ`‹——£1,2
+	new Player3D("Resource/3D/Hero.mv1", VGet(0,0,0), 30.0f, 12.0f, 100000.0f);//ã‚¸ãƒ£ãƒ³ãƒ—ã€ã‚¢ã‚¿ãƒƒã‚¯ã€ã‚¹ãƒ”ãƒ¼ãƒ‰ã€ï½ˆï½
+	//new Dino2("Resource/3D/spino.mv1", VGet(2400.0f, 300.0f, 1200.0f), 10, 6.0f, 3.0f, 300.0f, 1.0f);//ã‚¹ãƒ”ã® hp,speed,attack,Hitsize,size
+	//new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(2400.0f, 300.0f, -2400.0f), 10, 5.0f, 400.0f, 1.0f);//ãƒˆãƒªã‚±ãƒ©ãƒˆãƒ—ã‚¹,hp,speed,Hitsize,size
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-6000.0f, 300.0f, -4400.0f), 11, 5.0f, 3000, 2000);//hp.speedã‚µãƒ¼ãƒè·é›¢1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-1000.0f, 300.0f, -6000), 18, 5.0f, 3000, 2000);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-3000.0f, 300.0f, -4000.0f), 22, 5.0f, 3000, 2000);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-2000.0f, 300.0f, -3400.0f), 19, 5.0f, 3000, 2000);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
 
 	new Stage(VGet(0.0f, 0.0f, 0.0f), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1");
 	new Tree("Resource/3D/Tree.mv1", VGet(500, 0, -4600), 400.0, 150.0f, true);
@@ -74,7 +79,7 @@ void TutorialScene::Initialize()
 	new Tree("Resource/3D/Tree.mv1", VGet(1000, 0, -3200), 400.0f, 150.0f, true);
 	new Tree("Resource/3D/Tree.mv1", VGet(-400, 0, -3400), 400.0f, 150.0f, true);
 
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(0.0f, 100.0f, -12000.0f), 2442, 5.0f, 0, 0);//hp.speed,ƒT[ƒ`‹——£1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(0.0f, 100.0f, -12000.0f), 2442, 5.0f, 0, 0);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
 
 	const float wallWidth = Config::TutorialWallWidth;
 	const float wallDistance = Config::TutorialWallDistance;
@@ -98,7 +103,7 @@ void TutorialScene::Initialize()
 		VGet(0.0f, 0.0f, -6500),
 		VGet(wallWidth, 3000.0f, -6500),
 		VGet(-wallWidth / 2, 0.0f, -6500));
-	///“Vˆä
+	///å¤©äº•
 	//new Wall(
 	//	"Resource/Kuro.png",
 	
@@ -116,5 +121,5 @@ void TutorialScene::Draw()
 }
 void TutorialScene::Finalize()
 {
-
+	SetFogEnable(FALSE);
 }

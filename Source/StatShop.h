@@ -33,6 +33,7 @@ private:
 	SphereCollider* mpSafeZoon;
 	
 	VECTOR mTargetPosition;
+	VECTOR mvStartPosition;
 	ShopState mShopState;
 
 	int mnSelect;

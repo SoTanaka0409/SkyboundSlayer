@@ -12,14 +12,15 @@
 #include"NameScene.h"
 #include"TutorialScene.h"
 #include"ResetScene.h"
+#include"ColliderManager.h"
 
 
 SceneManager::SceneManager()
 	:mnSceneType(SCENE_TYPE::SCENE_NONE)
 	, mnNextSceneType(SCENE_TYPE::SCENE_NONE)
 	, mpCurrentScene(nullptr)
-	,SceneHard(false)//ƒn[ƒhƒV[ƒ“‚©‚Ç‚¤‚©
-	,SceneNormal(false)//ƒm[ƒ}ƒ‹ƒV[ƒ“‚©‚Ç‚¤‚©
+	,SceneHard(false)//ãƒãƒ¼ãƒ‰ã‚·ãƒ¼ãƒ³ã‹ã©ã†ã‹
+	,SceneNormal(false)//ãƒŽãƒ¼ãƒžãƒ«ã‚·ãƒ¼ãƒ³ã‹ã©ã†ã‹
 {
 
 }
@@ -30,11 +31,11 @@ SceneManager::~SceneManager()
 }
 void SceneManager::Initialize()
 {
-	////‰ŠúƒV[ƒ“‚ÌÝ’è
+	////åˆæœŸã‚·ãƒ¼ãƒ³ã®è¨­å®š
 
 	mnNextSceneType = SCENE_TYPE::SCENE_3D;
 
-	//ƒV[ƒ“‘JˆÚ‚³‚¹‚é
+	//ã‚·ãƒ¼ãƒ³é·ç§»ã•ã›ã‚‹
 	ChangeSceneIfNeeded();
 
 }
@@ -43,13 +44,13 @@ void SceneManager::Initialize()
 
 void SceneManager::Update()
 {
-	//ƒV[ƒ“‚ÌXV
+	//ã‚·ãƒ¼ãƒ³ã®æ›´æ–°
 	mpCurrentScene->Update();
 }
 
 void SceneManager::Draw()
 {
-	//ƒV[ƒ“‚Ì•`‰æ
+	//ã‚·ãƒ¼ãƒ³ã®æç”»
 	mpCurrentScene->Draw();
 }
 
@@ -60,25 +61,28 @@ void SceneManager::Finalize()
 
 void SceneManager::ChangeSceneIfNeeded()
 {
-	//Œ»Ý‚ÌƒV[ƒ“‚ÆŽŸ‚ÌƒV[ƒ“‚ªˆê‚Å‚ ‚ê‚Î‰½‚à‚µ‚È‚¢
+	//ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã¨æ¬¡ã®ã‚·ãƒ¼ãƒ³ãŒä¸€ç·’ã§ã‚ã‚Œã°ä½•ã‚‚ã—ãªã„
 	if (mnSceneType == mnNextSceneType)
 	{
 		return;
 	}
 	if (mpCurrentScene != nullptr)
 	{
-		//Œ»Ý‚ÌƒV[ƒ“‚ÌI—¹ˆ—‚ð‚·‚é
+		//ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®çµ‚äº†å‡¦ç†ã‚’ã™ã‚‹
 		mpCurrentScene->Finalize();
 
-		//ˆê’UƒV[ƒ“Ž©‘Ì‚à”jŠü‚µ‚Ä‚¨‚­
+		//ä¸€æ—¦ã‚·ãƒ¼ãƒ³è‡ªä½“ã‚‚ç ´æ£„ã—ã¦ãŠã
 		delete mpCurrentScene;
 		mpCurrentScene = nullptr;
+
+		// ã‚·ãƒ¼ãƒ³ãŒåˆ‡ã‚Šæ›¿ã‚ã‚‹ã¨ãã¯ã€ä»¥å‰ã®ã‚·ãƒ¼ãƒ³ã«æ‰€å±žã—ã¦ã„ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ä¸€æŽƒã™ã‚‹
+		ColliderManager::GetInstance()->DeleteAllCollider();
 	}
 
-	//ŽŸ‚ÌƒV[ƒ“‚É‚·‚é‚½‚ßƒV[ƒ“ƒ^ƒCƒv‚ðXV
+	//æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«ã™ã‚‹ãŸã‚ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—ã‚’æ›´æ–°
 	mnSceneType = mnNextSceneType;
 
-	//mnSceneType‚É‰ž‚¶‚ÄƒV[ƒ“‚ð¶¬‚·‚é
+	//mnSceneTypeã«å¿œã˜ã¦ã‚·ãƒ¼ãƒ³ã‚’ç”Ÿæˆã™ã‚‹
 	switch (mnSceneType)
 	{
 	case SCENE_TYPE::SCENE_TEST_COLLISION:
@@ -117,7 +121,7 @@ void SceneManager::ChangeSceneIfNeeded()
 	//default:
 		
 	}
-	//ƒV[ƒ“‚Ì¶¬‚ª‚³‚ê‚Ä‚¢‚é‚Í‚¸‚È‚Ì‚ÅA‰Šú‰»ˆ—‚ð“Ç‚ñ‚Å‚¨‚­
+	//ã‚·ãƒ¼ãƒ³ã®ç”ŸæˆãŒã•ã‚Œã¦ã„ã‚‹ã¯ãšãªã®ã§ã€åˆæœŸåŒ–å‡¦ç†ã‚’èª­ã‚“ã§ãŠã
 	mpCurrentScene->Initialize();
 
 }

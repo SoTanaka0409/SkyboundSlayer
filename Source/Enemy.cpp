@@ -176,8 +176,7 @@ void Enemy::Move()
 	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
 
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
-	{
-	}
+	
 	{
 		if (isHitSerchStop) { mfSpeed = 0; } else { mfSpeed = mfNormalSpeed; }
 		
