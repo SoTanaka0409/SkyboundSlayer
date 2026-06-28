@@ -25,24 +25,24 @@ Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float spe
 	
 	//,Animation(false)
 {
-	mnChance = 50;//ƒAƒCƒeƒ€‚ÌƒhƒƒbƒvŠm—¦
+	mnChance = 50;//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‰ãƒ­ãƒƒãƒ—ç¢ºç‡
 	AttackInterval = 120;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//ƒ‚ƒfƒ‹‚Ì¶¬
+	//ãƒ¢ãƒ‡ãƒ«ã®ç”Ÿæˆ
 	
 	
 	
 	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
-	mpModel->AddAttachment("Resource/3D/Sabel.mv1", "mixamorig:RightHandIndex1");
+	mpModel->AddAttachment("Resource/3D/Sabel.mv1", "mixamorig:RightHand");
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
 	mpModel->AddAnimation(ANIMATION_ATTACK, "Resource/Model/Attack.mv1");
 
 
-	//new DrawHp("",  //‰æ‘œ–¼
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//’†SÀ•W
+	//new DrawHp("",  //ç”»åƒå
+	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//ä¸­å¿ƒåº§æ¨™
 	
 	mpDebug = new Debug();
 }
@@ -75,7 +75,7 @@ void Enemy3D_AT::Update()
 			}
 
 			mpModel->Update();
-			//mpDH->Update();//drawHp‚ÌƒAƒbƒvƒf[ƒg‚ğŒÄ‚Ô
+			//mpDH->Update();//drawHpã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’å‘¼ã¶
 			CollPositionUpdate();
 
 		}

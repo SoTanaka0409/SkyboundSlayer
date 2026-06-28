@@ -434,15 +434,16 @@ void Player3D::Damage(float damage)
 
 void Player3D::if_StageOut()
 {
-	float radiusX = Config::StageVector_x; // X譁ｹ蜷托ｼ域ｨｪ・峨・髯千阜縺ｮ蠎・＆
-	float radiusZ = Config::StageVector_z; // Z譁ｹ蜷托ｼ亥･･・峨・髯千阜縺ｮ蠎・＆
+	float radiusX = Config::StageRadius_x; // X譁ｹ蜷托ｼ域ｨｪ・峨・髯千阜縺ｮ蠎・＆
+	float radiusZ = Config::StageRadius_z; // Z譁ｹ蜷托ｼ亥･･・峨・髯千阜縺ｮ蠎・＆
 	auto scene = Master::mpSceneManager->GetCurrentScene();
 	SceneGame* game = dynamic_cast<SceneGame*>(scene);
 	VECTOR centerPos;//stageの真ん中
 	if (game->mpGameManager->GetCurrentPhase() == GameManager::Phase::BOSS)
 	{
-		centerPos = VGet(0, 5000, -20000);//空中島の真ん中の地点
-		radiusX = 0;
+		centerPos = Config::GetStageBossCenter();//空中島の真ん中の地点
+		radiusX = Config::BossStageRadius;
+		radiusZ = Config::BossStageRadius;//bossステージの半径
 	}
 	else
 	{

@@ -17,14 +17,14 @@ WeaponManager::~WeaponManager()
 
 }
 
-//もしすでにそE武器を持ってぁEらreturnする,
+//繧ゅ＠縺吶〒縺ｫ縺戲豁ｦ蝎ｨ繧呈戟縺｣縺ｦ縺・繧詠eturn縺吶ｋ,
 void WeaponManager::AddWeapon(Weapon::WeaponDate* date)
 {
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
 		if ((*itr)->id==date->id)
 		{
-			if ((*itr)->damage < date->damage)//もし今現在獲得したおなじIDの武器の攻Eが基のより高かったら攻Eを更新する
+			if ((*itr)->damage < date->damage)//繧ゅ＠莉顔樟蝨ｨ迯ｲ蠕励＠縺溘♀縺ｪ縺露D縺ｮ豁ｦ蝎ｨ縺ｮ謾ｻE縺悟渕縺ｮ繧医ｊ鬮倥°縺｣縺溘ｉ謾ｻE繧呈峩譁ｰ縺吶ｋ
 			{
 				(*itr)->damage = date->damage;
 				if(date->isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
@@ -37,23 +37,23 @@ void WeaponManager::AddWeapon(Weapon::WeaponDate* date)
 	{
 	case Weapon::Tag_Weapon1:
 		date->price = 500;
-		date->name = "ただの剣";
+		date->name = "縺溘□縺ｮ蜑｣";
 		break;
 	case Weapon::Tag_Weapon2:
 		date->price = 800;
-		date->name = "普通E剣";
+		date->name = "譎ｮ騾哘蜑｣";
 		break;
 	case Weapon::Tag_Weapon3:
 		date->price = 1200;
-		date->name = "強ぁE";
+		date->name = "蠑ｷ縺・";
 		break;
 	case Weapon::Tag_Weapon4:
 		date->price = 1600;
-		date->name = "つおEぁE";
+		date->name = "縺､縺界縺・";
 		break;
 	case Weapon::Tag_Weapon5:
 		date->price = 2000;
-		date->name = "最強の剣";
+		date->name = "譛蠑ｷ縺ｮ蜑｣";
 		break;
 	default:
 		break;
@@ -68,7 +68,7 @@ void WeaponManager::Update()
 	{
 		if ((*itr)->mbGet == true)
 		{
-			filename = (*itr)->filename;//キャラクターごとに持ってぁE武器のモチEのファイルを探ぁE
+			filename = (*itr)->filename;//繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺斐→縺ｫ謖√▲縺ｦ縺・豁ｦ蝎ｨ縺ｮ繝｢繝・縺ｮ繝輔ぃ繧､繝ｫ繧呈爾縺・
 		}
 	
 
@@ -94,12 +94,12 @@ void WeaponManager::ChangeWeapon(Weapon::WeaponDate* date)
 	if (player == nullptr) return;
 	
 	
-	player->mpModel->AddAttachment(date->filename, "mixamorig:RightHandIndex1");
+	player->mpModel->AddAttachment(date->filename, "mixamorig:RightHand");
 	
 	player->GetAllStatusState(Object3D::Status_Attack);
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
-		(*itr)->mbGet = false;//一回すべての武器を外す
+		(*itr)->mbGet = false;//荳蝗槭☆縺ｹ縺ｦ縺ｮ豁ｦ蝎ｨ繧貞､悶☆
 	}
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{

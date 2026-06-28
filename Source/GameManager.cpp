@@ -314,7 +314,7 @@ void GameManager::SpawnPhaseEnemies()
     else if (mCurrentPhase == Phase::BOSS) {
         EnemyManager::enemydate e2;
         e2.filename = "Resource/3D/Boss1.mv1";
-        e2.spawnCenter = centerPos;
+        e2.spawnCenter = Config::GetStageBossCenter();
         e2.initPos = VGet(4000.0f, 100.0f, 4000.0f);
         e2.hp = 300;
         e2.speed = 10.0f;

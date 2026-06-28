@@ -73,8 +73,7 @@ void Scene3D::Initialize()
    
 
 
-    const float wallWidth_boss = Config::StageBossWallWidth;//stageのサイズ
-    const float wallDistance_boss = Config::StageBossWallDistance;//stageのサイズ main
+   
   // 
   //  
   //  new Wall("Resource/2D/mori.png",

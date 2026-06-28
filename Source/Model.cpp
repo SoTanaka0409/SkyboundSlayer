@@ -205,12 +205,18 @@ bool Model::IsAnimationLoopFinish()
 // アタッチメントを追加
 void Model::AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos, VECTOR offsetRot)
 {
-   if(mpAttachment!=nullptr) mpAttachment->SetDeleteFlag(true);
+    if (mpAttachment != nullptr)
+    {
+        mpAttachment->SetDeleteFlag(true);
+        mpAttachment = nullptr;
+    }
     // アタッチ先のフレーム番号を取得
     int frameIndex = MV1SearchFrame(mnHandle, attachFrameName.c_str());
-
-    // アタッチメントモデルの生成
-    mpAttachment = new AttachmentModel(filename, mnHandle, frameIndex, offsetPos, offsetRot);
+    if (frameIndex != -1)
+    {
+        // アタッチメントモデルの生成
+        mpAttachment = new AttachmentModel(filename, mnHandle, frameIndex, offsetPos, offsetRot);
+    }
 }
 
 VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
