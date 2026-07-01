@@ -2,8 +2,6 @@
 #include"DxLib.h"
 #include"Player3D.h"
 #include"Model.h"
-#include"WeaponManager.h"
-#include"Weapon.h"
 #include"Texture.h"
 #include"Scene.h"
 #include"Camera.h"

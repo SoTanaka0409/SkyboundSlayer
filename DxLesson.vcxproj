@@ -36,7 +36,6 @@
     <ClCompile Include="Source\Effect.cpp" />
     <ClCompile Include="Source\EffekseerManager.cpp" />
     <ClCompile Include="Source\EffectU.cpp" />
-    <ClCompile Include="Source\effect_r.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EnemyBoss_1.cpp" />
     <ClCompile Include="Source\EnemyMonster.cpp" />
@@ -63,7 +62,6 @@
     <ClCompile Include="Source\Object3D.cpp" />
     <ClCompile Include="Source\ObjectManager.cpp" />
     <ClCompile Include="Source\OperationScene.cpp" />
-    <ClCompile Include="Source\OriginalScene.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Player3D.cpp" />
     <ClCompile Include="Source\ResetScene.cpp" />
@@ -82,14 +80,12 @@
     <ClCompile Include="Source\ScoreManager.cpp" />
     <ClCompile Include="Source\SeparateModelAnimation.cpp" />
     <ClCompile Include="Source\Shield.cpp" />
-    <ClCompile Include="Source\Shop.cpp" />
     <ClCompile Include="Source\ShortInventory.cpp" />
     <ClCompile Include="Source\StatShop.cpp" />
     <ClCompile Include="Source\SkyBox.cpp" />
     <ClCompile Include="Source\SoundManager.cpp" />
     <ClCompile Include="Source\SphereCollider.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
-    <ClCompile Include="Source\StageBlock.cpp" />
     <ClCompile Include="Source\StageBox.cpp" />
     <ClCompile Include="Source\StageCollider.cpp" />
     <ClCompile Include="Source\StageObject.cpp" />
@@ -99,8 +95,6 @@
     <ClCompile Include="Source\Tree.cpp" />
     <ClCompile Include="Source\Tutorial.cpp" />
     <ClCompile Include="Source\Wall.cpp" />
-    <ClCompile Include="Source\Weapon.cpp" />
-    <ClCompile Include="Source\WeaponManager.cpp" />
     <ClCompile Include="Source\TestCollisionScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -120,11 +114,9 @@
     <ClInclude Include="Source\Debugh.h" />
     <ClInclude Include="Source\DrawCircle1.h" />
     <ClInclude Include="Source\DrawHp.h" />
-    <ClInclude Include="Source\Drop_chance.h" />
     <ClInclude Include="Source\Effect.h" />
     <ClInclude Include="Source\EffekseerManager.h" />
     <ClInclude Include="Source\EffectU.h" />
-    <ClInclude Include="Source\effect_r.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\EnemyBoss_1.h" />
     <ClInclude Include="Source\EnemyMonster.h" />
@@ -153,7 +145,6 @@
     <ClInclude Include="Source\Object3D.h" />
     <ClInclude Include="Source\ObjectManager.h" />
     <ClInclude Include="Source\OperationScene.h" />
-    <ClInclude Include="Source\OriginalScene.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Player3D.h" />
     <ClInclude Include="Source\ResetScene.h" />
@@ -173,13 +164,12 @@
     <ClInclude Include="Source\ScreenSize.h" />
     <ClInclude Include="Source\SeparateModelAnimation.h" />
     <ClInclude Include="Source\Shield.h" />
-    <ClInclude Include="Source\Shop.h" />
     <ClInclude Include="Source\ShortInventory.h" />
+    <ClInclude Include="Source\SphereCollider.h" />
     <ClInclude Include="Source\StatShop.h" />
     <ClInclude Include="Source\SkyBox.h" />
     <ClInclude Include="Source\SoundManager.h" />
     <ClInclude Include="Source\Stage.h" />
-    <ClInclude Include="Source\StageBlock.h" />
     <ClInclude Include="Source\StageBox.h" />
     <ClInclude Include="Source\StageCollider.h" />
     <ClInclude Include="Source\StageObject.h" />
@@ -189,8 +179,6 @@
     <ClInclude Include="Source\Tree.h" />
     <ClInclude Include="Source\TutorialScene.h" />
     <ClInclude Include="Source\Wall.h" />
-    <ClInclude Include="Source\Weapon.h" />
-    <ClInclude Include="Source\WeaponManager.h" />
     <ClInclude Include="Source\TestCollisionScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

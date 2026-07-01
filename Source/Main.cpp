@@ -12,8 +12,6 @@
 #include"Player3D.h"
 #include"camera.h"
 #include"Camera1.h"
-#include"Weapon.h"
-#include"WeaponManager.h"
 #include"ScreenSize.h"
 #include"ScoreManager.h"
 #include"ResourceManager.h"
@@ -53,8 +51,6 @@
 Player3D* Master::mpPlayer = nullptr;
 SceneManager* Master::mpSceneManager = new SceneManager();//蜻ｼ縺ｳ蜃ｺ縺・
 SoundManager* Master::mpSoundManager = new SoundManager();
-WeaponManager* Master::mpWeaponManager = new WeaponManager();
-Weapon* Master::mpWeapon = new Weapon();
 ResourceManager* Master::mpResourceManager = new ResourceManager();
 Debug* Master::mpDebug = new Debug();
 EnemySerch* Master::mpEnemySerch = new EnemySerch();
@@ -78,7 +74,6 @@ bool Master::TutorialFlag=false;
 /// </summary>
 
 bool Master::PauseOn = false;
-bool Master::ShopClassOn = false;
 bool Master::StatShopClassOn = false;
 bool Master::SafePointOn = false;
 bool Master::NearShopOn = false;

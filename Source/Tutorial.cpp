@@ -8,10 +8,8 @@
 //#include"slope.h"
 #include"Stage.h"
 #include"Master.h"
-#include"Weapon.h"
 #include"Bush.h"
 #include"EnemyManager.h"
-#include"WeaponManager.h"
 #include"InputManager.h"
 #include"Scene.h"
 #include"StageBox.h"
@@ -20,7 +18,6 @@
 #include"Object3D.h"
 #include"SceneManager.h"
 #include"DrawHp.h"
-#include"Shop.h"
 #include"StageCollider.h"
 
 
@@ -49,14 +46,14 @@ void TutorialScene::Initialize()
 	Master::TutorialCount = 0;
 	
 
-	new Player3D("Resource/Model/T.mv1", VGet(0.0f, 0.0f, 0.0f), 30.0f, 12.0f, 600.0f, true);//ƒWƒƒƒ“ƒvAƒAƒ^ƒbƒNAƒXƒs[ƒhA‚ˆ‚
+	new Player3D("Resource/Model/T.mv1", VGet(0.0f, 0.0f, 0.0f), 30.0f, 12.0f, 600.0f, true);//ã‚¸ãƒ£ãƒ³ãƒ—ã€ã‚¢ã‚¿ãƒƒã‚¯ã€ã‚¹ãƒ”ãƒ¼ãƒ‰ã€ï½ˆï½
 	
-	//new Dino2("Resource/3D/spino.mv1", VGet(2400.0f, 300.0f, 1200.0f), 10, 6.0f, 3.0f, 300.0f, 1.0f);//ƒXƒs‚Ì hp,speed,attack,Hitsize,size
-	//new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(2400.0f, 300.0f, -2400.0f), 10, 5.0f, 400.0f, 1.0f);//ƒgƒŠƒPƒ‰ƒgƒvƒX,hp,speed,Hitsize,size
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-6000.0f, 300.0f, -4400.0f), 11, 5.0f, 3000, 2000);//hp.speedƒT[ƒ`‹——£1,2
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-1000.0f, 300.0f, -6000), 18, 5.0f, 3000, 2000);//hp.speed,ƒT[ƒ`‹——£1,2
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-3000.0f, 300.0f, -4000.0f), 22, 5.0f, 3000, 2000);//hp.speed,ƒT[ƒ`‹——£1,2
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-2000.0f, 300.0f, -3400.0f), 19, 5.0f, 3000, 2000);//hp.speed,ƒT[ƒ`‹——£1,2
+	//new Dino2("Resource/3D/spino.mv1", VGet(2400.0f, 300.0f, 1200.0f), 10, 6.0f, 3.0f, 300.0f, 1.0f);//ã‚¹ãƒ”ã® hp,speed,attack,Hitsize,size
+	//new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(2400.0f, 300.0f, -2400.0f), 10, 5.0f, 400.0f, 1.0f);//ãƒˆãƒªã‚±ãƒ©ãƒˆãƒ—ã‚¹,hp,speed,Hitsize,size
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-6000.0f, 300.0f, -4400.0f), 11, 5.0f, 3000, 2000);//hp.speedã‚µãƒ¼ãƒè·é›¢1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-1000.0f, 300.0f, -6000), 18, 5.0f, 3000, 2000);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-3000.0f, 300.0f, -4000.0f), 22, 5.0f, 3000, 2000);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-2000.0f, 300.0f, -3400.0f), 19, 5.0f, 3000, 2000);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
 
 	new Stage(VGet(0.0f, 0.0f, 0.0f), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1");
 	new Tree("Resource/3D/Tree.mv1", VGet(500, 0, -4600), 400.0, 150.0f, true);
@@ -66,7 +63,7 @@ void TutorialScene::Initialize()
 	new Tree("Resource/3D/Tree.mv1", VGet(1000, 0, -3200), 400.0f, 150.0f, true);
 	new Tree("Resource/3D/Tree.mv1", VGet(-400, 0, -3400), 400.0f, 150.0f, true);
 
-	//new Enemy3D("Resource/3D/Hero.mv1", VGet(0.0f, 100.0f, -12000.0f), 2442, 5.0f, 0, 0);//hp.speed,ƒT[ƒ`‹——£1,2
+	//new Enemy3D("Resource/3D/Hero.mv1", VGet(0.0f, 100.0f, -12000.0f), 2442, 5.0f, 0, 0);//hp.speed,ã‚µãƒ¼ãƒè·é›¢1,2
 
 	const float wallWidth = Config::TutorialWallWidth;
 	const float wallDistance = Config::TutorialWallDistance;
@@ -90,27 +87,27 @@ void TutorialScene::Initialize()
 		VGet(0.0f, 0.0f, -6500),
 		VGet(wallWidth, 3000.0f, -6500),
 		VGet(-wallWidth / 2, 0.0f, -6500));
-	///“Vˆä
+	///å¤©äº•
 	//new Wall(
 	//	"Resource/Kuro.png",
 	VECTOR pos = VGet(10000, 0, 10000);
 
-	const float wallWidth_boss = Config::TutorialBossWallWidth;//stage‚ÌƒTƒCƒY
-	const float wallDistance_boss = Config::TutorialBossWallDistance;//stage‚ÌƒTƒCƒY main
+	const float wallWidth_boss = Config::TutorialBossWallWidth;//stageã®ã‚µã‚¤ã‚º
+	const float wallDistance_boss = Config::TutorialBossWallDistance;//stageã®ã‚µã‚¤ã‚º main
 
 	new Wall("Resource/2D/mori.png",
-		VAdd(VGet(-wallWidth_boss, 0, 0), pos),//¶
+		VAdd(VGet(-wallWidth_boss, 0, 0), pos),//å·¦
 		VAdd(VGet(-wallWidth_boss, 1500, -wallDistance_boss), pos),
 		VAdd(VGet(-wallWidth_boss, 0, wallDistance_boss), pos));
-	new Wall("Resource/2D/mori.png",//‰E
+	new Wall("Resource/2D/mori.png",//å³
 		VAdd(VGet(wallWidth_boss, 0, 0), pos),
 		VAdd(VGet(wallWidth_boss, 1500, -wallDistance_boss), pos),
 		VAdd(VGet(wallWidth_boss, 0, wallDistance_boss), pos));
-	new Wall("Resource/2D/mori.png",//ã
+	new Wall("Resource/2D/mori.png",//ä¸Š
 		VAdd(VGet(0, 0, wallWidth_boss), pos),
 		VAdd(VGet(-wallDistance_boss, 1500, wallWidth_boss), pos),
 		VAdd(VGet(wallDistance_boss, 0, wallWidth_boss), pos));
-	new Wall("Resource/2D/mori.png",//‰º
+	new Wall("Resource/2D/mori.png",//ä¸‹
 		VAdd(VGet(0, 0, -wallWidth_boss), pos),
 		VAdd(VGet(-wallDistance_boss, 1500, -wallWidth_boss), pos),
 		VAdd(VGet(wallDistance_boss, 0, -wallWidth_boss), pos));
@@ -126,7 +123,7 @@ void TutorialScene::Update()
 	Scene::Update();
 	if (InputManager::CheckDownKey(KEY_INPUT_P))
 	{
-		Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TITLE);///ƒ^ƒCƒgƒ‹
+		Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TITLE);///ã‚¿ã‚¤ãƒˆãƒ«
 	}
 	if (Master::TutorialCount == 0)
 	{
@@ -144,9 +141,8 @@ void TutorialScene::Update()
 		mpEnemyManager->NewEnemyList((*e));
 		Master::TutorialCount++;
 	}
-	if (Master::TutorialCount == 3)//“G‚ğ“|‚µ‚½‚ç
+	if (Master::TutorialCount == 3)//æ•µã‚’å€’ã—ãŸã‚‰
 	{
-		new Shop("Resource/3D/Hero.mv1", VGet(18000,100,18000));
 		new StageCollider();
 		Master::TutorialCount++;
 	}
@@ -159,30 +155,30 @@ void TutorialScene::Draw()
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
 		
-	/*	DrawFormatString(300, 20, GetColor(255, 0, 0), "¶ƒNƒŠƒbƒN‚Å‚±‚¤‚°‚«‚µ‚Ä“G‚ğ“|‚»‚¤");
+	/*	DrawFormatString(300, 20, GetColor(255, 0, 0), "å·¦ã‚¯ãƒªãƒƒã‚¯ã§ã“ã†ã’ãã—ã¦æ•µã‚’å€’ãã†");
 
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "\nE‚ÅUŒ‚•û–@‚ğ•Ï‚¦‚ç‚ê‚é‚æ");*/
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "\nEã§æ”»æ’ƒæ–¹æ³•ã‚’å¤‰ãˆã‚‰ã‚Œã‚‹ã‚ˆ");*/
 	}
 	if (Master::TutorialCount == 4)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0),"–Ú‚Ì‘O‚Ìobject“ü‚ë‚¤");
-		DrawFormatString(300, 20, GetColor(255, 0, 0),"\nƒ`ƒ…[ƒgƒŠƒAƒ‹‚Å‚Í‚»‚Ìæ‚ÉƒVƒ‡ƒbƒv‚ª‚ ‚é‚æ");
+		DrawFormatString(300, 20, GetColor(255, 0, 0),"ç›®ã®å‰ã®objectå…¥ã‚ã†");
+		DrawFormatString(300, 20, GetColor(255, 0, 0),"\nãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã§ã¯ãã®å…ˆã«ã‚·ãƒ§ãƒƒãƒ—ãŒã‚ã‚‹ã‚ˆ");
 
 	}
-	if (Master::ShopClassOn&&Master::TutorialCount==4)
+	if (Master::StatShopClassOn&&Master::TutorialCount==4)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "shop‚ÅƒAƒCƒeƒ€‚ğ”ƒ‚Á‚ÄAƒVƒ‡ƒbƒv‚ğ•Â‚¶‚½‚ço‚ğ‰Ÿ‚µ‚Ä‚İ‚æ‚¤");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "shopã§ã‚¢ã‚¤ãƒ†ãƒ ã‚’è²·ã£ã¦ã€ã‚·ãƒ§ãƒƒãƒ—ã‚’é–‰ã˜ãŸã‚‰oã‚’æŠ¼ã—ã¦ã¿ã‚ˆã†");
 		
 	}
 	
-	if (Master::TutorialCount == 5&&!Master::ShopClassOn)
+	if (Master::TutorialCount == 5&&!Master::StatShopClassOn)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "ÅŒã‚É‘•”õ‚Ì•ÏX‚ğs‚Á‚Ä‚İ‚æ‚¤.o‚ğ‰Ÿ‚µ‚Ä‚Ë");
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "\n–îˆóƒL[‚ÆenterƒL[‚ğg‚¤‚æ");
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "\n\n‚±‚ê‚Åƒ`ƒ…[ƒgƒŠƒAƒ‹‚ğI—¹‚µ‚Ü‚·BP‚ğ‰Ÿ‚µ‚Ä‚Ë");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "æœ€å¾Œã«è£…å‚™ã®å¤‰æ›´ã‚’è¡Œã£ã¦ã¿ã‚ˆã†.oã‚’æŠ¼ã—ã¦ã­");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "\nçŸ¢å°ã‚­ãƒ¼ã¨enterã‚­ãƒ¼ã‚’ä½¿ã†ã‚ˆ");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "\n\nã“ã‚Œã§ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã‚’çµ‚äº†ã—ã¾ã™ã€‚Pã‚’æŠ¼ã—ã¦ã­");
 
 	}
 	
@@ -191,16 +187,16 @@ void TutorialScene::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
 	DrawBox(650, 650, 1000, 1000, GetColor(0, 0, 0), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawFormatString(650, 650, GetColor(0, 0, 255), "/////ˆÚ“®ƒL[/////");
-	DrawFormatString(650, 690, Color, "WASD:ˆÚ“®ƒL[");
-	DrawFormatString(650, 690, GetColor(255, 0, 0), "\n/////ƒAƒ^ƒbƒNƒL[////");
-	DrawFormatString(650, 690, Color, "\n\nMouseLeft:ƒAƒ^ƒbƒN");
-	DrawFormatString(650, 690, Color, "\n\n\nSHIFT:‰ñ”ğ");
-	DrawFormatString(650, 690, Color, "\n\n\n\nE:UŒ‚•û–@ƒ`ƒFƒ“ƒW");
-	DrawFormatString(650, 690, GetColor(0, 255, 0), "\n\n\n\n\n/////‚»‚Ì‚Ù‚©/////");
-	DrawFormatString(650, 690, Color, "\n\n\n\n\n\nO:ƒCƒ“ƒxƒ“ƒgƒŠ");
-	DrawFormatString(650, 690, Color, "\n\n\n\n\n\n\nQ:‹“_•ÏX");
-	DrawFormatString(650, 690, GetColor(255, 0, 0), "\n\n\n\n\n\n\n\n€‚ñ‚¾‚ç‚¨‹à‚ğ­‚µ‚È‚­‚·");
+	DrawFormatString(650, 650, GetColor(0, 0, 255), "/////ç§»å‹•ã‚­ãƒ¼/////");
+	DrawFormatString(650, 690, Color, "WASD:ç§»å‹•ã‚­ãƒ¼");
+	DrawFormatString(650, 690, GetColor(255, 0, 0), "\n/////ã‚¢ã‚¿ãƒƒã‚¯ã‚­ãƒ¼////");
+	DrawFormatString(650, 690, Color, "\n\nMouseLeft:ã‚¢ã‚¿ãƒƒã‚¯");
+	DrawFormatString(650, 690, Color, "\n\n\nSHIFT:å›é¿");
+	DrawFormatString(650, 690, Color, "\n\n\n\nE:æ”»æ’ƒæ–¹æ³•ãƒã‚§ãƒ³ã‚¸");
+	DrawFormatString(650, 690, GetColor(0, 255, 0), "\n\n\n\n\n/////ãã®ã»ã‹/////");
+	DrawFormatString(650, 690, Color, "\n\n\n\n\n\nO:ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒª");
+	DrawFormatString(650, 690, Color, "\n\n\n\n\n\n\nQ:è¦–ç‚¹å¤‰æ›´");
+	DrawFormatString(650, 690, GetColor(255, 0, 0), "\n\n\n\n\n\n\n\næ­»ã‚“ã ã‚‰ãŠé‡‘ã‚’å°‘ã—ãªãã™");
 }
 
 void TutorialScene::Finalize()

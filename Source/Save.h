@@ -1,6 +1,5 @@
 #pragma once
 #include"dxlib.h"
-#include"WeaponManager.h"
 #include"ItemManager.h"
 
 #include"EquipmentManager.h"
@@ -26,7 +25,6 @@ class Save
 		float speed=0;
 		int Level=0;
 		int xp=0;
-		std::list<Weapon::WeaponDate*>W_date;
 		std::list<Item::ItemInformation*>I_date;
 		std::list<Equipment::EquipmentDate*>E_date;
 		

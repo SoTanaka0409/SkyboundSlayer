@@ -6,7 +6,6 @@
 #include"Model.h"
 #include"Debugh.h"
 
-#include"WeaponManager.h"
 
 #include"Item.h"
 #include"ColliderManager.h"
@@ -144,7 +143,7 @@ protected:
 	bool isHitAttack;//謾ｻ謦・′蠖薙◆縺｣縺溘°
 
 	int mnChance;//inventory繧定誠縺ｨ縺咏｢ｺ邇・
-	bool mbWeapon =false;//weapon繧定誠縺ｨ縺吶°蜷ｦ縺・
+	
 	bool mbItem=true;//item繧定誠縺ｨ縺吶°蜷ｦ縺・
 
 	bool AttackHitJudgmentflag;//謾ｻ謦・′荳蝗槫ｽ薙◆縺｣縺溘ｉ縺昴・謨ｵ縺ｫ蟇ｾ縺励※謾ｻ謦・′驥崎､・＠縺ｪ縺・ｈ縺・↓縺吶ｋ

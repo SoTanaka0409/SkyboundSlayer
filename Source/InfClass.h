@@ -1,7 +1,6 @@
 #pragma once
 #include"Dxlib.h"
 #include"Item.h"
-#include"Weapon.h"
 #include"vector"
 #include"Object2D.h"
 

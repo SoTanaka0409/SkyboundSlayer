@@ -7,7 +7,6 @@
 #include"ObjectManager.h"
 #include"Stage.h"
 #include"Tree.h"
-#include"Shop.h"
 #include"StatShop.h"
 #include"Wall.h"
 #include"EnemyManager.h"

@@ -1,6 +1,5 @@
 #include"InfClass.h"
 #include"ItemManager.h"
-#include"WeaponManager.h"
 #include"Master.h"
 
 InfClass::InfClass(int Log_timer,std::string Inf,int num)

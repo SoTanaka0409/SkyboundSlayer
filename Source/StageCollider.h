@@ -26,7 +26,6 @@ public:
 	void ColliderUpdate();
 private:
 	SphereCollider* mpGoBossCollider;
-	SphereCollider* mpGoStageCollider;
 
 	
 	

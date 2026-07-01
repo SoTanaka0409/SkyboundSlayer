@@ -1,8 +1,6 @@
 #pragma once
 #include"SceneManager.h"
 #include"SoundManager.h"
-#include"WeaponManager.h"
-#include"Weapon.h"
 //#include"ScoreManager.h"
 //#include"NormalResultScene.h"
 #include"Camera.h"
@@ -46,8 +44,6 @@ public:
 	//static NormalResultScene* mpNormalResultScene;//０枚になった時のリザルトシーン
 	static Camera* mpCamera;           //カメラのポインタ
 	static Camera* mpCamerafa;
-	static WeaponManager* mpWeaponManager;
-	static Weapon* mpWeapon;
 	static ResourceManager* mpResourceManager;
 	static Debug* mpDebug;
 	static EnemySerch* mpEnemySerch;
@@ -72,8 +68,6 @@ public:
 
 	///////////////game////////////////
 	static bool PauseOn;
-
-	static bool ShopClassOn;
 	static bool StatShopClassOn;
 	static bool NearShopOn;
 	static bool SafePointOn;

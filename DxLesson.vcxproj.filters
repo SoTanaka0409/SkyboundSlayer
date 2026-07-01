@@ -96,9 +96,6 @@
     <ClCompile Include="Source\Stage.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Weapon.cpp">
-      <Filter>ソース ファイル\Weapon Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Enemy3D_AT.cpp">
       <Filter>ソース ファイル\character</Filter>
     </ClCompile>
@@ -106,9 +103,6 @@
       <Filter>ソース ファイル\Scene Manager Object</Filter>
     </ClCompile>
     <ClCompile Include="Source\OperationScene.cpp">
-      <Filter>ソース ファイル\Scene Manager Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\OriginalScene.cpp">
       <Filter>ソース ファイル\Scene Manager Object</Filter>
     </ClCompile>
     <ClCompile Include="Source\ResetScene.cpp">
@@ -141,9 +135,6 @@
     <ClCompile Include="Source\Tutorial.cpp">
       <Filter>ソース ファイル\Scene Manager Object</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WeaponManager.cpp">
-      <Filter>ソース ファイル\Scene Manager Object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Bush.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
@@ -157,9 +148,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\EffekseerManager.cpp">
-      <Filter>ソース ファイル\Stage Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\effect_r.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
     <ClCompile Include="Source\EffectU.cpp">
@@ -222,9 +210,6 @@
     <ClCompile Include="Source\InfClassManager.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shop.cpp">
-      <Filter>ソース ファイル\Stage Texture</Filter>
-    </ClCompile>
     <ClCompile Include="Source\HaveMoneyClass.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
     </ClCompile>
@@ -263,9 +248,6 @@
     </ClCompile>
     <ClCompile Include="Source\Coin.cpp">
       <Filter>ソース ファイル\Stage Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StageBlock.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\StageBox.cpp">
       <Filter>ソース ファイル</Filter>
@@ -349,14 +331,8 @@
     <ClInclude Include="Source\Stage.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Weapon.h">
-      <Filter>ヘッダー ファイル\Weapon Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Enemy3D_AT.h">
       <Filter>ヘッダー ファイル\character</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WeaponManager.h">
-      <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
     </ClInclude>
     <ClInclude Include="Source\TutorialScene.h">
       <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
@@ -386,9 +362,6 @@
       <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
     </ClInclude>
     <ClInclude Include="Source\ResetScene.h">
-      <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\OriginalScene.h">
       <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
     </ClInclude>
     <ClInclude Include="Source\OperationScene.h">
@@ -425,9 +398,6 @@
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\EffectU.h">
-      <Filter>ヘッダー ファイル\Stage Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\effect_r.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Effect.h">
@@ -475,9 +445,6 @@
     <ClInclude Include="Source\InfClassManager.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Shop.h">
-      <Filter>ヘッダー ファイル\Stage Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Source\StatShop.h">
       <Filter>ヘッダー ファイル\Scene Manager Object</Filter>
     </ClInclude>
@@ -491,9 +458,6 @@
       <Filter>ヘッダー ファイル\Weapon Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Source\Chat.h">
-      <Filter>ヘッダー ファイル\Stage Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Drop_chance.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Magic.h">
@@ -522,9 +486,6 @@
     </ClInclude>
     <ClInclude Include="Source\Coin.h">
       <Filter>ヘッダー ファイル\Stage Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StageBlock.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\StageBox.h">
       <Filter>ヘッダー ファイル</Filter>

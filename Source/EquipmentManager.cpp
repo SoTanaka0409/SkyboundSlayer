@@ -43,25 +43,15 @@ void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 		
 	}
 	switch (date->id)
-	{
-	case Weapon::Tag_Weapon1:
-		date->price = 1000;
+	{		date->price = 1000;
 		date->name= "‚½‚¾‚Ì‘•”õ";
-		break;
-	case Weapon::Tag_Weapon2:
-		date->price = 200;
+		break;		date->price = 200;
 		date->name = "•’Ê‚Ì‘•”õ";
-		break;
-	case Weapon::Tag_Weapon3:
-		date->price = 3200;
+		break;		date->price = 3200;
 		date->name = "‹­‚¢‘•”õ";
-		break;
-	case Weapon::Tag_Weapon4:
-		date->price = 4600;
+		break;		date->price = 4600;
 		date->name = "‚Â‚¨[‚¢‘•”õ";
-		break;
-	case Weapon::Tag_Weapon5:
-		date->price = 5000;
+		break;		date->price = 5000;
 		date->name = "Å‹­‚Ì‘•”õ";
 		break;
 	default:

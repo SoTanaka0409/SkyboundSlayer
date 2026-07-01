@@ -40,7 +40,7 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	SetTag(Tag3D_Shop);
 	mpModel = new Model(filename, mvPosition, false);
 	mpShopIn = new SphereCollider(this, mvPosition, 200.0f);
-	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 謨ｵ縺瑚ｿ代▼縺代↑縺・そ繝ｼ繝輔だ繝ｼ繝ｳ
+	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 敵が近づけなぁE��ーフゾーン
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
@@ -84,7 +84,7 @@ void StatShop::Draw()
 	{
 		player->mpHaveMoney->Draw();
 
-		// 閭梧勹繧ФI
+		// 背景やUI
 		DrawExtendGraph(300, 100, 1620, 800, mnBgImageHandle, TRUE);
 		
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
@@ -113,7 +113,7 @@ void StatShop::Draw()
 			int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 			if (i == mnSelect) DrawFormatString(330, 250 + i * 60, color, ">");
 			
-			// 繧｢繧､繧ｳ繝ｳ謠冗判 (40x40 繧ｵ繧､繧ｺ縺ｫ邵ｮ蟆上＠縺ｦ陦ｨ遉ｺ)
+			// アイコン描画 (40x40 サイズに縮小して表示)
 			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
 
 			DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
@@ -137,7 +137,7 @@ void StatShop::Update()
 	
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	
-	// WALKING_OUT縺ｮ譎ゅ・縲√ヵ繧ｧ繝ｼ繧ｺ縺檎ｵゆｺ・＠縺ｦ縺・※繧らｧｻ蜍募・逅・ｒ邯壹￠繧句ｿ・ｦ√′縺ゅｋ縺溘ａ縲√％縺薙〒蛻・ｲ舌＠縺ｾ縺吶・
+	// WALKING_OUTの時�E、フェーズが終亁E��てぁE��も移動�E琁E��続ける忁E��があるため、ここで刁E��します、E
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -212,7 +212,7 @@ void StatShop::movePosition()
 		mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
 	}
 
-	// 蠕・ｩ滉ｸｭ繧・蝣ｴ螳御ｺ・ｾ後・縲∝ｽ薙◆繧雁愛螳壹ｒ逕ｻ髱｢螟厄ｼ育樟蝨ｨ縺ｮ菴咲ｽｮ・峨↓遘ｻ蜍輔＆縺帙ｋ
+	// 征E��中めE��場完亁E���E、当たり判定を画面外（現在の位置�E�に移動させる
 	mpShopIn->mvPosition = mvPosition;
 	mpSafeZoon->mvPosition = mvPosition;
 	
@@ -338,7 +338,7 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 		Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
 		if (pPlayer && collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
-			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::ShopClassOn && !Master::StatShopClassOn)
+			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::StatShopClassOn && !Master::StatShopClassOn)
 			{
 				Master::StatShopClassOn = true;
 				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);

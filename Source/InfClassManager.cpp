@@ -1,6 +1,5 @@
 #include"InfClassManager.h"
 #include"ItemManager.h"
-#include"WeaponManager.h"
 #include"Master.h"
 
 InfClassManager::InfClassManager()

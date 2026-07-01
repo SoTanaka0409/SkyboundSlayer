@@ -8,7 +8,6 @@
 
 #include"Stage.h"
 #include"Tree.h"
-#include"Shop.h"
 #include"Wall.h"
 #include"EnemyManager.h"
 #include"SkyBox.h"
@@ -54,7 +53,6 @@ void ResetScene::Initialize()
     mpEnemyManager->NewEnemyList(*e);
     mpEnemyManager->NewEnemyList(*e1);
     new Player3D("Resource/Model/T.mv1", VGet(0.0f, 0.0f, 0.0f), 30.0f, 12.0f, 600.0f,true);//ジャンプ、アタック、スピード、ｈｐ
-    new Shop("Resource/3D/Hero.mv1", VGet(1000, 200, 0));
    // new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトプス,hp,speed,Hitsize,size
       //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size
      new Stage(VGet(0.0f, 0.0f, 0.0f), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1");
