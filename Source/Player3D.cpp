@@ -364,7 +364,7 @@ void Player3D::MoveEx()
 		// hint: 鬯ｮ・ｴ隰・∞・ｽ・ｽ繝ｻ・ｴ驛｢譎｢・ｽ・ｻE鬯ｮ・ｴ隰・∞・ｽ・ｽ繝ｻ・･驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｮ・ｯ繝ｻ・ｷ驛｢譎｢・ｽ・ｻEE鬯ｯ・ｨ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬩搾ｽｵ繝ｻ・ｲ髯懶ｽ｣繝ｻ・､EE驛｢譎｢・ｽ・ｻE1鬯ｮ・ｫ繝ｻ・ｴE鬮ｯ讖ｸ・ｽ・｢E鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬯ｮ・ｯ隶厄ｽｸ繝ｻ・ｽ繝ｻ・｢鬩包ｽｶ闕ｳ讖ｸ・ｽ・､繝ｻ・ｲEE鬯ｩ謳ｾ・ｽ・ｵE鬮ｯ蜈ｷ・ｽ・ｹE鬮ｫ・ｲ繝ｻ・､髯ｷ・･陟托ｽｱ隨卍鬩幢ｽ｢繝ｻ・ｧ髴大｣ｼ陌ｫ繝ｻ・｣繝ｻ・ｭ鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｮ・ｯ陷茨ｽｷ繝ｻ・ｽ繝ｻ・ｻ驛｢譎｢・ｽ・ｻE鬯ｮ・ｯ隶厄ｽｸ繝ｻ・ｽ繝ｻ・ｳ鬮ｯ讖ｸ・ｽ・｢E驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻEE鬮ｯ貅ｷ萓帙・・ｨ繝ｻ・ｯ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬯ｮ・ｫ繝ｻ・ｴE鬮ｯ讓奇ｽｻ繧托ｽｽ・ｽ繝ｻ・ｲ驛｢譎｢・ｽ・ｻE鬮｣雋ｻ・ｿ・ｽ髯具ｽｹ郢晢ｽｻE驛｢譎｢・ｽ・ｻE鬯ｮ・｣陋ｹ繝ｻ・ｽ・ｽ繝ｻ・ｳ鬮ｯ讒ｭ繝ｻEE鬮ｯ譎｢・ｽ・ｲE鬩包ｽｶ鬯・汚・ｽ・･繝ｻ・｢E髯ｷﾂ繝ｻ・ｶ髣憺屮・ｽ・ｭ鬮ｫ・ｨ繝ｻ・ｳ驛｢譎｢・ｽ・ｻEE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬮ｫ・ｨ繝ｻ・ｳ驛｢譎｢・ｽ・ｻ髫ｰ・ｦ繝ｻ・ｻ驛｢譎｢・ｽ・ｻE鬯ｮ・ｯ繝ｻ・ｷE鬮ｯ蜈ｷ・ｽ・ｹE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬯ｮ・ｯ繝ｻ・ｷ驛｢譎｢・ｽ・ｻEE鬯ｯ・ｨ繝ｻ・ｾ驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ髯晢ｽｶ隴寂悪・ｮ遘佩碑ｭ趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬩包ｽｶ隰ｫ・ｾ繝ｻ・ｽ繝ｻ・ｴ鬯ｩ蟷｢・ｽ・｢E鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
 		for (int i = 0; i < walls.size(); i++)
 		{
-			Wall* wall = dynamic_cast<Wall*>(walls.at(i));
+			Wall* wall = walls.at(i)->CastTo<Wall>();
 			if (wall != nullptr)
 			{
 				std::vector<VERTEX3D> vertex = wall->GetVertex();
@@ -427,7 +427,7 @@ void Player3D::if_StageOut()
 	float radiusX = Config::StageRadius_x; // X譁ｹ蜷托ｼ域ｨｪ・峨・髯千阜縺ｮ蠎・＆
 	float radiusZ = Config::StageRadius_z; // Z譁ｹ蜷托ｼ亥･･・峨・髯千阜縺ｮ蠎・＆
 	auto scene = Master::mpSceneManager->GetCurrentScene();
-	SceneGame* game = dynamic_cast<SceneGame*>(scene);
+	SceneGame* game = Master::mpSceneManager->GetSceneGame();
 	VECTOR centerPos;//stageの真ん中
 	if (game->mpGameManager->GetCurrentPhase() == GameManager::Phase::BOSS)
 	{
@@ -599,7 +599,7 @@ void Player3D::Attack()
 		{
 			for (int i = 0; i < pObjList.size(); i++)
 			{
-				Enemy* pEne = dynamic_cast<Enemy*>(pObjList.at(i));
+				Enemy* pEne = pObjList.at(i)->CastTo<Enemy>();
 				if (pEne == nullptr) continue;
 				pEne->SetHitjudgment(false);
 			}
@@ -876,7 +876,7 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 	{
 		
 
-		auto pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+		auto pEne = check->mpParentObject->CastTo<Enemy>();
 		if (pEne == nullptr) return;
 		VECTOR mnEneDistance = VSub(pEne->GetPosition(), mvPosition);
 		if (check == pEne->GetEnemycoll())
@@ -920,7 +920,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 	{
 		if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Object3D::Tag3D_Enemy3D)
 		{
-			Enemy* pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+			Enemy* pEne = check->mpParentObject->CastTo<Enemy>();
 			if (pEne == nullptr) return;
 			if (check == pEne->GetEnemycoll())
 			{
@@ -942,7 +942,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 	}
 	if (collider == mpAttackJumpCollider && check->mpParentObject->GetTag() == Tag3D_Enemy3D)
 	{
-		Enemy* pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+		Enemy* pEne = check->mpParentObject->CastTo<Enemy>();
 		if (pEne == nullptr) return;
 		if (check == pEne->GetEnemycoll())
 		{
@@ -960,7 +960,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 
 	if (collider == mpAttackSlideCollider && check->mpParentObject->GetTag() == Tag3D_Enemy3D)
 	{
-		Enemy* pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+		Enemy* pEne = check->mpParentObject->CastTo<Enemy>();
 		if (pEne == nullptr) return;
 		if (check == pEne->GetEnemycoll())
 		{
@@ -1003,7 +1003,7 @@ void Player3D::OnExit(Collider* collider, Collider* check)
 {
 	/*if (collider==mpAttachCollider&&check->mpParentObject->GetTag() == Object3D::Tag3D_Enemy3D)
 	{
-		Enemy* pEne = dynamic_cast<Enemy*>(check->mpParentObject);
+		Enemy* pEne = check->mpParentObject->CastTo<Enemy>();
 
 	}*/
 }
@@ -1049,7 +1049,7 @@ void Player3D::SelectAttack()
 		auto mpEne = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		for (int i = 0; i < mpEne.size(); i++)
 		{
-			Enemy* pEne = dynamic_cast<Enemy*>(mpEne.at(i));
+			Enemy* pEne = mpEne.at(i)->CastTo<Enemy>();
 			if (pEne == nullptr) continue;
 			pEne->SetHitjudgment(false);
 		}

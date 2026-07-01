@@ -18,7 +18,7 @@ Shield::Shield(std::string filename, VECTOR initPos,int hp)
 	SetTag(Object3D::Tag_3D_Shield);
 	mpModel=new Model(filename, initPos, 1.0f);
 	auto mpPlayer = Master::mpPlayer;
-	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+	auto pPlayer = Master::mpPlayer;
 
 	mvPosition = pPlayer->GetPosition();
 }
@@ -34,7 +34,7 @@ Shield::~Shield()
 void Shield::Update()
 {
 	auto mpPlayer = Master::mpPlayer;
-	auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+	auto pPlayer = Master::mpPlayer;
 	mvPosition = pPlayer->GetPosition();
 }
 

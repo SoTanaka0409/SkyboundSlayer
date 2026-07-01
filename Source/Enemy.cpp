@@ -173,7 +173,7 @@ void Enemy::Move()
 	
 
 	auto mpPlayer = Master::mpPlayer;
-	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* pPlayer = Master::mpPlayer;
 
 	moveVec = VGet(0.0f, 0.0f, 0.0f);
 	
@@ -206,7 +206,7 @@ void Enemy::Move()
 			// hint: é«´æ‰˜ï½½E´ç¹ï½»ãƒ»E¾é«´æ‰˜ï½½E¥ç¹ï½»ãƒ»E¶é©ï½µãƒ»Eºç¹ï½»ãƒ»E®é«¯E·ç¹ï½»ãƒ»E½ãƒ»E¦é¬¨E¾ç¹ï½»ç¹ï½»é‚µE²è£E¤ãƒ»E¸ãƒ»Eºç¹ï½»ãƒ»E¯1é««E´ãƒ»E«é™ï½¢ãƒ»E¹éƒ¢æ™¢E½E»é«¯æ©¸E½E¢é¶ä¸ï½¤E²ãƒ»E¼ãƒ»E½é©ï½µãƒ»Eºé™‹ï½¹ãƒ»Eºéš²E¤èœ¥å¼±â™€éƒ¢E§è¿šå’E£E­é©ï½µãƒ»Eºç¹ï½»ãƒ»E«é«¯å…·E½E»ç¹ï½»ãƒ»E¤é«¯æ©¸E½E³é™ï½¢ãƒ»E¹ç¹ï½»ç¹ï½»ãƒ»E¹ãƒ»E§é™Ÿå‹ŸE¨E¯ç¹ï½»é©ï½µãƒ»Eºéƒ¢æ™¢E½E»éƒ¢æ™¢E½E»é©ï½µãƒ»Eºç¹ï½»ãƒ»E§é©ï½µãƒ»E²éƒ¢æ™¢E½E»é««E´ãƒ»E«é™æ»‚ï½½E²ç¹ï½»ãƒ»E¼é—”ï£°è›¹ãƒ»E½E½ãƒ»E»ç¹ï½»ãƒ»E¥é«£åŒE½½E³é™ã‚…ãƒ»ãƒ»E½ãƒ»E¼é™ï½²ãƒ»E¨é¶é ‘ï½¥E¢ãƒ»E½èœ€E¶è“ï½­éš¨E³ç¹ï½»ãƒ»E¸ãƒ»Eºç¹ï½»ãƒ»E£é©ï½µãƒ»Eºç¹ï½»ãƒ»E¦é©ï½µãƒ»Eºéƒ¢æ™¢E½E»éš¨E³ç¹ï½»è¬¦E»ç¹ï½»ãƒ»E´é«¯E·ãƒ»E·é™‹ï½¹ãƒ»E»éƒ¢æ™¢E½E»é«¯E·ç¹ï½»ãƒ»E½ãƒ»E¦é¬¨E¾ç¹ï½»ç¹ï½»ç¹ï½»èŸ¶æ™ç®”éƒ¢æ™¢E½E»é¶æ“¾E½E´é©›ï½¢ãƒ»E§éƒ¢æ™¢E½E»
 			for (int i = 0; i < walls.size(); i++)
 			{
-				Wall* wall = dynamic_cast<Wall*>(walls.at(i));
+				Wall* wall = walls.at(i)->CastTo<Wall>();
 				if (wall != nullptr)
 				{
 					std::vector<VERTEX3D> vertex = wall->GetVertex();
@@ -373,7 +373,7 @@ void Enemy::OnEnter(Collider* collider, Collider* check)//é«¯æ™¢E½E¾ç¹ï½»ãƒ»
 	
 	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+		Player3D* player = Master::mpPlayer;
 		if (player == nullptr)return;
 	
 		if (collider == mpSerchCollider &&player->GetCollisionCollider()==check)
@@ -399,7 +399,7 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 	AnimationState now = mpModel->GetNowState();
 	if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{//mpModelé©ï½µãƒ»Eºç¹ï½»ãƒ»E®é¬¨E¾ãƒ»E¡ç¹ï½»ãƒ»Eªé«¯E·ãƒ»E¿ç¹ï½»ãƒ»E·é©›ï½¢ãƒ»E§éƒ¢E§ç¹ï½»è­Œï½ºé©ï½µãƒ»Eºç¹ï½»ãƒ»E£é©ï½µãƒ»Eºç¹ï½»ãƒ»E¦é©ï½µãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»è¿¢æš¦E½E¸ãƒ»E²é¶ä¸ï½¤ã‚‘ï½½E¸ãƒ»Eºç¹ï½»ãƒ»E©é©ï½µãƒ»Eºé«¦E®èœ·E¶ç¹ï½»ifé««E´ç«å£¹ãƒ»é¶é ‘ï½¥E¢è«¤E¦ç¹ï½»ãƒ»E¥é©›ï½¢ãƒ»E§é™ï½²ãƒ»E¨é¶ä¼ãEãƒ»E¸ãƒ»Eºéƒ¢æ™¢E½E»
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+		Player3D* player = Master::mpPlayer;
 		if (player == nullptr)return;
 		if (check == player->GetCollisionCollider())
 		{
@@ -421,7 +421,7 @@ void Enemy::OnExit(Collider* collider, Collider* check)
 	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
 		
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+		Player3D* player = Master::mpPlayer;
 		if (player == nullptr)return;
 		if (collider == mpAttachCollider && player->GetCollisionCollider() == check)
 			{
@@ -506,7 +506,7 @@ void Enemy::Delete()
 void Enemy::GiveRewards()
 {
 	auto mpPlayer = Master::mpPlayer;
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* player = Master::mpPlayer;
 	if (player != nullptr) {
 		player->mpHaveMoney->AddMoney(mfHaveMoney);
 		player->mpLevelUp->AddXp(mfHaveXp);

@@ -37,7 +37,7 @@ void HaveMoneyClass::Draw()
 void HaveMoneyClass::PullMoney(int money)
 {
 	auto mpPlayer = Master::mpPlayer;
-	auto player = dynamic_cast<Player3D*>(mpPlayer);
+	auto player = Master::mpPlayer;
 	player->mpHaveMoney->AddMoney(-money);
 	
 

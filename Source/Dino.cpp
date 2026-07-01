@@ -89,7 +89,7 @@ void Dino::Move()
 
 
 		/*auto mpPlayer = Master::mpPlayer;
-		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+		Player3D* pPlayer = Master::mpPlayer;
 
 		VECTOR GoPosition = VSub(pPlayer->GetPosition(), mvPosition);
 		GoPosition = VNorm(GoPosition);*///プレイヤーへ向かう処理
@@ -131,7 +131,7 @@ void Dino::Move()
 			// hint: 現状の処理では1枚の壁しか最終的に判定されないので、2枚（以上）に当たっていた場合の処理を考える
 			for (int i = 0; i < walls.size(); i++)
 			{
-				Wall* wall = dynamic_cast<Wall*>(walls.at(i));
+				Wall* wall = walls.at(i)->CastTo<Wall>();
 				if (wall != nullptr)
 				{
 					std::vector<VERTEX3D> vertex = wall->GetVertex();

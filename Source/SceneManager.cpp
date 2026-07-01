@@ -125,3 +125,8 @@ void SceneManager::ChangeSceneIfNeeded()
 	mpCurrentScene->Initialize();
 
 }
+
+SceneGame* SceneManager::GetSceneGame()
+{
+	return dynamic_cast<SceneGame*>(mCurrentScene);
+}

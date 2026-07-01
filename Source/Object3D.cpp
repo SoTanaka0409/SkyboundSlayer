@@ -61,7 +61,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 	auto objList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
 	for (int i = 0; i < objList.size(); i++)
 	{
-		Stage* pStage = dynamic_cast<Stage*>(objList.at(i));
+		Stage* pStage = objList.at(i)->CastTo<Stage>();
 		if (pStage != nullptr)
 		{
 			if (pStage->CheckHit_Capsule(VAdd(mvPosition, VGet(0.0f, capsuleBottomY, 0.0f)), VAdd(mvPosition, VGet(0.0f, capsuleTopY, 0.0f)), capsuleRadius))

@@ -118,7 +118,7 @@ void TutorialScene::Initialize()
 void TutorialScene::Update()
 {
 	auto mpPlayer = Master::mpPlayer;
-	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* pPlayer = Master::mpPlayer;
 
 	Scene::Update();
 	if (InputManager::CheckDownKey(KEY_INPUT_P))

@@ -65,7 +65,7 @@ void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 {
 	auto mpPlayer = Master::mpPlayer;
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* player = Master::mpPlayer;
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
 		(*itr)->mbGet = false;

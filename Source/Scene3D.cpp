@@ -90,7 +90,7 @@ void Scene3D::Update()
     SceneGame::Update();
     Master::mpSave->Update();
     auto mpPlayer = Master::mpPlayer;
-    Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+    Player3D* player = Master::mpPlayer;
 
     if (mpGameManager->GetCurrentPhase() == GameManager::Phase::CLEAR) 
     {

@@ -84,7 +84,7 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 void ItemManager::UseItem(Item::ItemID id)
 {
 	auto mpplayer = Master::mpPlayer;
-    Player3D* player = dynamic_cast<Player3D*>(mpplayer);
+    Player3D* player = Master::mpPlayer;
     if (player == nullptr) return;
 	for (auto itr = mItemList.begin(); itr != mItemList.end(); itr++)
 	{
@@ -107,7 +107,7 @@ void ItemManager::UseItem(Item::ItemID id)
 void ItemManager::Effect(Item::ItemID id)
 {
     auto mpplayer = Master::mpPlayer;
-    Player3D* player = dynamic_cast<Player3D*>(mpplayer);
+    Player3D* player = Master::mpPlayer;
     if (player == nullptr) return;
 
 	if (id == Item::HEAL)

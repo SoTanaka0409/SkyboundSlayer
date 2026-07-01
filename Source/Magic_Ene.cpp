@@ -49,7 +49,7 @@ void Magic_Ene::OnTrigger(Collider* collider, Collider* check)
 	
 	if (collider == mpHitCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
+		Player3D* pPlayer = check->mpParentObject->CastTo<Player3D>();
 		if (check == pPlayer->GetCollisionCollider())
 		{
 			pPlayer->Damage(mfAttack_chara + mfAttack);

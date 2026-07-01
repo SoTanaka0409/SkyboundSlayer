@@ -15,7 +15,7 @@ namespace
 {
 	bool IsShopPhaseActive() {
 		auto currentScene = Master::mpSceneManager->GetCurrentScene();
-		SceneGame* sceneGame = dynamic_cast<SceneGame*>(currentScene);
+		SceneGame* sceneGame = Master::mpSceneManager->GetSceneGame();
 		if (sceneGame) {
 			return sceneGame->IsShopPhase();
 		}
@@ -76,7 +76,7 @@ void StatShop::Draw()
 	if (!IsShopPhaseActive()) return;
 
 	auto mpPlayer = Master::mpPlayer;
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* player = Master::mpPlayer;
 
 	if (!player) return;
 
@@ -141,7 +141,7 @@ void StatShop::Update()
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
-	SceneGame* sceneGame = dynamic_cast<SceneGame*>(currentScene);
+	SceneGame* sceneGame = Master::mpSceneManager->GetSceneGame();
 	if (sceneGame && sceneGame->mpGameManager) {
 		if (sceneGame->mpGameManager->GetShopTimer() <= 60 && sceneGame->mpGameManager->GetCurrentPhase() != GameManager::Phase::SHOP_3) {
 			if (Master::StatShopClassOn) {
@@ -263,7 +263,7 @@ void StatShop::SelectClass()
 void StatShop::BuyClass()
 {
 	auto mpPlayer = Master::mpPlayer;
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* player = Master::mpPlayer;
 
 	if (!player) return;
 
@@ -335,7 +335,7 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 
 	if (check->mpParentObject && check->mpParentObject->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* pPlayer = dynamic_cast<Player3D*>(check->mpParentObject);
+		Player3D* pPlayer = check->mpParentObject->CastTo<Player3D>();
 		if (pPlayer && collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
 			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::StatShopClassOn && !Master::StatShopClassOn)

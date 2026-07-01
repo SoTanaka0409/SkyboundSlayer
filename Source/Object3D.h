@@ -53,6 +53,12 @@ public: // ソート関数定義
 public:
 	Object3D(VECTOR initPos);
 
+	template <typename T>
+	T* CastTo() {
+		return dynamic_cast<T*>(this);
+	}
+
+
 	virtual ~Object3D();
 
 	virtual void Update();

@@ -226,7 +226,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 	{
 		if (collider == mpJumpAttackCoiider && check->mpParentObject->GetTag() == Tag3D_Player3D)
 		{//mpModel驍ｵ・ｺ繝ｻ・ｮ鬨ｾ・｡繝ｻ・ｪ髯ｷ・ｿ繝ｻ・ｷ驛｢・ｧ郢ｧ繝ｻ譌ｺ驍ｵ・ｺ繝ｻ・｣驍ｵ・ｺ繝ｻ・ｦ驍ｵ・ｺ郢晢ｽｻ繝ｻ迢暦ｽｸ・ｲ遶丞､ｲ・ｿ・ｽ驍ｵ・ｺ繝ｻ・ｩ驍ｵ・ｺ髦ｮ蜷ｶ繝ｻif髫ｴ竏壹・遶頑･｢諤ｦ繝ｻ・･驛｢・ｧ陝ｲ・ｨ遶企・・ｸ・ｺ郢晢ｽｻ
-			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+			Player3D* pPlayer = Master::mpPlayer;
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
 			{

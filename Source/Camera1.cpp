@@ -44,7 +44,7 @@ void Camera1::Initialize()
 void Camera1::Update()
 {
 	auto mpPlayer = Master::mpPlayer;
-	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* pPlayer = Master::mpPlayer;
 	UpdateRotation();
 	//ターゲットがいなかったら
 	if (mpTarget == nullptr)

@@ -80,7 +80,7 @@ void Camera::Update()
 		dir = VGet(sinf(mfVerticalAngle), 0.0f, cosf(mfVerticalAngle));
 		VECTOR dir2 = VGet(sinf(mfHorizontalAngle), 0.0f, cosf(mfHorizontalAngle));
 		auto mpPlayer = Master::mpPlayer;
-		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+		Player3D* pPlayer = Master::mpPlayer;
 		
 		
 		UpdateRotation();
@@ -119,7 +119,7 @@ void Camera::Update()
 		
 		
 		auto mpPlayer = Master::mpPlayer;
-		Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+		Player3D* pPlayer = Master::mpPlayer;
 		
 		UpdateRotation();
 		//ターゲットがいなかったら

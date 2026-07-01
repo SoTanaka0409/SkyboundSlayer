@@ -1,6 +1,8 @@
 #pragma once
 
 class Scene;
+class SceneGame;
+
 
 class SceneManager
 {
@@ -13,14 +15,14 @@ public:
 		SCENE_NAME,
 		SCENE_TITLE,
 		SCENE_OPERATION,
-		SCENE_RULE,//ƒ^ƒCƒgƒ‹
+		SCENE_RULE,//ã‚¿ã‚¤ãƒˆãƒ«
 		SCENE_TUTORIAL,
 		SCENE_LEVEL,
-		SCENE_GAME,    //ƒQ[ƒ€
+		SCENE_GAME,    //ã‚²ãƒ¼ãƒ 
 		SCENE_3DHARD,
-		SCENE_RESULT,   //ƒŠƒUƒ‹ƒg
+		SCENE_RESULT,   //ãƒªã‚¶ãƒ«ãƒˆ
 		SCENE_RESULTWIN,
-		SCENE_NORMALRESULTSCENE,//ƒQ[ƒ€ƒI[ƒo[
+		SCENE_NORMALRESULTSCENE,//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
 		SCENE_3D, SCENE_TEST_COLLISION
 
 	};
@@ -37,10 +39,10 @@ public:
 	void Update();
 
 	void Finalize();
-	//ƒV[ƒ“‘JˆÚiØ‚è‘Ö‚¦ˆ—j‚ª•K—v‚Èó‘Ô‚È‚ç‘JˆÚˆ—‚ğ‚·‚é
+	//ã‚·ãƒ¼ãƒ³é·ç§»ï¼ˆåˆ‡ã‚Šæ›¿ãˆå‡¦ç†ï¼‰ãŒå¿…è¦ãªçŠ¶æ…‹ãªã‚‰é·ç§»å‡¦ç†ã‚’ã™ã‚‹
 	void ChangeSceneIfNeeded();
-	//Ÿ‚ÉˆÚ“®‚·‚é‘JˆÚ‚·‚éƒV[ƒ“‚Ìİ’è
-	//note:ƒV[ƒ“‘JˆÚ‚ğ‚µ‚½‚¢ê‡‚ÍA•K‚¸‚±‚Ìˆ—‚ğŒo—R‚µ‚Ä‘JˆÚ‚³‚¹‚é
+	//æ¬¡ã«ç§»å‹•ã™ã‚‹é·ç§»ã™ã‚‹ã‚·ãƒ¼ãƒ³ã®è¨­å®š
+	//note:ã‚·ãƒ¼ãƒ³é·ç§»ã‚’ã—ãŸã„å ´åˆã¯ã€å¿…ãšã“ã®å‡¦ç†ã‚’çµŒç”±ã—ã¦é·ç§»ã•ã›ã‚‹
 	void SetNextScene(SCENE_TYPE next) { mnNextSceneType = next; }
 
 	void SetSceneHard(bool Hard) { SceneHard = Hard; }
@@ -50,13 +52,14 @@ public:
 	bool GetSceneNormal() { return SceneNormal; }
 	
 
-	//Œ»İ‚ÌƒV[ƒ“‚Ìæ“¾
+	//ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®å–å¾—
 	Scene* GetCurrentScene() { return mpCurrentScene; }
+	SceneGame* GetSceneGame();
 
 private:
-	SCENE_TYPE mnSceneType;     //Œ»İ‚ÌƒV[ƒ“‚Ìƒ^ƒCƒv
-	SCENE_TYPE mnNextSceneType;//Ÿ‚ÌƒV[ƒ“‚Ìƒ^ƒCƒv
-	Scene* mpCurrentScene;    //Œ»İƒV[ƒ“‚Ìƒ|ƒCƒ“ƒ^
+	SCENE_TYPE mnSceneType;     //ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®ã‚¿ã‚¤ãƒ—
+	SCENE_TYPE mnNextSceneType;//æ¬¡ã®ã‚·ãƒ¼ãƒ³ã®ã‚¿ã‚¤ãƒ—
+	Scene* mpCurrentScene;    //ç¾åœ¨ã‚·ãƒ¼ãƒ³ã®ãƒã‚¤ãƒ³ã‚¿
 	Scene* mp;
 
 	bool SceneHard;

@@ -214,7 +214,7 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 
 	auto mpPlayer = Master::mpPlayer;
 	if (mpPlayer == nullptr) return;
-	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* pPlayer = Master::mpPlayer;
 	if (pPlayer == nullptr) return;
 
 	if (mAttackState == AttackState::Landing && !mHasLandedHit)

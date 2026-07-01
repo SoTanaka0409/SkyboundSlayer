@@ -57,7 +57,7 @@ void Coin::Update()
     auto mpPlayer = Master::mpPlayer;
     if (!mpPlayer) return;
 
-    Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+    Player3D* player = Master::mpPlayer;
     if (!player) return;
 
     VECTOR pPos = player->GetPosition();

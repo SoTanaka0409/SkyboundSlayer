@@ -38,7 +38,7 @@ void DrawHp::Update()
 		auto pEnemyList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		auto pEnemy = pEnemyList[i];
 
-		Enemy* pEne = dynamic_cast<Enemy*>(pEnemy);
+		Enemy* pEne = pEnemy->CastTo<Enemy>();
 
 		if (pObj != nullptr)
 		{

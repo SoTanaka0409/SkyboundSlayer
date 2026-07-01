@@ -23,7 +23,7 @@ void GameManager::Update()
         auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
         for (auto enemy : enemies)
 		{
-			Enemy* e = dynamic_cast<Enemy*>(enemy);
+			Enemy* e = enemy->CastTo<Enemy>();
             if (e) {
                 e->Damage(e->GetMaxHp()); // Deal max HP damage to trigger death animation
             }
@@ -37,7 +37,7 @@ void GameManager::Update()
             if (mShopTimer <= 0) {
                 auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
                 for (auto s : shops) {
-                    StatShop* shop = dynamic_cast<StatShop*>(s);
+                    StatShop* shop = s->CastTo<StatShop>();
                     if (shop) shop->StartWalkingOut();
                 }
 
@@ -54,7 +54,7 @@ void GameManager::Update()
             // SHOP_3: No time limit. Wait for player to enter teleporter.
             auto p = Master::mpPlayer;
             if (p) {
-                Player3D* player = dynamic_cast<Player3D*>(p);
+                Player3D* player = p->CastTo<Player3D>();
                 VECTOR playerPos = player->GetPosition();
                 
                 // Placeholder teleporter position (center of stage, offset)
@@ -64,7 +64,7 @@ void GameManager::Update()
                 if (dist < 150.0f) { // 150 radius to enter
                     auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
                     for (auto s : shops) {
-                        StatShop* shop = dynamic_cast<StatShop*>(s);
+                        StatShop* shop = s->CastTo<StatShop>();
                         if (shop) shop->StartWalkingOut();
                     }
                     mCurrentPhase = Phase::BOSS;
@@ -93,7 +93,7 @@ void GameManager::Update()
             if (oldPhase != mCurrentPhase && (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)) {
                 auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
                 for (auto s : shops) {
-                    StatShop* shop = dynamic_cast<StatShop*>(s);
+                    StatShop* shop = s->CastTo<StatShop>();
                     if (shop) shop->StartWalkingIn();
                 }
             }
@@ -173,7 +173,7 @@ void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 void GameManager::SpawnPhaseEnemies()
 {
     auto p = Master::mpPlayer;
-    Player3D* player = dynamic_cast<Player3D*>(p);
+    Player3D* player = p->CastTo<Player3D>();
     // 謨ｵ縺後せ繝・・繧ｸ縺九ｉ螟悶ｌ縺ｦ關ｽ荳九・蝓区ｲ｡縺励↑縺・ｈ縺・↓縲，onfig縺ｮ繧ｹ繝・・繧ｸ荳ｭ蠢・ｺｧ讓吶ｒ貉ｧ縺堺ｽ咲ｽｮ縺ｮ蝓ｺ貅悶→縺吶ｋ
     VECTOR centerPos = Config::GetStageCenter();
     if (player != nullptr)

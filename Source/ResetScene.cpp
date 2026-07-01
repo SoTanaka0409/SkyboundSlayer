@@ -88,7 +88,7 @@ void ResetScene::Initialize()
 void ResetScene::Update()
 {
     auto mpPlayer = Master::mpPlayer;
-    Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+    Player3D* player = Master::mpPlayer;
     const int count = 51;
     const float distance = 500.0f;
     for (int i = 0; i < count; i++)

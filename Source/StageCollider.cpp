@@ -61,7 +61,7 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 
 		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage‚És‚­
 		{
-			Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+			Player3D* player = Master::mpPlayer;
 			if (player == nullptr) return;
 			mpTexture2->Draw();
 			if (check == player->GetCollisionCollider())
