@@ -88,3 +88,12 @@ void EffekseerManager::SetEffectScale(int playingHandle, float x, float y, float
 	SetScalePlayingEffekseer3DEffect(playingHandle, x, y, z);
 }
 
+bool EffekseerManager::IsPlaying(int playingHandle)
+{
+	return IsEffekseer3DEffectPlaying(playingHandle) != 0;
+}
+
+void EffekseerManager::SetEffectSpeed(int playingHandle, float speed)
+{
+	SetSpeedPlayingEffekseer3DEffect(playingHandle, speed);
+}

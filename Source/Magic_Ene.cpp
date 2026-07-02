@@ -16,10 +16,6 @@ Magic_Ene::~Magic_Ene()
 {
 	// Base class Magic::~Magic() will delete mpModel
 }
-void Magic_Ene::Draw()
-{
-
-}
 
 void Magic_Ene::Update()
 {
@@ -30,8 +26,6 @@ void Magic_Ene::Update()
 	{
 		Death();
 	}
-	
-	new Effect(mvPosition, Filename, GetColorU8(255, 0, 0, 0), mfMagicSize, 0.001f);
 }
 
 

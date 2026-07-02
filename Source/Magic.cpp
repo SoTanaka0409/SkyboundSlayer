@@ -17,39 +17,31 @@ Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float 
 	,Filename(filename)
 	,mfAttack(0)
 {
-	mpModel = new Model(filename, initPos, false);
+	mnGraphHandle = LoadGraph(filename.c_str());
 	mpHitCollider = new SphereCollider(this, mvPosition, mfMagicSize);
 	
 }
 
 Magic::~Magic()
 {
-	if (mpModel != nullptr)
-	{
-		delete mpModel;
-	}
+	DeleteGraph(mnGraphHandle);
 }
 
 void Magic::Draw()
 {
-
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
+	DrawBillboard3D(mvPosition, 0.5f, 0.5f, mfMagicSize, 0.0f, mnGraphHandle, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void Magic::Update()
 {
 	DeleteCount++;
-	if (mpModel != nullptr)
-	{
-		Move();
-	}
-	if (DeleteCount > DeleteTime)//ŠÔŒo‰ß‚ÅÁ‚¦‚é‚æ‚¤‚É‚·‚é
+	Move();
+	if (DeleteCount > DeleteTime)//æ™‚é–“çµŒéã§æ¶ˆãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
 	{
 		Death();
 	}
-	
-		
-	
-	new Effect(mvPosition, Filename, GetColorU8(255, 0, 0, 0), mfMagicSize, 0.1f);
 }
 
 void Magic::Move()
@@ -60,16 +52,17 @@ void Magic::Move()
 
 void Magic::Death()
 {
+	new Effect(mvPosition, Filename, GetColorU8(255, 0, 0, 0), mfMagicSize, 0.1f);
 	SetDeleteFlag(true);
 	mpHitCollider->SetDeleteFlag(true);
 }
-void Magic::OnEnter(Collider* collider, Collider* check)//¶‘¤.
+void Magic::OnEnter(Collider* collider, Collider* check)//å·¦å´.
 {
 	
 }
 
 void Magic::OnTrigger(Collider* collider, Collider* check)
-{//“–‚½‚Á‚½uŠÔ‚Ìˆ—
+{//å½“ãŸã£ãŸç¬é–“ã®å‡¦ç†
 	
 }
 

@@ -20,7 +20,7 @@
 #include"Bush.h"
 
 #include"Shield.h"
-
+#include"EffekseerObject.h"
 #include"Tree.h"
 #include"Scene.h"
 #include"Texture.h"
@@ -597,6 +597,7 @@ void Player3D::Attack()
 		
 		if (AttackCount % 5 == 0)
 		{
+			new EffekseerObject("PlayerAttack", "Resource/effect/tktk01/PlayerAttack_3.efkproj", mvPosition, this, true);//攻撃時にエフェクトの追加
 			for (int i = 0; i < pObjList.size(); i++)
 			{
 				Enemy* pEne = pObjList.at(i)->CastTo<Enemy>();
@@ -664,11 +665,11 @@ void Player3D::AttackJump()
 		if (mvPosition.y <= hitPos.y)
 		{
 			OnJumpCollider = true;
+			new EffekseerObject("JumpAttack", "Resource/effect/Pierre02/JumpAttack.efkproj", mvPosition, this, false);//着地時にエフェクトを出す
 			mvPosition.y = hitPos.y;//Y鬯ｮ・ｯ雋・ｽｯ繝ｻ・ｶ繝ｻ・｣EE鬯ｮ・ｫ繝ｻ・ｶ髴難ｽ｣陋滂ｽ｡陷・ｽｽ驛｢譎｢・ｽ・ｻ驛｢譎｢・ｽ・ｻ鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE鬮ｯ・ｷ闔ｨ螟ｲ・ｽ・ｽ繝ｻ・ｱ鬩包ｽｯ繝ｻ・ｶE鬯ｩ謳ｾ・ｽ・ｵE鬯ｩ諤憺●繝ｻ・ｽ繝ｻ・ｫ驛｢譎｢・ｽ・ｻE
 			
 		}
-		
-
+		mpModel->SetPosition(mvPosition);
 	}
 	else
 	{
@@ -685,29 +686,31 @@ void Player3D::AttackSlide()
 	int mouseInput = GetMouseInput(); // 鬯ｩ蟷｢・ｽ・｢髫ｴ蠑ｱ繝ｻE鬩搾ｽｵ繝ｻ・ｺ鬮｢・ｧ繝ｻ・ｲEE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｮ・ｴ隰・∞・ｽ・ｽ繝ｻ・･驛｢譎｢・ｽ・ｻE鬯ｮ・ｫ繝ｻ・ｲE鬮｣蛹・ｽｽ・ｵ髫ｴ雜｣・ｽ・｢E髯橸ｽｳ陞｢・ｽ隨翫ｋ・ｬ・ｮ繝ｻ・｢驛｢譎｢・ｽ・ｻE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
 	if (mouseInput & MOUSE_INPUT_LEFT && AttackSlideCount >= AttackSlideTime)
 	{
-		if (mpTarget == nullptr)return;//鬯ｮ・ｫ繝ｻ・ｰE驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢E鬮ｯ・ｷ繝ｻ・ｻ鬯ｩ蛹・ｽｽ・ｺ髫ｶ魃会ｽｽ・ｳ鬯ｯ・ｩ陟・§・ｾ蜍⑥鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE鬯ｯ・ｮ繝ｻ・ｦE鬩包ｽｶ騾｡遯ｪE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵEEE鬮ｫ・ｧ繝ｻ・ｽetrurn
-		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
-		if (mpModel->GetIsSeparate())mpModel->mpSeparateAnimation->SetAnimationCount(1.2f);
-		else mpModel->mpAnimation->SetAnimationCount(1.2f);
-		AttackSlideCount = 0;
-		GoPosition = (VSub(mpTarget->GetPosition(), mvPosition));
-		TargetPosition = VScale(GoPosition, 2.5f / 30.0f);
+		if (mpTarget != nullptr)
+		{
+			Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
+			if (mpModel->GetIsSeparate())mpModel->mpSeparateAnimation->SetAnimationCount(1.2f);
+			else mpModel->mpAnimation->SetAnimationCount(1.2f);
+			AttackSlideCount = 0;
+			GoPosition = (VSub(mpTarget->GetPosition(), mvPosition));
+			TargetPosition = VScale(GoPosition, 2.5f / 30.0f);
+		}
+			//鬯ｮ・ｫ繝ｻ・ｰE驛｢譎｢・ｽ・ｻE鬯ｮ・ｫ繝ｻ・ｰE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻE鬨ｾ・ｧ繝ｻ・ｮE髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢E驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｮ・ｯ隶灘･・ｽｽ・ｺ繝ｻ・ｽ髯具ｽｻ繝ｻ・､鬮ｯ譎｢・ｽ・ｲE
+			mpModel->ChangeAnimation(ANIMATION_ATTACKSLIDE);
 
-		//鬯ｮ・ｫ繝ｻ・ｰE驛｢譎｢・ｽ・ｻE鬯ｮ・ｫ繝ｻ・ｰE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻE鬨ｾ・ｧ繝ｻ・ｮE髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢E驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｮ・ｯ隶灘･・ｽｽ・ｺ繝ｻ・ｽ髯具ｽｻ繝ｻ・､鬮ｯ譎｢・ｽ・ｲE
-		mpModel->ChangeAnimation(ANIMATION_ATTACKSLIDE);
+			//鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬯ｩ謳ｾ・ｽ・ｵE鬯ｮ・ｴ陜捺ｺｷ郢ｭ鬯ｮ・ｮ繝ｻ・ｷ鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
+			mpModel->SetLoop(false);
+			//鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢E驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｮ・ｯ雋・ｽｷ關灘ｦ｣髯滓・・ｪ・ｪ鬯ｮ・ｯ雋・ｽｯ繝ｻ・ｼ陟｢蜥ｲ・ｹ譎｢・ｽ・ｻEE鬨ｾ・ｧ繝ｻ・ｮE髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢E驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｮ・ｫ繝ｻ・ｰ鬯ｲ繝ｻ・ｼ螟ｲ・ｽ・ｽ繝ｻ・ｽE鬯ｩ謳ｾ・ｽ・ｵE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
+			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 		
-		//鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ諠ｹ・ｸ讖ｸ・ｽ・ｹ繝ｻ・ｲ鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ鬯ｩ謳ｾ・ｽ・ｵE鬯ｮ・ｴ陜捺ｺｷ郢ｭ鬯ｮ・ｮ繝ｻ・ｷ鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｩ謳ｾ・ｽ・ｵE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
-		mpModel->SetLoop(false);
-		//鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢E驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｮ・ｯ雋・ｽｷ關灘ｦ｣髯滓・・ｪ・ｪ鬯ｮ・ｯ雋・ｽｯ繝ｻ・ｼ陟｢蜥ｲ・ｹ譎｢・ｽ・ｻEE鬨ｾ・ｧ繝ｻ・ｮE髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢E驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ蟷｢・ｽ・｢髫ｴ雜｣・ｽ・｢EE鬯ｩ謳ｾ・ｽ・ｵE驛｢譎｢・ｽ・ｻE鬯ｮ・ｫ繝ｻ・ｰ鬯ｲ繝ｻ・ｼ螟ｲ・ｽ・ｽ繝ｻ・ｽE鬯ｩ謳ｾ・ｽ・ｵE鬩幢ｽ｢隴趣ｽ｢繝ｻ・ｽ繝ｻ・ｻ
-		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
-
+		new EffekseerObject("Slash", "Resource/effect/sword/スライド攻撃エフェクト.efkproj", mvPosition, this, true);//攻撃時にエフェクトの追加
 	}
 	
 
 	
 	if (now == ANIMATION_ATTACKSLIDE && AttackState == Attack_Slide)
 	{
-		new Effect(VAdd(mvPosition, VGet(0.0f, 0.0f, 0.0f)), "Resource/Damage.png", GetColorU8(255, 255, 30, 20), 50.0f, 0.03f);
+		
 		GoPosition = VNorm(GoPosition);
 		mfTargetAngle = atan2f(GoPosition.x, GoPosition.z);
 
@@ -897,16 +900,11 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 			}
 		}
 	}
-	// 
-	// 
-	// 
-	// 
-	// && check->mpParentObject->GetTag() == Object3D::Tag3D_Player3D)
 
 
 	if (collider == mpCapsuleCollider && check->mpParentObject->GetTag() == Tag3D_Obj)
 	{
-		
+		mvPosition = mvOldPosition;//objectに当たったらひとつ前に戻る
 	}
 
 }
@@ -953,7 +951,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 
 				// 鬯ｯ・ｨ繝ｻ・ｾ髯具ｽｹ郢晢ｽｻE鬯ｯ・ｯ繝ｻ・ｮE驛｢譎｢・ｽ・ｻE鬯ｮ・ｫ繝ｻ・ｰE驛｢譎｢・ｽ・ｻE鬯ｩ蟷｢・ｽ・｢E鬮ｯ貊灘擠繝ｻ・ｯ闔ｨ螟ｲ・ｽ・ｽ繝ｻ・ｼ驛｢譎｢・ｽ・ｻEE鬮ｯ譎｢・ｽ・ｶ髯ｷ・ｻ繝ｻ・ｻE驛｢譎｢・ｽ・ｻ
 				Master::mpCamera->SetupShake(5.0f, 10.0f, 5.0f);
-				new Effect(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 30.0f, 0.1f);
+				
 			}
 		}
 	}

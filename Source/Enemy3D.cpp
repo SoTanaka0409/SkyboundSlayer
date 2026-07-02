@@ -28,19 +28,19 @@ Enemy3D::Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,floa
 	//,Animation(false)
 {
 	mbMagic = true;
-	mnChance = 70;//ƒAƒCƒeƒ€‚ÌƒhƒƒbƒvŠm—¦
+	mnChance = 70;//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‰ãƒ­ãƒƒãƒ—ç¢ºç‡
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//ƒ‚ƒfƒ‹‚Ì¶¬
+	//ãƒ¢ãƒ‡ãƒ«ã®ç”Ÿæˆ
 	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
 	mpModel->AddAnimation(ANIMATION_ATTACK, "Resource/Model/MagicAttack.mv1");
 	
 	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
-	//new DrawHp("",  //‰æ‘œ–¼
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//’†SÀ•W
+	//new DrawHp("",  //ç”»åƒå
+	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//ä¸­å¿ƒåº§æ¨™
 	mpDebug = new Debug();
 	/*Item::ItemInformation* itemInfo;
 	itemInfo = new Item::ItemInformation();
@@ -54,8 +54,6 @@ Enemy3D::Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,floa
 
 Enemy3D::~Enemy3D()
 {
-	Delete();
-	SetDeleteFlag(true);
 }
 
 void Enemy3D::Update()
@@ -81,7 +79,7 @@ void Enemy3D::Update()
 			}
 
 			mpModel->Update();
-			//mpDH->Update();//drawHp‚ÌƒAƒbƒvƒf[ƒg‚ğŒÄ‚Ô
+			//mpDH->Update();//drawHpã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã‚’å‘¼ã¶
 			CollPositionUpdate();
 
 
@@ -128,11 +126,11 @@ void Enemy3D::Draw()
 		if (AttackCount >= AttackInterval && isHitAttackSearch)
 		{
 			AttackCount = 0;
-			//UŒ‚ƒ‚[ƒVƒ‡ƒ“‚É•ÏX
+			//æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«å¤‰æ›´
 			mpModel->ChangeAnimation(ANIMATION_ATTACK);
-			//ƒ‹[ƒv‚Í‚³‚¹‚È‚¢
+			//ãƒ«ãƒ¼ãƒ—ã¯ã•ã›ãªã„
 			mpModel->SetLoop(false);
-			//ƒ‚[ƒVƒ‡ƒ“Œã‚Í‘Ò‹@ƒ‚[ƒVƒ‡ƒ“‚É–ß‚·
+			//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã¯å¾…æ©Ÿãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«æˆ»ã™
 			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
 			isHitAttackSearch = false;
 			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition,VGet(0.0f,100.0f,0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
@@ -140,7 +138,7 @@ void Enemy3D::Draw()
 		if (!(now == ANIMATION_ATTACK))
 		{
 			AttackCount++;
-			AttackHitJudgmentflag = false;//“–‚½‚è”»’è‚Ì•œŠˆ
+			AttackHitJudgmentflag = false;//å½“ãŸã‚Šåˆ¤å®šã®å¾©æ´»
 		}
 	}
 

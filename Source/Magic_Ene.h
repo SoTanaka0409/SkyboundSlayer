@@ -10,8 +10,6 @@ public:
 
 	void Update();
 
-	void Draw();
-
 	virtual void OnEnter(Collider* collider, Collider* check) override;
 	virtual void OnTrigger(Collider* collider, Collider* check) override;
 	virtual void OnExit(Collider* collider, Collider* check) override;

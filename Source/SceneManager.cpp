@@ -128,5 +128,5 @@ void SceneManager::ChangeSceneIfNeeded()
 
 SceneGame* SceneManager::GetSceneGame()
 {
-	return dynamic_cast<SceneGame*>(mCurrentScene);
+	return dynamic_cast<SceneGame*>(mpCurrentScene);
 }
