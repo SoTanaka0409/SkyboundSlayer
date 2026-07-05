@@ -10,11 +10,11 @@
 
 
 Object3D::Object3D(VECTOR initPos)
-	:mvPosition(initPos)
-	, mvRotation(VGet(0.0f, 0.0f, 0.0f))
-	, mbDeleteFlag(false)
-	, mnTag(Tag3D::None3D)
-	,mbDrawFlag(true)
+	:position_(initPos)
+	, rotation_(VGet(0.0f, 0.0f, 0.0f))
+	, delete_flag_(false)
+	, tag_(Tag3D::None3D)
+	,draw_flag_(true)
 {
 	//現在のシーンのobjectManagerに自信（this)を追加する
 	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
@@ -64,11 +64,11 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 		Stage* pStage = objList.at(i)->CastTo<Stage>();
 		if (pStage != nullptr)
 		{
-			if (pStage->CheckHit_Capsule(VAdd(mvPosition, VGet(0.0f, capsuleBottomY, 0.0f)), VAdd(mvPosition, VGet(0.0f, capsuleTopY, 0.0f)), capsuleRadius))
+			if (pStage->CheckHit_Capsule(VAdd(position_, VGet(0.0f, capsuleBottomY, 0.0f)), VAdd(position_, VGet(0.0f, capsuleTopY, 0.0f)), capsuleRadius))
 			{
 				hitPos = pStage->CheckHit_Line(
-					VAdd(mvPosition, VGet(0.0f, lineTopY, 0.0f)),
-					VAdd(mvPosition, VGet(0.0f, lineBottomY, 0.0f))
+					VAdd(position_, VGet(0.0f, lineTopY, 0.0f)),
+					VAdd(position_, VGet(0.0f, lineBottomY, 0.0f))
 				);
 				isHit = true;
 			}
@@ -77,16 +77,16 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 
 	if (isHit)
 	{
-		mvPosition.y = hitPos.y;
+		position_.y = hitPos.y;
 	}
 	else
 	{
-		mvPosition.y -= gravity;
-		if (mvPosition.y <= 0.0f || mvPosition.y <= hitPos.y)
+		position_.y -= gravity;
+		if (position_.y <= 0.0f || position_.y <= hitPos.y)
 		{
 			// Player uses hitPos.y even if not hit (it's 0.0f).
-			mvPosition.y = (hitPos.y > 0.0f) ? hitPos.y : mvPosition.y;
-			if(mvPosition.y < 0.0f) mvPosition.y = 0.0f;
+			position_.y = (hitPos.y > 0.0f) ? hitPos.y : position_.y;
+			if(position_.y < 0.0f) position_.y = 0.0f;
 		}
 	}
 }

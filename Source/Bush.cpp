@@ -16,12 +16,12 @@ Bush::Bush(std::string stageModelName, VECTOR initPos,int size)
 	//ステージモデルの読み込み
 	mnModelHandle = MV1LoadModel(stageModelName.c_str());
 	//コリジョンモデル(当たり判定用のモデル)の読み込み
-	mpModel = new Model(stageModelName, initPos, false);
-	mpModel->SetScale(VGet(mnSize, mnSize, mnSize));
+	model_ = new Model(stageModelName, initPos, false);
+	model_->SetScale(VGet(mnSize, mnSize, mnSize));
 	//当たり判定情報の作成　子リジョンなので作ってくれている
 	//自動的にデータが作成される便利な関数
 	MV1SetPosition(mnModelHandle,initPos);
-	mvPosition = initPos;
+	position_ = initPos;
 }
 
 Bush::~Bush()
@@ -40,7 +40,7 @@ void Bush::Update()
 void Bush::Draw()
 {
 	//ステージモデルの描画
-	mpModel->Draw();
+	model_->Draw();
 
 	//コリジョンモデルの描画(ワイヤーフレームみたいな感じで描画)
 	// ///当たり判定用のモデルとして作られている

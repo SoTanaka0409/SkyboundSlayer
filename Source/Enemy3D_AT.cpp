@@ -25,24 +25,24 @@ Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float spe
 	
 	//,Animation(false)
 {
-	mnChance = 50;//アイテムのドロップ確率
+	mnChance = 50;//アイチE��のドロチE�E確玁E
 	AttackInterval = 120;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//モデルの生成
+	//モチE��の生�E
 	
 	
 	
-	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
-	mpModel->AddAttachment("Resource/3D/Sabel.mv1", "mixamorig:RightHand");
-	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
-	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
-	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
-	mpModel->AddAnimation(ANIMATION_ATTACK, "Resource/Model/Attack.mv1");
+	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
+	model_->AddAttachment("Resource/3D/Sabel.mv1", "mixamorig:RightHand");
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
+	model_->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
+	model_->AddAnimation(ANIMATION_ATTACK, "Resource/Model/Attack.mv1");
 
 
 	//new DrawHp("",  //画像名
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//中心座標
+	//	(VAdd(position_, VGet(0.0f, 100.0f, 0.0f))),//中忁E��樁E
 	
 	mpDebug = new Debug();
 }
@@ -61,12 +61,12 @@ void Enemy3D_AT::Update()
 	}
 	else
 	{
-		if (mpModel != nullptr)
+		if (model_ != nullptr)
 		{
 			
 			Attack();
 
-			if (!(mpModel->GetNowState() == ANIMATION_ATTACK))
+			if (!(model_->GetNowState() == ANIMATION_ATTACK))
 			{
 				RotationByMove();
 				Move();
@@ -74,8 +74,8 @@ void Enemy3D_AT::Update()
 
 			}
 
-			mpModel->Update();
-			//mpDH->Update();//drawHpのアップデートを呼ぶ
+			model_->Update();
+			//mpDH->Update();//drawHpのアチE�EチE�Eトを呼ぶ
 			CollPositionUpdate();
 
 		}
@@ -87,14 +87,14 @@ void Enemy3D_AT::Update()
 
 void Enemy3D_AT::Draw()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		mpModel->Draw();
+		model_->Draw();
 		
 	}
 	if (Master::mpDebug->Getdebug() == true && Master::mpEnemySerch->getSerch() == false)
 	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
+		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize,
 			8,
 			GetColor(255, 255, 255),
@@ -104,7 +104,7 @@ void Enemy3D_AT::Draw()
 	}
 	if (Master::mpEnemySerch->getSerch() == true)
 	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
+		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize * 5,
 			8,
 			GetColor(255, 0, 0),

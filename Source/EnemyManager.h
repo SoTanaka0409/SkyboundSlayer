@@ -54,7 +54,7 @@ public:
 	std::list<Enemy*>mpEneList;
 private:
 	enemydate mpDate;
-	enemy_tag mnTag;
+	enemy_tag tag_;
 	
 	/*std::vector<Enemy*> GetEnemyVec() { return enemyVec; }
 	std::vector<Enemy*> enemyVec;*/

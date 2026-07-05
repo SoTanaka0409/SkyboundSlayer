@@ -25,17 +25,17 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	//"C:\Users\student\Desktop\LevelMonster\Resource\Model\monster.mv1"
 	// Setup model and animations if needed (assuming "T.mv1" or passed filename)
 	// Add animations if the model supports them
-	if (mpModel) {
-		mpModel->SetScale(VGet(3.0f, 3.0f, 3.0f)); // Make it a bit large
+	if (model_) {
+		model_->SetScale(VGet(3.0f, 3.0f, 3.0f)); // Make it a bit large
 		
-		mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
-		mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
-		mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
-		mpModel->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/Model/Jump Attack.mv1");
+		model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
+		model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
+		model_->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
+		model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/Model/Jump Attack.mv1");
 	}
 
 	// Landing attack collider (large radius)
-	mpLandingAttackCollider = new SphereCollider(this, mvPosition, 800.0f);
+	mpLandingAttackCollider = new SphereCollider(this, position_, 800.0f);
 }
 
 EnemyMonster::~EnemyMonster()
@@ -45,14 +45,14 @@ EnemyMonster::~EnemyMonster()
 
 void EnemyMonster::Update()
 {
-	AnimationState  state = mpModel->GetNowState();
+	AnimationState  state = model_->GetNowState();
 	if (isDead)
 	{
 		DeathEnemy();
 	}
 	else
 	{
-		if (mpModel != nullptr)
+		if (model_ != nullptr)
 		{
 			Attack();
 			
@@ -63,25 +63,25 @@ void EnemyMonster::Update()
 				Move();
 			}
 
-			mpModel->Update();
-			mpModel->SetPosition(mvPosition);
+			model_->Update();
+			model_->SetPosition(position_);
 			CollPositionUpdate();
-			mpLandingAttackCollider->mvPosition = mvPosition; // Update collider position
+			mpLandingAttackCollider->position_ = position_; // Update collider position
 		}
 	}
 }
 
 void EnemyMonster::Draw()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		mpModel->Draw();
+		model_->Draw();
 	}
 
 	// Debug draw
 	if (Master::mpDebug->Getdebug() == true)
 	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
+		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize,
 			8,
 			GetColor(255, 255, 255),
@@ -90,7 +90,7 @@ void EnemyMonster::Draw()
 		);
 		// Draw attack radius if jumping
 		if (mAttackState == AttackState::Jumping || mAttackState == AttackState::Landing) {
-			DrawSphere3D(mvPosition, 300.0f, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), false);
+			DrawSphere3D(position_, 300.0f, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), false);
 		}
 	}
 }
@@ -107,7 +107,7 @@ void EnemyMonster::Attack()
 		bool isPlayerInJumpRange = false;
 		if (playerObj) {
 			VECTOR playerPos = playerObj->GetPosition();
-			VECTOR toPlayer = VSub(playerPos, mvPosition);
+			VECTOR toPlayer = VSub(playerPos, position_);
 			toPlayer.y = 0.0f;
 			if (VSquareSize(toPlayer) <= maxJumpDistance * maxJumpDistance) {
 				isPlayerInJumpRange = true;
@@ -144,22 +144,22 @@ void EnemyMonster::Attack()
 		// Aim at the player while charging
 		mfTargetAngle = atan2f(GoPosition.x, GoPosition.z);
 		RotationByMove();
-		mpModel->ChangeAnimation(ANIMATION_ATTACKJUMP);
-		mpModel->SetLoop(false);
-		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
+		model_->ChangeAnimation(ANIMATION_ATTACKJUMP);
+		model_->SetLoop(false);
+		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 		// Wait for 30 frames (0.5s) to charge
 		if (mChargeTimer > 30)
 		{
 		
 			mAttackState = AttackState::Jumping;
 			mJumpVelocity = 80.0f; // Initial upward velocity
-			mJumpStartY = mvPosition.y; // Record start height
+			mJumpStartY = position_.y; // Record start height
 
 			// Dynamically adjust forward speed so the landing point is exactly the player
 			auto playerObj = Master::mpPlayer;
 			if (playerObj) {
 				VECTOR playerPos = playerObj->GetPosition();
-				VECTOR toPlayer = VSub(playerPos, mvPosition);
+				VECTOR toPlayer = VSub(playerPos, position_);
 				toPlayer.y = 0.0f;
 				float dist = VSize(toPlayer);
 				if (dist > 0.0f) {
@@ -177,22 +177,22 @@ void EnemyMonster::Attack()
 	else if (mAttackState == AttackState::Jumping)
 	{
 		// Apply velocity
-		mvPosition.y += mJumpVelocity;
-		mvPosition.x += mJumpTargetDir.x * mForwardSpeed;
-		mvPosition.z += mJumpTargetDir.z * mForwardSpeed;
+		position_.y += mJumpVelocity;
+		position_.x += mJumpTargetDir.x * mForwardSpeed;
+		position_.z += mJumpTargetDir.z * mForwardSpeed;
 
 		// Apply gravity
 		mJumpVelocity -= mGravity;
 
 		// Check landing
-		if (mvPosition.y <= mJumpStartY)
+		if (position_.y <= mJumpStartY)
 		{
-			mvPosition.y = mJumpStartY; // Snap to ground
+			position_.y = mJumpStartY; // Snap to ground
 			mAttackState = AttackState::Landing;
 			mChargeTimer = 0;
 			
 			// Visual effect for landing
-			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0,0,0), 0, 150);
+			new Magic_Ene("Resource/Damage.png", VAdd(position_, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0,0,0), 0, 150);
 		}
 	}
 	else if (mAttackState == AttackState::Landing)
@@ -210,7 +210,7 @@ void EnemyMonster::Attack()
 
 void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 {
-	if (mfHp <= 0) return;
+	if (hp_ <= 0) return;
 
 	auto mpPlayer = Master::mpPlayer;
 	if (mpPlayer == nullptr) return;
@@ -221,7 +221,7 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 	{
 		if (collider == mpLandingAttackCollider && check == pPlayer->GetCollisionCollider())
 		{
-			pPlayer->Damage(mfAttack * 2.0f); // Landing attack deals 2x damage
+			pPlayer->Damage(attack_ * 2.0f); // Landing attack deals 2x damage
 			mHasLandedHit = true;
 		}
 	}
@@ -232,14 +232,21 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 
 void EnemyMonster::DeathEnemy()
 {
-		isDead = true;
+	isDead = true;
+	model_->ChangeAnimation(ANIMATION_DYING);
+	model_->SetLoop(false);
+	model_->SetLoopFinishState(ANIMATION_MAX);
+	DeathColliderPosition();
 
-		DeathColliderPosition();
-
+	if (model_->IsAnimationLoopFinish())
+	{
 		GiveRewards();
+		Delete();
+		SetDeleteFlag(true);
+	}
 	
-	Delete();
-	SetDeleteFlag(true);
+	//model_->Draw();
+	model_->Update();
 }
 
 void EnemyMonster::Delete()
@@ -248,6 +255,7 @@ void EnemyMonster::Delete()
 	if (mpLandingAttackCollider != nullptr)
 	{
 		mpLandingAttackCollider->SetDeleteFlag(true);
+		mpLandingAttackCollider = nullptr;
 	}
 }
 

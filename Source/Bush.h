@@ -24,7 +24,7 @@ public:
 	float GetSize() { return mnSize; }
 
 private:
-	Model* mpModel;
+	Model* model_;
 	int mnModelHandle; //ステージモデルのハンドル
 	int mnCollisionHandle;;//ステージの子リジョンモデルのハンドル
 	float mnSize;

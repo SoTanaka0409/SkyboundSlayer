@@ -1,27 +1,31 @@
 #include"StageObject.h"
 
-StageObject::StageObject(VECTOR initPos,std::string filename,VECTOR scale)
+StageObject::StageObject(VECTOR initPos, std::string filename, VECTOR scale, std::string textureFilename)
 	:Object3D(initPos)
 {
-	mpModel = new Model(filename, initPos, false);
-	mpModel->SetScale(scale);
+	model_ = new Model(filename, initPos, false);
+	model_->SetScale(scale);
+	if (!textureFilename.empty())
+	{
+		model_->SetTexture(textureFilename);
+	}
 }
 StageObject::~StageObject()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		delete mpModel;
+		delete model_;
 	}
 	
 }
 
 void StageObject::Update()
 {
-	mpModel->Update();
+	model_->Update();
 }
 
 void StageObject::Draw()
 {
-	mpModel->Draw();
+	model_->Draw();
 
 }

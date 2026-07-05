@@ -11,17 +11,17 @@ Tree::Tree(std::string filename, VECTOR initPos,int Size,float getSize,bool HitF
 	:Object3D(initPos)
 	,mfSize(getSize)//‚ ‚½‚è”»’è‚Ì‚ÁƒTƒCƒY
 {
-	mpModel = new Model(filename, initPos);
-	mpModel->SetScale(VGet(Size, Size, Size));
+	model_ = new Model(filename, initPos);
+	model_->SetScale(VGet(Size, Size, Size));
 	SetTag(Object3D::Tag3D_Obj);
 
-	mvPosition = initPos;
+	position_ = initPos;
 	mnHitFlag = HitFlag;
-	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize, 0.0f)), mfSize);
+	mpCapsuleCollider = new CapsuleCollider(this, position_, VAdd(position_, VGet(0.0f, mfSize, 0.0f)), mfSize);
 }
 Tree::~Tree()
 {
-	delete mpModel;
+	delete model_;
 }
 
 void Tree::Update()
@@ -34,14 +34,14 @@ void Tree::Update()
 void Tree::Draw()
 {
 	
-	/*DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, mnSize, 0.0f)),
+	/*DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, mnSize, 0.0f)),
 		mnSize,
 		8,
 		GetColor(255, 255, 255),
 		GetColor(255, 255, 255),
 		false
 	);*/
-	mpModel->Draw();
+	model_->Draw();
 }
 
 void Tree::OnEnter(Collider* collider, Collider* check)

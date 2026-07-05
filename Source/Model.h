@@ -13,68 +13,68 @@ class Model
 {
 public:
 
-    // ★New★
+    // ☁Eew☁E
     // コンストラクタ
-    // note: 分割アニメーションを使うかどうかの設定を追加。
+    // note: 刁E��アニメーションを使ぁE��どぁE��の設定を追加、E
     Model(std::string filename, VECTOR initPos, bool isSeparateAnimation = false);
-    ~Model();   // デストラクタ
+    ~Model();   // チE��トラクタ
 
     void Update();  // 更新
     void Draw();    // 描画
 
-    // アニメーション切り替え
+    // アニメーション刁E��替ぁE
     void ChangeAnimation(AnimationState state);
-    // ループ設定
+    // ループ設宁E
     void SetLoop(bool loop);
     void SetLoopFinishState(AnimationState state);
-    // アニメーションのブレンド設定
+    // アニメーションのブレンド設宁E
     void SetAnimationBlend(bool isBlend);
-    // 現在再生されているアニメーションの取得
+    // 現在再生されてぁE��アニメーションの取征E
     AnimationState GetNowState();
-    // アニメーションのループが終了しているかどうか 
+    // アニメーションのループが終亁E��てぁE��かどぁE�� 
     bool IsAnimationLoopFinish();
 
 
-    // アタッチモデル関連 //
-    // アタッチメントを追加
+    // アタチE��モチE��関連 //
+    // アタチE��メントを追加
     void AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos = VGet(0.0f, 0.0f, 0.0f), VECTOR offsetRot = VGet(0.0f, 0.0f, 0.0f));
     
    
-    // アタッチモデルの座標取得
+    // アタチE��モチE��の座標取征E
     VECTOR GetAttachmentPosition();
     VECTOR GetAttachmentPosition_None(std::string attachFrameName);
 
 
-    VECTOR GetPosition() { return mvPosition; } // 座標取得
-    void SetPosition(VECTOR pos) { mvPosition = pos; }  // 座標設定
+    VECTOR GetPosition() { return position_; } // 座標取征E
+    void SetPosition(VECTOR pos) { position_ = pos; }  // 座標設宁E
 
-    VECTOR GetRotation() { return mvRotation; } // 回転取得
-    void SetRotation(VECTOR rot) { mvRotation = rot; }  // 回転設定
+    VECTOR GetRotation() { return rotation_; } // 回転取征E
+    void SetRotation(VECTOR rot) { rotation_ = rot; }  // 回転設宁E
 
     void SetScale(VECTOR scale);
     void SetTexture(std::string filename, int index = 0);
 
     bool GetIsSeparate() { return isSeparate; }
 
-    // ★New★
-    // アニメーションデータの追加
+    // ☁Eew☁E
+    // アニメーションチE�Eタの追加
     // note: SeparateModelAnimation クラスへの橋渡し関数
     void AddAnimation(AnimationState state, std::string filename);
 
-    // 分割読み込みバージョンのモデルアニメーションクラスのポインタ
+    // 刁E��読み込みバ�EジョンのモチE��アニメーションクラスのポインタ
     SeparateModelAnimation* mpSeparateAnimation;
-    ModelAnimation* mpAnimation;    // モデルアニメーションクラスのポインタ
+    ModelAnimation* mpAnimation;    // モチE��アニメーションクラスのポインタ
 private:
-    int mnHandle;   // 読み込んだモデルのハンドル
-    VECTOR mvPosition;  // 座標
-    VECTOR mvRotation;  // 回転
+    int mnHandle;   // 読み込んだモチE��のハンドル
+    VECTOR position_;  // 座樁E
+    VECTOR rotation_;  // 回転
     VECTOR mvScale;
     int mnChangeTextureHandle;
 
     bool isSeparate;
 
-    // ★New★
+    // ☁Eew☁E
    
 
-    AttachmentModel* mpAttachment;  // アタッチモデル（複数持たせたい場合は std::vector や配列で管理すると良い）
+    AttachmentModel* mpAttachment;  // アタチE��モチE���E�褁E��持たせたぁE��合�E std::vector めE�E列で管琁E��ると良ぁE��E
 };

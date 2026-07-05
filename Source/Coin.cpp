@@ -15,23 +15,23 @@ Coin::Coin(std::string filename, VECTOR pos, int value)
 {
     SetTag(Object3D::Tag3D_Obj);
     // Add Y offset so it spawns above ground
-    mvPosition.y += 30.0f;
-    mpModel = new Model(filename, mvPosition, false);
-    mpModel->SetScale(VGet(150.0f, 150.0f, 150.0f)); // Make it larger to be visible
+    position_.y += 30.0f;
+    model_ = new Model(filename, position_, false);
+    model_->SetScale(VGet(150.0f, 150.0f, 150.0f)); // Make it larger to be visible
 }
 
 Coin::~Coin()
 {
-    if (mpModel) {
-        delete mpModel;
-        mpModel = nullptr;
+    if (model_) {
+        delete model_;
+        model_ = nullptr;
     }
 }
 
 void Coin::Draw()
 {
-    if (mpModel) {
-        mpModel->Draw();
+    if (model_) {
+        model_->Draw();
     }
 }
 
@@ -42,15 +42,15 @@ void Coin::Update()
     mAge++;
     
     // Rotate the coin for visibility
-    mvRotation.y += 0.1f;
-    if (mpModel) {
-        mpModel->SetRotation(mvRotation);
+    rotation_.y += 0.1f;
+    if (model_) {
+        model_->SetRotation(rotation_);
     }
 
     // Initial pop physics
     if (mAge < 20) {
-        mvPosition.y += 2.0f;
-        if (mpModel) mpModel->SetPosition(mvPosition);
+        position_.y += 2.0f;
+        if (model_) model_->SetPosition(position_);
         return; // Don't suck yet
     }
 
@@ -81,8 +81,8 @@ void Coin::Update()
             myPos.y += (dy / dist) * speed;
             myPos.z += (dz / dist) * speed;
             SetPosition(myPos);
-            if (mpModel) {
-                mpModel->SetPosition(myPos);
+            if (model_) {
+                model_->SetPosition(myPos);
             }
         }
     }

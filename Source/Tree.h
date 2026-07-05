@@ -29,7 +29,7 @@ private:
 	
 	CapsuleCollider* mpCapsuleCollider;
 	
-	Model* mpModel;
+	Model* model_;
 	float mfSize;
 	int mnModelHandle; //ステージモデルのハンドル
 	bool mnHitFlag;

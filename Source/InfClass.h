@@ -13,7 +13,7 @@ public:
 
 	void Update();
 
-	void SetPosition(VECTOR pos) { mvPosition = pos; }
+	void SetPosition(VECTOR pos) { position_ = pos; }
 
 	void Draw();
 

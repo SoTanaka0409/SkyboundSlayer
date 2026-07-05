@@ -10,6 +10,7 @@
 #include "CapsuleCollider.h"
 #include "SceneGame.h"
 #include "GameManager.h"
+#include "ItemManager.h"
 
 namespace
 {
@@ -38,9 +39,10 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	
 {
 	SetTag(Tag3D_Shop);
-	mpModel = new Model(filename, mvPosition, false);
-	mpShopIn = new SphereCollider(this, mvPosition, 200.0f);
-	mpSafeZoon = new SphereCollider(this, mvPosition, 1000.0f); // 敵が近づけなぁE��ーフゾーン
+	model_ = new Model(filename, position_, false);
+	model_->ChangeAnimation(ANIMATION_NEUTRAL);
+	mpShopIn = new SphereCollider(this, position_, 200.0f);
+	mpSafeZoon = new SphereCollider(this, position_, 1000.0f); // 謨ｵ縺瑚ｿ代▼縺代↑縺・そ繝ｼ繝輔だ繝ｼ繝ｳ
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
@@ -65,7 +67,7 @@ StatShop::~StatShop()
 	DeleteGraph(mnIconEvasionDistHandle);
 	DeleteGraph(mnIconEvasionInvHandle);
 
-	delete mpModel;
+	delete model_;
 	if (mpShopIn) mpShopIn->SetDeleteFlag(true);
 	if (mpSafeZoon) mpSafeZoon->SetDeleteFlag(true);
 }
@@ -84,7 +86,7 @@ void StatShop::Draw()
 	{
 		player->mpHaveMoney->Draw();
 
-		// 背景やUI
+		// 閭梧勹繧ФI
 		DrawExtendGraph(300, 100, 1620, 800, mnBgImageHandle, TRUE);
 		
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
@@ -103,7 +105,7 @@ void StatShop::Draw()
 			"Attack UP",
 			"Speed UP",
 			"Evasion Distance UP",
-			"Evasion Invincibility UP"
+			"Healing Potion"
 		};
 		int levels[] = { mnLevelMaxHp, mnLevelAttack, mnLevelSpeed, mnLevelEvasionSpeed, mnLevelEvasionInvincibility };
 		int icons[] = { mnIconMaxHpHandle, mnIconAttackHandle, mnIconSpeedHandle, mnIconEvasionDistHandle, mnIconEvasionInvHandle };
@@ -116,7 +118,11 @@ void StatShop::Draw()
 			// アイコン描画 (40x40 サイズに縮小して表示)
 			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
 
-			DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
+			if (i == 4) {
+				DrawFormatString(415, 250 + i * 60, color, "%s - Cost: 100", options[i]);
+			} else {
+				DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
+			}
 		}
 		
 		DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   Escape/Back: Close");
@@ -124,11 +130,11 @@ void StatShop::Draw()
 	}
 	else
 	{
-		VECTOR DrawName3D = VAdd(mvPosition, VGet(0.0f, 250.0f, 0.0f));
+		VECTOR DrawName3D = VAdd(position_, VGet(0.0f, 250.0f, 0.0f));
 		VECTOR DrawNameWorld = ConvWorldPosToScreenPos(DrawName3D);
 		DrawFormatString(DrawNameWorld.x, DrawNameWorld.y, GetColor(255, 255, 0), "StatShop: Enter");
 
-		mpModel->Draw();
+		model_->Draw();
 	}
 }
 
@@ -137,7 +143,7 @@ void StatShop::Update()
 	
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	
-	// WALKING_OUTの時�E、フェーズが終亁E��てぁE��も移動�E琁E��続ける忁E��があるため、ここで刁E��します、E
+	// WALKING_OUT縺ｮ譎ゅ・縲√ヵ繧ｧ繝ｼ繧ｺ縺檎ｵゆｺ・＠縺ｦ縺・※繧らｧｻ蜍募・逅・ｒ邯壹￠繧句ｿ・ｦ√′縺ゅｋ縺溘ａ縲√％縺薙〒蛻・ｲ舌＠縺ｾ縺吶・
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -171,53 +177,62 @@ void StatShop::movePosition()
 	if (mShopState == ShopState::WALKING_IN)
 	{
 		
-		VECTOR dir = VSub(mTargetPosition, mvPosition);
+		VECTOR dir = VSub(mTargetPosition, position_);
 		dir.y = 0.0f;
 		float dist = VSize(dir);
 		if (dist < 10.0f)
 		{
-			mvPosition.x = mTargetPosition.x;
-			mvPosition.z = mTargetPosition.z;
+			position_.x = mTargetPosition.x;
+			position_.z = mTargetPosition.z;
 			mShopState = ShopState::ARRIVED;
-			mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
+			model_->ChangeAnimation(ANIMATION_NEUTRAL);
 		}
 		else
 		{
 			VECTOR nDir = VNorm(dir);
-			mvPosition = VAdd(mvPosition, VScale(nDir, 4.0f));
-			mpModel->ChangeAnimation(ANIMATION_WALKING);
+			position_ = VAdd(position_, VScale(nDir, 4.0f));
+			model_->ChangeAnimation(ANIMATION_RUN);
 		}
 	}
 	else if (mShopState == ShopState::WALKING_OUT)
 	{
 		VECTOR startPos = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z);
-		VECTOR dir = VSub(startPos, mvPosition);
+		VECTOR dir = VSub(startPos, position_);
 		dir.y = 0.0f;
 		float dist = VSize(dir);
 		if (dist < 10.0f)
 		{
 			mShopState = ShopState::WAIT_PHASE;
-			mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
+			model_->ChangeAnimation(ANIMATION_NEUTRAL);
 		}
 		else
 		{
 			VECTOR nDir = VNorm(dir);
-			mvPosition = VAdd(mvPosition, VScale(nDir, 4.0f));
-			mpModel->ChangeAnimation(ANIMATION_WALKING);
+			position_ = VAdd(position_, VScale(nDir, 4.0f));
+			model_->ChangeAnimation(ANIMATION_RUN);
 		}
 	}
 	else if (mShopState == ShopState::ARRIVED)
 	{
-		if (mvPosition.y > mTargetPosition.y) mvPosition.y -= 5.0f;
-		mpModel->ChangeAnimation(ANIMATION_NEUTRAL);
+		if (position_.y > mTargetPosition.y) position_.y -= 5.0f;
+		model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	}
 
-	// 征E��中めE��場完亁E���E、当たり判定を画面外（現在の位置�E�に移動させる
-	mpShopIn->mvPosition = mvPosition;
-	mpSafeZoon->mvPosition = mvPosition;
+	// 待機中や移動中、退場後は、当たり判定を画面外に移動させる
+	if (mShopState == ShopState::ARRIVED)
+	{
+		mpShopIn->position_ = position_;
+		mpSafeZoon->position_ = position_;
+	}
+	else
+	{
+		VECTOR hidePos = VGet(position_.x, position_.y - 10000.0f, position_.z);
+		mpShopIn->position_ = hidePos;
+		mpSafeZoon->position_ = hidePos;
+	}
 	
-	mpModel->SetPosition(mvPosition);
-	mpModel->Update();
+	model_->SetPosition(position_);
+	model_->Update();
 }
 
 void StatShop::StartWalkingIn()
@@ -225,7 +240,7 @@ void StatShop::StartWalkingIn()
 	if (mShopState == ShopState::WAIT_PHASE || mShopState == ShopState::WALKING_OUT)
 	{
 		mShopState = ShopState::WALKING_IN;
-		mvPosition = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z );
+		position_ = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z );
 	}
 }
 
@@ -297,33 +312,54 @@ void StatShop::BuyClass()
 
 	if (doBuy)
 	{
-		int* targetLevel = nullptr;
-		if (mnSelect == 0) targetLevel = &mnLevelMaxHp;
-		else if (mnSelect == 1) targetLevel = &mnLevelAttack;
-		else if (mnSelect == 2) targetLevel = &mnLevelSpeed;
-		else if (mnSelect == 3) targetLevel = &mnLevelEvasionSpeed;
-		else if (mnSelect == 4) targetLevel = &mnLevelEvasionInvincibility;
-
-		if (targetLevel)
+		if (mnSelect == 4)
 		{
-			int cost = GetCost(*targetLevel);
+			int cost = 100;
 			if (player->mpHaveMoney->HaveMoney() >= cost)
 			{
 				player->mpHaveMoney->PullMoney(cost);
-				(*targetLevel)++;
-
-				// Apply stat bonuses
-				if (mnSelect == 0) player->AddUpgradeMaxHp(10.0f); // HP +10
-				else if (mnSelect == 1) player->AddUpgradeAttack(1.0f); // Attack +1
-				else if (mnSelect == 2) player->AddUpgradeSpeed(0.5f); // Speed +0.5
-				else if (mnSelect == 3) player->AddUpgradeEvasionSpeed(2.0f); // Evasion Speed +2
-				else if (mnSelect == 4) player->AddUpgradeEvasionInvincibility(5); // Extra 5 frames
-
+				
+				Item::ItemInformation* info = new Item::ItemInformation();
+				info->ID = Item::ItemID::HEAL;
+				info->Count = 1;
+				info->isLog = true;
+				Master::mpItemManager->AddItem(info);
+				
 				Master::mpSoundManager->PlaySE(SoundManager::SE_SHOP);
 			}
 			else
 			{
 				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW); // as error sound
+			}
+		}
+		else
+		{
+			int* targetLevel = nullptr;
+			if (mnSelect == 0) targetLevel = &mnLevelMaxHp;
+			else if (mnSelect == 1) targetLevel = &mnLevelAttack;
+			else if (mnSelect == 2) targetLevel = &mnLevelSpeed;
+			else if (mnSelect == 3) targetLevel = &mnLevelEvasionSpeed;
+
+			if (targetLevel)
+			{
+				int cost = GetCost(*targetLevel);
+				if (player->mpHaveMoney->HaveMoney() >= cost)
+				{
+					player->mpHaveMoney->PullMoney(cost);
+					(*targetLevel)++;
+
+					// Apply stat bonuses
+					if (mnSelect == 0) player->AddUpgradeMaxHp(10.0f); // HP +10
+					else if (mnSelect == 1) player->AddUpgradeAttack(1.0f); // Attack +1
+					else if (mnSelect == 2) player->AddUpgradeSpeed(0.5f); // Speed +0.5
+					else if (mnSelect == 3) player->AddUpgradeEvasionSpeed(2.0f); // Evasion Speed +2
+
+					Master::mpSoundManager->PlaySE(SoundManager::SE_SHOP);
+				}
+				else
+				{
+					Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW); // as error sound
+				}
 			}
 		}
 	}
@@ -333,9 +369,9 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 {
 	if (!IsShopPhaseActive()) return;
 
-	if (check->mpParentObject && check->mpParentObject->GetTag() == Tag3D_Player3D)
+	if (check->parent_object_ && check->parent_object_->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* pPlayer = check->mpParentObject->CastTo<Player3D>();
+		Player3D* pPlayer = check->parent_object_->CastTo<Player3D>();
 		if (pPlayer && collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
 			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::StatShopClassOn && !Master::StatShopClassOn)

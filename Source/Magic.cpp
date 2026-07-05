@@ -8,17 +8,17 @@
 
 Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float speed,VECTOR movevec, int count, int time)
 	:Object3D(initPos)
-	,mfSpeed(speed)
+	,speed_(speed)
 	,mfAttack_chara(damage)
 	,mfMagicSize(r)
 	,moveVec(movevec)
 	,DeleteCount(count)
 	,DeleteTime(time)
 	,Filename(filename)
-	,mfAttack(0)
+	,attack_(0)
 {
 	mnGraphHandle = LoadGraph(filename.c_str());
-	mpHitCollider = new SphereCollider(this, mvPosition, mfMagicSize);
+	mpHitCollider = new SphereCollider(this, position_, mfMagicSize);
 	
 }
 
@@ -30,7 +30,7 @@ Magic::~Magic()
 void Magic::Draw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
-	DrawBillboard3D(mvPosition, 0.5f, 0.5f, mfMagicSize, 0.0f, mnGraphHandle, TRUE);
+	DrawBillboard3D(position_, 0.5f, 0.5f, mfMagicSize, 0.0f, mnGraphHandle, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
@@ -38,7 +38,7 @@ void Magic::Update()
 {
 	DeleteCount++;
 	Move();
-	if (DeleteCount > DeleteTime)//時間経過で消えるようにする
+	if (DeleteCount > DeleteTime)//時間経過で消えるよぁE��する
 	{
 		Death();
 	}
@@ -46,13 +46,13 @@ void Magic::Update()
 
 void Magic::Move()
 {
-	mvPosition = VAdd(mvPosition, VScale(moveVec, mfSpeed));
+	position_ = VAdd(position_, VScale(moveVec, speed_));
 	
 }
 
 void Magic::Death()
 {
-	new Effect(mvPosition, Filename, GetColorU8(255, 0, 0, 0), mfMagicSize, 0.1f);
+	new Effect(position_, Filename, GetColorU8(255, 0, 0, 0), mfMagicSize, 0.1f);
 	SetDeleteFlag(true);
 	mpHitCollider->SetDeleteFlag(true);
 }
@@ -62,7 +62,7 @@ void Magic::OnEnter(Collider* collider, Collider* check)//左側.
 }
 
 void Magic::OnTrigger(Collider* collider, Collider* check)
-{//当たった瞬間の処理
+{//当たった瞬間�E処琁E
 	
 }
 

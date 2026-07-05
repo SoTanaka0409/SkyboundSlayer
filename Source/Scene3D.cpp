@@ -52,7 +52,32 @@ void Scene3D::Initialize()
         VGet(200.0f, 100.0f, 200.0f));
     new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",VGet(3.0f,0.3f,3.0f));
    
+
     float ObjectSize=10.0f;
+    new StageObject(Config::GetStageCenter(), "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(5, 10, 5));//centertree
+    
+    int randomScale = 1 + rand() % 2; // 1または2のランダムなスケール
+    int treeScale = 0.5f;
+    // ランダムに木と岩を配置
+    for (int i = 0; i < 10; i++)
+    {
+        float angle = GetRand(359) * (DX_PI_F / 180.0f);
+        float r = -4000 + GetRand(8000); // 中心から500~4000の範囲
+        VECTOR offset = VGet(cosf(angle) * r, 0.0f, sinf(angle) * r);
+        VECTOR pos = VAdd(Config::GetStageCenter(), offset);
+		
+        new StageObject(pos, "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(1, 1, 1));
+    }
+    for (int i = 0; i < 20; i++)
+    {
+        float angle = GetRand(359) * (DX_PI_F / 180.0f);
+        float r = -2000 + GetRand(4000);
+        VECTOR offset = VGet(cosf(angle) * r, 0.0f, sinf(angle) * r);
+        VECTOR pos = VAdd(Config::GetStageCenter(), offset);
+        float scale = 30.0f + GetRand(40); // 30~70のランダムスケール
+        new Stage(pos, "Resource/3D/Rock/mossy-rock/source/Rock Low Poly.mv1", "Resource/3D/Rock/mossy-rock/source/Rock Low Poly.mv1", VGet(scale, scale, scale), "Resource/3D/Rock/mossy-rock/source/rock1_color.jpg");
+    }
+    
     new StageObject(VGet(0, 0, 0), "Resource/3D/Stage_casule/source/Parede castelo.mv1",VGet(ObjectSize, ObjectSize, ObjectSize));
   // 
   //  new Rock("Resource/3D/rock.mv1", VGet(6000, 0, -300), 0, 3000, 400);*/

@@ -12,9 +12,9 @@
 Camera1::Camera1()
 	:mfHorizontalAngle(0.0f)
 	, mfVerticalAngle(0.0f)
-	, mvPosition(VGet(0.0f, 0.0f, 0.0f))
+	, position_(VGet(0.0f, 0.0f, 0.0f))
 	, mvLookAtPosition(VGet(0.0f, 0.0f, 0.0f))
-	, mpTarget(nullptr)
+	, target_(nullptr)
 {
 
 
@@ -34,7 +34,7 @@ void Camera1::Initialize()
 	SetBackgroundColor(128, 128, 128);
 
 	//カメラの設定を反映
-	SetCameraPositionAndTarget_UpVecY(mvPosition, mvLookAtPosition);
+	SetCameraPositionAndTarget_UpVecY(position_, mvLookAtPosition);
 
 	//更新処理を一度行っていく
 	Update();
@@ -47,13 +47,13 @@ void Camera1::Update()
 	Player3D* pPlayer = Master::mpPlayer;
 	UpdateRotation();
 	//ターゲットがいなかったら
-	if (mpTarget == nullptr)
+	if (target_ == nullptr)
 	{
-		mpTarget = Master::mpPlayer;
+		target_ = Master::mpPlayer;
 	}
-	if (mpTarget != nullptr)
+	if (target_ != nullptr)
 	{
-		mvLookAtPosition = mpTarget->GetPosition();
+		mvLookAtPosition = target_->GetPosition();
 		mvLookAtPosition.y += 80.0f;
 	}
 	else
@@ -66,7 +66,7 @@ void Camera1::Update()
 		VECTOR temp; //作業用変数
 
 
-		mvLookAtPosition = VSub(pPlayer->GetPosition() , mvPosition);
+		mvLookAtPosition = VSub(pPlayer->GetPosition() , position_);
 		mvLookAtPosition = VNorm(mvLookAtPosition);
 
 		//上で求めた座標に注視点の座標を足したものがカメラの座標となる

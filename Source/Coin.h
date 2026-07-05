@@ -13,10 +13,10 @@ public:
 	void Update();
 
 private:
-	Model* mpModel;
+	Model* model_;
 	int mValue;
 	bool mIsSucking;
 	bool mCollected;
 	int mAge;
-	float mfSpeed;
+	float speed_;
 };

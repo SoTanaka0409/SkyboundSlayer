@@ -7,11 +7,11 @@
 
 
 Object2D::Object2D(VECTOR initPos)
-	:mvPosition(initPos)
-	, mvRotation(VGet(0.0f, 0.0f, 0.0f))
-	, mbDeleteFlag(false)
-	, mnTag(Tag2D::None2D)
-	, mbDrawFlag(true)
+	:position_(initPos)
+	, rotation_(VGet(0.0f, 0.0f, 0.0f))
+	, delete_flag_(false)
+	, tag_(Tag2D::None2D)
+	, draw_flag_(true)
 {
 	//現在のシーンのobjectManagerに自信（this)を追加する
 	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);

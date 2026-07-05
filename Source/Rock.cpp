@@ -6,9 +6,9 @@ Rock::Rock(std::string filename,VECTOR pos, float r,float High,float size)
 	, mfHigh(High)
 {
 	SetTag(Object3D::Tag3D_Obj);
-	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0,High,0)),r);
-	mpModel = new Model(filename, pos, false);
-	mpModel->SetScale(VGet(size, size, size));
+	mpCapsuleCollider = new CapsuleCollider(this, position_, VAdd(position_, VGet(0,High,0)),r);
+	model_ = new Model(filename, pos, false);
+	model_->SetScale(VGet(size, size, size));
 }
 
 Rock::~Rock()
@@ -20,14 +20,14 @@ Rock::~Rock()
 
 void Rock::Draw()
 {
-	mpModel->Draw();
+	model_->Draw();
 }
 
 void Rock::Update()
 {
-	mpCapsuleCollider->mvPosition = mvPosition;
-	mpCapsuleCollider->mvPosition2 = mvPosition, VAdd(mvPosition, VGet(0, mfHigh, 0));
-	mvPosition.y = -100.0f;
+	mpCapsuleCollider->position_ = position_;
+	mpCapsuleCollider->position2_ = position_, VAdd(position_, VGet(0, mfHigh, 0));
+	position_.y = -100.0f;
 }
 
 void Rock::OnEnter(Collider* collider, Collider* check)

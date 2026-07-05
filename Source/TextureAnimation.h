@@ -21,7 +21,7 @@ public:
     void Draw();    // 描画
 
 private:
-    VECTOR mvPosition;  // ポジション
+    VECTOR position_;  // ポジション
     int mnCounter;      // アニメーションカウンタ
     int mnInterval;     // テクスチャ切り替えのフレーム数
     int mnCurrentNum;   // 何番目のテクスチャを表示するか

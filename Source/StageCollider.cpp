@@ -20,7 +20,7 @@ StageCollider::StageCollider()
 	mpTexture = new Texture("Resource/2D/BossLogo.png",VGet(400,400,0),true);
 	mpTexture2 = new Texture("Resource/2D/NormalLogo.png", VGet(400, 400, 0), true);
 
-	if(Master::TutorialFlag)mpGoBossCollider->mvPosition= VGet(0, 100, -6000);
+	if(Master::TutorialFlag)mpGoBossCollider->position_= VGet(0, 100, -6000);
 }
 
 StageCollider::~StageCollider()
@@ -55,25 +55,25 @@ void StageCollider::OnEnter(Collider* collider, Collider* check)
 
 void StageCollider::OnTrigger(Collider* collider, Collider* check)
 {
-	if (Count > 10)
-	{
-		auto mpPlayer = Master::mpPlayer;
+	
+	
 
-		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstageÇ…çsÇ≠
+		if (collider == mpGoBossCollider && check->parent_object_->GetTag() == Tag3D_Player3D)//normalstage„Å´Ë°å„Åè
 		{
+			
 			Player3D* player = Master::mpPlayer;
 			if (player == nullptr) return;
 			mpTexture2->Draw();
 			if (check == player->GetCollisionCollider())
 			{
-				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//èÍèäÇà⁄ìÆ
-				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warpâπÇñ¬ÇÁÇ∑
+				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//Â†¥ÊâÄ„ÇíÁßªÂãï
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warpÈü≥„ÇíÈ≥¥„Çâ„Åô
 				/*new Effect(VGet(17000, 0, 16000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
 				new Effect(VGet(16000, 0, 17000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);*/
 			}
 		}
 	
-	}
+	
 	
 
 }

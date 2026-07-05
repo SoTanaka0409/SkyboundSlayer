@@ -4,28 +4,28 @@
 
 // コンストラクタ
 Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
-    : mvPosition(initPos)
+    : position_(initPos)
     , mpAttachment(nullptr)
     , mvScale(VGet(1.0f, 1.0f, 1.0f))
     , mnChangeTextureHandle(-1)
     ,isSeparate(isSeparateAnimation)
 {
-    // モデルの読み込み
+    // モチE��の読み込み
     mnHandle = Master::mpResourceManager->LoadModel(filename.c_str());
 
-    //サイズ設定
+    //サイズ設宁E
 
-    // ★New★
-    // 条件分岐を追加
+    // ☁Eew☁E
+    // 条件刁E��を追加
     if (isSeparateAnimation)
     {
-        // 分割アニメーションクラスの生成
+        // 刁E��アニメーションクラスの生�E
         mpSeparateAnimation = new SeparateModelAnimation(mnHandle);
         mpAnimation = nullptr;
     }
     else
     {
-        // 通常アニメーションクラスの生成
+        // 通常アニメーションクラスの生�E
         mpAnimation = new ModelAnimation(mnHandle);
         mpSeparateAnimation = nullptr;
     }
@@ -40,36 +40,36 @@ void Model::AddAnimation(AnimationState state, std::string filename)
     }
 }
 
-// デストラクタ
+// チE��トラクタ
 Model::~Model()
 {
-    // アニメーションクラスの破棄
+    // アニメーションクラスの破棁E
     if (mpAnimation != nullptr)
     {
         delete mpAnimation;
     }
 
-    // ★New★
-    // 分割アニメーションクラスの破棄
+    // ☁Eew☁E
+    // 刁E��アニメーションクラスの破棁E
     if (mpSeparateAnimation != nullptr)
     {
         delete mpSeparateAnimation;
     }
 
-    // アタッチモデルクラスの破棄
+    // アタチE��モチE��クラスの破棁E
     if (mpAttachment != nullptr)
     {
         mpAttachment->SetDeleteFlag(true);
     }
 
-    // テクスチャを切り替えている場合はそのテクスチャの破棄
+    // チE��スチャを�Eり替えてぁE��場合�Eそ�EチE��スチャの破棁E
     if (mnChangeTextureHandle != -1)
     {
         DeleteGraph(mnChangeTextureHandle);
     }
 
-    // 読み込んだモデルの削除
-    // note: 読み込んだモデルは勝手に破棄してくれないので、必要なくなったら手動で破棄する
+    // 読み込んだモチE��の削除
+    // note: 読み込んだモチE��は勝手に破棁E��てくれなぁE�Eで、忁E��なくなったら手動で破棁E��めE
     MV1DeleteModel(mnHandle);
 }
 
@@ -82,34 +82,34 @@ void Model::Update()
         mpAnimation->Update();
     }
 
-    // ★New★
-    // 分割アニメーションの更新
+    // ☁Eew☁E
+    // 刁E��アニメーションの更新
     if (mpSeparateAnimation != nullptr)
     {
         mpSeparateAnimation->Update();
     }
 
-    // 座標設定
-    MV1SetPosition(mnHandle, mvPosition);
+    // 座標設宁E
+    MV1SetPosition(mnHandle, position_);
 
     
 
-    // 回転設定
-    MV1SetRotationXYZ(mnHandle, mvRotation);
+    // 回転設宁E
+    MV1SetRotationXYZ(mnHandle, rotation_);
 }
 
 // 描画
 void Model::Draw()
 {
-    // モデルの描画
+    // モチE��の描画
     MV1DrawModel(mnHandle);
 }
 
-// アニメション切り替え
+// アニメション刁E��替ぁE
 void Model::ChangeAnimation(AnimationState state)
 {
-    // ★New★
-    // 通常 or 分割のどちらかを使っているかで分岐
+    // ☁Eew☁E
+    // 通常 or 刁E��のどちらかを使ってぁE��かで刁E��E
     if (mpAnimation != nullptr)
     {
         mpAnimation->ChangeAnimation(state);
@@ -122,8 +122,8 @@ void Model::ChangeAnimation(AnimationState state)
 
 void Model::SetLoop(bool loop)
 {
-    // ★New★
-    // 通常 or 分割のどちらかを使っているかで分岐
+    // ☁Eew☁E
+    // 通常 or 刁E��のどちらかを使ってぁE��かで刁E��E
     if (mpAnimation != nullptr)
     {
         mpAnimation->SetLoop(loop);
@@ -136,8 +136,8 @@ void Model::SetLoop(bool loop)
 
 void Model::SetLoopFinishState(AnimationState state)
 {
-    // ★New★
-    // 通常 or 分割のどちらかを使っているかで分岐
+    // ☁Eew☁E
+    // 通常 or 刁E��のどちらかを使ってぁE��かで刁E��E
     if (mpAnimation != nullptr)
     {
         mpAnimation->SetLoopFinishState(state);
@@ -150,8 +150,8 @@ void Model::SetLoopFinishState(AnimationState state)
 
 void Model::SetAnimationBlend(bool isBlend)
 {
-    // ★New★
-     // 通常 or 分割のどちらかを使っているかで分岐
+    // ☁Eew☁E
+     // 通常 or 刁E��のどちらかを使ってぁE��かで刁E��E
     if (mpAnimation != nullptr)
     {
         mpAnimation->SetAnimationBlend(isBlend);
@@ -164,9 +164,9 @@ void Model::SetAnimationBlend(bool isBlend)
 
 AnimationState Model::GetNowState()
 {
-    // ★New★
-    // 通常 or 分割のどちらかを使っているかで分岐
-    // note: （ほぼありえないが）もしどちらも無ければ、特に設定のない最大値を返すようにする
+    // ☁Eew☁E
+    // 通常 or 刁E��のどちらかを使ってぁE��かで刁E��E
+    // note: �E�ほぼありえなぁE���E�もしどちらも無ければ、特に設定�EなぁE��大値を返すようにする
     AnimationState ret = AnimationState::ANIMATION_MAX;
 
     if (mpAnimation != nullptr)
@@ -183,9 +183,9 @@ AnimationState Model::GetNowState()
 
 bool Model::IsAnimationLoopFinish()
 {
-    // ★New★
-    // 通常 or 分割のどちらかを使っているかで分岐
-    // note: （ほぼありえないが）もしどちらも無ければ、false を返すようにしておく
+    // ☁Eew☁E
+    // 通常 or 刁E��のどちらかを使ってぁE��かで刁E��E
+    // note: �E�ほぼありえなぁE���E�もしどちらも無ければ、false を返すようにしておく
 
     bool ret = false;
 
@@ -202,7 +202,7 @@ bool Model::IsAnimationLoopFinish()
 }
 
 
-// アタッチメントを追加
+// アタチE��メントを追加
 void Model::AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos, VECTOR offsetRot)
 {
     if (mpAttachment != nullptr)
@@ -210,11 +210,11 @@ void Model::AddAttachment(std::string filename, std::string attachFrameName, VEC
         mpAttachment->SetDeleteFlag(true);
         mpAttachment = nullptr;
     }
-    // アタッチ先のフレーム番号を取得
+    // アタチE��先�Eフレーム番号を取征E
     int frameIndex = MV1SearchFrame(mnHandle, attachFrameName.c_str());
     if (frameIndex != -1)
     {
-        // アタッチメントモデルの生成
+        // アタチE��メントモチE��の生�E
         mpAttachment = new AttachmentModel(filename, mnHandle, frameIndex, offsetPos, offsetRot);
     }
 }
@@ -233,23 +233,23 @@ VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 
 
 
-// アタッチモデルの座標取得
+// アタチE��モチE��の座標取征E
 VECTOR Model::GetAttachmentPosition()
 {
     if (mpAttachment != nullptr)
     {
         VECTOR vec = VGet(0.0f, -50.0f, 0.0f);
 
-        // 行列の取得
+        // 行�Eの取征E
         MATRIX matrix = MV1GetFrameLocalWorldMatrix(mpAttachment->GetHandle(), 0);
 
-        // 行列情報をもとに座標変換する
+        // 行�E惁E��をもとに座標変換する
         vec = VTransform(vec, matrix);
 
         return vec;
     }
 
-    // アタッチメントが無い場合は原点を返しておく
+    // アタチE��メントが無ぁE��合�E原点を返しておく
     return VGet(0.0f, 0.0f, 0.0f);
 }
 
@@ -263,15 +263,15 @@ void Model::SetScale(VECTOR scale)
 
 void Model::SetTexture(std::string filename, int index)
 {
-    // テクスチャをすでに切り替えている場合はそのテクスチャの破棄
+    // チE��スチャをすでに刁E��替えてぁE��場合�Eそ�EチE��スチャの破棁E
     if (mnChangeTextureHandle != -1)
     {
         DeleteGraph(mnChangeTextureHandle);
     }
 
-    // テクスチャの読み込み
+    // チE��スチャの読み込み
     mnChangeTextureHandle = Master::mpResourceManager->LoadGraphics(filename);
 
-    // 読み込んだテクスチャの反映
+    // 読み込んだチE��スチャの反映
     MV1SetTextureGraphHandle(mnHandle, index, mnChangeTextureHandle, FALSE);
 }

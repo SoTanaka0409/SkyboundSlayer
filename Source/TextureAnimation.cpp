@@ -9,7 +9,7 @@ TextureAnimation::TextureAnimation(
     int yNum,
     int interval
 )
-: mvPosition(position)
+: position_(position)
 , mnCounter(0)
 , mnInterval(interval)
 , mnCurrentNum(0)
@@ -62,5 +62,5 @@ void TextureAnimation::Update()
 
 void TextureAnimation::Draw()
 {
-    DrawGraph(mvPosition.x, mvPosition.y, mnHandleList[mnCurrentNum], true);
+    DrawGraph(position_.x, position_.y, mnHandleList[mnCurrentNum], true);
 }

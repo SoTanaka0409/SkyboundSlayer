@@ -112,7 +112,7 @@
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\Combo.h" />
     <ClInclude Include="Source\Config.h" />
-    <ClInclude Include="Source\Debugh.h" />
+    <ClInclude Include="Source\Debug.h" />
     <ClInclude Include="Source\DrawCircle1.h" />
     <ClInclude Include="Source\DrawHp.h" />
     <ClInclude Include="Source\Effect.h" />
@@ -125,7 +125,7 @@
     <ClInclude Include="Source\EnemyManager.h" />
     <ClInclude Include="Source\Enemy3D.h" />
     <ClInclude Include="Source\Enemy3D_AT.h" />
-    <ClInclude Include="Source\EnemySerch.h" />
+    <ClInclude Include="Source\EnemySearch.h" />
     <ClInclude Include="Source\Equipment.h" />
     <ClInclude Include="Source\EquipmentManager.h" />
     <ClInclude Include="Source\haikei.h" />

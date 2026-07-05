@@ -18,17 +18,17 @@ public:
 
 	void UpdateRotation();//回転処理
 
-	VECTOR GetPosition() { return mvPosition; }//座標取得
+	VECTOR GetPosition() { return position_; }//座標取得
 	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//注視点取得
 
 private:
 	float mfHorizontalAngle;  //水平方向アングル
 	float mfVerticalAngle;   // 垂直方向アングル
 
-	VECTOR mvPosition; //カメラ座標
+	VECTOR position_; //カメラ座標
 	VECTOR mvLookAtPosition;   //カメラの注移転座標   座標固定 (今回は)
 
-	Object3D* mpTarget;    //カメラを向ける対象
+	Object3D* target_;    //カメラを向ける対象
 	int centerX = 640;
 	int centerY = 360;
 };

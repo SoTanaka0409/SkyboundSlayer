@@ -1,14 +1,14 @@
 #pragma once
 #include"Object3D.h"
 #include<string>
-#include"Debugh.h"
+#include"Debug.h"
 
 
 
 class Stage :public Object3D
 {
 public:
-	Stage(VECTOR initPos,std::string StageModelName, std::string stageCollsionModelName, VECTOR scale = VGet(-1.0f, -1.0f, -1.0f));
+	Stage(VECTOR initPos,std::string StageModelName, std::string stageCollsionModelName, VECTOR scale = VGet(-1.0f, -1.0f, -1.0f), std::string textureFilename = "");
 
 	~Stage();
 
@@ -16,18 +16,18 @@ public:
 
 	void Draw()override;
 
-	//ƒXƒe[ƒW‚ÆƒJƒvƒZƒ‹Œ^‚Æ‚Ì“–‚½‚è”»’è
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã‚«ãƒ—ã‚»ãƒ«å‹ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	bool CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r);
 
-	//ƒXƒe[ƒW‚Æü•ª‚Æ‚Ì“–‚½‚è”»’è
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ç·šåˆ†ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	VECTOR CheckHit_Line(VECTOR pos1, VECTOR pos2);
 	VECTOR CheckHit_LineDebug(VECTOR pos1, VECTOR pos2);
 
 
 private:
 	Debug* mpDebug;
-	int mnModelHandle; //ƒXƒe[ƒWƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
-	int mnCollisionHandle;;//ƒXƒe[ƒW‚ÌqƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
+	int mnModelHandle; //ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
+	int mnCollisionHandle;;//ã‚¹ãƒ†ãƒ¼ã‚¸ã®å­ãƒªã‚¸ãƒ§ãƒ³ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
 
 
 

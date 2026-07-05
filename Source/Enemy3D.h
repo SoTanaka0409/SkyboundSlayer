@@ -3,7 +3,7 @@
 #include"Object3D.h"
 
 #include"DrawHp.h"
-#include"Debugh.h"
+#include"Debug.h"
 #include"EnemyManager.h"
 #include"Enemy.h"
 #include"Collision.h"

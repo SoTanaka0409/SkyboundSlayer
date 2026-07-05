@@ -8,7 +8,7 @@
 #include"Shield.h"
 #include"Camera1.h"
 #include"Texture.h"
-#include"Debugh.h"
+#include"Debug.h"
 #include"EffectU.h"
 #include"EnemyManager.h"
 #include"LevelUp.h"
@@ -75,13 +75,13 @@ public:
 
 	void RotationByMove();//移動による回転処理
 
-	float GetHp() { return mfHp; }
-	void SetHp(float hp) { mfHp = hp; }
-	float GetAttack() { return mfAttack; }
-	void SetAttack(float attack) { mfAttack = attack; }
+	float GetHp() { return hp_; }
+	void SetHp(float hp) { hp_ = hp; }
+	float GetAttack() { return attack_; }
+	void SetAttack(float attack) { attack_ = attack; }
 	float GetAllStatusState(Object3D::StatusState state);
-	float GetSpeed() { return mfSpeed; }
-	void SetSpeed(float speed) { mfSpeed = mfSpeed + speed; }
+	float GetSpeed() { return speed_; }
+	void SetSpeed(float speed) { speed_ = speed_ + speed; }
 	float GetSize() { return mfSize; }
 	
 	// --- Upgrade Setters ---
@@ -109,7 +109,7 @@ public:
 	CapsuleCollider* GetCollisionCollider() { return mpCapsuleCollider; }
 	SphereCollider* Get500Collider() { return mpSerchEnemyCollider; }
 
-	Model* mpModel;//モデルクラスのポインタ
+	Model* model_;//モデルクラスのポインタ
 	ShortInventory* mpShortInventory;
 	BuffManager* mpBuffManager;
 	ItemManager* mpItemManager;
@@ -124,7 +124,7 @@ private:
 	Texture* mpTexture2;
 	Debug* mpDebug;
 	EffectU* mpEffectU;
-	Object3D* mpTarget;
+	Object3D* target_;
 	
 
 
@@ -147,13 +147,13 @@ private:
 	bool mbAttackSlideSerch;
 
 	float mfjumpPower;//ジャンプ力
-	float mfSpeed;
+	float speed_;
 	float mfEvasionSpeed;
 	float mfDashSpeed;
 	float mfNormalSpeed;
 	float mfAttackSlideSpeed;
-	float mfHp;
-	float mfMaxHp;
+	float hp_;
+	float max_hp_;
 	float mfRideOldHp;
 	float mfSize;
 	
@@ -175,7 +175,7 @@ private:
 	int AttackJumpTime=200;
 	////////////////	攻撃力	
 
-	float mfAttack;//ダメージを計算するときに使われる基本的な値
+	float attack_;//ダメージを計算するときに使われる基本的な値
 	float mfNormalAttack;//何らかの要因でmfAttackの値を変えた時に戻すための値
 	float mfAttackjump;
 	float mfAttackSlide;

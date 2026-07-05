@@ -22,7 +22,7 @@ public:
 	virtual void OnTrigger(Collider* collider, Collider* check);
 	virtual void OnExit(Collider* collider, Collider* check);
 private:
-	Model* mpModel;
+	Model* model_;
 	CapsuleCollider* mpCapsuleCollider;
 	float mfHigh;
 };

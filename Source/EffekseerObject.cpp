@@ -52,8 +52,8 @@ void EffekseerObject::Update()
 		else
 		{
 			// Update position to follow parent
-			mvPosition = VAdd(mpParent->GetPosition(), mOffset);
-			EffekseerManager::GetInstance()->SetEffectPosition(mPlayingHandle, mvPosition);
+			position_ = VAdd(mpParent->GetPosition(), mOffset);
+			EffekseerManager::GetInstance()->SetEffectPosition(mPlayingHandle, position_);
 		}
 	}
 }

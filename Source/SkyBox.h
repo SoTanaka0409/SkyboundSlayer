@@ -16,7 +16,7 @@ public:
 	void SetModelTexture(std::string filename, int index = 0);	// モデルのテクスチャ変更（Modelクラスへの橋渡し）
 
 private:
-	Model* mpModel;			// モデルクラスのポインタ
+	Model* model_;			// モデルクラスのポインタ
 };
 
 /*

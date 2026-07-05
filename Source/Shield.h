@@ -23,7 +23,7 @@ public:
 	bool GetNew() { return NewShield; }
 	void SetNew(bool New) { NewShield = New; }
 private:
-	Model* mpModel;
+	Model* model_;
 	
 	int mnHp;
 	float mnSizeS;//シールドのサイズ

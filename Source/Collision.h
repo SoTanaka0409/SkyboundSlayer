@@ -51,6 +51,6 @@ public:
 
 private:
 	VECTOR mvPOsition;
-	float mfRadius;
+	float radius_;
 	Object3D* mpObject;
 };

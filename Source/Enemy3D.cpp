@@ -28,19 +28,19 @@ Enemy3D::Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,floa
 	//,Animation(false)
 {
 	mbMagic = true;
-	mnChance = 70;//アイテムのドロップ確率
+	mnChance = 70;//アイチE��のドロチE�E確玁E
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//モデルの生成
-	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
-	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
-	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
-	mpModel->AddAnimation(ANIMATION_ATTACK, "Resource/Model/MagicAttack.mv1");
+	//モチE��の生�E
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
+	model_->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
+	model_->AddAnimation(ANIMATION_ATTACK, "Resource/Model/MagicAttack.mv1");
 	
-	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
+	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
 	//new DrawHp("",  //画像名
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//中心座標
+	//	(VAdd(position_, VGet(0.0f, 100.0f, 0.0f))),//中忁E��樁E
 	mpDebug = new Debug();
 	/*Item::ItemInformation* itemInfo;
 	itemInfo = new Item::ItemInformation();
@@ -65,12 +65,12 @@ void Enemy3D::Update()
 	else
 	{
 
-		if (mpModel != nullptr)
+		if (model_ != nullptr)
 		{
 
 			Attack();
 
-			if (!(mpModel->GetNowState() == ANIMATION_ATTACK))
+			if (!(model_->GetNowState() == ANIMATION_ATTACK))
 			{
 				RotationByMove();
 				Move();
@@ -78,8 +78,8 @@ void Enemy3D::Update()
 
 			}
 
-			mpModel->Update();
-			//mpDH->Update();//drawHpのアップデートを呼ぶ
+			model_->Update();
+			//mpDH->Update();//drawHpのアチE�EチE�Eトを呼ぶ
 			CollPositionUpdate();
 
 
@@ -89,13 +89,13 @@ void Enemy3D::Update()
 
 void Enemy3D::Draw()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		mpModel->Draw();
+		model_->Draw();
 	}
 	if (Master::mpDebug->Getdebug() == true&& Master::mpEnemySerch->getSerch() == false)
 	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
+		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize,
 			8,
 			GetColor(255, 255, 255),
@@ -105,7 +105,7 @@ void Enemy3D::Draw()
 	}
 	if (Master::mpEnemySerch->getSerch() == true)
 	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
+		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize*5,
 			8,
 			GetColor(255, 0, 0),
@@ -121,24 +121,24 @@ void Enemy3D::Draw()
 
 	void Enemy3D::Attack()
 	{
-		AnimationState now = mpModel->GetNowState();
+		AnimationState now = model_->GetNowState();
 		
 		if (AttackCount >= AttackInterval && isHitAttackSearch)
 		{
 			AttackCount = 0;
-			//攻撃モーションに変更
-			mpModel->ChangeAnimation(ANIMATION_ATTACK);
-			//ループはさせない
-			mpModel->SetLoop(false);
-			//モーション後は待機モーションに戻す
-			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
+			//攻撁E��ーションに変更
+			model_->ChangeAnimation(ANIMATION_ATTACK);
+			//ループ�EさせなぁE
+			model_->SetLoop(false);
+			//モーション後�E征E��モーションに戻ぁE
+			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			isHitAttackSearch = false;
-			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition,VGet(0.0f,100.0f,0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
+			new Magic_Ene("Resource/Damage.png", VAdd(position_,VGet(0.0f,100.0f,0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
 		}
 		if (!(now == ANIMATION_ATTACK))
 		{
 			AttackCount++;
-			AttackHitJudgmentflag = false;//当たり判定の復活
+			AttackHitJudgmentflag = false;//当たり判定�E復活
 		}
 	}
 

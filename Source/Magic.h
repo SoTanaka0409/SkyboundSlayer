@@ -12,7 +12,7 @@ class CapsuleCollider;
 class Magic:public Object3D
 {
 public:
-	Magic(std::string filename,VECTOR initPos,float r,float damage,float speed,VECTOR movevec,int count,int time);//file,initpos,半径,攻撃力,speed,向かう方向,count,消える時間
+	Magic(std::string filename,VECTOR initPos,float r,float damage,float speed,VECTOR movevec,int count,int time);//file,initpos,半征E攻撁E��,speed,向かぁE��吁Ecount,消える時閁E
 	~Magic();
 
 	void Update();
@@ -29,9 +29,9 @@ protected:
 	SphereCollider* mpHitCollider;
 	int mnGraphHandle;
 	std::string Filename;
-	float mfSpeed;
+	float speed_;
 	float mfAttack_chara;
-	float mfAttack;
+	float attack_;
 	float mfMagicSize;
 	VECTOR moveVec;
 	int DeleteCount;

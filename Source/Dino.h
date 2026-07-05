@@ -45,7 +45,7 @@ public:
 	TagDINO_NUM GetTagD() { return mnTagD; }
 	float GetDinoSize() { return DinoSize; }
 private:
-	Model* mpModel;
+	Model* model_;
 	
 	float mnHp;
 	float mnMaxHp;

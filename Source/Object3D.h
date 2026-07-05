@@ -9,7 +9,7 @@ class Object3D
 public:
 	enum Tag3D
 	{
-		None3D = 0,//設定なし
+		None3D = 0,//設定なぁE
 		Tag3D_Player3D = 2000,
 		Tag3D_Wall3D = 2100,
 		Tag3D_Enemy3D = 2200,
@@ -34,17 +34,17 @@ public:
 		Status_Hp,
 		
 	}state;
-	// ★New!! Zソート用★
+	// ☁Eew!! Zソート用☁E
 public: // ソート関数定義
 
-	// Zソート用の設定
-	void SetCameraDistance(float distance) { mfCurrentCameraDistance = distance; }
+	// Zソート用の設宁E
+	void SetCameraDistance(float distance) { current_camera_distance_ = distance; }
 
-	// カメラ距離を基準にソートするためのオペレーター
-	// note: カメラとの距離が離れるほどリストの手前に来るようにする（先に描画したい）
+	// カメラ距離を基準にソートするため�Eオペレーター
+	// note: カメラとの距離が離れるほどリスト�E手前に来るよぁE��する�E��Eに描画したぁE��E
 	struct CompareZOrder {
 		bool operator()(Object3D* a, Object3D* b) const {
-			return a->mfCurrentCameraDistance > b->mfCurrentCameraDistance;
+			return a->current_camera_distance_ > b->current_camera_distance_;
 		}
 	};
 
@@ -69,37 +69,37 @@ public:
 	virtual void OnTrigger(Collider* collider, Collider* check);
 	virtual void OnExit(Collider* collider, Collider* check);
 
-	// 地形（Stage）に高さを合わせる処理
+	// 地形�E�Etage�E�に高さを合わせる�E琁E
 	void TerrainFollow(float capsuleBottomY = -150.0f, float capsuleTopY = 150.0f, float capsuleRadius = 40.0f, float lineTopY = 1000.0f, float lineBottomY = -1000.0f, float gravity = 8.0f);
 
-public://ゲッター、セッターw
-	void SetPosition(VECTOR pos) { mvPosition = pos; };
-	VECTOR GetPosition() { return mvPosition; }
+public://ゲチE��ー、セチE��ーw
+	void SetPosition(VECTOR pos) { position_ = pos; };
+	VECTOR GetPosition() { return position_; }
 
-	void SetOldPosition(VECTOR pos) { mvOldPosition = pos; }
-	VECTOR GetOldPosition() { return mvOldPosition; }
+	void SetOldPosition(VECTOR pos) { old_position_ = pos; }
+	VECTOR GetOldPosition() { return old_position_; }
 
-	void SetRotation(VECTOR rot) { mvRotation = rot; }
-	VECTOR GETRotation() { return mvRotation; }
+	void SetRotation(VECTOR rot) { rotation_ = rot; }
+	VECTOR GETRotation() { return rotation_; }
 
-	void SetDeleteFlag(bool flag) { mbDeleteFlag = flag; }
-	bool IsDeleteFlag() { return mbDeleteFlag; }
+	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
+	bool IsDeleteFlag() { return delete_flag_; }
 
-	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //敵の削除フラグ設定　
-	bool IsDrawFlag() { return mbDrawFlag; }          //敵の削除フラグの作成
+	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //敵の削除フラグ設定　
+	bool IsDrawFlag() { return draw_flag_; }          //敵の削除フラグの作�E
 
 	//タグ
-	void SetTag(Tag3D tag) { mnTag = tag; }
-	Tag3D GetTag() { return mnTag; }
+	void SetTag(Tag3D tag) { tag_ = tag; }
+	Tag3D GetTag() { return tag_; }
 
 protected:
-	VECTOR mvPosition;  //座標
-	VECTOR mvRotation;   //回転
-	VECTOR mvOldPosition;
+	VECTOR position_;  //座樁E
+	VECTOR rotation_;   //回転
+	VECTOR old_position_;
 private:
-	bool mbDeleteFlag;  //削除フラグ
-	Tag3D mnTag;   //タグ
-	bool mbDrawFlag;//描画フラグ
-	float mfCurrentCameraDistance;     // 現在のカメラとの距離
+	bool delete_flag_;  //削除フラグ
+	Tag3D tag_;   //タグ
+	bool draw_flag_;//描画フラグ
+	float current_camera_distance_;     // 現在のカメラとの距離
 	
 };

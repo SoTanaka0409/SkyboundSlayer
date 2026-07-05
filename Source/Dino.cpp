@@ -23,37 +23,37 @@ Dino::Dino(std::string filename, VECTOR initPos, float hp,float speed)
 {
 	
 	//モデルの生成
-	mpModel = new Model(filename, initPos);
+	model_ = new Model(filename, initPos);
 
 }
 
 Dino::~Dino()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		delete mpModel;
+		delete model_;
 	}
 }
 
 void Dino::Update()
 {
 
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
 		RotationByMove();
 		Move();
-		mpModel->Update();
+		model_->Update();
 	}
 }
 
 void Dino::Draw()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		mpModel->Draw();
+		model_->Draw();
 	}
 
-	DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
+	DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
 		DinoSize,
 		8,
 		GetColor(255, 255, 255),
@@ -91,14 +91,14 @@ void Dino::Move()
 		/*auto mpPlayer = Master::mpPlayer;
 		Player3D* pPlayer = Master::mpPlayer;
 
-		VECTOR GoPosition = VSub(pPlayer->GetPosition(), mvPosition);
+		VECTOR GoPosition = VSub(pPlayer->GetPosition(), position_);
 		GoPosition = VNorm(GoPosition);*///プレイヤーへ向かう処理
 
-		float GetmvPositionY = mvPosition.y;
+		float GetmvPositionY = position_.y;
 		if (isWalk)
 		{
-			float  GetmvPositionX = mvPosition.x + rand() % -500 + rand()%500;
-			float  GetmvPositionZ = mvPosition.z + rand() % -500 + rand()%500;
+			float  GetmvPositionX = position_.x + rand() % -500 + rand()%500;
+			float  GetmvPositionZ = position_.z + rand() % -500 + rand()%500;
 			
 			isWalk = false;
 		}
@@ -109,15 +109,15 @@ void Dino::Move()
 		bool isMove = (moveVec.x != 0.0f || moveVec.z != 0.0f);
 		if (isMove)
 		{
-			mpModel->ChangeAnimation(ANIMATION_RUN);
+			model_->ChangeAnimation(ANIMATION_RUN);
 
 			//移動方向を正規化しておく
 			mfTargetAngle = atan2f(moveVec.x, moveVec.z);
 
 		}
 		
-		VECTOR oldPosition = mvPosition;//前回の座標を一旦保持
-		mvPosition = VAdd(mvPosition, VScale(moveVec, mnSpeed));
+		VECTOR oldPosition = position_;//前回の座標を一旦保持
+		position_ = VAdd(position_, VScale(moveVec, mnSpeed));
 		VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
 		//ステージとの当たり判定をする
 		// 地形に沿う処理
@@ -138,13 +138,13 @@ void Dino::Move()
 
 					// プレイヤーを包むようなカプセル型の判定と、壁の三角形ポリゴンとの当たり判定を行う
 					if (HitCheck_Capsule_Triangle(
-						mvPosition,
-						VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
+						position_,
+						VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
 						80.0f,
 						vertex.at(0).pos, vertex.at(1).pos, vertex.at(2).pos) ||
 						HitCheck_Capsule_Triangle(
-							mvPosition,
-							VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
+							position_,
+							VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
 							80.0f,
 							vertex.at(3).pos, vertex.at(1).pos, vertex.at(2).pos)
 						)
@@ -157,20 +157,20 @@ void Dino::Move()
 
 						if (hitwall == true && hitwalls == false)
 						{
-							mvPosition = oldPosition;
-							mvPosition = VAdd(mvPosition, VScale(slide, mnSpeed));
+							position_ = oldPosition;
+							position_ = VAdd(position_, VScale(slide, mnSpeed));
 							hitwalls = true;
 						}
 						else if (hitwalls == true)
 						{
-							mvPosition = oldPosition;
+							position_ = oldPosition;
 						}
 					}
 				}
 			}
 
 		}
-		mpModel->SetPosition(mvPosition);
+		model_->SetPosition(position_);
 
 	}
 }
@@ -211,9 +211,9 @@ void Dino::RotationByMove()
 	mfAngle = mfTargetAngle - subAngle;
 
 	//回転値を設定
-	mvRotation.y = mfAngle + DX_PI_F;
+	rotation_.y = mfAngle + DX_PI_F;
 	//モデルに伝える
-	mpModel->SetRotation(mvRotation);
+	model_->SetRotation(rotation_);
 
 
 }

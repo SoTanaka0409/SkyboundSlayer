@@ -17,34 +17,34 @@ void InfClass::Draw()
 {
 	if (LogNumber == 1)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%sを獲得した", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sを獲得した", LogDate.c_str());
 	}
 	else if (LogNumber == 2)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%sを使用した", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sを使用した", LogDate.c_str());
 	}
 	else if (LogNumber == 3)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%sが現れた", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sが現れた", LogDate.c_str());
 	}
 	else if (LogNumber == 4)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%sは使用できません", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sは使用できません", LogDate.c_str());
 	}
 	else if(LogNumber==5)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%s", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%s", LogDate.c_str());
 	}
 	else
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "未確認なログです");
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "未確認なログです");
 	}
 
 	
 
 /*	if (IsDrawFlag == false)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%sを獲得した", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sを獲得した", LogDate.c_str());
 	}
 	*/
 }

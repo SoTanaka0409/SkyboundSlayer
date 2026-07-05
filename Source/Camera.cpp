@@ -12,9 +12,9 @@ Camera::Camera()
 
 	:mfHorizontalAngle(0.0f)
 	,mfVerticalAngle(0.0f)
-	,mvPosition(VGet(0.0f,0.0f,0.0f))
+	,position_(VGet(0.0f,0.0f,0.0f))
 	,mvLookAtPosition(VGet(0.0f,0.0f,0.0f))
-	,mpTarget(nullptr)
+	,target_(nullptr)
 	,Camera1(true)
 	,Camera3(false)
 	, mnShakeTime(0)
@@ -37,7 +37,7 @@ Camera::~Camera()
 
 void Camera::Initialize()
 {
-	mpTarget = nullptr;
+	target_ = nullptr;
 	//カメラのクリッピング距離の設定
 	SetCameraNearFar(100.0f, Config::CameraFar);//10050000までの距離が見える
 
@@ -45,7 +45,7 @@ void Camera::Initialize()
 	SetBackgroundColor(128, 128, 128);
 
 	//カメラの設定を反映
-	SetCameraPositionAndTarget_UpVecY(mvPosition, mvLookAtPosition);
+	SetCameraPositionAndTarget_UpVecY(position_, mvLookAtPosition);
 
 	//更新処理を一度行っていく
 	Update();
@@ -57,14 +57,14 @@ void Camera::Update()
 {
 	/*if (mpTitleScene->GetResetCameraPlayer() == true)
 	{
-		mpTarget = nullptr;
+		target_ = nullptr;
 		mpTitleScene->ResetCameraPlayer(false);
 	}*/
 	
 	VECTOR temp; //作業用変数
-	if (mpTarget == nullptr)
+	if (target_ == nullptr)
 	{
-		mpTarget = Master::mpPlayer;
+		target_ = Master::mpPlayer;
 
 	}
 	if(Camera1==true)
@@ -88,25 +88,25 @@ void Camera::Update()
 
 		//ターゲットがいなかったら
 		
-		if (mpTarget != nullptr)
+		if (target_ != nullptr)
 		{
-			mvLookAtPosition = VAdd(mpTarget->GetPosition(), temp);
-			mvPosition = VAdd(mpTarget->GetPosition(), dir);
+			mvLookAtPosition = VAdd(target_->GetPosition(), temp);
+			position_ = VAdd(target_->GetPosition(), dir);
 
-			mvPosition.y += 160.0f + dir.x + dir.z;
+			position_.y += 160.0f + dir.x + dir.z;
 
 
 		}
 		else
 		{
 			//注視点を少し上にずらす
-			mvPosition.y = 160.0f;
+			position_.y = 160.0f;
 		}
 
 		// ★New★
 		// 画面揺れの分を加算するように変更
 		// カメラ設定を反映
-		SetCameraPositionAndTarget_UpVecY(VAdd(mvPosition, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
+		SetCameraPositionAndTarget_UpVecY(VAdd(position_, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
 		//回転設定
 	}
 	if (Camera3 == true)
@@ -123,13 +123,13 @@ void Camera::Update()
 		
 		UpdateRotation();
 		//ターゲットがいなかったら
-		/*if (mpTarget == nullptr)
+		/*if (target_ == nullptr)
 		{
-			mpTarget = Master::mpPlayer;
+			target_ = Master::mpPlayer;
 		}*/
-		if (mpTarget != nullptr)
+		if (target_ != nullptr)
 		{
-			mvLookAtPosition = mpTarget->GetPosition();
+			mvLookAtPosition = target_->GetPosition();
 			mvLookAtPosition.y += 240.0f;
 			
 		}
@@ -147,13 +147,13 @@ void Camera::Update()
 			temp.x = 400.0f * cosf(mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f)) * sinf(mfHorizontalAngle / 180.0f * DX_PI_F);
 			temp.y = 400.0f * sinf(-mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f));
 			temp.z = -(distance * cosf(mfVerticalAngle / 180.0f * DX_PI_F) * cosf(mfHorizontalAngle / 180.0f * DX_PI_F));
-			mvPosition = VAdd(temp, mvLookAtPosition);
-			/*mvLookAtPosition = VSub(mpTarget->GetPosition(), mvPosition);
+			position_ = VAdd(temp, mvLookAtPosition);
+			/*mvLookAtPosition = VSub(target_->GetPosition(), position_);
 			mvLookAtPosition = VNorm(mvLookAtPosition);*/
 			// ★New★
 		// 画面揺れの分を加算するように変更
 		 // カメラ設定を反映
-			SetCameraPositionAndTarget_UpVecY(VAdd(mvPosition, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
+			SetCameraPositionAndTarget_UpVecY(VAdd(position_, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
 
 			//上で求めた座標に注視点の座標を足したものがカメラの座標となる
 			//カメラ設定を反映

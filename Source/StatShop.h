@@ -18,6 +18,7 @@ public:
 	void StartWalkingIn();
 	void StartWalkingOut();
 	void movePosition();
+	bool IsArrived() const { return mShopState == ShopState::ARRIVED; }
 
 	virtual void OnEnter(Collider* collider, Collider* check) override;
 	virtual void OnTrigger(Collider* collider, Collider* check) override;
@@ -28,7 +29,7 @@ private:
 	void BuyClass();
 	int GetCost(int level);
 
-	Model* mpModel;
+	Model* model_;
 	SphereCollider* mpShopIn;
 	SphereCollider* mpSafeZoon;
 	

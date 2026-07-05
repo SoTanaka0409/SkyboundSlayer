@@ -4,7 +4,7 @@
 
 Texture::Texture(std::string filename, VECTOR centerPosition, int transFlag)
     : mnHandle(-1)
-    , mvPosition(centerPosition)
+    , position_(centerPosition)
     , mnSizeX(0)
     , mnSizeY(0)
     , mnTransFlag(transFlag)
@@ -25,7 +25,7 @@ Texture::~Texture()
 void Texture::Draw()
 {
     // ‰æ‘œ‚Ì•\Ž¦
-    DrawGraph(mvPosition.x - (mnSizeX / 2), mvPosition.y - (mnSizeY / 2), mnHandle, mnTransFlag);
+    DrawGraph(position_.x - (mnSizeX / 2), position_.y - (mnSizeY / 2), mnHandle, mnTransFlag);
 }
 
 void Texture::Update()

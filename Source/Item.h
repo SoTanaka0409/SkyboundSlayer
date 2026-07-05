@@ -23,7 +23,7 @@ public:
 		ItemID ID;
 		std::string effect;
 		bool mbUse = false;
-		int price;
+		int price=100;
 		bool isLog = true;//true‚¾‚Á‚½‚çƒƒO‚Éc‚·
 
 	}Information;

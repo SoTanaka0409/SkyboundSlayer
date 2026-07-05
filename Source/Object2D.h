@@ -25,30 +25,30 @@ public:
 	virtual void Draw();
 
 public://ゲッター、セッター
-	void SetPosition(VECTOR pos) { mvPosition = pos; };
-	VECTOR GetPosition() { return mvPosition; }
+	void SetPosition(VECTOR pos) { position_ = pos; };
+	VECTOR GetPosition() { return position_; }
 
-	void SetRotation(VECTOR rot) { mvRotation = rot; }
-	VECTOR GETRotation() { return mvRotation; }
+	void SetRotation(VECTOR rot) { rotation_ = rot; }
+	VECTOR GETRotation() { return rotation_; }
 
-	void SetDeleteFlag(bool flag) { mbDeleteFlag = flag; }
-	bool IsDeleteFlag() { return mbDeleteFlag; }
+	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
+	bool IsDeleteFlag() { return delete_flag_; }
 
-	void SetDrawFlag(bool flag) { mbDrawFlag = flag; } //敵の削除フラグ設定　
-	bool IsDrawFlag() { return mbDrawFlag; }          //敵の削除フラグの作成
+	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //敵の削除フラグ設定　
+	bool IsDrawFlag() { return draw_flag_; }          //敵の削除フラグの作成
 
 	//タグ
-	void SetTag(Tag2D tag) { mnTag = tag; }
-	Tag2D GetTag() { return mnTag; }
+	void SetTag(Tag2D tag) { tag_ = tag; }
+	Tag2D GetTag() { return tag_; }
 
 protected:
-	VECTOR mvPosition;  //座標
-	VECTOR mvRotation;   //回転
+	VECTOR position_;  //座標
+	VECTOR rotation_;   //回転
 
 private:
-	bool mbDeleteFlag;  //削除フラグ
-	Tag2D mnTag;   //タグ
-	bool mbDrawFlag;//描画フラグ
+	bool delete_flag_;  //削除フラグ
+	Tag2D tag_;   //タグ
+	bool draw_flag_;//描画フラグ
 
 
 };

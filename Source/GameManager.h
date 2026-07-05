@@ -21,6 +21,8 @@ public:
         SHOP_2,
         PHASE_3,
         SHOP_3,
+        FADE_OUT_TO_BOSS,
+        FADE_IN_BOSS,
         BOSS,
         CLEAR
     };
@@ -29,6 +31,7 @@ private:
     Difficulty mDifficulty;
     Phase mCurrentPhase;
     int mShopTimer;
+    int mFadeAlpha;
     EnemyManager* mpEnemyManager;
 
     void SpawnPhaseEnemies();

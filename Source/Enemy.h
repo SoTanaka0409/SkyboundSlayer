@@ -4,7 +4,7 @@
 #include "Texture.h"
 #include"Object3D.h"
 #include"Model.h"
-#include"Debugh.h"
+#include"Debug.h"
 
 
 #include"Item.h"
@@ -24,11 +24,11 @@ public:
 	void SetNewEnemyFlag(bool flag) { mbNewEnemyflag = flag; }
 	bool GetNewEnemyFlag() { return mbNewEnemyflag; }
 
-	virtual CapsuleCollider* GetEnemycoll() { return mpCapsuleCollider; }//縺薙ｌ縺悟次蝗�・溘き繝励そ繝ｫ繧ｳ繝ｩ繧､繝繝ｼ縺�縺第ｶ医∴縺ｪ縺・
+	virtual CapsuleCollider* GetEnemycoll() { return mpCapsuleCollider; }//縺薙ｌ縺悟次蝗�・溘き繝励そ繝ｫ繧�E�繝ｩ繧�E�繝繝ｼ縺�E�縺第�E�医∴縺�E�縺・
 
 private:
-	bool mbHitSizeflag;//蠖薙◆繧雁愛螳夂畑縺ｮ繧ｵ繧､繧ｺ繧呈戟縺｣縺ｦ縺上ｋ縺九←縺・°縺ｮflag?
-	bool mbNewEnemyflag;//謨ｵ繧地ew縺吶ｋ縺溘ａ縺ｮ繝輔Λ繧ｰ・滉ｽｿ縺・婿縺ｯ繧医￥繧上°繧峨↑縺・
+	bool mbHitSizeflag;//蠖薙◁E��雁�E螳夂畑縺�E�繧�E�繧�E�繧�E�繧呈戟縺�E�縺�E�縺上ｋ縺九�E縺・°縺�E�flag?
+	bool mbNewEnemyflag;//謨�E�繧地ew縺吶�E�縺溘ａ縺�E�繝輔Λ繧�E�・滉ｽ�E�縺・婿縺�E�繧医�E�繧上°繧峨↑縺・
 
 public:
 	Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2,float Serch3, float xp,int money,bool isSeparateAnim);
@@ -40,7 +40,7 @@ public:
 	void Update()override;
 
 	virtual void Move();
-    virtual void RotationByMove();//遘ｻ蜍輔↓繧医ｋ蝗櫁ｻ｢蜃ｦ逅・
+    virtual void RotationByMove();//遘ｻ蜍輔�E繧医�E�蝗櫁E���E�蜁E��送E�E
 	virtual void Damage(float damage);
 	virtual void AttackList();
 	virtual void Attack();
@@ -54,11 +54,11 @@ public:
 	virtual void CollPositionUpdate();
 
 
-	float GetHp() { return mfHp; };
-	void SetHp(float hp) { mfHp = hp; };
+	float GetHp() { return hp_; };
+	void SetHp(float hp) { hp_ = hp; };
 
-	float GetMaxHp() { return mfMaxHp; }
-	void SetMaxHp(float mhp) { mfMaxHp = mhp; }
+	float GetMaxHp() { return max_hp_; }
+	void SetMaxHp(float mhp) { max_hp_ = mhp; }
 
 	bool GetInvisible() { return mbInvisible; }
 	void SetInvisible(int Inv) { mbInvisible = Inv; }
@@ -66,7 +66,7 @@ public:
 	VECTOR GetGoPlayer() { return GoPosition; }
 	void SetGoPlayer(VECTOR goplayer) { GoPosition = goplayer; }
 
-	void SetVPosition(VECTOR pos) { VinitPos = pos; }//蛻晄悄繝ｪ繧ｹ繝昴・繝ｳ蝨ｰ轤ｹ縺ｮ蠎ｧ讓吶ｒ蜿悶▲縺ｦ縺翫￥
+	void SetVPosition(VECTOR pos) { VinitPos = pos; }//蛻晁E��繝ｪ繧�E�繝昴・繝ｳ蝨�E�轤�E�縺�E�蠎ｧ讓吶�E�蜿悶▲縺�E�縺翫�E�
 	VECTOR GetVPosition() { return VinitPos; }
 
 	float GetSize() { return mfSize; }
@@ -96,63 +96,63 @@ protected:
 	SphereCollider* mpAttachCollider;
 	CapsuleCollider* mpCapsuleCollider;
 	SphereCollider* mpSerchCollider;
-	SphereCollider* mpAttackCollider;//謾ｻ謦・＠蟋九ａ繧句・
+	SphereCollider* mpAttackCollider;//謾�E�謦・�E�蟋九ａ繧句・
 	SphereCollider* mpStopCollider;
-	Model* mpModel;
+	Model* model_;
 	Debug* mpDebug;
 protected:
-	float mfHp;
-	float mfMaxHp;
-	float mfSpeed;
+	float hp_;
+	float max_hp_;
+	float speed_;
 	float mfNormalSpeed;
 	float mfMaxSpeed;
-	float mfAttack;
+	float attack_;
 
-	int WalkTimer;//蜷後§螳晏ｺｫ縺ｫ豁ｩ縺咲ｶ壹￠繧区凾髢・
+	int WalkTimer;//蜷後§螳晏ｺ�E�縺�E�豁E��縺咲�E�壹�E�繧区凾髢・
 	int WalkCount;//
 
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
-	VECTOR GoPosition;//蜷代°縺・・繧ｯ繝医Ν・医・繝ｬ繧､繝､繝ｼ繧呈─遏･縺励◆縺ｨ縺・
+	VECTOR GoPosition;//蜷代°縺・・繧�E�繝医Ν�E医・繝ｬ繧�E�繝､繝ｼ繧呈─遏･縺励◁E���E�縺・
 	VECTOR oldPosition;
-	VECTOR VinitPos;//spown蝨ｰ轤ｹ
+	VECTOR VinitPos;//spown蝨�E�轤�E�
 	VECTOR NoPosition;
 	VECTOR moveVec;
 	VECTOR UpMoveVector;
 	VECTOR leftMoveVector;
-	bool mbInvisible;//辟｡謨ｵ縺九←縺・°
-	int mnAlgorithm;//繝ｩ繝ｳ繝繝�遘ｻ蜍・
+	bool mbInvisible;//辟｡謨�E�縺九�E縺・°
+	int mnAlgorithm;//繝ｩ繝ｳ繝繝�遘ｻ蜍�E
 	int AlgHit;
 
 	int AttackInterval;
 	int AttackCount;
 
 	bool Animation;
-	float mfTargetAngle;//逶ｮ讓吶・蝗櫁ｻ｢蝨ｰ
-	float mfAngle;//迴ｾ蝨ｨ縺ｮ蝗櫁ｻ｢蝨ｰ
-	const float ROTATE_SPEED = 0.1f;//蝗櫁ｻ｢騾溷ｺｦ
+	float mfTargetAngle;//逶�E�讓吶・蝗櫁E���E�蝨�E�
+	float mfAngle;//迴�E�蝨�E�縺�E�蝗櫁E���E�蝨�E�
+	const float ROTATE_SPEED = 0.1f;//蝗櫁E���E�騾溷�E��E�
 
-	float mfSize;//謨ｵ縺ｮ繧ｵ繧､繧ｺ
-	float HitSerch;//霑代￥縺ｫ繝励Ξ繧､繝､繝ｼ縺後＞繧九°
-	float HitAttackSerch;//霑代￥縺ｫ繝励Ξ繧､繝､繝ｼ縺後＞繧九°&謾ｻ謦・〒縺阪ｋ霍晞屬縺・
-	float HitStopSerch;//霑代￥縺ｫ繝励Ξ繧､繝､繝ｼ縺後＞繧・驕ｩ蛻・↑霍晞屬縺・
+	float mfSize;//謨�E�縺�E�繧�E�繧�E�繧�E�
+	float HitSerch;//霑代�E�縺�E�繝励Ξ繧�E�繝､繝ｼ縺後＞繧九°
+	float HitAttackSerch;//霑代�E�縺�E�繝励Ξ繧�E�繝､繝ｼ縺後＞繧九°&謾�E�謦・〒縺阪�E�霍晞屬縺・
+	float HitStopSerch;//霑代�E�縺�E�繝励Ξ繧�E�繝､繝ｼ縺後＞繧・驕ｩ蛻・↑霍晞屬縺・
 	bool isDead;
 
 	bool isHitSearch;
 	bool isHitAttackSearch;
 	bool isHitSerchStop;
-	bool isHitAttack;//謾ｻ謦・′蠖薙◆縺｣縺溘°
+	bool isHitAttack;//謾�E�謦・′蠖薙◁E���E�縺溘°
 
-	int mnChance;//inventory繧定誠縺ｨ縺咏｢ｺ邇・
+	int mnChance;//inventory繧定誠縺�E�縺咏｢�E�邁E�E
 	
-	bool mbItem=true;//item繧定誠縺ｨ縺吶°蜷ｦ縺・
+	bool mbItem=true;//item繧定誠縺�E�縺吶°蜷�E�縺・
 
-	bool AttackHitJudgmentflag;//謾ｻ謦・′荳蝗槫ｽ薙◆縺｣縺溘ｉ縺昴・謨ｵ縺ｫ蟇ｾ縺励※謾ｻ謦・′驥崎､・＠縺ｪ縺・ｈ縺・↓縺吶ｋ
+	bool AttackHitJudgmentflag;//謾�E�謦・′荳蝗槫�E�薙◆縺�E�縺溘ｉ縺昴・謨�E�縺�E�蟁E��縺励※謾�E�謦・′驥崎､・�E�縺�E�縺・�E�縺・↓縺吶�E�E
 
 	bool HitJudgmentflag_Player;
 	float mfHaveXp;
 	int mfHaveMoney;
 	/// <summary>
-	/// ///////////繝√Η繝ｼ繝医Μ繧｢繝ｫ
+	/// ///////////繝�EΗ繝ｼ繝医Μ繧�E�繝ｫ
 	/// </summary>
 
 	

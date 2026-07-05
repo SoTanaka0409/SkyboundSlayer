@@ -4,7 +4,7 @@
 class StageObject:public Object3D
 {
 public:
-	StageObject(VECTOR initPos, std::string filename,VECTOR scale);
+	StageObject(VECTOR initPos, std::string filename, VECTOR scale, std::string textureFilename = "");
 
 	~StageObject();
 
@@ -12,6 +12,6 @@ public:
 	void Draw();
 
 private:
-	Model* mpModel;
+	Model* model_;
 	float mfScale;
 };

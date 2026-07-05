@@ -16,18 +16,18 @@ Shield::Shield(std::string filename, VECTOR initPos,int hp)
 	,mnSizeS(200.0f)
 {
 	SetTag(Object3D::Tag_3D_Shield);
-	mpModel=new Model(filename, initPos, 1.0f);
+	model_=new Model(filename, initPos, 1.0f);
 	auto mpPlayer = Master::mpPlayer;
 	auto pPlayer = Master::mpPlayer;
 
-	mvPosition = pPlayer->GetPosition();
+	position_ = pPlayer->GetPosition();
 }
 
 Shield::~Shield()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		delete mpModel;
+		delete model_;
 	}
 }
 
@@ -35,12 +35,12 @@ void Shield::Update()
 {
 	auto mpPlayer = Master::mpPlayer;
 	auto pPlayer = Master::mpPlayer;
-	mvPosition = pPlayer->GetPosition();
+	position_ = pPlayer->GetPosition();
 }
 
 void Shield::Draw()
 {
-	DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 80.0f, 0.0f)),
+	DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 80.0f, 0.0f)),
 		mnSizeS,
 		8,
 		GetColor(0, 255, 255),
