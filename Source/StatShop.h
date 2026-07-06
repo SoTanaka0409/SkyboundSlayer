@@ -57,4 +57,6 @@ private:
 	int mnIconSpeedHandle;
 	int mnIconEvasionDistHandle;
 	int mnIconEvasionInvHandle;
+	float mFloatAngle;
+	float mBaseY;
 };

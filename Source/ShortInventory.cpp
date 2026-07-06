@@ -32,8 +32,8 @@ void ShortInventory::Update()
         if (mSelectedIndex < 0) mSelectedIndex = itemCount - 1;
     }
 
-    // Use Item (UP arrow)
-    if (InputManager::CheckDownKey(KEY_INPUT_UP))
+    // Use Item (R key)
+    if (InputManager::CheckDownKey(KEY_INPUT_R))
     {
         auto it = Master::mpItemManager->mItemList.begin();
         std::advance(it, mSelectedIndex);

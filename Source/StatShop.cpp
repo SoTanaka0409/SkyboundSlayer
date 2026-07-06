@@ -1,4 +1,6 @@
 #include "StatShop.h"
+#include <fstream>
+
 #include "ModelUtility.h"
 #include "InputManager.h"
 #include "Master.h"
@@ -36,13 +38,17 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	, mnLevelSpeed(0)
 	, mnLevelEvasionSpeed(0)
 	, mnLevelEvasionInvincibility(0)
+	, mFloatAngle(0.0f)
+	, mBaseY(vec.y)
 	
 {
 	SetTag(Tag3D_Shop);
-	model_ = new Model(filename, position_, false);
+	model_ = new Model(filename, position_, true);
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	mpShopIn = new SphereCollider(this, position_, 200.0f);
-	mpSafeZoon = new SphereCollider(this, position_, 1000.0f); // 謨ｵ縺瑚ｿ代▼縺代↑縺・そ繝ｼ繝輔だ繝ｼ繝ｳ
+	mpSafeZoon = new SphereCollider(this, position_, 1000.0f); // 謨��縺瑚ｿ代▼縺代↑縺・そ繝ｼ繝輔だ繝ｼ繝ｳ
 	
 	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
 	mbOldMouseDown = false;
@@ -74,6 +80,7 @@ StatShop::~StatShop()
 
 void StatShop::Draw()
 {
+
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	if (!IsShopPhaseActive()) return;
 
@@ -132,7 +139,21 @@ void StatShop::Draw()
 	{
 		VECTOR DrawName3D = VAdd(position_, VGet(0.0f, 250.0f, 0.0f));
 		VECTOR DrawNameWorld = ConvWorldPosToScreenPos(DrawName3D);
-		DrawFormatString(DrawNameWorld.x, DrawNameWorld.y, GetColor(255, 255, 0), "StatShop: Enter");
+		
+		VECTOR playerPos = player->GetPosition();
+		float dx = playerPos.x - position_.x;
+		float dz = playerPos.z - position_.z;
+		float dist = sqrtf(dx * dx + dz * dz);
+		
+		// �V���b�v���Ƒ������
+		DrawFormatString(DrawNameWorld.x - 30, DrawNameWorld.y, GetColor(255, 255, 0), "[ �X�e�[�^�X�V���b�v ]");
+		DrawFormatString(DrawNameWorld.x - 10, DrawNameWorld.y + 20, GetColor(255, 255, 255), "Enter�L�[�ŊJ��");
+
+		// �v���C���[���߂Â����烁�b�Z�[�W��\��
+		if (dist < 1000.0f)
+		{
+			DrawFormatString(DrawNameWorld.x - 60, DrawNameWorld.y - 30, GetColor(100, 255, 100), "�u��������Ⴂ�I ���������������̂͂��邩���H�v");
+		}
 
 		model_->Draw();
 	}
@@ -140,10 +161,29 @@ void StatShop::Draw()
 
 void StatShop::Update()
 {
+	static bool isChecked = false;
+	if (!isChecked) {
+		std::ofstream ofs("shop_anim_debug.txt");
+		int tempHandle = MV1LoadModel("Resource/Model/shop.mv1");
+		if (tempHandle != -1) {
+			int animNum = MV1GetAnimNum(tempHandle);
+			ofs << "Total Animations: " << animNum << "\n";
+			for(int i=0; i<animNum; ++i) {
+				ofs << "Anim " << i << ": " << MV1GetAnimName(tempHandle, i) << "\n";
+			}
+			MV1DeleteModel(tempHandle);
+		} else {
+			ofs << "Failed to load shop.mv1\n";
+		}
+		ofs.close();
+		isChecked = true;
+	}
+
+
 	
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	
-	// WALKING_OUT縺ｮ譎ゅ・縲√ヵ繧ｧ繝ｼ繧ｺ縺檎ｵゆｺ・＠縺ｦ縺・※繧らｧｻ蜍募・逅・ｒ邯壹￠繧句ｿ・ｦ√′縺ゅｋ縺溘ａ縲√％縺薙〒蛻・ｲ舌＠縺ｾ縺吶・
+	// WALKING_OUT縺��譎ゅ・縲√ヵ繧��繝ｼ繧��縺檎ｵソ�・��縺��縺・※繧らｧ��蜍募・�・��邯壹��繧句��・��√′縺ソ�縺溘ａ縲√�縺薙〒蛻・��舌＠縺��縺吶・
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -176,7 +216,6 @@ void StatShop::movePosition()
 {
 	if (mShopState == ShopState::WALKING_IN)
 	{
-		
 		VECTOR dir = VSub(mTargetPosition, position_);
 		dir.y = 0.0f;
 		float dist = VSize(dir);
@@ -185,12 +224,14 @@ void StatShop::movePosition()
 			position_.x = mTargetPosition.x;
 			position_.z = mTargetPosition.z;
 			mShopState = ShopState::ARRIVED;
+			mBaseY = position_.y;
 			model_->ChangeAnimation(ANIMATION_NEUTRAL);
 		}
 		else
 		{
 			VECTOR nDir = VNorm(dir);
 			position_ = VAdd(position_, VScale(nDir, 4.0f));
+			rotation_.y = atan2f(-nDir.x, -nDir.z); // 進行方向を向く
 			model_->ChangeAnimation(ANIMATION_RUN);
 		}
 	}
@@ -209,16 +250,17 @@ void StatShop::movePosition()
 		{
 			VECTOR nDir = VNorm(dir);
 			position_ = VAdd(position_, VScale(nDir, 4.0f));
+			rotation_.y = atan2f(-nDir.x, -nDir.z); // 進行方向を向く
 			model_->ChangeAnimation(ANIMATION_RUN);
 		}
 	}
 	else if (mShopState == ShopState::ARRIVED)
 	{
-		if (position_.y > mTargetPosition.y) position_.y -= 5.0f;
+		
 		model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	}
 
-	// 待機中や移動中、退場後は、当たり判定を画面外に移動させる
+	// 判定を画面外に移動させる処�など
 	if (mShopState == ShopState::ARRIVED)
 	{
 		mpShopIn->position_ = position_;
@@ -231,10 +273,12 @@ void StatShop::movePosition()
 		mpSafeZoon->position_ = hidePos;
 	}
 	
-	model_->SetPosition(position_);
-	model_->Update();
+	if(model_) {
+		model_->SetPosition(position_);
+		model_->SetRotation(rotation_);
+		model_->Update(); // ここが呼ばれて�なかったため、アニメーション(モーション)が進まなかっ�
+	}
 }
-
 void StatShop::StartWalkingIn()
 {
 	if (mShopState == ShopState::WAIT_PHASE || mShopState == ShopState::WALKING_OUT)
@@ -260,16 +304,24 @@ int StatShop::GetCost(int level)
 
 void StatShop::SelectClass()
 {
-	if (InputManager::CheckDownKey(KEY_INPUT_UP))
+	static int oldUp = 0;
+	static int oldDown = 0;
+	int currentUp = CheckHitKey(KEY_INPUT_UP) || CheckHitKey(KEY_INPUT_W);
+	int currentDown = CheckHitKey(KEY_INPUT_DOWN) || CheckHitKey(KEY_INPUT_S);
+
+	if (currentUp && !oldUp)
 	{
 		mnSelect--;
 		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	if (InputManager::CheckDownKey(KEY_INPUT_DOWN))
+	if (currentDown && !oldDown)
 	{
 		mnSelect++;
 		Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
+
+	oldUp = currentUp;
+	oldDown = currentDown;
 
 	if (mnSelect < mnSelectMin) mnSelect = mnSelectMax;
 	if (mnSelect > mnSelectMax) mnSelect = mnSelectMin;
@@ -286,8 +338,28 @@ void StatShop::BuyClass()
 	bool isMouseClick = (isMouseDown && !mbOldMouseDown);
 	mbOldMouseDown = isMouseDown;
 
+	
 	int mx, my;
 	GetMousePoint(&mx, &my);
+	
+	static int oldMx = 0, oldMy = 0;
+	if (mx != oldMx || my != oldMy) {
+		for (int i = 0; i <= mnSelectMax; i++)
+		{
+			int optY = 250 + i * 60;
+			if (mx >= 350 && mx <= 1500 && my >= optY && my <= optY + 50)
+			{
+				if (mnSelect != i) {
+					mnSelect = i;
+					Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);
+				}
+				break;
+			}
+		}
+		oldMx = mx;
+		oldMy = my;
+	}
+
 
 	bool doBuy = false;
 

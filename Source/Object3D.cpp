@@ -4,6 +4,7 @@
 #include"Scene3D.h"
 #include"Scene.h"
 #include"Tree.h"
+#include"StageObject.h"
 #include"Stage.h"
 #include"wall.h"
 
@@ -16,22 +17,22 @@ Object3D::Object3D(VECTOR initPos)
 	, tag_(Tag3D::None3D)
 	,draw_flag_(true)
 {
-	//現在のシーンのobjectManagerに自信（this)を追加する
+	//迴ｾ蝨ｨ縺ｮ繧ｷ繝ｼ繝ｳ縺ｮobjectManager縺ｫ閾ｪ菫｡ｼthis)繧定ｿｽ蜉縺吶ｋ
 	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
-//デストラクタ
+//繝繧ｹ繝医Λ繧ｯ繧ｿ
 Object3D::~Object3D()
 {
 
 }
-//描画
+//謠冗判
 void Object3D::Draw()
 {
 
 }
 
-//更新
+//譖ｴ譁ｰ
 void Object3D::Update()
 {
 
@@ -87,6 +88,35 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 			// Player uses hitPos.y even if not hit (it's 0.0f).
 			position_.y = (hitPos.y > 0.0f) ? hitPos.y : position_.y;
 			if(position_.y < 0.0f) position_.y = 0.0f;
+		}
+	}
+
+	// StageObjectｼ域惠繧蟯ｩ縺ｪ縺ｩｼ峨→縺ｮ繧ｹ繝ｩ繧､繝牙愛螳
+	if (tag_ != Object3D::Tag3D_Object && tag_ != Object3D::Tag3D_Stage)
+	{
+		auto objs = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
+		for (int i = 0; i < objs.size(); i++)
+		{
+			StageObject* stObj = objs.at(i)->CastTo<StageObject>();
+			if (stObj != nullptr && stObj != this && stObj->IsHitEnabled())
+			{
+				VECTOR objPos = stObj->GetPosition();
+				float objRadius = stObj->GetHitRadius();
+				float myRadius = capsuleRadius;
+				
+				float dx = position_.x - objPos.x;
+				float dz = position_.z - objPos.z;
+				float distSq = dx * dx + dz * dz;
+				float hitDist = objRadius + myRadius;
+				
+				if (distSq > 0.0001f && distSq < hitDist * hitDist)
+				{
+					float dist = sqrtf(distSq);
+					float pushLen = hitDist - dist;
+					position_.x += (dx / dist) * pushLen;
+					position_.z += (dz / dist) * pushLen;
+				}
+			}
 		}
 	}
 }

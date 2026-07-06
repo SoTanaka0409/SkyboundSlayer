@@ -46,6 +46,7 @@ void Scene3D::Initialize()
 
     new Player3D("Resource/Model/T.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
     new StatShop("Resource/Model/shop.mv1", VGet(-1500,100,1500)); // ステージの真ん中に配置
+    new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3D/low-poly-campfire/source/campfire.mv1", VGet(10.0f, 10.0f, 10.0f)); // キャンプファイアをショップが開く位置の近くに配置
     //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトプス,hp,speed,Hitsize,size
        //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1",
@@ -54,20 +55,25 @@ void Scene3D::Initialize()
    
 
     float ObjectSize=10.0f;
-    new StageObject(Config::GetStageCenter(), "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(5, 10, 5));//centertree
+    new StageObject(Config::GetStageCenter(), "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(5.0f, 10.0f, 5.0f), "", 5.0f * 150.0f);//centertree
     
     int randomScale = 1 + rand() % 2; // 1または2のランダムなスケール
-    int treeScale = 0.5f;
+    float treeScale = 1.0f;
     // ランダムに木と岩を配置
-    for (int i = 0; i < 10; i++)
-    {
-        float angle = GetRand(359) * (DX_PI_F / 180.0f);
-        float r = -4000 + GetRand(8000); // 中心から500~4000の範囲
-        VECTOR offset = VGet(cosf(angle) * r, 0.0f, sinf(angle) * r);
-        VECTOR pos = VAdd(Config::GetStageCenter(), offset);
-		
-        new StageObject(pos, "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(1, 1, 1));
-    }
+    // 木を中央から半径5000メートル以内に均等に配置（フィボナッチ螺旋）
+      int numTrees = 15; // 木の本数（必要に応じて増やせます）
+      float maxRadius = 5000.0f;
+      float goldenAngle = 137.507764f * (DX_PI_F / 180.0f); // 黄金角
+      for (int i = 0; i < numTrees; i++)
+      {
+          float r = maxRadius * sqrtf((float)(i + 0.5f) / numTrees);
+          float angle = i * goldenAngle;
+          
+          VECTOR offset = VGet(cosf(angle) * r, 0.0f, sinf(angle) * r);
+          VECTOR pos = VAdd(Config::GetStageCenter(), offset);
+  		
+          new StageObject(pos, "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(treeScale, treeScale, treeScale), "", treeScale * 150.0f);
+      }
     for (int i = 0; i < 20; i++)
     {
         float angle = GetRand(359) * (DX_PI_F / 180.0f);

@@ -9,7 +9,7 @@ class CapsuleCollider;
 class Tree :public Object3D
 {
 public:
-	Tree(std::string filename,VECTOR initPos,int Size,float getSize,bool HitFlag);
+	Tree(std::string filename,VECTOR initPos,float Size,float getSize,bool HitFlag);
 
 	~Tree();
 
@@ -31,6 +31,6 @@ private:
 	
 	Model* model_;
 	float mfSize;
-	int mnModelHandle; //ステージモデルのハンドル
+	int mnModelHandle; //繧ｹ繝�繝ｼ繧ｸ繝｢繝�繝ｫ縺ｮ繝上Φ繝峨Ν
 	bool mnHitFlag;
 };

@@ -7,9 +7,9 @@
 #include"Scene.h"
 #include"CapsuleCollider.h"
 
-Tree::Tree(std::string filename, VECTOR initPos,int Size,float getSize,bool HitFlag)
+Tree::Tree(std::string filename, VECTOR initPos,float Size,float getSize,bool HitFlag)
 	:Object3D(initPos)
-	,mfSize(getSize)//‚ ‚½‚è”»’è‚Ì‚ÁƒTƒCƒY
+	,mfSize(getSize)//ã‚ãŸã‚Šåˆ¤å®šã®ã£ã‚µã‚¤ã‚º
 {
 	model_ = new Model(filename, initPos);
 	model_->SetScale(VGet(Size, Size, Size));
@@ -26,7 +26,7 @@ Tree::~Tree()
 
 void Tree::Update()
 {
-	// ’nŒ`‚É‰ˆ‚¤ˆ—
+	// åœ°å½¢ã«æ²¿ã†å‡¦ç†
 	TerrainFollow();
 
 }
