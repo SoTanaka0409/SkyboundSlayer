@@ -4,12 +4,29 @@
 #include "StatShop.h"
 #include <cmath>
 #include <DxLib.h>
+#include "Stage.h"
+#include "StageObject.h"
+#include "Tree.h"
 
 GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
-    : mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0), mFadeAlpha(0)
+    : mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0), mFadeAlpha(0), mBossPortalPos(VGet(0,0,0))
 {
     // Start the first wave
     SpawnPhaseEnemies();
+
+    // Initialize Boss Portal at the start of the game, opposite to player spawn
+    VECTOR playerStartPos = VGet(-1200.0f, 20.0f, -1000.0f);
+    VECTOR center = Config::GetStageCenter();
+    VECTOR dir = VSub(playerStartPos, center);
+    dir.y = 0.0f;
+    if (VSize(dir) < 1.0f) dir = VGet(0.0f, 0.0f, 1.0f);
+    else dir = VNorm(dir);
+    mBossPortalPos = VAdd(center, VScale(dir, -5000.0f));
+    
+    
+    // Portal Base
+    float portalSize = 100.0f;
+    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/�]���w/source/portal.mv1", "Resource/3D/�]���w/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
 }
 
 GameManager::~GameManager()
@@ -36,6 +53,7 @@ void GameManager::Update()
             mFadeAlpha = 255;
             mCurrentPhase = Phase::BOSS; // �時的にBOSSにして出現させ�
             SpawnPhaseEnemies(); // ここでボス出現
+
             mCurrentPhase = Phase::FADE_IN_BOSS;
             
             // ボスエリアへプレイヤーをワープさせる
@@ -83,6 +101,7 @@ void GameManager::Update()
                     mCurrentPhase = Phase::PHASE_3;
                 }
                 SpawnPhaseEnemies();
+
             }
         } 
         else
@@ -94,7 +113,7 @@ void GameManager::Update()
                 VECTOR playerPos = player->GetPosition();
                 
                 // Placeholder teleporter position (center of stage, offset)
-                VECTOR teleporterPos = VAdd(Config::GetStageCenter(), VGet(0.0f, 0.0f, 800.0f));
+                VECTOR teleporterPos = mBossPortalPos;
                 
                 float dist = VSize(VSub(playerPos, teleporterPos));
                 if (dist < 150.0f) { // 150 radius to enter
@@ -170,9 +189,9 @@ void GameManager::Draw()
             DrawFormatString(1920 / 2 - 350, 50, GetColor(0, 255, 255), "SHOP PHASE - Enter the blue teleporter to start BOSS BATTLE");
             
             // Draw placeholder teleporter
-            VECTOR teleporterPos = VAdd(Config::GetStageCenter(), VGet(0.0f, 0.0f, 800.0f));
-            DrawCapsule3D(teleporterPos, VAdd(teleporterPos, VGet(0.0f, 200.0f, 0.0f)), 150.0f, 32, GetColor(0, 150, 255), GetColor(0, 150, 255), FALSE);
-            DrawSphere3D(VAdd(teleporterPos, VGet(0.0f, 50.0f, 0.0f)), 100.0f, 32, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
+            VECTOR teleporterPos = mBossPortalPos;
+            // DrawCapsule3D(teleporterPos, VAdd(teleporterPos, VGet(0.0f, 200.0f, 0.0f)), 150.0f, 32, GetColor(0, 150, 255), GetColor(0, 150, 255), FALSE);
+            // DrawSphere3D(VAdd(teleporterPos, VGet(0.0f, 50.0f, 0.0f)), 100.0f, 32, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
         }
     }
 

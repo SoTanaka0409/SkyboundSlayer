@@ -36,9 +36,18 @@ void Scene3D::Initialize()
     SceneGame::Initialize();
 
     // 髴ｧ縺ｮ險ｭ螳
+    // 霧の設定（深く、暗く）
     SetFogEnable(TRUE);
-    SetFogColor(200, 220, 255);
-    SetFogStartEnd(3000.0f, 30000.0f);
+    SetFogColor(20, 30, 50); // 暗いネイビーブルー
+    SetFogStartEnd(500.0f, 10000.0f); // 霧が手前から濃くかかるように
+
+    // 環境光（影の明るさ）の設定
+    SetGlobalAmbientLight(GetColorF(0.15f, 0.15f, 0.2f, 1.0f));
+
+    // メインの平行光源（月光のような冷たく弱い光）
+    SetLightDifColor(GetColorF(0.6f, 0.6f, 0.8f, 1.0f));
+    SetLightSpcColor(GetColorF(0.4f, 0.4f, 0.5f, 1.0f));
+    SetLightDirection(VNorm(VGet(-0.5f, -0.8f, 0.3f)));
 
     //const float wallWidth = Config::StageWallWidth;//stage縺ｮ繧ｵ繧､繧ｺ
     //const float wallDistance = Config::StageWallDistance;//stage縺ｮ繧ｵ繧､繧ｺ main

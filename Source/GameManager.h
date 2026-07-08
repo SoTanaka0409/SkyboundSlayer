@@ -33,6 +33,7 @@ private:
     int mShopTimer;
     int mFadeAlpha;
     EnemyManager* mpEnemyManager;
+    VECTOR mBossPortalPos;
 
     void SpawnPhaseEnemies();
     void ApplyDifficultyMultipliers(EnemyManager::enemydate& e);
