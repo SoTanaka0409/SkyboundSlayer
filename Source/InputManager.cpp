@@ -3,6 +3,7 @@
 
 int InputManager::mDownBuffer[256] = { 0 };
 int InputManager::mUpBuffer[256] = { 0 };
+int InputManager::mMouseDownBuffer = 0;
 
 InputManager::InputManager()
 {
@@ -35,4 +36,20 @@ int InputManager::CheckDownKey(int KeyCode)
 int InputManager::CheckPressKey(int KeyCode)
 {
 	return CheckHitKey(KeyCode);
+}
+int InputManager::CheckMouseClickLeft()
+{
+	int result = 0;
+	int mouseState = GetMouseInput() & MOUSE_INPUT_LEFT;
+	if (mMouseDownBuffer == 0 && mouseState != 0)
+	{
+		result = 1;
+	}
+	mMouseDownBuffer = mouseState;
+	return result;
+}
+
+void InputManager::GetMousePos(int& x, int& y)
+{
+	GetMousePoint(&x, &y);
 }

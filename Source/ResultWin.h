@@ -18,12 +18,12 @@ public:
 
 	void Finalize();
 
-	void SetName(char name) { Name = name; }
+	void SetName(char name) { mNameStr = name; }
 private:
 	Texture* mpTexture;
 	TitleScene* mpTitle;
 
-	int AllTimer;
-	char Name;
+	int mnAllTimer;
+	char mNameStr;
 	
 };

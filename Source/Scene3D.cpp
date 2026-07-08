@@ -112,7 +112,7 @@ void Scene3D::Initialize()
     float scale = 13.0f;
    pSkyBox->SetScale(VGet(scale, scale, scale));
    pSkyBox->SetScale(VGet(scale, scale, scale));
-   pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky000.jpg");
+   pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");
    
 
 
