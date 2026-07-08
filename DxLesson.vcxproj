@@ -22,7 +22,6 @@
     <ClCompile Include="Source\AttachmentModel.cpp" />
     <ClCompile Include="Source\Buff.cpp" />
     <ClCompile Include="Source\BuffManager.cpp" />
-    <ClCompile Include="Source\Bush.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\CapsuleCollider.cpp" />
     <ClCompile Include="Source\Chat.cpp" />
@@ -34,6 +33,7 @@
     <ClCompile Include="Source\DrawCircle1.cpp" />
     <ClCompile Include="Source\DrawHp.cpp" />
     <ClCompile Include="Source\Effect.cpp" />
+    <ClCompile Include="Source\EffectPool.cpp" />
     <ClCompile Include="Source\EffekseerManager.cpp" />
     <ClCompile Include="Source\EffekseerObject.cpp" />
     <ClCompile Include="Source\EffectU.cpp" />
@@ -105,7 +105,6 @@
     <ClInclude Include="Source\AttachmentModel.h" />
     <ClInclude Include="Source\Buff.h" />
     <ClInclude Include="Source\BuffManager.h" />
-    <ClInclude Include="Source\Bush.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Chat.h" />
     <ClInclude Include="Source\Coin.h" />
@@ -116,6 +115,7 @@
     <ClInclude Include="Source\DrawCircle1.h" />
     <ClInclude Include="Source\DrawHp.h" />
     <ClInclude Include="Source\Effect.h" />
+    <ClInclude Include="Source\EffectPool.h" />
     <ClInclude Include="Source\EffekseerManager.h" />
     <ClInclude Include="Source\EffekseerObject.h" />
     <ClInclude Include="Source\EffectU.h" />

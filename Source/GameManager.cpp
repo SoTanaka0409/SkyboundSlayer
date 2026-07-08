@@ -20,7 +20,7 @@ void GameManager::Update()
 {
     // DEBUG: Press '0' to wipe out all enemies in the current phase
     if (CheckHitKey(KEY_INPUT_0)) {
-        auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
         for (auto enemy : enemies)
 		{
 			Enemy* e = enemy->CastTo<Enemy>();
@@ -34,7 +34,7 @@ void GameManager::Update()
         mFadeAlpha += 5;
         if (mFadeAlpha >= 255) {
             mFadeAlpha = 255;
-            mCurrentPhase = Phase::BOSS; // 一時的にBOSSにして出現させる
+            mCurrentPhase = Phase::BOSS; // �時的にBOSSにして出現させ�
             SpawnPhaseEnemies(); // ここでボス出現
             mCurrentPhase = Phase::FADE_IN_BOSS;
             
@@ -44,21 +44,21 @@ void GameManager::Update()
                 Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
             }
         }
-        return; // フェード中は他の更新をスキップ
+        return; // フェード中は他�更新をスキ��
     } else if (mCurrentPhase == Phase::FADE_IN_BOSS) {
         mFadeAlpha -= 5;
         if (mFadeAlpha <= 0) {
             mFadeAlpha = 0;
             mCurrentPhase = Phase::BOSS;
         }
-        return; // フェード中は他の更新をスキップ
+        return; // フェード中は他�更新をスキ��
     }
 
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)
     {
         if (mCurrentPhase != Phase::SHOP_3) {
             bool allShopsArrived = true;
-            auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+            const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
             for (auto s : shops) {
                 StatShop* shop = s->CastTo<StatShop>();
                 if (shop && !shop->IsArrived()) {
@@ -98,7 +98,7 @@ void GameManager::Update()
                 
                 float dist = VSize(VSub(playerPos, teleporterPos));
                 if (dist < 150.0f) { // 150 radius to enter
-                    auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+                    const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
                     for (auto s : shops) {
                         StatShop* shop = s->CastTo<StatShop>();
                         if (shop) shop->StartWalkingOut();
@@ -109,25 +109,25 @@ void GameManager::Update()
             }
         }
     } else {
-        auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
         if (enemies.empty())
         {
             Phase oldPhase = mCurrentPhase;
             if (mCurrentPhase == Phase::PHASE_1) {
                 mCurrentPhase = Phase::SHOP_1;
-                mShopTimer = 60 * 20; // 20遘・
+                mShopTimer = 60 * 20; // 20遘�
             } else if (mCurrentPhase == Phase::PHASE_2) {
                 mCurrentPhase = Phase::SHOP_2;
-                mShopTimer = 60 * 20; // 20遘・
+                mShopTimer = 60 * 20; // 20遘�
             } else if (mCurrentPhase == Phase::PHASE_3) {
                 mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20遘・
+                mShopTimer = 60 * 20; // 20遘�
             } else if (mCurrentPhase == Phase::BOSS) {
                 mCurrentPhase = Phase::CLEAR;
             }
 
             if (oldPhase != mCurrentPhase && (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)) {
-                auto shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+                const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
                 for (auto s : shops) {
                     StatShop* shop = s->CastTo<StatShop>();
                     if (shop) shop->StartWalkingIn();
@@ -154,7 +154,7 @@ void GameManager::Draw()
     case Phase::CLEAR:   phaseStr = "CLEAR!"; break;
     }
 
-    auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+    const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
     int enemyCount = (int)enemies.size();
 
     DrawFormatString(20, 100, GetColor(255, 255, 255), "Current Phase: %s", phaseStr);
@@ -217,7 +217,7 @@ void GameManager::SpawnPhaseEnemies()
     return;
     auto p = Master::mpPlayer;
     Player3D* player = p->CastTo<Player3D>();
-    // 謨ｵ縺後せ繝・・繧ｸ縺九ｉ螟悶ｌ縺ｦ關ｽ荳九・蝓区ｲ｡縺励↑縺・ｈ縺・↓縲，onfig縺ｮ繧ｹ繝・・繧ｸ荳ｭ蠢・ｺｧ讓吶ｒ貉ｧ縺堺ｽ咲ｽｮ縺ｮ蝓ｺ貅悶→縺吶ｋ
+    // 謨��縺後せ繝�・繧��縺九ｉ螟悶��縺��關ｽ荳九�蝓区����縺励↑縺・��縺・↓縲��onfig縺��繧��繝�・繧��荳��蠢・����讓吶��貉ｧ縺堺��咲����縺��蝓ｺ�悶→縺吶�
     VECTOR centerPos = Config::GetStageCenter();
     if (player != nullptr)
     {
@@ -248,7 +248,7 @@ void GameManager::SpawnPhaseEnemies()
         mpEnemyManager->NewEnemyList(e);
     }
     else if (mCurrentPhase == Phase::PHASE_2) {
-        // Wave 2: 鬲疲ｳ募・螢ｫ
+        // Wave 2: 鬲疲��募�螢��
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
         e1.spawnCenter = centerPos;
@@ -269,7 +269,7 @@ void GameManager::SpawnPhaseEnemies()
         ApplyDifficultyMultipliers(e1);
         mpEnemyManager->NewEnemyList(e1);
 
-        // Wave 2: 霑第磁蜑｣螢ｫ
+        // Wave 2: 霑第磁蜑��螢��
         EnemyManager::enemydate e2;
         e2.filename = "Resource/Model/T.mv1";
         e2.spawnCenter = centerPos;
@@ -291,7 +291,7 @@ void GameManager::SpawnPhaseEnemies()
         mpEnemyManager->NewEnemyList(e2);
     }
     else if (mCurrentPhase == Phase::PHASE_3) {
-        // Wave 3: 驥埼㍼邏壻ｻ｣逕ｨ
+        // Wave 3: 驥埼㍼邏壻����逕ｨ
         EnemyManager::enemydate e_heavy;
         e_heavy.filename = "Resource/Model/monster.mv1";
         e_heavy.spawnCenter = centerPos;
@@ -312,7 +312,7 @@ void GameManager::SpawnPhaseEnemies()
         ApplyDifficultyMultipliers(e_heavy);
         mpEnemyManager->NewEnemyList(e_heavy);
 
-        // Wave 3: 鬲疲ｳ募・螢ｫ
+        // Wave 3: 鬲疲��募�螢��
         EnemyManager::enemydate e_magic;
         e_magic.filename = "Resource/Model/T.mv1";
         e_magic.spawnCenter = centerPos;
@@ -333,7 +333,7 @@ void GameManager::SpawnPhaseEnemies()
         ApplyDifficultyMultipliers(e_magic);
         mpEnemyManager->NewEnemyList(e_magic);
 
-        // Wave 3: 霑第磁蜈ｵ螢ｫ
+        // Wave 3: 霑第磁蜈��螢��
         EnemyManager::enemydate e_melee;
         e_melee.filename = "Resource/Model/T.mv1";
         e_melee.spawnCenter = centerPos;

@@ -1,7 +1,7 @@
 #include"StageObject.h"
 
 StageObject::StageObject(VECTOR initPos, std::string filename, VECTOR scale, std::string textureFilename, float hitRadius)
-	:Object3D(initPos), mfHitRadius(hitRadius)
+	:Object3D(initPos), mfHitRadius(hitRadius), mbHasFollowedTerrain(false)
 {
 	model_ = new Model(filename, initPos, false);
 	model_->SetScale(scale);
@@ -22,8 +22,12 @@ StageObject::~StageObject()
 
 void StageObject::Update()
 {
-	TerrainFollow(); // 地形（ステージ）の高さに沿うように自身のposition_を更新
-	model_->SetPosition(position_); // 更新された座標をモデルに反映
+	if (!mbHasFollowedTerrain)
+	{
+		TerrainFollow();
+		mbHasFollowedTerrain = true;
+	} // 地形��ス�ージ���高さに沿�ように自身のposition_を更新
+	model_->SetPosition(position_); // 更新された座標をモ�ルに反映
 	model_->Update();
 }
 

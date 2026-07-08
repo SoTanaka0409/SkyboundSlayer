@@ -183,7 +183,7 @@ void StatShop::Update()
 	
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	
-	// WALKING_OUT縺��譎ゅ・縲√ヵ繧��繝ｼ繧��縺檎ｵソ�・��縺��縺・※繧らｧ��蜍募・�・��邯壹��繧句��・��√′縺ソ�縺溘ａ縲√�縺薙〒蛻・��舌＠縺��縺吶・
+	// WALKING_OUT縺��譎ゅ・縲√ヵ繧��繝ｼ繧��縺檎ｵソ�・�縺��縺・※繧らｧ��蜍募・�・��邯壹�繧句��・��√�縺ソ�縺溘ａ縲√�縺薙�蛻・��舌�縺��縺吶�・
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -202,11 +202,18 @@ void StatShop::Update()
 		SelectClass();
 		BuyClass();
 
-		if (InputManager::CheckDownKey(KEY_INPUT_ESCAPE) || InputManager::CheckDownKey(KEY_INPUT_BACK))
+		static int oldEsc = 0;
+		static int oldBack = 0;
+		int currentEsc = CheckHitKey(KEY_INPUT_ESCAPE);
+		int currentBack = CheckHitKey(KEY_INPUT_BACK);
+		
+		if ((currentEsc && !oldEsc) || (currentBack && !oldBack))
 		{
 			Master::StatShopClassOn = false;
 			Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
 		}
+		oldEsc = currentEsc;
+		oldBack = currentBack;
 	}
 
 	movePosition();
@@ -276,7 +283,7 @@ void StatShop::movePosition()
 	if(model_) {
 		model_->SetPosition(position_);
 		model_->SetRotation(rotation_);
-		model_->Update(); // ここが呼ばれて�なかったため、アニメーション(モーション)が進まなかっ�
+		model_->Update(); // ここが呼ばれて�なかったため�アニメーション(モーション)が�まなかっ�
 	}
 }
 void StatShop::StartWalkingIn()
@@ -376,11 +383,13 @@ void StatShop::BuyClass()
 		}
 	}
 
-	if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
+	static int oldReturn = 0;
+	int currentReturn = CheckHitKey(KEY_INPUT_RETURN);
+	if (currentReturn && !oldReturn)
 	{
-
 		doBuy = true;
 	}
+	oldReturn = currentReturn;
 
 	if (doBuy)
 	{
@@ -446,11 +455,14 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 		Player3D* pPlayer = check->parent_object_->CastTo<Player3D>();
 		if (pPlayer && collider == mpShopIn && pPlayer->GetCollisionCollider() == check)
 		{
-			if (InputManager::CheckDownKey(KEY_INPUT_RETURN) && !Master::StatShopClassOn && !Master::StatShopClassOn)
+			static int oldEnter = 0;
+			int currentEnter = CheckHitKey(KEY_INPUT_RETURN);
+			if (currentEnter && !oldEnter && !Master::StatShopClassOn)
 			{
 				Master::StatShopClassOn = true;
 				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
 			}
+			oldEnter = currentEnter;
 		}
 	}
 }

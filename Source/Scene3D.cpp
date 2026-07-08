@@ -1,3 +1,5 @@
+#include <fstream>
+#include <sstream>
 #include"Scene3D.h"
 #include"Config.h"
 #include"Enemy3D_AT.h"
@@ -13,7 +15,6 @@
 #include"SkyBox.h"
 #include"StageCollider.h"
 #include"Rock.h"
-#include"Bush.h"
 #include"StageObject.h"
 
 
@@ -34,7 +35,7 @@ void Scene3D::Initialize()
 {
     SceneGame::Initialize();
 
-    // 霧の設定
+    // 霧の設�
     SetFogEnable(TRUE);
     SetFogColor(200, 220, 255);
     SetFogStartEnd(3000.0f, 30000.0f);
@@ -44,57 +45,69 @@ void Scene3D::Initialize()
     const float Spawnpos = 12000.0f;
     VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
 
-    new Player3D("Resource/Model/T.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
-    new StatShop("Resource/Model/shop.mv1", VGet(-1500,100,1500)); // ステージの真ん中に配置
-    new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3D/low-poly-campfire/source/campfire.mv1", VGet(10.0f, 10.0f, 10.0f)); // キャンプファイアをショップが開く位置の近くに配置
-    //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトプス,hp,speed,Hitsize,size
-       //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size
+    new Player3D("Resource/Model/T.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);//ジャンプ�アタ�ク、スピ�ド㽈�
+    new StatShop("Resource/Model/shop.mv1", VGet(-1500,100,1500)); // ス�ージの真ん中に配置
+    new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3D/low-poly-campfire/source/campfire.mv1", VGet(10.0f, 10.0f, 10.0f)); // キャンプファイアをショ�プが開く位置の近くに配置
+    //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラト�ス,hp,speed,Hitsize,size
+       //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピ� hp,speed,attack,Hitsize,size
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1",
         VGet(200.0f, 100.0f, 200.0f));
     new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",VGet(3.0f,0.3f,3.0f));
    
 
-    float ObjectSize=10.0f;
-    new StageObject(Config::GetStageCenter(), "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(5.0f, 10.0f, 5.0f), "", 5.0f * 150.0f);//centertree
     
-    int randomScale = 1 + rand() % 2; // 1または2のランダムなスケール
-    float treeScale = 1.0f;
-    // ランダムに木と岩を配置
-    // 木を中央から半径5000メートル以内に均等に配置（フィボナッチ螺旋）
-      int numTrees = 15; // 木の本数（必要に応じて増やせます）
-      float maxRadius = 5000.0f;
-      float goldenAngle = 137.507764f * (DX_PI_F / 180.0f); // 黄金角
-      for (int i = 0; i < numTrees; i++)
-      {
-          float r = maxRadius * sqrtf((float)(i + 0.5f) / numTrees);
-          float angle = i * goldenAngle;
-          
-          VECTOR offset = VGet(cosf(angle) * r, 0.0f, sinf(angle) * r);
-          VECTOR pos = VAdd(Config::GetStageCenter(), offset);
-  		
-          new StageObject(pos, "Resource/3D/Tree_central/tree-gn/source/TreeGen.mv1", VGet(treeScale, treeScale, treeScale), "", treeScale * 150.0f);
-      }
-    for (int i = 0; i < 20; i++)
+    // �f�[�^�쓮�݌v: CSV����X�e�[�W�I�u�W�F�N�g��ǂݍ���Ŕz�u
+    std::ifstream file("Resource/CSV/stage_objects.csv");
+    if (file.is_open())
     {
-        float angle = GetRand(359) * (DX_PI_F / 180.0f);
-        float r = -2000 + GetRand(4000);
-        VECTOR offset = VGet(cosf(angle) * r, 0.0f, sinf(angle) * r);
-        VECTOR pos = VAdd(Config::GetStageCenter(), offset);
-        float scale = 30.0f + GetRand(40); // 30~70のランダムスケール
-        new Stage(pos, "Resource/3D/Rock/mossy-rock/source/Rock Low Poly.mv1", "Resource/3D/Rock/mossy-rock/source/Rock Low Poly.mv1", VGet(scale, scale, scale), "Resource/3D/Rock/mossy-rock/source/rock1_color.jpg");
+        std::string line;
+        std::getline(file, line); // �w�b�_�[�X�L�b�v
+        while (std::getline(file, line))
+        {
+            if (line.empty()) continue;
+            std::stringstream ss(line);
+            std::string type, model, xStr, yStr, zStr, sxStr, syStr, szStr, texture, colSizeStr, isRelativeStr;
+            
+            std::getline(ss, type, ',');
+            std::getline(ss, model, ',');
+            std::getline(ss, xStr, ',');
+            std::getline(ss, yStr, ',');
+            std::getline(ss, zStr, ',');
+            std::getline(ss, sxStr, ',');
+            std::getline(ss, syStr, ',');
+            std::getline(ss, szStr, ',');
+            std::getline(ss, texture, ',');
+            std::getline(ss, colSizeStr, ',');
+            std::getline(ss, isRelativeStr, ',');
+            
+            float x = std::stof(xStr);
+            float y = std::stof(yStr);
+            float z = std::stof(zStr);
+            float sx = std::stof(sxStr);
+            float sy = std::stof(syStr);
+            float sz = std::stof(szStr);
+            int isRelative = 0;
+            if (!isRelativeStr.empty()) isRelative = std::stoi(isRelativeStr);
+            
+            VECTOR pos = VGet(x, y, z);
+            if (isRelative == 1) {
+                pos = VAdd(Config::GetStageCenter(), pos);
+            }
+            VECTOR scale = VGet(sx, sy, sz);
+            
+            if (type == "StageObject")
+            {
+                float colSize = 0.0f;
+                if (!colSizeStr.empty()) colSize = std::stof(colSizeStr);
+                new StageObject(pos, model, scale, "", colSize);
+            }
+            else if (type == "Stage")
+            {
+                new Stage(pos, model, model, scale, texture);
+            }
+        }
     }
     
-    new StageObject(VGet(0, 0, 0), "Resource/3D/Stage_casule/source/Parede castelo.mv1",VGet(ObjectSize, ObjectSize, ObjectSize));
-  // 
-  //  new Rock("Resource/3D/rock.mv1", VGet(6000, 0, -300), 0, 3000, 400);*/
-
-  // 
-
-  //  new Wall("",
-  //  new Wall("",//右
-  //  new Wall("",//上
-  //  new Wall("",//下
-   
     SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(0,0,-5000));
     float scale = 13.0f;
    pSkyBox->SetScale(VGet(scale, scale, scale));
@@ -108,8 +121,8 @@ void Scene3D::Initialize()
   //  
   //  new Wall("Resource/2D/mori.png",
   //  new Wall("Resource/2D/mori.png",//右
-  //  new Wall("Resource/2D/mori.png",//上
-  //  new Wall("Resource/2D/mori.png",//下
+  //  new Wall("Resource/2D/mori.png",//�
+  //  new Wall("Resource/2D/mori.png",//�
   //  pSkyBox2->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");*/
   // 
   // 
@@ -134,7 +147,7 @@ void Scene3D::Update()
     }
    
 
-    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();//ひとつ前の場所に戻る
+    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();//ひとつ前�場�に戻�
 
    
 }
@@ -145,7 +158,7 @@ void Scene3D::Draw()
     SceneGame::Draw();
     Master::mpSave->Draw();
 
-    // 地面のグリッド（ステージ）を描画
+    // 地面のグリ�ド（ス�ージ��を描画
     const int count = 51;
     const float distance = 500.0f;
     for (int i = 0; i < count; i++)

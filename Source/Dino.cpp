@@ -124,7 +124,7 @@ void Dino::Move()
 		TerrainFollow(0.0f, 150.0f, 40.0f, 150.0f, -40.0f, 4.0f);
 		bool hitwall = false;
 		bool hitwalls = false;
-		auto walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
+		const auto& walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
 		if (!walls.empty())
 		{
 			// “–‚½‚Á‚Ä‚¢‚é•Ç‚ð’²‚×‚é

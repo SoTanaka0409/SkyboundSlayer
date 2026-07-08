@@ -31,11 +31,11 @@ void DrawHp::Update()
 	//明日はバーを作って右下と右上を削るようにプログラムを作る
 	//敵の見ている方角に合わせ、ｚ座標もｘ座標も合わせる
 	//mpmodel->update()みたいにＤｒａｗＨＰもエネミーのアップデート処理に入れる
-	auto pObjList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	const auto& pObjList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	for (int i = 0; i < pObjList.size(); i++)
 	{
 		auto pObj = pObjList[i];
-		auto pEnemyList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+		const auto& pEnemyList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		auto pEnemy = pEnemyList[i];
 
 		Enemy* pEne = pEnemy->CastTo<Enemy>();

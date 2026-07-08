@@ -17,7 +17,7 @@ Object3D::Object3D(VECTOR initPos)
 	, tag_(Tag3D::None3D)
 	,draw_flag_(true)
 {
-	//現在のシーンのobjectManagerに自信�this)を追加する
+	//現在のシーンのobjectManagerに自信�this)を追�する
 	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
@@ -59,7 +59,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
 	
-	auto objList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
+	const auto& objList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
 	for (int i = 0; i < objList.size(); i++)
 	{
 		Stage* pStage = objList.at(i)->CastTo<Stage>();
@@ -94,7 +94,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 	// StageObject��木�岩など��とのスライド判�
 	if (tag_ != Object3D::Tag3D_Object && tag_ != Object3D::Tag3D_Stage)
 	{
-		auto objs = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
+		const auto& objs = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
 		for (int i = 0; i < objs.size(); i++)
 		{
 			StageObject* stObj = objs.at(i)->CastTo<StageObject>();

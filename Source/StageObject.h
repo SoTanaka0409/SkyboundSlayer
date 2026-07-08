@@ -18,4 +18,5 @@ private:
 	Model* model_;
 	float mfScale;
 	float mfHitRadius;
+	bool mbHasFollowedTerrain;
 };

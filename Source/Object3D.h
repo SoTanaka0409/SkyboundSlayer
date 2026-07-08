@@ -14,7 +14,6 @@ public:
 		Tag3D_Wall3D = 2100,
 		Tag3D_Enemy3D = 2200,
 		Tag3D_Stage = 2300,
-		Tag3D_Bush=2301,
 		Tag3D_Bullet = 2400,
 		Tag3D_Weapon = 2500,
 		Tag3D_Dino = 2600,
@@ -85,7 +84,7 @@ public://ゲチE��ー、セチE��ーw
 	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
 	bool IsDeleteFlag() { return delete_flag_; }
 
-	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //敵の削除フラグ設定　
+	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //敵の削除フラグ設定�
 	bool IsDrawFlag() { return draw_flag_; }          //敵の削除フラグの作�E
 
 	//タグ

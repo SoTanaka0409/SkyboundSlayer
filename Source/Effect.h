@@ -3,7 +3,7 @@
 #include"Object3D.h"
 
 
-class Effect :public Object3D
+class Effect
 {
 public:
 	static const int PARTICLE_NUM = 256; //パーティクルの最大数
@@ -26,21 +26,25 @@ public:
 	struct EffectInfo
 	{
 		COLOR_U8 color; //エフェクトの色
-		ParticleInfo particle[PARTICLE_NUM];//パーティクル情報
+		ParticleInfo particle[PARTICLE_NUM];//パーティクルデータ駆動設計（Data-Driven Design）への移行情報
 	};
 
 
 
 public:
-	Effect(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime);
+	Effect();
+	void Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime);
+	bool IsActive() const { return mActive; }
 
 	~Effect();
 
-	void Update()override;
+	void Update();
 
-	void Draw()override;
+	void Draw();
 
 private:
+	bool mActive;
+
 	int mnGraphHandle;  //画像ハンドル
 	EffectInfo* mpEffect;  //エフェクトのデータ
 

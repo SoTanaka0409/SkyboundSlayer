@@ -8,7 +8,6 @@
 //#include"slope.h"
 #include"Stage.h"
 #include"Master.h"
-#include"Bush.h"
 #include"Dino2.h"
 #include"DinoTori.h"
 #include"InputManager.h"

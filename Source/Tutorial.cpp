@@ -8,7 +8,6 @@
 //#include"slope.h"
 #include"Stage.h"
 #include"Master.h"
-#include"Bush.h"
 #include"EnemyManager.h"
 #include"InputManager.h"
 #include"Scene.h"
@@ -46,10 +45,10 @@ void TutorialScene::Initialize()
 	Master::TutorialCount = 0;
 	
 
-	new Player3D("Resource/Model/T.mv1", VGet(0.0f, 0.0f, 0.0f), 30.0f, 12.0f, 600.0f, true);//ジャンプ、アタック、スピード、ｈｐ
+	new Player3D("Resource/Model/T.mv1", VGet(0.0f, 0.0f, 0.0f), 30.0f, 12.0f, 600.0f, true);//ジャンプ�アタ�ク、スピ�ド㽈�
 	
-	//new Dino2("Resource/3D/spino.mv1", VGet(2400.0f, 300.0f, 1200.0f), 10, 6.0f, 3.0f, 300.0f, 1.0f);//スピの hp,speed,attack,Hitsize,size
-	//new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(2400.0f, 300.0f, -2400.0f), 10, 5.0f, 400.0f, 1.0f);//トリケラトプス,hp,speed,Hitsize,size
+	//new Dino2("Resource/3D/spino.mv1", VGet(2400.0f, 300.0f, 1200.0f), 10, 6.0f, 3.0f, 300.0f, 1.0f);//スピ� hp,speed,attack,Hitsize,size
+	//new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(2400.0f, 300.0f, -2400.0f), 10, 5.0f, 400.0f, 1.0f);//トリケラト�ス,hp,speed,Hitsize,size
 	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-6000.0f, 300.0f, -4400.0f), 11, 5.0f, 3000, 2000);//hp.speedサーチ距離1,2
 	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-1000.0f, 300.0f, -6000), 18, 5.0f, 3000, 2000);//hp.speed,サーチ距離1,2
 	//new Enemy3D("Resource/3D/Hero.mv1", VGet(-3000.0f, 300.0f, -4000.0f), 22, 5.0f, 3000, 2000);//hp.speed,サーチ距離1,2
@@ -87,7 +86,7 @@ void TutorialScene::Initialize()
 		VGet(0.0f, 0.0f, -6500),
 		VGet(wallWidth, 3000.0f, -6500),
 		VGet(-wallWidth / 2, 0.0f, -6500));
-	///天井
+	///天�
 	//new Wall(
 	//	"Resource/Kuro.png",
 	VECTOR pos = VGet(10000, 0, 10000);
@@ -103,11 +102,11 @@ void TutorialScene::Initialize()
 		VAdd(VGet(wallWidth_boss, 0, 0), pos),
 		VAdd(VGet(wallWidth_boss, 1500, -wallDistance_boss), pos),
 		VAdd(VGet(wallWidth_boss, 0, wallDistance_boss), pos));
-	new Wall("Resource/2D/mori.png",//上
+	new Wall("Resource/2D/mori.png",//�
 		VAdd(VGet(0, 0, wallWidth_boss), pos),
 		VAdd(VGet(-wallDistance_boss, 1500, wallWidth_boss), pos),
 		VAdd(VGet(wallDistance_boss, 0, wallWidth_boss), pos));
-	new Wall("Resource/2D/mori.png",//下
+	new Wall("Resource/2D/mori.png",//�
 		VAdd(VGet(0, 0, -wallWidth_boss), pos),
 		VAdd(VGet(-wallDistance_boss, 1500, -wallWidth_boss), pos),
 		VAdd(VGet(wallDistance_boss, 0, -wallWidth_boss), pos));
@@ -141,7 +140,7 @@ void TutorialScene::Update()
 		mpEnemyManager->NewEnemyList((*e));
 		Master::TutorialCount++;
 	}
-	if (Master::TutorialCount == 3)//敵を倒したら
+	if (Master::TutorialCount == 3)//敵を�したら
 	{
 		new StageCollider();
 		Master::TutorialCount++;
@@ -155,30 +154,30 @@ void TutorialScene::Draw()
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
 		
-	/*	DrawFormatString(300, 20, GetColor(255, 0, 0), "左クリックでこうげきして敵を倒そう");
+	/*	DrawFormatString(300, 20, GetColor(255, 0, 0), "左クリ�クでこうげきして敵を�そ�");
 
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "\nEで攻撃方法を変えられるよ");*/
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "\nEで攻�方法を変えられるよ");*/
 	}
 	if (Master::TutorialCount == 4)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0),"目の前のobject入ろう");
-		DrawFormatString(300, 20, GetColor(255, 0, 0),"\nチュートリアルではその先にショップがあるよ");
+		DrawFormatString(300, 20, GetColor(255, 0, 0),"目の前�object入ろう");
+		DrawFormatString(300, 20, GetColor(255, 0, 0),"\nチュートリアルではそ�先にショ�プがある�");
 
 	}
 	if (Master::StatShopClassOn&&Master::TutorialCount==4)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "shopでアイテムを買って、ショップを閉じたらoを押してみよう");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "shopでアイ��を買って、ショ�プを閉じたらoを押してみよう");
 		
 	}
 	
 	if (Master::TutorialCount == 5&&!Master::StatShopClassOn)
 	{
 		DrawBox(0, 0, 1000, 100, GetColor(0, 0, 0), true);
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "最後に装備の変更を行ってみよう.oを押してね");
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "\n矢印キーとenterキーを使うよ");
-		DrawFormatString(300, 20, GetColor(255, 0, 0), "\n\nこれでチュートリアルを終了します。Pを押してね");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "�後に�備�変更を行ってみよう.oを押してね");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "\n矢印キーとenterキーを使��");
+		DrawFormatString(300, 20, GetColor(255, 0, 0), "\n\nこれでチュートリアルを終�します�Pを押してね");
 
 	}
 	
@@ -189,11 +188,11 @@ void TutorialScene::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawFormatString(650, 650, GetColor(0, 0, 255), "/////移動キー/////");
 	DrawFormatString(650, 690, Color, "WASD:移動キー");
-	DrawFormatString(650, 690, GetColor(255, 0, 0), "\n/////アタックキー////");
-	DrawFormatString(650, 690, Color, "\n\nMouseLeft:アタック");
+	DrawFormatString(650, 690, GetColor(255, 0, 0), "\n/////アタ�クキー////");
+	DrawFormatString(650, 690, Color, "\n\nMouseLeft:アタ�ク");
 	DrawFormatString(650, 690, Color, "\n\n\nSHIFT:回避");
-	DrawFormatString(650, 690, Color, "\n\n\n\nE:攻撃方法チェンジ");
-	DrawFormatString(650, 690, GetColor(0, 255, 0), "\n\n\n\n\n/////そのほか/////");
+	DrawFormatString(650, 690, Color, "\n\n\n\nE:攻�方法チェンジ");
+	DrawFormatString(650, 690, GetColor(0, 255, 0), "\n\n\n\n\n/////そ�ほ�/////");
 	DrawFormatString(650, 690, Color, "\n\n\n\n\n\nO:インベントリ");
 	DrawFormatString(650, 690, Color, "\n\n\n\n\n\n\nQ:視点変更");
 	DrawFormatString(650, 690, GetColor(255, 0, 0), "\n\n\n\n\n\n\n\n死んだらお金を少しなくす");

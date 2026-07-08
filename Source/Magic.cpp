@@ -5,6 +5,7 @@
 #include"SceneManager.h"
 #include"ObjectManager.h"
 #include"Effect.h"
+#include "EffectPool.h"
 
 Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float speed,VECTOR movevec, int count, int time)
 	:Object3D(initPos)
@@ -52,7 +53,7 @@ void Magic::Move()
 
 void Magic::Death()
 {
-	new Effect(position_, Filename, GetColorU8(255, 0, 0, 0), mfMagicSize, 0.1f);
+	EffectPool::GetInstance()->Play(position_, Filename, GetColorU8(255, 0, 0, 0), mfMagicSize, 0.1f);
 	SetDeleteFlag(true);
 	mpHitCollider->SetDeleteFlag(true);
 }

@@ -4,6 +4,7 @@
 #include<vector>
 #include"Object3D.h"
 #include"Object2D.h"
+#include<map>
 
 
 class ObjectManager
@@ -35,7 +36,7 @@ public:
 
 	//指定したタグの２Dオブジェクトのリストを取得
 	//note:該当するオブジェクトが複数ある場合、リスト化してすべてのオブジェクトを返す
-	std::vector<Object3D*>GetObject3DListByTag(Object3D::Tag3D tag);
+	const std::vector<Object3D*>& GetObject3DListByTag(Object3D::Tag3D tag);
 
 	////////////////////////////////////////////////////////////////////////
 
@@ -59,6 +60,8 @@ public:
 
 private:
 	
+	std::map<Object3D::Tag3D, std::vector<Object3D*>> mCached3DLists;
+	bool mCacheDirty;
 	std::list<Object3D*>mObject3DList;   //3Dオブジェクトを管理するリスト
 	
 	std::list<Object2D*>mObject2DList;
