@@ -1,4 +1,4 @@
-#include"InfClass.h"
+ï»¿#include"InfClass.h"
 #include"ItemManager.h"
 #include"Master.h"
 
@@ -17,19 +17,19 @@ void InfClass::Draw()
 {
 	if (LogNumber == 1)
 	{
-		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%s‚ğŠl“¾‚µ‚½", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sã‚’ç²å¾—ã—ãŸ", LogDate.c_str());
 	}
 	else if (LogNumber == 2)
 	{
-		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%s‚ğg—p‚µ‚½", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sã‚’ä½¿ç”¨ã—ãŸ", LogDate.c_str());
 	}
 	else if (LogNumber == 3)
 	{
-		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%s‚ªŒ»‚ê‚½", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sãŒç¾ã‚ŒãŸ", LogDate.c_str());
 	}
 	else if (LogNumber == 4)
 	{
-		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%s‚Íg—p‚Å‚«‚Ü‚¹‚ñ", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sã¯ä½¿ç”¨ã§ãã¾ã›ã‚“", LogDate.c_str());
 	}
 	else if(LogNumber==5)
 	{
@@ -37,14 +37,14 @@ void InfClass::Draw()
 	}
 	else
 	{
-		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "–¢Šm”F‚ÈƒƒO‚Å‚·");
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "æœªç¢ºèªãªãƒ­ã‚°ã§ã™");
 	}
 
 	
 
 /*	if (IsDrawFlag == false)
 	{
-		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%s‚ğŠl“¾‚µ‚½", LogDate.c_str());
+		DrawFormatString(position_.x, position_.y, GetColor(255, 255, 255), "%sã‚’ç²å¾—ã—ãŸ", LogDate.c_str());
 	}
 	*/
 }

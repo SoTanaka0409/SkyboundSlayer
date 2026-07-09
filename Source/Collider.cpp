@@ -1,4 +1,4 @@
-#include "Collider.h"
+﻿#include "Collider.h"
 #include "Object3D.h"
 #include "ColliderManager.h"
 
@@ -9,7 +9,7 @@ Collider::Collider(Object3D* parent)
 	, radius_(0.0f)
 	, delete_flag_(false)
 {
-	// ColliderManager�� Add ���Ă���
+	// ColliderManagerに Add しておく
 	ColliderManager::GetInstance()->AddCollider(this);
 }
 
@@ -24,53 +24,53 @@ void Collider::HitCheck(Collider* check, bool isHit)
 	if (isHit)
 	{
 		
-		// �������Ă����ꍇ //
+		// 当たっていた場合 //
 
-		// ���łɓ������Ă��邩�`�F�b�N
+		// すでに当たっているかチェック
 		auto itr = std::find_if(
 			collision_list_.begin(),
 			collision_list_.end(),
-			[&](Collider* col) { return col == check; } // �����_��
+			[&](Collider* col) { return col == check; } // ラムダ式
 		);
 
 		if (itr != collision_list_.end())
 		{
-			// ���łɓ������Ă����ꍇ //
+			// すでに当たっていた場合 //
 			
-			// �������Ă����Ԃ̏������Ăяo��
+			// 当たっている状態の処理を呼び出す
 			this->parent_object_->OnEnter(this, check);
 		}
 		else
 		{
-			// ���łɓ������Ă��Ȃ������ꍇ //
+			// すでに当たっていなかった場合 //
 
-			// ���X�g�ɓo�^���Ă���
-			collision_list_.push_back(check);//�C�ӂ̃^�C�~���O�ł����ǉ����Ȃ��悤�ɂ������
+			// リストに登録しておく
+			collision_list_.push_back(check);//任意のタイミングでしか追加しないようにすっれば
 
-			// ���������u�ԏ�Ԃ̏������Ăяo��
+			// 当たった瞬間状態の処理を呼び出す
 			this->parent_object_->OnTrigger(this, check);
 			
 		}
 	}
 	else
 	{
-		// �������Ă��Ȃ������ꍇ //
+		// 当たっていなかった場合 //
 
-		// ���łɓ������Ă��邩�`�F�b�N
+		// すでに当たっているかチェック
 		auto itr = std::find_if(
 			collision_list_.begin(),
 			collision_list_.end(),
-			[&](Collider* col) { return col == check; } // �����_��
+			[&](Collider* col) { return col == check; } // ラムダ式
 		);
 
 		if (itr != collision_list_.end())
 		{
-			// �������Ă����ꍇ //
+			// 当たっていた場合 //
 
-			// ���ꂽ�u�Ԃ̏������Ăяo��
+			// 離れた瞬間の処理を呼び出す
 			this->parent_object_->OnExit(this, check);
 
-			// �������Ă��Ȃ��̂Ń��X�g����͏��O����
+			// 当たっていないのでリストからは除外する
 			collision_list_.erase(itr);
 		}
 	}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"dxlib.h"
 #include"Collider.h"
 #include"ColliderManager.h"
@@ -12,7 +12,7 @@ class CapsuleCollider;
 class Magic:public Object3D
 {
 public:
-	Magic(std::string filename,VECTOR initPos,float r,float damage,float speed,VECTOR movevec,int count,int time);//file,initpos,半征E攻撁E��,speed,向かぁE��吁Ecount,消える時閁E
+	Magic(std::string filename,VECTOR initPos,float r,float damage,float speed,VECTOR movevec,int count,int time);//file,initpos,蜊雁ｾ・謾ｻ謦・鴨,speed,蜷代°縺・婿蜷・count,豸医∴繧区凾髢・
 	~Magic();
 
 	void Update();

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma once
 #include"dxlib.h"
 #include<vector>
@@ -10,9 +10,9 @@ public:
 	enum ItemID
 	{
 		NONE,
-		HEAL,//‰ñ•œ
-		POWER,//‚¿‚©‚çUP
-		HIGHHEAL,//‰ñ•œ‹­
+		HEAL,//å›å¾©
+		POWER,//ã¡ã‹ã‚‰UP
+		HIGHHEAL,//å›å¾©å¼·
 		SPEED,
 		ITEM_MAX,
 	};
@@ -24,7 +24,7 @@ public:
 		std::string effect;
 		bool mbUse = false;
 		int price=100;
-		bool isLog = true;//true‚¾‚Á‚½‚çƒƒO‚Éc‚·
+		bool isLog = true;//trueã ã£ãŸã‚‰ãƒ­ã‚°ã«æ®‹ã™
 
 	}Information;
 

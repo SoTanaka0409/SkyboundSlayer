@@ -1,19 +1,19 @@
-#include "EffectU.h"
+ï»¿#include "EffectU.h"
 #include <cmath>
 
 /*====================================================
-  ƒ†[ƒeƒBƒŠƒeƒBŠÖ”
+  ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°
 ====================================================*/
-// “x¨ƒ‰ƒWƒAƒ“
+// åº¦â†’ãƒ©ã‚¸ã‚¢ãƒ³
 static float DegToRad(float deg) { return deg * (DX_PI_F / 180.0f); }
 
-// 0..1 ‚Ìƒ‰ƒ“ƒ_ƒ€
+// 0..1 ã®ãƒ©ãƒ³ãƒ€ãƒ 
 static float Rand01() { return (float)(GetRand(10000) / 10000.0f); }
 
-// a..b ‚Ì”ÍˆÍƒ‰ƒ“ƒ_ƒ€
+// a..b ã®ç¯„å›²ãƒ©ãƒ³ãƒ€ãƒ 
 static float RandRange(float a, float b) { return a + Rand01() * (b - a); }
 
-// a..b ‚Ì”ÍˆÍƒ‰ƒ“ƒ_ƒ€®”i—¼’[ŠÜ‚Şj
+// a..b ã®ç¯„å›²ãƒ©ãƒ³ãƒ€ãƒ æ•´æ•°ï¼ˆä¸¡ç«¯å«ã‚€ï¼‰
 static int RandIntInclusive(int a, int b)
 {
     if (b <= a) return a;
@@ -21,7 +21,7 @@ static int RandIntInclusive(int a, int b)
 }
 
 /*====================================================
-  “Ç‚İ‚İiƒeƒNƒXƒ`ƒƒƒ[ƒh‚È‚Çj
+  èª­ã¿è¾¼ã¿ï¼ˆãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ­ãƒ¼ãƒ‰ãªã©ï¼‰
 ====================================================*/
 bool EffectU::Load()
 {
@@ -38,41 +38,41 @@ bool EffectU::Load()
 }
 
 /*====================================================
-  ƒz[ƒ‹ƒhŠJni–‚–@w•\¦ŠJnj
+  ãƒ›ãƒ¼ãƒ«ãƒ‰é–‹å§‹ï¼ˆé­”æ³•é™£è¡¨ç¤ºé–‹å§‹ï¼‰
 ====================================================*/
 void EffectU::StartHold(const VECTOR& playerPos)
 {
     if (mTex == -1) return;
 
-    // ’†SˆÊ’uİ’è
+    // ä¸­å¿ƒä½ç½®è¨­å®š
     mCenter = playerPos;
     mCenter.y += mYOffset;
 
     mState = State::Holding;
     mPieces.clear();
 
-    // ‰ñ“]‰Šú‰»
+    // å›è»¢åˆæœŸåŒ–
     mHoldRotY = 0.0f;
 
-    // PreShatter—pƒ^ƒCƒ}[‰Šú‰»
+    // PreShatterç”¨ã‚¿ã‚¤ãƒãƒ¼åˆæœŸåŒ–
     mPreShatterTimer = 0;
 }
 
 /*====================================================
-  —£‚µ‚Ä”j‰óŠJn
+  é›¢ã—ã¦ç ´å£Šé–‹å§‹
 ====================================================*/
 void EffectU::ReleaseAndShatter()
 {
     if (mTex == -1) return;
     if (mState != State::Holding) return;
 
-    // ‚·‚®”j‰ó‚¹‚¸AŒ´Œ^‚ğ­‚µc‚µ‚Ä‚©‚çÓ‚­
+    // ã™ãç ´å£Šã›ãšã€åŸå‹ã‚’å°‘ã—æ®‹ã—ã¦ã‹ã‚‰ç •ã
     mState = State::PreShatter;
     mPreShatterTimer = 0;
 }
 
 /*====================================================
-  –ˆƒtƒŒ[ƒ€XV
+  æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 ====================================================*/
 void EffectU::UpdateFollow(const VECTOR& /*playerPos*/)
 {
@@ -80,7 +80,7 @@ void EffectU::UpdateFollow(const VECTOR& /*playerPos*/)
     if (mState == State::Idle) return;
 
     // -------------------------------------------------
-    // HoldingF‰ñ“]‚Ì‚İ
+    // Holdingï¼šå›è»¢ã®ã¿
     // -------------------------------------------------
     if (mState == State::Holding)
     {
@@ -89,7 +89,7 @@ void EffectU::UpdateFollow(const VECTOR& /*playerPos*/)
     }
 
     // -------------------------------------------------
-    // PreShatterFŒ´Œ^‚Ì‚Ü‚Ü­‚µc‚µ‚Ä‚©‚çÓ‚­
+    // PreShatterï¼šåŸå‹ã®ã¾ã¾å°‘ã—æ®‹ã—ã¦ã‹ã‚‰ç •ã
     // -------------------------------------------------
     if (mState == State::PreShatter)
     {
@@ -101,14 +101,14 @@ void EffectU::UpdateFollow(const VECTOR& /*playerPos*/)
         mPreShatterTimer++;
         if (mPreShatterTimer >= mPreShatterFrames)
         {
-            BuildPieces(mCenter, mHoldRotY); // ”j•Ğ¶¬
+            BuildPieces(mCenter, mHoldRotY); // ç ´ç‰‡ç”Ÿæˆ
             mState = State::Shatter;
         }
         return;
     }
 
     // -------------------------------------------------
-    // ShatterF”j•ĞXV
+    // Shatterï¼šç ´ç‰‡æ›´æ–°
     // -------------------------------------------------
     if (mState == State::Shatter)
     {
@@ -126,7 +126,7 @@ void EffectU::UpdateFollow(const VECTOR& /*playerPos*/)
 
             p.age++;
 
-            // ’x‰„’†F‚»‚Ìê‚Å­‚µ‚¾‚¯—h‚ê‚é
+            // é…å»¶ä¸­ï¼šãã®å ´ã§å°‘ã—ã ã‘æºã‚Œã‚‹
             if (p.age < p.startDelay)
             {
                 if (mIdleJitter > 0.0f)
@@ -138,21 +138,21 @@ void EffectU::UpdateFollow(const VECTOR& /*playerPos*/)
                 continue;
             }
 
-            // ã•ûŒü‰Á‘¬
+            // ä¸Šæ–¹å‘åŠ é€Ÿ
             p.vel.y += p.upAccel;
 
-            // Œ¸ŠiX/Z/Y•Êj
+            // æ¸›è¡°ï¼ˆX/Z/Yåˆ¥ï¼‰
             p.vel.x *= mDampXZ;
             p.vel.z *= mDampXZ;
             p.vel.y *= mDampY;
 
-            // ˆÊ’uXV
+            // ä½ç½®æ›´æ–°
             p.pos = VAdd(p.pos, p.vel);
 
-            // ‰ñ“]XV
+            // å›è»¢æ›´æ–°
             p.rotY += p.rotSpd;
 
-            // ƒtƒF[ƒhƒAƒEƒg
+            // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ
             p.alpha -= mFadeSpd;
             if (p.alpha <= 0.0f)
             {
@@ -173,7 +173,7 @@ void EffectU::UpdateFollow(const VECTOR& /*playerPos*/)
 }
 
 /*====================================================
-  •`‰æˆ—
+  æç”»å‡¦ç†
 ====================================================*/
 void EffectU::Draw() const
 {
@@ -181,12 +181,12 @@ void EffectU::Draw() const
 
     SetDrawBright(mBright, mBright, mBright);
 
-    // Holding / PreShatter ‚ÍŒ´Œ^‚ğ•`‰æ
+    // Holding / PreShatter ã¯åŸå‹ã‚’æç”»
     if (mState == State::Holding || mState == State::PreShatter)
     {
         DrawHoldingBoard();
     }
-    // Shatter ‚Í”j•Ğ•`‰æ
+    // Shatter ã¯ç ´ç‰‡æç”»
     else if (mState == State::Shatter)
     {
         for (const auto& p : mPieces)
@@ -200,7 +200,7 @@ void EffectU::Draw() const
 }
 
 /*====================================================
-  ”j•Ğ¶¬
+  ç ´ç‰‡ç”Ÿæˆ
 ====================================================*/
 void EffectU::BuildPieces(const VECTOR& center, float baseRotY)
 {
@@ -224,27 +224,27 @@ void EffectU::BuildPieces(const VECTOR& center, float baseRotY)
             p.alpha = 255.0f;
             p.age = 0;
 
-            // ’x‰„ŠÔ
+            // é…å»¶æ™‚é–“
             p.startDelay = RandIntInclusive(mStartDelayMin, mStartDelayMax);
 
-            // ã•ûŒü‰Á‘¬“xƒ‰ƒ“ƒ_ƒ€
+            // ä¸Šæ–¹å‘åŠ é€Ÿåº¦ãƒ©ãƒ³ãƒ€ãƒ 
             p.upAccel = mUpAccelBase * RandRange(0.7f, 1.35f);
 
             const float localX = -half + (ix + 0.5f) * cell;
             const float localZ = -half + (iy + 0.5f) * cell;
 
-            // ‰ñ“]”½‰f‚µ‚½‰ŠúˆÊ’u
+            // å›è»¢åæ˜ ã—ãŸåˆæœŸä½ç½®
             const float rx = localX * bc - localZ * bs;
             const float rz = localX * bs + localZ * bc;
             p.pos = VAdd(center, VGet(rx, 0.0f, rz));
 
             p.halfSize = cell * 0.5f;
 
-            // ”j•Ğ©g‚Ì‰ñ“]
+            // ç ´ç‰‡è‡ªèº«ã®å›è»¢
             p.rotY = baseRotY + DegToRad((float)GetRand(360));
             p.rotSpd = DegToRad((float)(GetRand(60) - 30)) * 0.04f;
 
-            // ‰‘¬
+            // åˆé€Ÿ
             const float nx = localX / (half + 0.0001f);
             const float nz = localZ / (half + 0.0001f);
             const float upStart = RandRange(mUpStartMin, mUpStartMax);
@@ -254,7 +254,7 @@ void EffectU::BuildPieces(const VECTOR& center, float baseRotY)
                 nz * mOutPower + (Rand01() * 2.0f - 1.0f) * mRandJitter
             );
 
-            // UVÀ•W
+            // UVåº§æ¨™
             p.u0 = ix * du;        p.v0 = iy * dv;
             p.u1 = (ix + 1) * du;  p.v1 = (iy + 1) * dv;
 
@@ -264,7 +264,7 @@ void EffectU::BuildPieces(const VECTOR& center, float baseRotY)
 }
 
 /*====================================================
-  Œ´Œ^i–‚–@wj•`‰æ
+  åŸå‹ï¼ˆé­”æ³•é™£ï¼‰æç”»
 ====================================================*/
 void EffectU::DrawHoldingBoard() const
 {
@@ -321,7 +321,7 @@ void EffectU::DrawHoldingBoard() const
 }
 
 /*====================================================
-  ”j•Ğ•`‰æ
+  ç ´ç‰‡æç”»
 ====================================================*/
 void EffectU::DrawPiece(const Piece& p) const
 {

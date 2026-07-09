@@ -1,48 +1,48 @@
-#include "SkyBox.h"
+﻿#include "SkyBox.h"
 #include "Model.h"
 
-// �R���X�g���N�^
+// コンストラクタ
 SkyBox::SkyBox(std::string filename,VECTOR pos)
 	: Object3D(VGet(0.0f, 0.0f, 0.0f))
 {
-	// �X�J�C�{�b�N�X���f���̐���
-	// note: �X�J�C�{�b�N�X�̍��W�́A��{�I�ɂ͌��_�B
-	//       ���̂ɂ���ẮA���W����Ƀv���C���[�̍��W�ɂ��邱�ƂŁA�󂪌��؂�Ȃ��悤�ɂ��邱�Ƃ�����B
+	// スカイボックスモデルの生成
+	// note: スカイボックスの座標は、基本的には原点。
+	//       ものによっては、座標を常にプレイヤーの座標にすることで、空が見切れないようにすることもある。
 	model_ = new Model( filename, pos);
 }
 
-// �f�X�g���N�^
+// デストラクタ
 SkyBox::~SkyBox()
 {
-	// ���f���N���X�̔j��
+	// モデルクラスの破棄
 	if (model_ != nullptr)
 	{
 		delete model_;
 	}
 }
 
-// �X�V����
+// 更新処理
 void SkyBox::Update()
 {
 	if (model_ != nullptr)
 	{
-		// �X�J�C�{�b�N�X���X�e�[�W��˂���������e�𗎂Ƃ��̂�h�����߁A��ɃJ�����ʒu�ɒǏ]������
+		// スカイボックスがステージを突き抜けたり影を落とすのを防ぐため、常にカメラ位置に追従させる
 		model_->SetPosition(GetCameraPosition());
 		model_->Update();
 	}
 }
 
-// �`�揈��
+// 描画処理
 void SkyBox::Draw()
 {
 	if (model_ != nullptr)
 	{
-		// Z�o�b�t�@�̏������݂��I�t�ɂ���i���̔w�i�Ƃ��ĕ`�悵�A�X�e�[�W���B���Ȃ��悤�ɂ���j
+		// Zバッファの書き込みをオフにする（奥の背景として描画し、ステージを隠さないようにする）
 		SetWriteZBuffer3D(FALSE);
 		
-		// �ꎞ�I�Ƀ��C�g�̉e����OFF�ɂ��ĕ`�悷��
-		// note: �e������Ɖe���o���ĈÂ��Ȃ��Ă��܂��ꍇ�����邽�߁B
-		//       �t�ɉe��t�������ꍇ�͂��̏����͊O���Ă悢�B
+		// 一時的にライトの影響をOFFにして描画する
+		// note: 影響すると影が出来て暗くなってしまう場合があるため。
+		//       逆に影を付けたい場合はこの処理は外してよい。
 		SetUseLighting(FALSE);
 		
 		model_->Draw();
@@ -52,7 +52,7 @@ void SkyBox::Draw()
 	}
 }
 
-// �g��l�i�X�P�[���l�j�̐ݒ�iModel�N���X�ւ̋��n���j
+// 拡大値（スケール値）の設定（Modelクラスへの橋渡し）
 void SkyBox::SetScale(VECTOR scale)
 {
 	if (model_ != nullptr)
@@ -61,7 +61,7 @@ void SkyBox::SetScale(VECTOR scale)
 	}
 }
 
-// ���f���̃e�N�X�`���ύX�iModel�N���X�ւ̋��n���j
+// モデルのテクスチャ変更（Modelクラスへの橋渡し）
 void SkyBox::SetModelTexture(std::string filename, int index)
 {
 	if (model_ != nullptr)

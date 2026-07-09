@@ -1,4 +1,4 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 #include "Player3D.h"
 #include "Enemy.h"
 #include "StatShop.h"
@@ -26,7 +26,7 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     
     // Portal Base
     float portalSize = 100.0f;
-    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/�]���w/source/portal.mv1", "Resource/3D/�]���w/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
+    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/転送陣/source/portal.mv1", "Resource/3D/転送陣/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
 }
 
 GameManager::~GameManager()
@@ -51,25 +51,25 @@ void GameManager::Update()
         mFadeAlpha += 5;
         if (mFadeAlpha >= 255) {
             mFadeAlpha = 255;
-            mCurrentPhase = Phase::BOSS; // �時的にBOSSにして出現させ�
-            SpawnPhaseEnemies(); // ここでボス出現
+            mCurrentPhase = Phase::BOSS; // 荳譎ら噪縺ｫBOSS縺ｫ縺励※蜃ｺ迴ｾ縺輔○繧
+            SpawnPhaseEnemies(); // 縺薙％縺ｧ繝懊せ蜃ｺ迴ｾ
 
             mCurrentPhase = Phase::FADE_IN_BOSS;
             
-            // ボスエリアへプレイヤーをワープさせる
+            // 繝懊せ繧ｨ繝ｪ繧｢縺ｸ繝励Ξ繧､繝､繝ｼ繧偵Ρ繝ｼ繝励＆縺帙ｋ
             Master::mpPlayer->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0.0f, -2000.0f)));
             if (Master::mpSoundManager) {
                 Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
             }
         }
-        return; // フェード中は他�更新をスキ��
+        return; // 繝輔ぉ繝ｼ繝我ｸｭ縺ｯ莉悶ｮ譖ｴ譁ｰ繧偵せ繧ｭ繝繝
     } else if (mCurrentPhase == Phase::FADE_IN_BOSS) {
         mFadeAlpha -= 5;
         if (mFadeAlpha <= 0) {
             mFadeAlpha = 0;
             mCurrentPhase = Phase::BOSS;
         }
-        return; // フェード中は他�更新をスキ��
+        return; // 繝輔ぉ繝ｼ繝我ｸｭ縺ｯ莉悶ｮ譖ｴ譁ｰ繧偵せ繧ｭ繝繝
     }
 
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)
@@ -134,13 +134,13 @@ void GameManager::Update()
             Phase oldPhase = mCurrentPhase;
             if (mCurrentPhase == Phase::PHASE_1) {
                 mCurrentPhase = Phase::SHOP_1;
-                mShopTimer = 60 * 20; // 20遘�
+                mShopTimer = 60 * 20; // 20驕倥ｻ
             } else if (mCurrentPhase == Phase::PHASE_2) {
                 mCurrentPhase = Phase::SHOP_2;
-                mShopTimer = 60 * 20; // 20遘�
+                mShopTimer = 60 * 20; // 20驕倥ｻ
             } else if (mCurrentPhase == Phase::PHASE_3) {
                 mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20遘�
+                mShopTimer = 60 * 20; // 20驕倥ｻ
             } else if (mCurrentPhase == Phase::BOSS) {
                 mCurrentPhase = Phase::CLEAR;
             }
@@ -235,7 +235,7 @@ void GameManager::SpawnPhaseEnemies()
 {
 auto p = Master::mpPlayer;
     Player3D* player = p->CastTo<Player3D>();
-    // 謨��縺後せ繝�・繧��縺九ｉ螟悶��縺��關ｽ荳九�蝓区����縺励↑縺・��縺・↓縲��onfig縺��繧��繝�・繧��荳��蠢・����讓吶��貉ｧ縺堺��咲����縺��蝓ｺ�悶→縺吶�
+    // 隰ｨｽｵ邵ｺ蠕後○郢昴ｻ繝ｻ郢ｧｽｸ邵ｺ荵晢ｽ芽棔謔ｶｽ檎ｸｺｽｦ髣懶ｽｽ闕ｳ荵昴ｻ陜灘玄ｽｲｽ｡邵ｺ蜉ｱ竊醍ｸｺ繝ｻｽ育ｸｺ繝ｻ竊鍋ｸｲｼ経nfig邵ｺｽｮ郢ｧｽｹ郢昴ｻ繝ｻ郢ｧｽｸ闕ｳｽｭ陟｢繝ｻｽｺｽｧ隶灘生ｽ定ｲ会ｽｧ邵ｺ蝣ｺｽｽ蜥ｲｽｽｽｮ邵ｺｽｮ陜難ｽｺ雋謔ｶ竊堤ｸｺ蜷ｶｽ
     VECTOR centerPos = Config::GetStageCenter();
     if (player != nullptr)
     {
@@ -266,7 +266,7 @@ auto p = Master::mpPlayer;
         mpEnemyManager->NewEnemyList(e);
     }
     else if (mCurrentPhase == Phase::PHASE_2) {
-        // Wave 2: 鬲疲��募�螢��
+        // Wave 2: 鬯ｲ逍ｲｽｳ蜍溘ｻ陞｢ｽｫ
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
         e1.spawnCenter = centerPos;
@@ -287,7 +287,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e1);
         mpEnemyManager->NewEnemyList(e1);
 
-        // Wave 2: 霑第磁蜑��螢��
+        // Wave 2: 髴醍ｬｬ逎∬恆ｽ｣陞｢ｽｫ
         EnemyManager::enemydate e2;
         e2.filename = "Resource/Model/T.mv1";
         e2.spawnCenter = centerPos;
@@ -309,7 +309,7 @@ auto p = Master::mpPlayer;
         mpEnemyManager->NewEnemyList(e2);
     }
     else if (mCurrentPhase == Phase::PHASE_3) {
-        // Wave 3: 驥埼㍼邏壻����逕ｨ
+        // Wave 3: 鬩･蝓ｼ纃ｼ驍丞｣ｻｽｻｽ｣騾包ｽｨ
         EnemyManager::enemydate e_heavy;
         e_heavy.filename = "Resource/Model/monster.mv1";
         e_heavy.spawnCenter = centerPos;
@@ -330,7 +330,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e_heavy);
         mpEnemyManager->NewEnemyList(e_heavy);
 
-        // Wave 3: 鬲疲��募�螢��
+        // Wave 3: 鬯ｲ逍ｲｽｳ蜍溘ｻ陞｢ｽｫ
         EnemyManager::enemydate e_magic;
         e_magic.filename = "Resource/Model/T.mv1";
         e_magic.spawnCenter = centerPos;
@@ -351,7 +351,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e_magic);
         mpEnemyManager->NewEnemyList(e_magic);
 
-        // Wave 3: 霑第磁蜈��螢��
+        // Wave 3: 髴醍ｬｬ逎∬怦ｽｵ陞｢ｽｫ
         EnemyManager::enemydate e_melee;
         e_melee.filename = "Resource/Model/T.mv1";
         e_melee.spawnCenter = centerPos;

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 #include"Player3D.h"
 #include"EnemyManager.h"
@@ -19,7 +19,7 @@ public:
 		COll__Max,*/
 		Coll_Charactor=1000,
 	};
-	//ƒLƒƒƒ‰ƒNƒ^[‚Ì“–‚½‚è”»’è‚ğ‘‚¢‚Ä‚¢‚­
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®å½“ãŸã‚Šåˆ¤å®šã‚’æ›¸ã„ã¦ã„ã
 public:
 
 	Collision();

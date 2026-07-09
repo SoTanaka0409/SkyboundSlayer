@@ -1,4 +1,4 @@
-#include "EffekseerObject.h"
+﻿#include "EffekseerObject.h"
 #include "EffekseerManager.h"
 
 EffekseerObject::EffekseerObject(const std::string& name, const char* filepath, VECTOR initPos, Object3D* parent, bool isFollow, float magnification, float speed)

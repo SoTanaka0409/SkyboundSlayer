@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"Dxlib.h"
 #include "string"
 #include"Object3D.h"
@@ -31,6 +31,6 @@ private:
 	
 	Model* model_;
 	float mfSize;
-	int mnModelHandle; //ステージモデルのハンドル
+	int mnModelHandle; //繧ｹ繝・・繧ｸ繝｢繝・Ν縺ｮ繝上Φ繝峨Ν
 	bool mnHitFlag;
 };

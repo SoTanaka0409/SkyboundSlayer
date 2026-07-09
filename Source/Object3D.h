@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"DxLib.h"
 #include<string>
 
@@ -9,7 +9,7 @@ class Object3D
 public:
 	enum Tag3D
 	{
-		None3D = 0,//設定なぁE
+		None3D = 0,//險ｭ螳壹↑縺・
 		Tag3D_Player3D = 2000,
 		Tag3D_Wall3D = 2100,
 		Tag3D_Enemy3D = 2200,
@@ -33,14 +33,14 @@ public:
 		Status_Hp,
 		
 	}state;
-	// ☁Eew!! Zソート用☁E
-public: // ソート関数定義
+	// 笘・ew!! Z繧ｽ繝ｼ繝育畑笘・
+public: // 繧ｽ繝ｼ繝磯未謨ｰ螳夂ｾｩ
 
-	// Zソート用の設宁E
+	// Z繧ｽ繝ｼ繝育畑縺ｮ險ｭ螳・
 	void SetCameraDistance(float distance) { current_camera_distance_ = distance; }
 
-	// カメラ距離を基準にソートするため�Eオペレーター
-	// note: カメラとの距離が離れるほどリスト�E手前に来るよぁE��する�E��Eに描画したぁE��E
+	// 繧ｫ繝｡繝ｩ霍晞屬繧貞渕貅悶↓繧ｽ繝ｼ繝医☆繧九◆繧√・繧ｪ繝壹Ξ繝ｼ繧ｿ繝ｼ
+	// note: 繧ｫ繝｡繝ｩ縺ｨ縺ｮ霍晞屬縺碁屬繧後ｋ縺ｻ縺ｩ繝ｪ繧ｹ繝医・謇句燕縺ｫ譚･繧九ｈ縺・↓縺吶ｋ・亥・縺ｫ謠冗判縺励◆縺・ｼ・
 	struct CompareZOrder {
 		bool operator()(Object3D* a, Object3D* b) const {
 			return a->current_camera_distance_ > b->current_camera_distance_;
@@ -68,10 +68,10 @@ public:
 	virtual void OnTrigger(Collider* collider, Collider* check);
 	virtual void OnExit(Collider* collider, Collider* check);
 
-	// 地形�E�Etage�E�に高さを合わせる�E琁E
+	// 蝨ｰ蠖｢・・tage・峨↓鬮倥＆繧貞粋繧上○繧句・逅・
 	void TerrainFollow(float capsuleBottomY = -150.0f, float capsuleTopY = 150.0f, float capsuleRadius = 40.0f, float lineTopY = 1000.0f, float lineBottomY = -1000.0f, float gravity = 8.0f);
 
-public://ゲチE��ー、セチE��ーw
+public://繧ｲ繝・ち繝ｼ縲√そ繝・ち繝ｼw
 	void SetPosition(VECTOR pos) { position_ = pos; };
 	VECTOR GetPosition() { return position_; }
 
@@ -84,21 +84,21 @@ public://ゲチE��ー、セチE��ーw
 	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
 	bool IsDeleteFlag() { return delete_flag_; }
 
-	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //敵の削除フラグ設定�
-	bool IsDrawFlag() { return draw_flag_; }          //敵の削除フラグの作�E
+	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //謨ｵ縺ｮ蜑企勁繝輔Λ繧ｰ險ｭ螳壹
+	bool IsDrawFlag() { return draw_flag_; }          //謨ｵ縺ｮ蜑企勁繝輔Λ繧ｰ縺ｮ菴懈・
 
-	//タグ
+	//繧ｿ繧ｰ
 	void SetTag(Tag3D tag) { tag_ = tag; }
 	Tag3D GetTag() { return tag_; }
 
 protected:
-	VECTOR position_;  //座樁E
-	VECTOR rotation_;   //回転
+	VECTOR position_;  //蠎ｧ讓・
+	VECTOR rotation_;   //蝗櫁ｻ｢
 	VECTOR old_position_;
 private:
-	bool delete_flag_;  //削除フラグ
-	Tag3D tag_;   //タグ
-	bool draw_flag_;//描画フラグ
-	float current_camera_distance_;     // 現在のカメラとの距離
+	bool delete_flag_;  //蜑企勁繝輔Λ繧ｰ
+	Tag3D tag_;   //繧ｿ繧ｰ
+	bool draw_flag_;//謠冗判繝輔Λ繧ｰ
+	float current_camera_distance_;     // 迴ｾ蝨ｨ縺ｮ繧ｫ繝｡繝ｩ縺ｨ縺ｮ霍晞屬
 	
 };

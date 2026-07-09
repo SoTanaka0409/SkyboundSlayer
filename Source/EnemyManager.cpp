@@ -1,4 +1,4 @@
-#include"EnemyManager.h"
+﻿#include"EnemyManager.h"
 #include"Enemy3D.h"
 #include"Enemy3D_AT.h"
 #include"EnemyBoss_1.h"
@@ -94,7 +94,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 			mpEneList.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.xp, date.money, date.isSeparateAnim));
 		}
 	}
-	//‘�‚â‚µ‚Ä‚¢‚­
+	//窶假ｿｽ窶堙｢窶堋ｵ窶堙・堋｢窶堋ｭ
 }
 
 

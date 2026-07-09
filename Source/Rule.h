@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 #include"Scene.h"
 #include"InputManager.h"
@@ -24,25 +24,25 @@ private:
 	Scene* mpScene;
 	Texture* mpTexture2;
 	Texture* mpTexture3;
-	int mnC;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©
-	int mnS;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	int mnE;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	int mnC;//ã‚¯ãƒªã‚¢æ–¹æ³•ãŒé¸ã°ã‚ŒãŸã‚¤ãƒ«ã‹ã©ã†ã‹
+	int mnS;//æ“ä½œæ–¹æ³•ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+	int mnE;//ã‚¨ãƒ³ãƒ‰ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 
-	bool C;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©
-	bool S;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool E;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	bool C;//ã‚¯ãƒªã‚¢æ–¹æ³•ãŒé¸ã°ã‚ŒãŸã‚¤ãƒ«ã‹ã©ã†ã‹
+	bool S;//æ“ä½œæ–¹æ³•ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+	bool E;//ã‚¨ãƒ³ãƒ‰ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 
-	bool C_Enter;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©(enter)
-	bool S_Enter;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©(enter)
-	bool E_Enter;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©(enter)
+	bool C_Enter;//ã‚¯ãƒªã‚¢æ–¹æ³•ãŒé¸ã°ã‚ŒãŸã‚¤ãƒ«ã‹ã©ã†ã‹(enter)
+	bool S_Enter;//æ“ä½œæ–¹æ³•ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹(enter)
+	bool E_Enter;//ã‚¨ãƒ³ãƒ‰ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹(enter)
 
-	int mnPause;//ƒ|[ƒY‰æ–Ê‚©‚Ç‚¤‚©
+	int mnPause;//ãƒãƒ¼ã‚ºç”»é¢ã‹ã©ã†ã‹
 	int size = GetFontSize();
 
 	std::string filename1;
 	int mnHandle1;
 
-	int Color1;//F‚Ì•ÏX
+	int Color1;//è‰²ã®å¤‰æ›´
 	int Colorflag;
 
 };

@@ -1,4 +1,4 @@
-#include"Camera1.h"
+ï»¿#include"Camera1.h"
 #include"Config.h"
 #include<cmath>
 #include"Master.h"
@@ -27,16 +27,16 @@ Camera1::~Camera1()
 
 void Camera1::Initialize()
 {
-	//ƒJƒƒ‰‚ÌƒNƒŠƒbƒsƒ“ƒO‹——£‚Ìİ’è
-	SetCameraNearFar(100.0f, Config::CameraFar);//10050000‚Ü‚Å‚Ì‹——£‚ªŒ©‚¦‚é
+	//ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½bï¿½sï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
+	SetCameraNearFar(100.0f, Config::CameraFar);//10050000ï¿½Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	//”wŒiF‚ğİ’èiŠDFj
-	SetBackgroundColor(128, 128, 128);
+	//ï¿½wï¿½iï¿½Fï¿½ï¿½İ’ï¿½iï¿½Dï¿½Fï¿½j
+	SetBackgroundColor(0, 0, 0);
 
-	//ƒJƒƒ‰‚Ìİ’è‚ğ”½‰f
+	//ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½ğ”½‰f
 	SetCameraPositionAndTarget_UpVecY(position_, mvLookAtPosition);
 
-	//XVˆ—‚ğˆê“xs‚Á‚Ä‚¢‚­
+	//ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½sï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 	Update();
 
 }
@@ -46,7 +46,7 @@ void Camera1::Update()
 	auto mpPlayer = Master::mpPlayer;
 	Player3D* pPlayer = Master::mpPlayer;
 	UpdateRotation();
-	//ƒ^[ƒQƒbƒg‚ª‚¢‚È‚©‚Á‚½‚ç
+	//ï¿½^ï¿½[ï¿½Qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (target_ == nullptr)
 	{
 		target_ = Master::mpPlayer;
@@ -58,19 +58,19 @@ void Camera1::Update()
 	}
 	else
 	{
-		//’‹“_‚ğ­‚µã‚É‚¸‚ç‚·
+		//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ç‚·
 		mvLookAtPosition.y = 80.0f;
 	}
 
 	{
-		VECTOR temp; //ì‹Æ—p•Ï”
+		VECTOR temp; //ï¿½ï¿½Æ—pï¿½Ïï¿½
 
 
 		mvLookAtPosition = VSub(pPlayer->GetPosition() , position_);
 		mvLookAtPosition = VNorm(mvLookAtPosition);
 
-		//ã‚Å‹‚ß‚½À•W‚É’‹“_‚ÌÀ•W‚ğ‘«‚µ‚½‚à‚Ì‚ªƒJƒƒ‰‚ÌÀ•W‚Æ‚È‚é
-		//ƒJƒƒ‰İ’è‚ğ”½‰f
+		//ï¿½ï¿½Å‹ï¿½ï¿½ß‚ï¿½ï¿½ï¿½ï¿½Wï¿½É’ï¿½ï¿½ï¿½ï¿½_ï¿½Ìï¿½ï¿½Wï¿½ğ‘«‚ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½Wï¿½Æ‚È‚ï¿½
+		//ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½İ’ï¿½ğ”½‰f
 		SetCameraPositionAndTarget_UpVecY(pPlayer->GetPosition(), mvLookAtPosition);
 	}
 
@@ -78,7 +78,7 @@ void Camera1::Update()
 
 void Camera1::UpdateRotation()
 {
-	////•ûŒüƒL[‚ÅƒJƒƒ‰‘€ì
+	////ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½[ï¿½ÅƒJï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (mfHorizontalAngle >= 180.0f)
 	{
 		mfHorizontalAngle -= 360.0f;
@@ -99,44 +99,47 @@ void Camera1::UpdateRotation()
 	}
 
 
-	float camAngleY = 0.0f; // …•½•ûŒüi¶‰Ej
-	float camAngleX = 0.0f; // ‚’¼•ûŒüiã‰ºj
+	float camAngleY = 0.0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½Eï¿½j
+	float camAngleX = 0.0f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½ã‰ºï¿½j
 
-	// Š´“x
+	// ï¿½ï¿½ï¿½x
 	const float MOUSE_SENSITIVITY = 0.05f;
 
-	// ƒJƒƒ‰‚Ì‹——£
+	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½
 	float camDistance = 300.0f;
 
 
 
-	// ƒJ[ƒ\ƒ‹‚ğ”ñ•\¦‚É
+	// ï¿½Jï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½
 
-		// ƒ}ƒEƒX‚ÌˆÚ“®—Ê‚ğæ“¾
+		// ï¿½}ï¿½Eï¿½Xï¿½ÌˆÚ“ï¿½ï¿½Ê‚ï¿½æ“¾
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
-	// ’†SÀ•W
+	// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½W
 	if (!CheckHitKey(KEY_INPUT_0))
 	{
 		int centerX = 640;
 		int centerY = 360;
 	}
-	SetMousePoint(centerX, centerY);
+	auto sceneType = Master::mpSceneManager->GetCurrentSceneType();
+	if (sceneType == SceneManager::SCENE_GAME || sceneType == SceneManager::SCENE_TUTORIAL || sceneType == SceneManager::SCENE_3D || sceneType == SceneManager::SCENE_3DHARD || sceneType == SceneManager::SCENE_LEVEL || sceneType == SceneManager::SCENE_TEST_COLLISION) {
+		SetMousePoint(centerX, centerY);
 
 
 
 	int deltaX = mouseX - centerX;
 	int deltaY = mouseY - centerY;
 
-	// ‰ñ“]Šp“x‚ğXV
+	// ï¿½ï¿½]ï¿½pï¿½xï¿½ï¿½Xï¿½V
 	mfHorizontalAngle -= deltaX * MOUSE_SENSITIVITY;
 	mfVerticalAngle += deltaY * MOUSE_SENSITIVITY;
+	}
 
-	// ã‰º‚Ì‰ñ“]‚ğ§ŒÀi‹ü‚ª— •Ô‚ç‚È‚¢‚æ‚¤‚Éj
+	// ï¿½ã‰ºï¿½Ì‰ï¿½]ï¿½ğ§Œï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½È‚ï¿½ï¿½æ‚¤ï¿½Éj
 	/*if (camAngleX < -DX_PI_F / 2.0f) camAngleX = -DX_PI_F / 2.0f;
 	if (camAngleX > DX_PI_F / 2.0f) camAngleX = DX_PI_F / 2.0f;*/
 
-	//// ƒJƒƒ‰‚ÌˆÊ’u‚Æ’‹“_‚ğŒvZ
+	//// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ÌˆÊ’uï¿½Æ’ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½vï¿½Z
 	//VECTOR temp = VGet(
 	//	camTarget.x + camDistance * sinf(camAngleY) * cosf(camAngleX),
 	//	camTarget.y + camDistance * sinf(camAngleX),

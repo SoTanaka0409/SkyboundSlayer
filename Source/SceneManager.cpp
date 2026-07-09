@@ -1,4 +1,4 @@
-#include"SceneManager.h"
+﻿#include"SceneManager.h"
 #include"Scene3D.h"
 #include "TestCollisionScene.h"
 #include"TitleScene.h"
@@ -19,8 +19,8 @@ SceneManager::SceneManager()
 	:mnSceneType(SCENE_TYPE::SCENE_NONE)
 	, mnNextSceneType(SCENE_TYPE::SCENE_NONE)
 	, mpCurrentScene(nullptr)
-	,SceneHard(false)//ハードシーンかどうか
-	,SceneNormal(false)//ノーマルシーンかどうか
+	,SceneHard(false)//繝上・繝峨す繝ｼ繝ｳ縺九←縺・°
+	,SceneNormal(false)//繝弱・繝槭Ν繧ｷ繝ｼ繝ｳ縺九←縺・°
 {
 
 }
@@ -31,11 +31,11 @@ SceneManager::~SceneManager()
 }
 void SceneManager::Initialize()
 {
-	////初期シーンの設定
+	////蛻晄悄繧ｷ繝ｼ繝ｳ縺ｮ險ｭ螳・
 
 	mnNextSceneType = SCENE_TYPE::SCENE_3D;
 
-	//シーン遷移させる
+	//繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ縺輔○繧・
 	ChangeSceneIfNeeded();
 
 }
@@ -44,13 +44,13 @@ void SceneManager::Initialize()
 
 void SceneManager::Update()
 {
-	//シーンの更新
+	//繧ｷ繝ｼ繝ｳ縺ｮ譖ｴ譁ｰ
 	mpCurrentScene->Update();
 }
 
 void SceneManager::Draw()
 {
-	//シーンの描画
+	//繧ｷ繝ｼ繝ｳ縺ｮ謠冗判
 	mpCurrentScene->Draw();
 }
 
@@ -61,28 +61,28 @@ void SceneManager::Finalize()
 
 void SceneManager::ChangeSceneIfNeeded()
 {
-	//現在のシーンと次のシーンが一緒であれば何もしない
+	//迴ｾ蝨ｨ縺ｮ繧ｷ繝ｼ繝ｳ縺ｨ谺｡縺ｮ繧ｷ繝ｼ繝ｳ縺御ｸ邱偵〒縺ゅｌ縺ｰ菴輔ｂ縺励↑縺・
 	if (mnSceneType == mnNextSceneType)
 	{
 		return;
 	}
 	if (mpCurrentScene != nullptr)
 	{
-		//現在のシーンの終了処理をする
+		//迴ｾ蝨ｨ縺ｮ繧ｷ繝ｼ繝ｳ縺ｮ邨ゆｺ・・逅・ｒ縺吶ｋ
 		mpCurrentScene->Finalize();
 
-		//一旦シーン自体も破棄しておく
+		//荳譌ｦ繧ｷ繝ｼ繝ｳ閾ｪ菴薙ｂ遐ｴ譽・＠縺ｦ縺翫￥
 		delete mpCurrentScene;
 		mpCurrentScene = nullptr;
 
-		// シーンが切り替わるときは、以前のシーンに所属していたコライダーを一掃する
+		// 繧ｷ繝ｼ繝ｳ縺悟・繧頑崛繧上ｋ縺ｨ縺阪・縲∽ｻ･蜑阪・繧ｷ繝ｼ繝ｳ縺ｫ謇螻槭＠縺ｦ縺・◆繧ｳ繝ｩ繧､繝繝ｼ繧剃ｸ謗・☆繧・
 		ColliderManager::GetInstance()->DeleteAllCollider();
 	}
 
-	//次のシーンにするためシーンタイプを更新
+	//谺｡縺ｮ繧ｷ繝ｼ繝ｳ縺ｫ縺吶ｋ縺溘ａ繧ｷ繝ｼ繝ｳ繧ｿ繧､繝励ｒ譖ｴ譁ｰ
 	mnSceneType = mnNextSceneType;
 
-	//mnSceneTypeに応じてシーンを生成する
+	//mnSceneType縺ｫ蠢懊§縺ｦ繧ｷ繝ｼ繝ｳ繧堤函謌舌☆繧・
 	switch (mnSceneType)
 	{
 	case SCENE_TYPE::SCENE_TEST_COLLISION:
@@ -121,7 +121,7 @@ void SceneManager::ChangeSceneIfNeeded()
 	//default:
 		
 	}
-	//シーンの生成がされているはずなので、初期化処理を読んでおく
+	//繧ｷ繝ｼ繝ｳ縺ｮ逕滓・縺後＆繧後※縺・ｋ縺ｯ縺壹↑縺ｮ縺ｧ縲∝・譛溷喧蜃ｦ逅・ｒ隱ｭ繧薙〒縺翫￥
 	mpCurrentScene->Initialize();
 
 }

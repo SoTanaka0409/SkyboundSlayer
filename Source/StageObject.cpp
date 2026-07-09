@@ -1,4 +1,4 @@
-#include"StageObject.h"
+﻿#include"StageObject.h"
 
 StageObject::StageObject(VECTOR initPos, std::string filename, VECTOR scale, std::string textureFilename, float hitRadius, float yOffset)
 	:Object3D(initPos), mfHitRadius(hitRadius), mbHasFollowedTerrain(false), mYOffset(yOffset)
@@ -27,8 +27,8 @@ void StageObject::Update()
 		TerrainFollow();
 		position_.y += mYOffset;
 		mbHasFollowedTerrain = true;
-	} // 地形��ス�ージ���高さに沿�ように自身のposition_を更新
-	model_->SetPosition(position_); // 更新された座標をモ�ルに反映
+	} // 蝨ｰ蠖｢ｼ医せ繝繝ｼ繧ｸｼ峨ｮ鬮倥＆縺ｫ豐ｿ縺繧医≧縺ｫ閾ｪ霄ｫ縺ｮposition_繧呈峩譁ｰ
+	model_->SetPosition(position_); // 譖ｴ譁ｰ縺輔ｌ縺溷ｺｧ讓吶ｒ繝｢繝繝ｫ縺ｫ蜿肴丐
 	model_->Update();
 }
 

@@ -1,4 +1,4 @@
-#include"ItemManager.h"
+ï»¿#include"ItemManager.h"
 #include"Master.h"
 #include"ObjectManager.h"
 #include"Buff.h"
@@ -27,19 +27,19 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 		case Item::ItemID::NONE:
 			break;
 		case Item::ItemID::HEAL:
-			mItem->Name = "‰ñ•œ–ò";
+			mItem->Name = "å›žå¾©è–¬";
 			mItem->price = 100;
 			break;
 		case Item::ItemID::POWER:
-			mItem->Name = "UŒ‚—ÍUP";
+			mItem->Name = "æ”»æ’ƒåŠ›UP";
 			mItem->price = 100;
 			break;
 		case Item::ItemID::HIGHHEAL:
-			mItem->Name = "‚‹‰‰ñ•œ–ò";
+			mItem->Name = "é«˜ç´šå›žå¾©è–¬";
 			mItem->price = 300;
 			break;
 		case Item::ItemID::SPEED:
-			mItem->Name = "ƒXƒs[ƒhUP";
+			mItem->Name = "ã‚¹ãƒ”ãƒ¼ãƒ‰UP";
 			mItem->price = 50;
 		default:
 			break;
@@ -59,19 +59,19 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 	case Item::ItemID::NONE:
 		break;
 	case Item::ItemID::HEAL:
-		mItem->Name = "‰ñ•œ–ò";
+		mItem->Name = "å›žå¾©è–¬";
 		mItem->price = 100;
 		break;
 	case Item::ItemID::POWER:
-		mItem->Name = "UŒ‚—ÍUP";
+		mItem->Name = "æ”»æ’ƒåŠ›UP";
 		mItem->price = 100;
 		break;
 	case Item::ItemID::HIGHHEAL:
-		mItem->Name = "‚‹‰‰ñ•œ–ò";
+		mItem->Name = "é«˜ç´šå›žå¾©è–¬";
 		mItem->price = 300;
 		break;
 	case Item::ItemID::SPEED:
-		mItem->Name = "ƒXƒs[ƒhUP";
+		mItem->Name = "ã‚¹ãƒ”ãƒ¼ãƒ‰UP";
 		mItem->price = 50;
 	default:
 		break;

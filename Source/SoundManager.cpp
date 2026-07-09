@@ -1,9 +1,9 @@
-#include"SoundManager.h"
+ï»¿#include"SoundManager.h"
 #include"DxLib.h"
 
 SoundManager::SoundManager()
-	:mnNowPlayingBgm((SOUND_BGM)-1)  //‰Šúó‘Ô‚Í‰½‚àÄ¶‚³‚ê‚Ä‚¢‚È‚¢ó‘Ô
-	, mnNowPlayingSe((SOUND_SE)-1)    //‰Šúó‘Ô‚Í‰½‚àÄ¶‚³‚ê‚Ä‚¢‚È‚¢ó‘Ô
+	:mnNowPlayingBgm((SOUND_BGM)-1)  //åˆæœŸçŠ¶æ…‹ã¯ä½•ã‚‚å†ç”Ÿã•ã‚Œã¦ã„ãªã„çŠ¶æ…‹
+	, mnNowPlayingSe((SOUND_SE)-1)    //åˆæœŸçŠ¶æ…‹ã¯ä½•ã‚‚å†ç”Ÿã•ã‚Œã¦ã„ãªã„çŠ¶æ…‹
 {
 
 
@@ -15,25 +15,25 @@ SoundManager::~SoundManager()
 
 void SoundManager::Initialize()
 {
-	//BGM‚Ì“Ç‚İ‚İ
+	//BGMã®èª­ã¿è¾¼ã¿
 	LoadBGM(SOUND_BGM::BGM_TITLE, "Resource/BGM/natsuyasuminotanken.mp3");
-	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/BGM/MusMus-BGM-081.mp3");//‘‚â‚µ‚½‚¢ê‡
+	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/BGM/MusMus-BGM-081.mp3");//å¢—ã‚„ã—ãŸã„å ´åˆ
 	LoadBGM(SOUND_BGM::BGM_RESULT, "Resource/BGM/MusMus-BGM-084.mp3");
 	
 
-	//SE‚Ì“Ç‚İ‚İ
+	//SEã®èª­ã¿è¾¼ã¿
 	LoadSE(SOUND_SE::SE_FIRE, "Resource/SE/se_fire_magic01.mp3");
 	LoadSE(SOUND_SE::SE_ATTACK, "Resource/SE/se_swing13-1.mp3");
 	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/SE/se_sword6.mp3");
-	LoadSE(SOUND_SE::SE_SLIDE, "Resource/SE/ƒoƒ^ƒ“‚Æ“|‚ê‚é.mp3");
-	LoadSE(SOUND_SE::SE_HEAL, "Resource/SE/‰ñ•œ–‚–@2.mp3");
+	LoadSE(SOUND_SE::SE_SLIDE, "Resource/SE/ãƒã‚¿ãƒ³ã¨å€’ã‚Œã‚‹.mp3");
+	LoadSE(SOUND_SE::SE_HEAL, "Resource/SE/å›å¾©é­”æ³•2.mp3");
 	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/SE/se_sword6.mp3");
-	LoadSE(SOUND_SE::SE_JUMP, "Resource/SE/ƒWƒƒƒ“ƒv.mp3");
-	LoadSE(SOUND_SE::SE_WARP, "Resource/SE/ƒ[ƒv.mp3");
-	LoadSE(SOUND_SE::SE_POWER, "Resource/SE/ƒXƒe[ƒ^ƒXã¸–‚–@2.mp3");
-	LoadSE(SOUND_SE::SE_SHOP, "Resource/SE/ƒŒƒWƒXƒ^[‚Å¸Z.mp3");
-	LoadSE(SOUND_SE::SE_SELECT, "Resource/SE/Œˆ’èƒ{ƒ^ƒ“‚ğ‰Ÿ‚·7.mp3");
-	LoadSE(SOUND_SE::SE_WINDOW, "Resource/SE/ƒƒjƒ…[‚ğŠJ‚­4.mp3");
+	LoadSE(SOUND_SE::SE_JUMP, "Resource/SE/ã‚¸ãƒ£ãƒ³ãƒ—.mp3");
+	LoadSE(SOUND_SE::SE_WARP, "Resource/SE/ãƒ¯ãƒ¼ãƒ—.mp3");
+	LoadSE(SOUND_SE::SE_POWER, "Resource/SE/ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ä¸Šæ˜‡é­”æ³•2.mp3");
+	LoadSE(SOUND_SE::SE_SHOP, "Resource/SE/ãƒ¬ã‚¸ã‚¹ã‚¿ãƒ¼ã§ç²¾ç®—.mp3");
+	LoadSE(SOUND_SE::SE_SELECT, "Resource/SE/æ±ºå®šãƒœã‚¿ãƒ³ã‚’æŠ¼ã™7.mp3");
+	LoadSE(SOUND_SE::SE_WINDOW, "Resource/SE/ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’é–‹ã4.mp3");
 	LoadSE(SOUND_SE::SE_LEVELUP, "Resource/SE/levelUp.mp3");
 }
 
@@ -41,12 +41,12 @@ void SoundManager::Initialize()
 
 void SoundManager::Finalize()
 {
-	//BGm‚Ì”jŠüv
+	//BGmã®ç ´æ£„ã€
 	for (auto it = mnBgmHandleList.begin(); it != mnBgmHandleList.end(); it++)
 	{
 		DeleteSoundMem(it->second);
 	}
-	//Se‚Ì”jŠü
+	//Seã®ç ´æ£„
 	for (auto it = mnSeHandleList.begin(); it != mnSeHandleList.end(); it++)
 	{
 		DeleteSoundMem(it->second);
@@ -55,19 +55,19 @@ void SoundManager::Finalize()
 
 void SoundManager::PlayBGM(SOUND_BGM bgm, bool isTop)
 {
-	//Œ»İÄ¶‚³‚ê‚Ä‚¢‚éBGM‚©‚ÂAÅ‰‚©‚ç‚ÌÄ¶o‚È‚¢‚Ì‚È‚çreturn‚·‚é
+	//ç¾åœ¨å†ç”Ÿã•ã‚Œã¦ã„ã‚‹BGMã‹ã¤ã€æœ€åˆã‹ã‚‰ã®å†ç”Ÿå‡ºãªã„ã®ãªã‚‰returnã™ã‚‹
 	if (mnNowPlayingBgm == bgm && !isTop)
 	{
 		return;
 	}
 
-	//BGm‚Ì”jŠüv
+	//BGmã®ç ´æ£„ã€
 	for (auto it = mnBgmHandleList.begin(); it != mnBgmHandleList.end(); it++)
 	{
 		if (it->first == bgm)
 		{
 			PlaySoundMem(it->second, DX_PLAYTYPE_LOOP, isTop);
-			//Œ»İ‚ÌÄ¶í—Ş‚ğXV
+			//ç¾åœ¨ã®å†ç”Ÿç¨®é¡ã‚’æ›´æ–°
 			mnNowPlayingBgm = bgm;
 
 			break;
@@ -82,7 +82,7 @@ void SoundManager::PlaySE(SOUND_SE se)
 		if (it->first == se)
 		{
 			PlaySoundMem(it->second, DX_PLAYTYPE_BACK);
-			//Œ»İ‚ÌÄ¶í—Ş‚ğXV
+			//ç¾åœ¨ã®å†ç”Ÿç¨®é¡ã‚’æ›´æ–°
 			mnNowPlayingSe = se;
 
 			break;
@@ -92,7 +92,7 @@ void SoundManager::PlaySE(SOUND_SE se)
 
 void SoundManager::LoadBGM(SOUND_BGM bgm, std::string filename)
 {
-	bool check = false;//d•¡‚µ‚Ä“Ç‚İ‚ñ‚Å‚¢‚é‚©‚Ç‚¤‚©
+	bool check = false;//é‡è¤‡ã—ã¦èª­ã¿è¾¼ã‚“ã§ã„ã‚‹ã‹ã©ã†ã‹
 	for (auto it = mnBgmHandleList.begin(); it != mnBgmHandleList.end(); it++)
 	{
 		if (it->first == bgm)
@@ -102,26 +102,26 @@ void SoundManager::LoadBGM(SOUND_BGM bgm, std::string filename)
 			break;
 		}
 	}
-	//d•¡‚µ‚Ä“Ç‚İ‚Ü‚ê‚Ä‚¢‚½‚ç‰½‚à‚µ‚È‚¢
+	//é‡è¤‡ã—ã¦èª­ã¿è¾¼ã¾ã‚Œã¦ã„ãŸã‚‰ä½•ã‚‚ã—ãªã„
 	if (check)
 	{
 		return;
 	}
 
-	//ƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+	//ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 	int handle = LoadSoundMem(filename.c_str());
 	if (handle == -1)
 	{
-		return;  //“Ç‚İ‚İ¸”s‚µ‚½‚ç‰½‚à‚µ‚È‚¢
+		return;  //èª­ã¿è¾¼ã¿å¤±æ•—ã—ãŸã‚‰ä½•ã‚‚ã—ãªã„
 	}
 
-	//“Ç‚İ‚ñ‚¾ƒnƒ“ƒhƒ‹‚ğƒŠƒXƒg‚É’Ç‰Á
+	//èª­ã¿è¾¼ã‚“ã ãƒãƒ³ãƒ‰ãƒ«ã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
 	mnBgmHandleList.push_back(std::pair<SOUND_BGM, int>(bgm, handle));
 }
 
 void SoundManager::LoadSE(SOUND_SE se, std::string filename)
 {
-	bool check = false;//d•¡‚µ‚Ä“Ç‚İ‚ñ‚Å‚¢‚é‚©‚Ç‚¤‚©
+	bool check = false;//é‡è¤‡ã—ã¦èª­ã¿è¾¼ã‚“ã§ã„ã‚‹ã‹ã©ã†ã‹
 	for (auto it = mnSeHandleList.begin(); it != mnSeHandleList.end(); it++)
 	{
 		if (it->first == se)
@@ -131,20 +131,20 @@ void SoundManager::LoadSE(SOUND_SE se, std::string filename)
 			break;
 		}
 	}
-	//d•¡‚µ‚Ä“Ç‚İ‚Ü‚ê‚Ä‚¢‚½‚ç‰½‚à‚µ‚È‚¢
+	//é‡è¤‡ã—ã¦èª­ã¿è¾¼ã¾ã‚Œã¦ã„ãŸã‚‰ä½•ã‚‚ã—ãªã„
 	if (check)
 	{
 		return;
 	}
 
-	//ƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+	//ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 	int handle = LoadSoundMem(filename.c_str());
 	if (handle == -1)
 	{
-		return;  //“Ç‚İ‚İ¸”s‚µ‚½‚ç‰½‚à‚µ‚È‚¢
+		return;  //èª­ã¿è¾¼ã¿å¤±æ•—ã—ãŸã‚‰ä½•ã‚‚ã—ãªã„
 	}
 
-	//“Ç‚İ‚ñ‚¾ƒnƒ“ƒhƒ‹‚ğƒŠƒXƒg‚É’Ç‰Á
+	//èª­ã¿è¾¼ã‚“ã ãƒãƒ³ãƒ‰ãƒ«ã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ 
 	mnSeHandleList.push_back(std::pair<SOUND_SE, int>(se, handle));
 }
 void SoundManager::StopBGM()
@@ -155,7 +155,7 @@ void SoundManager::StopBGM()
 		{
 			if (CheckSoundMem(it->second))
 			{
-				StopSoundMem(it->second);//BGm‚ğ’â~
+				StopSoundMem(it->second);//BGmã‚’åœæ­¢
 				break;
 			}
 		}

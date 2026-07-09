@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "SceneGame.h"
 #include"Dxlib.h"
 #include"Master.h"

@@ -1,4 +1,4 @@
-#include"Enemy3D_AT.h"
+﻿#include"Enemy3D_AT.h"
 #include"Model.h"
 #include"Master.h"
 #include"Player3D.h"
@@ -25,11 +25,11 @@ Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float spe
 	
 	//,Animation(false)
 {
-	mnChance = 50;//アイチE��のドロチE�E確玁E
+	mnChance = 50;//繧｢繧､繝・Β縺ｮ繝峨Ο繝・・遒ｺ邇・
 	AttackInterval = 120;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//モチE��の生�E
+	//繝｢繝・Ν縺ｮ逕滓・
 	
 	
 	
@@ -41,8 +41,8 @@ Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float spe
 	model_->AddAnimation(ANIMATION_ATTACK, "Resource/Model/Attack.mv1");
 
 
-	//new DrawHp("",  //画像名
-	//	(VAdd(position_, VGet(0.0f, 100.0f, 0.0f))),//中忁E��樁E
+	//new DrawHp("",  //逕ｻ蜒丞錐
+	//	(VAdd(position_, VGet(0.0f, 100.0f, 0.0f))),//荳ｭ蠢・ｺｧ讓・
 	
 	mpDebug = new Debug();
 }
@@ -75,7 +75,7 @@ void Enemy3D_AT::Update()
 			}
 
 			model_->Update();
-			//mpDH->Update();//drawHpのアチE�EチE�Eトを呼ぶ
+			//mpDH->Update();//drawHp縺ｮ繧｢繝・・繝・・繝医ｒ蜻ｼ縺ｶ
 			CollPositionUpdate();
 
 		}

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 #include"Model.h"
 #include"Object3D.h"
@@ -27,7 +27,7 @@ public:
 
 	void Move();
 
-	void RotationByMove();//ˆÚ“®‚É‚æ‚é‰ñ“]ˆ—
+	void RotationByMove();//ç§»å‹•ã«ã‚ˆã‚‹å›è»¢å‡¦ç†
 
 	void Dead();
 
@@ -51,22 +51,22 @@ private:
 	float mnMaxHp;
 	float mnSpeed;
 
-	bool mnInvisible;//–³“G‚©‚Ç‚¤‚©
-	int mnAlgorithm;//ƒ‰ƒ“ƒ_ƒ€ˆÚ“®
-	float DinoSize;//Œ©‚½–Ú‚Ì‘å‚«‚³
+	bool mnInvisible;//ç„¡æ•µã‹ã©ã†ã‹
+	int mnAlgorithm;//ãƒ©ãƒ³ãƒ€ãƒ ç§»å‹•
+	float DinoSize;//è¦‹ãŸç›®ã®å¤§ãã•
 
 
 	bool Animation;
-	float mfTargetAngle;//–Ú•W‚Ì‰ñ“]’n
-	float mfAngle;//Œ»İ‚Ì‰ñ“]’n
-	const float ROTATE_SPEED = 0.2f;//‰ñ“]‘¬“x
+	float mfTargetAngle;//ç›®æ¨™ã®å›è»¢åœ°
+	float mfAngle;//ç¾åœ¨ã®å›è»¢åœ°
+	const float ROTATE_SPEED = 0.2f;//å›è»¢é€Ÿåº¦
 	TagDINO_NUM mnTagD;
 
-	////ƒ‰ƒ“ƒ_ƒ€ƒEƒI[ƒN
+	////ãƒ©ãƒ³ãƒ€ãƒ ã‚¦ã‚ªãƒ¼ã‚¯
 	bool isWalk;
-	VECTOR PurposePosition;//–Ú“I‚ÌÀ•W‚Ìw’è
-	float  GetmvPositionX;//–Ú“I‚ÌÀ•W‚Ìw’è
-	float  GetmvPositionZ;//–Ú“I‚ÌÀ•W‚Ìw’è
+	VECTOR PurposePosition;//ç›®çš„ã®åº§æ¨™ã®æŒ‡å®š
+	float  GetmvPositionX;//ç›®çš„ã®åº§æ¨™ã®æŒ‡å®š
+	float  GetmvPositionZ;//ç›®çš„ã®åº§æ¨™ã®æŒ‡å®š
 	
 
 };

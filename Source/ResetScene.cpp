@@ -1,4 +1,4 @@
-#include"ResetScene.h"
+ï»¿#include"ResetScene.h"
 #include"Enemy3D_AT.h"
 #include"Player3D.h"
 #include"InputManager.h"
@@ -14,8 +14,8 @@
 
 void ResetScene::Initialize()
 {
-    const float wallWidth = 4000.0f;//stage‚ÌƒTƒCƒY
-    const float wallDistance = 10000.0f;//stage‚ÌƒTƒCƒY main
+    const float wallWidth = 4000.0f;//stageï¿½ÌƒTï¿½Cï¿½Y
+    const float wallDistance = 10000.0f;//stageï¿½ÌƒTï¿½Cï¿½Y main
     const float Spawnpos = 8000.0f;
     VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
    
@@ -52,9 +52,9 @@ void ResetScene::Initialize()
 
     mpEnemyManager->NewEnemyList(*e);
     mpEnemyManager->NewEnemyList(*e1);
-    new Player3D("Resource/Model/T.mv1", VGet(0.0f, 0.0f, 0.0f), 30.0f, 12.0f, 600.0f,true);//ƒWƒƒƒ“ƒvAƒAƒ^ƒbƒNAƒXƒs[ƒhA‚ˆ‚
-   // new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//ƒgƒŠƒPƒ‰ƒgƒvƒX,hp,speed,Hitsize,size
-      //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//ƒXƒs‚Ì hp,speed,attack,Hitsize,size
+    new Player3D("Resource/Model/T.mv1", VGet(0.0f, 0.0f, 0.0f), 30.0f, 12.0f, 600.0f,true);//ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Aï¿½Aï¿½^ï¿½bï¿½Nï¿½Aï¿½Xï¿½sï¿½[ï¿½hï¿½Aï¿½ï¿½ï¿½ï¿½
+   // new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//ï¿½gï¿½ï¿½ï¿½Pï¿½ï¿½ï¿½gï¿½vï¿½X,hp,speed,Hitsize,size
+      //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//ï¿½Xï¿½sï¿½ï¿½ hp,speed,attack,Hitsize,size
      new Stage(VGet(0.0f, 0.0f, 0.0f), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1");
       new Tree("Resource/3D/Tree.mv1", VGet(500, 0, 600), 400.0, 80.0f, true);
       new Tree("Resource/3D/Tree.mv1", VGet(2000, 0, 1200), 400.0f, 80.0f, true);
@@ -62,18 +62,18 @@ void ResetScene::Initialize()
     
      
       new Wall("Resource/2D/mori.png",
-          VGet(-wallWidth, 0, 0),//¶
+          VGet(-wallWidth, 0, 0),//ï¿½ï¿½
           VGet(-wallWidth, 1500, -wallDistance),
           VGet(-wallWidth, 0, wallDistance));
-      new Wall("Resource/2D/mori.png",//‰E
+      new Wall("Resource/2D/mori.png",//ï¿½E
           VGet(wallWidth, 0, 0),
           VGet(wallWidth, 1500, -wallDistance),
           VGet(wallWidth, 0, wallDistance));
-      new Wall("Resource/2D/mori.png",//ã
+      new Wall("Resource/2D/mori.png",//ï¿½ï¿½
           VGet(0, 0, wallWidth),
           VGet(-wallDistance, 1500, wallWidth),
           VGet(wallDistance, 0, wallWidth));
-      new Wall("Resource/2D/mori.png",//‰º
+      new Wall("Resource/2D/mori.png",//ï¿½ï¿½
           VGet(0, 0, -wallWidth),
           VGet(-wallDistance, 1500, -wallWidth),
           VGet(wallDistance, 0, -wallWidth));
@@ -109,10 +109,10 @@ void ResetScene::Update()
     }
 	if (InputManager::CheckDownKey(KEY_INPUT_1))
 	{
-		Master::mpSceneManager->SetNextScene(SceneManager::SCENE_NAME);
+		Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TITLE);
 	}
    
-    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();//‚Ğ‚Æ‚Â‘O‚ÌêŠ‚É–ß‚é
+    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();//ï¿½Ğ‚Æ‚Â‘Oï¿½ÌêŠï¿½É–ß‚ï¿½
    
     Scene::Update();
 }

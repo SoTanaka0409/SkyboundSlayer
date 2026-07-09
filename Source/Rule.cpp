@@ -1,4 +1,4 @@
-#include"Rule.h"
+ï»¿#include"Rule.h"
 #include"Texture.h"
 #include"Master.h"
 #include"SceneManager.h"
@@ -48,9 +48,9 @@ void Rule::Draw()
 	
 
 
-	//// ”¼“§–¾‚Ì•‚¢‹éŒ`‚ğ•`‰æ
+	//// åŠé€æ˜ã®é»’ã„çŸ©å½¢ã‚’æç”»
 
-	//// ƒuƒŒƒ“ƒhƒ‚[ƒh‚ğŒ³‚É–ß‚·id—vj
+	//// ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒ¢ãƒ¼ãƒ‰ã‚’å…ƒã«æˆ»ã™ï¼ˆé‡è¦ï¼‰
 
 	if (Colorflag == true)
 	{
@@ -74,20 +74,20 @@ void Rule::Draw()
 	(25);
 	mpTexture3->Draw();
 	DrawBox(0, 700, 1000, 1000, GetColor(0, 0, 0), true);
-	DrawFormatString(10, 710, GetColor(255, 255, 255), "ƒNƒŠƒAğŒF“G‚ğ‚·‚×‚Ä“|‚·\n(ƒNƒŠƒAŠÔ‚ª’Z‚¢‚Ù‚ÇƒXƒRƒA‚ªã¸‚·‚é):“G‚ÌŒ©‚½–Ú‚Í‹°—³ˆÈŠO");
-	DrawFormatString(10, 780, GetColor(255,0, 0), "...“G‚Ì”i‚O‚É‚È‚Á‚½‚çƒQ[ƒ€ƒNƒŠƒAIj");
-	DrawFormatString(10, 780, GetColor(185, 0, 255), "\n’e‚Ìí—Ş‚ÍãE’†E‹­‚Ì3í—Ş‚ª‚ ‚èAã•”‚É‚»‚ê‚¼‚ê‚ÌŒø‰Ê‚ª•\¦‚³‚ê‚é\n—áFˆê’èŠm—¦‚Å“G‚ğ‘¦€‚³‚¹‚é ‚È‚Ç");
-	DrawFormatString(10, 780, GetColor(205, 255, 0), "\n\n\nOk‚ªo‚Ä‚«‚½‚ç‚Å‚«‚éB");
-	DrawFormatString(10, 780, GetColor(0, 255, 0), "\n\n\n\n•Ší‚Ìí—Şi‹°—³‚ğ“|‚µ‚½‚çØ‚è‘Ö‚í‚é)1...ƒgƒŠƒPƒ‰  2...ƒXƒsƒm");
-	DrawFormatString(10, 780, GetColor(0, 255, 0), "\n\n\n\n\n1...•½‹Ï“I‚É‰Î—Í‚ªã‚­A©“®‰ñ•œ‚·‚éƒ‚[ƒh\n2...‰Î—Í‚ª‚‚­ƒXƒRƒA‚ª‰Ò‚¬ˆÕ‚­Ahp‚ªŒ¸‚è‘±‚¯‚éƒ‚[ƒh  ");
-	DrawFormatString(10, 780, GetColor(255, 0, 255), "\n\n\n\n\n\n\nc’e”iã‚©‚çãA’†A‹­j");    
+	DrawFormatString(10, 710, GetColor(255, 255, 255), "ã‚¯ãƒªã‚¢æ¡ä»¶ï¼šæ•µã‚’ã™ã¹ã¦å€’ã™\n(ã‚¯ãƒªã‚¢æ™‚é–“ãŒçŸ­ã„ã»ã©ã‚¹ã‚³ã‚¢ãŒä¸Šæ˜‡ã™ã‚‹):æ•µã®è¦‹ãŸç›®ã¯æç«œä»¥å¤–");
+	DrawFormatString(10, 780, GetColor(255,0, 0), "...æ•µã®æ•°ï¼ˆï¼ã«ãªã£ãŸã‚‰ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ï¼ï¼‰");
+	DrawFormatString(10, 780, GetColor(185, 0, 255), "\nå¼¾ã®ç¨®é¡ã¯å¼±ãƒ»ä¸­ãƒ»å¼·ã®3ç¨®é¡ãŒã‚ã‚Šã€ä¸Šéƒ¨ã«ãã‚Œãã‚Œã®åŠ¹æœãŒè¡¨ç¤ºã•ã‚Œã‚‹\nä¾‹ï¼šä¸€å®šç¢ºç‡ã§æ•µã‚’å³æ­»ã•ã›ã‚‹ ãªã©");
+	DrawFormatString(10, 780, GetColor(205, 255, 0), "\n\n\nOkãŒå‡ºã¦ããŸã‚‰ã§ãã‚‹ã€‚");
+	DrawFormatString(10, 780, GetColor(0, 255, 0), "\n\n\n\næ­¦å™¨ã®ç¨®é¡ï¼ˆæç«œã‚’å€’ã—ãŸã‚‰åˆ‡ã‚Šæ›¿ã‚ã‚‹)1...ãƒˆãƒªã‚±ãƒ©  2...ã‚¹ãƒ”ãƒ");
+	DrawFormatString(10, 780, GetColor(0, 255, 0), "\n\n\n\n\n1...å¹³å‡çš„ã«ç«åŠ›ãŒå¼±ãã€è‡ªå‹•å›å¾©ã™ã‚‹ãƒ¢ãƒ¼ãƒ‰\n2...ç«åŠ›ãŒé«˜ãã‚¹ã‚³ã‚¢ãŒç¨¼ãæ˜“ãã€hpãŒæ¸›ã‚Šç¶šã‘ã‚‹ãƒ¢ãƒ¼ãƒ‰  ");
+	DrawFormatString(10, 780, GetColor(255, 0, 255), "\n\n\n\n\n\n\næ®‹å¼¾æ•°ï¼ˆä¸Šã‹ã‚‰å¼±ã€ä¸­ã€å¼·ï¼‰");    
 
 	mpTexture2->Draw();
 	/*DrawBox(700, 850, 850, 900, GetColor(0, 255, 0), true);
-	DrawFormatString(700, 850, GetColor(0, 0, 0), "ƒgƒŠƒPƒ‰");
-	DrawFormatString(940, 860, GetColor(0, 0, 0), "’†");
-	DrawFormatString(700, 960, GetColor(0, 0, 0), "ƒŠƒ[ƒhok");
-	DrawFormatString(50, 750, GetColor(Color1, Color1, Color1), "BackSpace‚Å–ß‚é");*/
+	DrawFormatString(700, 850, GetColor(0, 0, 0), "ãƒˆãƒªã‚±ãƒ©");
+	DrawFormatString(940, 860, GetColor(0, 0, 0), "ä¸­");
+	DrawFormatString(700, 960, GetColor(0, 0, 0), "ãƒªãƒ­ãƒ¼ãƒ‰ok");
+	DrawFormatString(50, 750, GetColor(Color1, Color1, Color1), "BackSpaceã§æˆ»ã‚‹");*/
 
 	if (InputManager::CheckDownKey(KEY_INPUT_BACK))
 	{

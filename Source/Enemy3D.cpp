@@ -1,4 +1,4 @@
-#include"Enemy3D.h"
+﻿#include"Enemy3D.h"
 #include"Model.h"
 #include"Master.h"
 #include"Player3D.h"
@@ -28,19 +28,19 @@ Enemy3D::Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,floa
 	//,Animation(false)
 {
 	mbMagic = true;
-	mnChance = 70;//アイチE��のドロチE�E確玁E
+	mnChance = 70;//繧｢繧､繝・Β縺ｮ繝峨Ο繝・・遒ｺ邇・
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//モチE��の生�E
+	//繝｢繝・Ν縺ｮ逕滓・
 	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	model_->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
 	model_->AddAnimation(ANIMATION_ATTACK, "Resource/Model/MagicAttack.mv1");
 	
 	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
-	//new DrawHp("",  //画像名
-	//	(VAdd(position_, VGet(0.0f, 100.0f, 0.0f))),//中忁E��樁E
+	//new DrawHp("",  //逕ｻ蜒丞錐
+	//	(VAdd(position_, VGet(0.0f, 100.0f, 0.0f))),//荳ｭ蠢・ｺｧ讓・
 	mpDebug = new Debug();
 	/*Item::ItemInformation* itemInfo;
 	itemInfo = new Item::ItemInformation();
@@ -79,7 +79,7 @@ void Enemy3D::Update()
 			}
 
 			model_->Update();
-			//mpDH->Update();//drawHpのアチE�EチE�Eトを呼ぶ
+			//mpDH->Update();//drawHp縺ｮ繧｢繝・・繝・・繝医ｒ蜻ｼ縺ｶ
 			CollPositionUpdate();
 
 
@@ -126,11 +126,11 @@ void Enemy3D::Draw()
 		if (AttackCount >= AttackInterval && isHitAttackSearch)
 		{
 			AttackCount = 0;
-			//攻撁E��ーションに変更
+			//謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ螟画峩
 			model_->ChangeAnimation(ANIMATION_ATTACK);
-			//ループ�EさせなぁE
+			//繝ｫ繝ｼ繝励・縺輔○縺ｪ縺・
 			model_->SetLoop(false);
-			//モーション後�E征E��モーションに戻ぁE
+			//繝｢繝ｼ繧ｷ繝ｧ繝ｳ蠕後・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ謌ｻ縺・
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			isHitAttackSearch = false;
 			new Magic_Ene("Resource/Damage.png", VAdd(position_,VGet(0.0f,100.0f,0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
@@ -138,7 +138,7 @@ void Enemy3D::Draw()
 		if (!(now == ANIMATION_ATTACK))
 		{
 			AttackCount++;
-			AttackHitJudgmentflag = false;//当たり判定�E復活
+			AttackHitJudgmentflag = false;//蠖薙◆繧雁愛螳壹・蠕ｩ豢ｻ
 		}
 	}
 

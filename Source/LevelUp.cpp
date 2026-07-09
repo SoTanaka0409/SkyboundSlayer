@@ -1,4 +1,4 @@
-#include"LevelUp.h"
+ï»¿#include"LevelUp.h"
 
 
 
@@ -23,8 +23,8 @@ void LevelUp::Draw()
 {
 	
 	float XpRatio = exp/GetNextXp();
-	exp = exp < 0 ? 0 : exp; //HP‚ª0–¢–‚É‚È‚Á‚½‚ç0‚ğ“ü‚ê‚é
-	exp = exp > GetNextXp() ? GetNextXp() : exp; //HP‚ªÅ‘å’l‚ğ’´‚¦‚Ä‚¢‚½‚çAÅ‘å’l‚ğ“ü‚ê‚é
+	exp = exp < 0 ? 0 : exp; //HPãŒ0æœªæº€ã«ãªã£ãŸã‚‰0ã‚’å…¥ã‚Œã‚‹
+	exp = exp > GetNextXp() ? GetNextXp() : exp; //HPãŒæœ€å¤§å€¤ã‚’è¶…ãˆã¦ã„ãŸã‚‰ã€æœ€å¤§å€¤ã‚’å…¥ã‚Œã‚‹
 
 	
 	unsigned int Color;
@@ -43,15 +43,15 @@ void LevelUp::Draw()
 /////////////////////////////////////////////////////
 	
 //////////////////////////////////////////////////////
-	DrawFormatString(30, 800, Color3, "ƒŒƒxƒ‹:%f", level);
+	DrawFormatString(30, 800, Color3, "ãƒ¬ãƒ™ãƒ«:%f", level);
 
 }
 
 void LevelUp::Update()
 {
-	if (mbLevelUp)mbLevelUp = false;//ƒŒƒxƒ‹ƒAƒbƒv‚Ì‰¶Œb
+	if (mbLevelUp)mbLevelUp = false;//ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—ã®æ©æµ
 	
-	//ƒŒƒxƒ‹UPƒtƒ‰ƒO
+	//ãƒ¬ãƒ™ãƒ«UPãƒ•ãƒ©ã‚°
 	
 	if (exp > GetNextXp())
 	{

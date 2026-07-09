@@ -1,4 +1,4 @@
-#include"InfClassManager.h"
+﻿#include"InfClassManager.h"
 #include"ItemManager.h"
 #include"Master.h"
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma once
 #include "DxLib.h"
 #include <vector>
@@ -33,6 +33,6 @@ public:
 	bool delete_flag_;
 
 protected:
-	std::vector<Collider*> collision_list_;	// Õ“Ë‚µ‚Ä‚¢‚éCollider‚ÌƒŠƒXƒg
+	std::vector<Collider*> collision_list_;	// è¡çªã—ã¦ã„ã‚‹Colliderã®ãƒªã‚¹ãƒˆ
 	
 };

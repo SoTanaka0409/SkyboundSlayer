@@ -1,4 +1,4 @@
-#include "Coin.h"
+﻿#include "Coin.h"
 #include "Master.h"
 #include "SceneManager.h"
 #include "ObjectManager.h"

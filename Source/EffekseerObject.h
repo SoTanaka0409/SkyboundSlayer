@@ -1,17 +1,13 @@
-#pragma once
+﻿#pragma once
 #include "Object3D.h"
 #include <string>
 
 class EffekseerObject : public Object3D
 {
 public:
-	// name: 登録名
-	// filepath: ファイルパス
-	// initPos: 再生開始座標
-	// parent: 追従対象のオブジェクト（不要な場合はnullptr）
-	// isFollow: parentに追従するかどうかのフラグ
-	// magnification: 拡大率
-	// speed: 再生速度
+	// name: 逋ｻ骭ｲ蜷・	// filepath: 繝輔ぃ繧､繝ｫ繝代せ
+	// initPos: 蜀咲函髢句ｧ句ｺｧ讓・	// parent: 霑ｽ蠕灘ｯｾ雎｡縺ｮ繧ｪ繝悶ず繧ｧ繧ｯ繝茨ｼ井ｸ崎ｦ√↑蝣ｴ蜷医・nullptr・・	// isFollow: parent縺ｫ霑ｽ蠕薙☆繧九°縺ｩ縺・°縺ｮ繝輔Λ繧ｰ
+	// magnification: 諡｡螟ｧ邇・	// speed: 蜀咲函騾溷ｺｦ
 	EffekseerObject(const std::string& name, const char* filepath, VECTOR initPos, Object3D* parent = nullptr, bool isFollow = false, float magnification = 1.0f, float speed = 1.0f);
 	virtual ~EffekseerObject();
 

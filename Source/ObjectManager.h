@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include<list>
 #include<vector>
@@ -20,49 +20,49 @@ public:
 
 public:
 
-	//3D�I�u�W�F�N�g�ǉ�
+	//3Dオブジェクト追加
 	void AddObject(Object3D* object3D);
 
-	//3d�I�u�W�F�N�g�̑S�폜
+	//3dオブジェクトの全削除
 	void DeleteAll3D();
 
-	//�폜����K�v�̂���I�u�W�F�N�g������΍폜����
-	//note:���ׂẴI�u�W�F�N�g�̍X�V���I�������ɌĂяo��
+	//削除する必要のあるオブジェクトがあれば削除する
+	//note:すべてのオブジェクトの更新が終わった後に呼び出す
 	void DeleteAll3DIfNeeded();
 
-	//�w�肵�������̂Q�c�I�u�W�F�N�g���擾
-	//note:�Y������I�u�W�F�N�g����������ꍇ�A�ŏ��Ɍ������I�u�W�F�N�g��Ԃ�
+	//指定したたぐの２Ｄオブジェクトを取得
+	//note:該当するオブジェクトが複数ある場合、最初に見つけたオブジェクトを返す
 	Object3D* GetObject3DByTag(Object3D::Tag3D tag);
 
-	//�w�肵���^�O�̂QD�I�u�W�F�N�g�̃��X�g���擾
-	//note:�Y������I�u�W�F�N�g����������ꍇ�A���X�g�����Ă��ׂẴI�u�W�F�N�g��Ԃ�
+	//指定したタグの２Dオブジェクトのリストを取得
+	//note:該当するオブジェクトが複数ある場合、リスト化してすべてのオブジェクトを返す
 	const std::vector<Object3D*>& GetObject3DListByTag(Object3D::Tag3D tag);
 
 	////////////////////////////////////////////////////////////////////////
 
-	 //�QD�I�u�W�F�N�g�ǉ�
+	 //２Dオブジェクト追加
 	void AddObject(Object2D* object2D);
 
-	//2d�I�u�W�F�N�g�̑S�폜
+	//2dオブジェクトの全削除
 	void DeleteAll2D();
 
-	//�폜����K�v�̂���I�u�W�F�N�g������΍폜����
-	//note:���ׂẴI�u�W�F�N�g�̍X�V���I�������ɌĂяo��
+	//削除する必要のあるオブジェクトがあれば削除する
+	//note:すべてのオブジェクトの更新が終わった後に呼び出す
 	void DeleteAll2DIfNeeded();
 
-	//�w�肵�������̂Q�c�I�u�W�F�N�g���擾
-	//note:�Y������I�u�W�F�N�g����������ꍇ�A�ŏ��Ɍ������I�u�W�F�N�g��Ԃ�
+	//指定したたぐの２Ｄオブジェクトを取得
+	//note:該当するオブジェクトが複数ある場合、最初に見つけたオブジェクトを返す
 	Object2D* GetObject2DByTag(Object2D::Tag2D tag);
 
-	//�w�肵���^�O�̂QD�I�u�W�F�N�g�̃��X�g���擾
-	//note:�Y������I�u�W�F�N�g����������ꍇ�A���X�g�����Ă��ׂẴI�u�W�F�N�g��Ԃ�
+	//指定したタグの２Dオブジェクトのリストを取得
+	//note:該当するオブジェクトが複数ある場合、リスト化してすべてのオブジェクトを返す
 	std::vector<Object2D*>GetObject2DListByTag(Object2D::Tag2D tag);
 
 private:
 	
 	std::map<Object3D::Tag3D, std::vector<Object3D*>> mCached3DLists;
 	bool mCacheDirty;
-	std::list<Object3D*>mObject3DList;   //3D�I�u�W�F�N�g���Ǘ����郊�X�g
+	std::list<Object3D*>mObject3DList;   //3Dオブジェクトを管理するリスト
 	
 	std::list<Object2D*>mObject2DList;
 

@@ -1,34 +1,34 @@
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 #include"Model.h"
 #include"TitleScene.h"
-//ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
+//ã‚¯ãƒ©ã‚¹ã®å‰æ–¹å®£è¨€
 class Object3D;
 
 class Camera
 {
 public:
-	Camera();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	Camera();//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	~Camera();//ƒfƒXƒgƒ‰ƒNƒ^
+	~Camera();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 
-	void Initialize();//‰Šú‰»
+	void Initialize();//åˆæœŸåŒ–
 
 	void Finalize();
 
-	void Update();//XV
+	void Update();//æ›´æ–°
 
-	void UpdateRotation();//‰ñ“]ˆ—
+	void UpdateRotation();//å›è»¢å‡¦ç†
 
-	VECTOR GetPosition() { return position_; }//À•Wæ“¾
-	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//’‹“_æ“¾
+	VECTOR GetPosition() { return position_; }//åº§æ¨™å–å¾—
+	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//æ³¨è¦–ç‚¹å–å¾—
 
 	float GetLookCamera() { return mfVerticalAngle; }
 	void AddHorizontalAngle(float angle) { mfHorizontalAngle += angle; }
 	void SetLookCamera(float hor) { mfVerticalAngle = hor; }
 
-	VECTOR GetLookCamera2() { return dir; }//VECTORƒo[ƒWƒ‡ƒ“
+	VECTOR GetLookCamera2() { return dir; }//VECTORãƒãƒ¼ã‚¸ãƒ§ãƒ³
 	void SetLookCamera2(VECTOR dir2) { dir = dir2; }
 
 	void SetCamera1(bool camera1) { Camera1 = camera1; }
@@ -36,31 +36,31 @@ public:
 	void SetCamera3(bool camera3) { Camera3 = camera3; }
 	bool GetCamera3() { return Camera3; }
 
-	// šNewš
-	// ‰æ–Ê—h‚ê
+	// â˜…Newâ˜…
+	// ç”»é¢æºã‚Œ
 	void Shake();
 	void SetupShake(float time, float width, float angleSpeed, float stepTime = 1.0f);
 
 private:
-	float mfHorizontalAngle;  //…•½•ûŒüƒAƒ“ƒOƒ‹
-	float mfVerticalAngle;   // ‚’¼•ûŒüƒAƒ“ƒOƒ‹
+	float mfHorizontalAngle;  //æ°´å¹³æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
+	float mfVerticalAngle;   // å‚ç›´æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
 
-	VECTOR position_; //ƒJƒƒ‰À•W
-	VECTOR mvLookAtPosition;   //ƒJƒƒ‰‚Ì’ˆÚ“]À•W   À•WŒÅ’è (¡‰ñ‚Í)
+	VECTOR position_; //ã‚«ãƒ¡ãƒ©åº§æ¨™
+	VECTOR mvLookAtPosition;   //ã‚«ãƒ¡ãƒ©ã®æ³¨ç§»è»¢åº§æ¨™   åº§æ¨™å›ºå®š (ä»Šå›ã¯)
 	VECTOR dir;
 
-	Object3D* target_;    //ƒJƒƒ‰‚ğŒü‚¯‚é‘ÎÛ
+	Object3D* target_;    //ã‚«ãƒ¡ãƒ©ã‚’å‘ã‘ã‚‹å¯¾è±¡
 	Model* model_;
 
 
 	int centerX = 640;
 	int centerY = 360;
-	const float ROTATE_SPEED = 0.2f;//‰ñ“]‘¬“x
-	float mfTargetAngle;//–Ú•W‚Ì‰ñ“]’n
-	float mfAngle;//Œ»İ‚Ì‰ñ“]’n
+	const float ROTATE_SPEED = 0.2f;//å›è»¢é€Ÿåº¦
+	float mfTargetAngle;//ç›®æ¨™ã®å›è»¢åœ°
+	float mfAngle;//ç¾åœ¨ã®å›è»¢åœ°
 
-	bool Camera3;//OlÌ‹“_
-	bool Camera1;//ˆêlÌ‹“_
+	bool Camera3;//ä¸‰äººç§°è¦–ç‚¹
+	bool Camera1;//ä¸€äººç§°è¦–ç‚¹
 
 	int mnShakeTime;
 	int mnShakeTimeCount;

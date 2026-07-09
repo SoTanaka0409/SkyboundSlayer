@@ -1,13 +1,13 @@
-
+ï»¿
 #define _CRT_SECURE_NO_WARNINGS
 #include"ScoreManager.h"
 #include"DxLib.h"
 
 ScoreManager::ScoreManager(float score)
-	:mnScore(score)//Žæ“¾ƒXƒRƒA
-	, mnHighScore(score)//ƒnƒCƒXƒR‚ 
-	, mnHighScore2(score)//‚Q”Ô–Ú
-	, mnHighScore3(score)//ŽO”Ô–Ú
+	:mnScore(score)//å–å¾—ã‚¹ã‚³ã‚¢
+	, mnHighScore(score)//ãƒã‚¤ã‚¹ã‚³ã‚
+	, mnHighScore2(score)//ï¼’ç•ªç›®
+	, mnHighScore3(score)//ä¸‰ç•ªç›®
 {
 
 }
@@ -29,18 +29,18 @@ void ScoreManager::Draw()
 
 
 
-	////‚Ps‚¸‚Â“Ç‚Ýž‚Þ
-	//char strBuffer[256] = "";//1s“Ç‚Ýž‚Þ‚½‚ß‚Ìƒoƒbƒtƒ@
+	////ï¼‘è¡Œãšã¤èª­ã¿è¾¼ã‚€
+	//char strBuffer[256] = "";//1è¡Œèª­ã¿è¾¼ã‚€ãŸã‚ã®ãƒãƒƒãƒ•ã‚¡
 
 
-	////ƒtƒ@ƒCƒ‹‚ð•Â‚¶‚é
+	////ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 
-	////ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚Ì‘‚«ž‚Ý
+	////ãƒã‚¤ãƒŠãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿
 
 
-	////‘‚«ž‚Ý
+	////æ›¸ãè¾¼ã¿
 
-	////ƒtƒ@ƒCƒ‹‚­‚ë[ƒY
+	////ãƒ•ã‚¡ã‚¤ãƒ«ãã‚ãƒ¼ã‚º
 }
 
 void ScoreManager::PrintSaveDate(SaveDate date)
@@ -56,17 +56,17 @@ void ScoreManager::SaveHighScore()
 
 
 	FILE* fp = NULL;
-	//fopen(ƒŒƒNƒgƒŠ/ƒtƒ@ƒCƒ‹–¼BŠg’£ŽqAƒI[ƒvƒ“ƒtƒB[ƒ‹ƒh
-	fp = fopen("savedate.txt", "w");  //‘‚«ž‚Ýê—p‚Åƒtƒ@ƒCƒ‹‚ðŠJ‚­
+	//fopen(ãƒ¬ã‚¯ãƒˆãƒª/ãƒ•ã‚¡ã‚¤ãƒ«åã€‚æ‹¡å¼µå­ã€ã‚ªãƒ¼ãƒ—ãƒ³ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+	fp = fopen("savedate.txt", "w");  //æ›¸ãè¾¼ã¿å°‚ç”¨ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 
 	if (fp == NULL)
 	{
 		return;
 	}
 
-	if (mnScore > mnHighScore)//Œ»Ý‚ÌƒXƒRƒA‚ª‚P”Ô‚‚©‚Á‚½‚ç
+	if (mnScore > mnHighScore)//ç¾åœ¨ã®ã‚¹ã‚³ã‚¢ãŒï¼‘ç•ªé«˜ã‹ã£ãŸã‚‰
 	{
-		fprintf(fp, "SCORE;%d\n",(int) mnScore);//ˆê”Ôã‚ÉŽ‚Á‚Ä‚­‚é
+		fprintf(fp, "SCORE;%d\n",(int) mnScore);//ä¸€ç•ªä¸Šã«æŒã£ã¦ãã‚‹
 
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
@@ -74,7 +74,7 @@ void ScoreManager::SaveHighScore()
 		fprintf(fp, "NAME ;%s\n", msName1.c_str());
 		fprintf(fp, "NAME ;%s\n", msName2.c_str());
 	}
-	if (mnScore > mnHighScore2 && mnScore < mnHighScore)//Œ»Ý‚ÌƒXƒRƒA‚ª“ñ”Ô–Ú‚É‚‚©‚Á‚½‚ç
+	if (mnScore > mnHighScore2 && mnScore < mnHighScore)//ç¾åœ¨ã®ã‚¹ã‚³ã‚¢ãŒäºŒç•ªç›®ã«é«˜ã‹ã£ãŸã‚‰
 	{
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
 
@@ -85,13 +85,13 @@ void ScoreManager::SaveHighScore()
 		fprintf(fp, "NAME ;%s\n", msName2.c_str());
 
 	}
-	if (mnScore > mnHighScore3 && mnScore < mnHighScore2)//Œ»Ý‚ÌƒXƒRƒA‚ªŽO”Ô–Ú‚¾‚Á‚½‚ç
+	if (mnScore > mnHighScore3 && mnScore < mnHighScore2)//ç¾åœ¨ã®ã‚¹ã‚³ã‚¢ãŒä¸‰ç•ªç›®ã ã£ãŸã‚‰
 	{
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
 
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
 		fprintf(fp, "SCORE;%d\n", (int)mnScore);
-		fprintf(fp, "NAME ;%s\n", msName1.c_str()); //c_str...string=char‚É‚·‚é
+		fprintf(fp, "NAME ;%s\n", msName1.c_str()); //c_str...string=charã«ã™ã‚‹
 		fprintf(fp, "NAME ;%s\n", msName2.c_str());
 		fprintf(fp, "NAME ;%s\n", msName.c_str());
 	}
@@ -102,8 +102,8 @@ void ScoreManager::LoadHighScore()
 {
 	FILE* fp = NULL;
 
-	//fopen(ƒŒƒNƒgƒŠ/ƒtƒ@ƒCƒ‹–¼BŠg’£ŽqAƒI[ƒvƒ“ƒtƒB[ƒ‹ƒh
-	fp = fopen("savedate.txt", "r");  //“Ç‚Ýž‚Ýê—p‚Åƒtƒ@ƒCƒ‹‚ðŠJ‚­
+	//fopen(ãƒ¬ã‚¯ãƒˆãƒª/ãƒ•ã‚¡ã‚¤ãƒ«åã€‚æ‹¡å¼µå­ã€ã‚ªãƒ¼ãƒ—ãƒ³ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+	fp = fopen("savedate.txt", "r");  //èª­ã¿è¾¼ã¿å°‚ç”¨ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	if (fp == NULL)
 	{
 		return;

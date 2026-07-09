@@ -1,4 +1,4 @@
-#include"Rock.h"
+﻿#include"Rock.h"
 #include"CapsuleCollider.h"
 #include"Model.h"
 Rock::Rock(std::string filename,VECTOR pos, float r,float High,float size)

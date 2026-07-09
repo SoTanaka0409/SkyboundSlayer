@@ -1,4 +1,4 @@
-
+ï»¿
 #include"DrawHp.h"
 #include"Enemy3D.h"
 #include"Master.h"
@@ -25,12 +25,12 @@ DrawHp::~DrawHp()
 }
 
 
-//XV
+//æ›´æ–°
 void DrawHp::Update()
 {
-	//–¾“ú‚Íƒo[‚ðì‚Á‚Ä‰E‰º‚Æ‰Eã‚ðí‚é‚æ‚¤‚ÉƒvƒƒOƒ‰ƒ€‚ðì‚é
-	//“G‚ÌŒ©‚Ä‚¢‚é•ûŠp‚É‡‚í‚¹A‚šÀ•W‚à‚˜À•W‚à‡‚í‚¹‚é
-	//mpmodel->update()‚Ý‚½‚¢‚É‚c‚’‚‚—‚g‚o‚àƒGƒlƒ~[‚ÌƒAƒbƒvƒf[ƒgˆ—‚É“ü‚ê‚é
+	//æ˜Žæ—¥ã¯ãƒãƒ¼ã‚’ä½œã£ã¦å³ä¸‹ã¨å³ä¸Šã‚’å‰Šã‚‹ã‚ˆã†ã«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’ä½œã‚‹
+	//æ•µã®è¦‹ã¦ã„ã‚‹æ–¹è§’ã«åˆã‚ã›ã€ï½šåº§æ¨™ã‚‚ï½˜åº§æ¨™ã‚‚åˆã‚ã›ã‚‹
+	//mpmodel->update()ã¿ãŸã„ã«ï¼¤ï½’ï½ï½—ï¼¨ï¼°ã‚‚ã‚¨ãƒãƒŸãƒ¼ã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆå‡¦ç†ã«å…¥ã‚Œã‚‹
 	const auto& pObjList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	for (int i = 0; i < pObjList.size(); i++)
 	{
@@ -66,7 +66,7 @@ void DrawHp::Update()
 
 
 }
-//•`‰æ
+//æç”»
 void DrawHp::Draw()
 {
 	

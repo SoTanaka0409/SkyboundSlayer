@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<string>
 #include"vector"
 #include"Dxlib.h"
@@ -9,7 +9,7 @@ class Object2D
 public:
 	enum Tag2D
 	{
-		None2D = 0,//İ’è‚È‚µ
+		None2D = 0,//è¨­å®šãªã—
 		Tag2D_Dino1 = 1,
 		Tag2D_Dino2=100,
 		
@@ -24,7 +24,7 @@ public:
 
 	virtual void Draw();
 
-public://ƒQƒbƒ^[AƒZƒbƒ^[
+public://ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼
 	void SetPosition(VECTOR pos) { position_ = pos; };
 	VECTOR GetPosition() { return position_; }
 
@@ -34,21 +34,21 @@ public://ƒQƒbƒ^[AƒZƒbƒ^[
 	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
 	bool IsDeleteFlag() { return delete_flag_; }
 
-	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //“G‚Ìíœƒtƒ‰ƒOİ’è@
-	bool IsDrawFlag() { return draw_flag_; }          //“G‚Ìíœƒtƒ‰ƒO‚Ìì¬
+	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°è¨­å®šã€€
+	bool IsDrawFlag() { return draw_flag_; }          //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°ã®ä½œæˆ
 
-	//ƒ^ƒO
+	//ã‚¿ã‚°
 	void SetTag(Tag2D tag) { tag_ = tag; }
 	Tag2D GetTag() { return tag_; }
 
 protected:
-	VECTOR position_;  //À•W
-	VECTOR rotation_;   //‰ñ“]
+	VECTOR position_;  //åº§æ¨™
+	VECTOR rotation_;   //å›è»¢
 
 private:
-	bool delete_flag_;  //íœƒtƒ‰ƒO
-	Tag2D tag_;   //ƒ^ƒO
-	bool draw_flag_;//•`‰æƒtƒ‰ƒO
+	bool delete_flag_;  //å‰Šé™¤ãƒ•ãƒ©ã‚°
+	Tag2D tag_;   //ã‚¿ã‚°
+	bool draw_flag_;//æç”»ãƒ•ãƒ©ã‚°
 
 
 };

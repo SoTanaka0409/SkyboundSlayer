@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 #include"Object3D.h"
 
@@ -6,27 +6,27 @@
 class Effect
 {
 public:
-	static const int PARTICLE_NUM = 256; //ƒp[ƒeƒBƒNƒ‹‚ÌÅ‘å”
-	//ƒp[ƒeƒBƒNƒ‹‚Ì\‘¢‘Ì
-	//—±ˆê‚Âˆê‚Â‚Ìƒf[ƒ^
+	static const int PARTICLE_NUM = 256; //ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æœ€å¤§æ•°
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æ§‹é€ ä½“
+	//ç²’ä¸€ã¤ä¸€ã¤ã®ãƒ‡ãƒ¼ã‚¿
 	struct ParticleInfo
 	{
-		VECTOR pos;  //À•W
-		VECTOR dir;  //is•ûŒü
-		float speed;  //‘¬“x
-		float size;  //‘å‚«‚³
-		float alpha; //•‰“§–¾“x
-		float visibleTime;//•\¦ŠÔ
+		VECTOR pos;  //åº§æ¨™
+		VECTOR dir;  //é€²è¡Œæ–¹å‘
+		float speed;  //é€Ÿåº¦
+		float size;  //å¤§ãã•
+		float alpha; //è² é€æ˜åº¦
+		float visibleTime;//è¡¨ç¤ºæ™‚é–“
 
 
 
 	};
-	//effectî•ñ
-	//—±‚ğ‚Ü‚Æ‚ß‚½‚P‚Â‚ÌƒGƒtƒFƒNƒg‚Æ‚µ‚Ä‚Ìƒf[ƒ^
+	//effectæƒ…å ±
+	//ç²’ã‚’ã¾ã¨ã‚ãŸï¼‘ã¤ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã¨ã—ã¦ã®ãƒ‡ãƒ¼ã‚¿
 	struct EffectInfo
 	{
-		COLOR_U8 color; //ƒGƒtƒFƒNƒg‚ÌF
-		ParticleInfo particle[PARTICLE_NUM];//ƒp[ƒeƒBƒNƒ‹ƒf[ƒ^‹ì“®İŒviData-Driven Designj‚Ö‚ÌˆÚsî•ñ
+		COLOR_U8 color; //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®è‰²
+		ParticleInfo particle[PARTICLE_NUM];//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒ‡ãƒ¼ã‚¿é§†å‹•è¨­è¨ˆï¼ˆData-Driven Designï¼‰ã¸ã®ç§»è¡Œæƒ…å ±
 	};
 
 
@@ -45,17 +45,17 @@ public:
 private:
 	bool mActive;
 
-	int mnGraphHandle;  //‰æ‘œƒnƒ“ƒhƒ‹
-	EffectInfo* mpEffect;  //ƒGƒtƒFƒNƒg‚Ìƒf[ƒ^
+	int mnGraphHandle;  //ç”»åƒãƒãƒ³ãƒ‰ãƒ«
+	EffectInfo* mpEffect;  //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ãƒ‡ãƒ¼ã‚¿
 
-	const int SPEED_RAND_MAX = 550;//‘¬“x‚ÌÅ‘å—”’n
-	const int SPEED_RAND_MIN = 200;//ô“aÅ¬——”’l
+	const int SPEED_RAND_MAX = 550;//é€Ÿåº¦ã®æœ€å¤§ä¹±æ•°åœ°
+	const int SPEED_RAND_MIN = 200;//ç­–æ®¿æœ€å°è¦§æ•°å€¤
 
-	const int SIZE_RAND_MAX = 1600;//ƒTƒCƒY‚ÌÅ‘å—”’n
-	const int SIZE_RAND_MIN = 800;//ƒTƒCƒY‚ÌÅ¬—”’n
+	const int SIZE_RAND_MAX = 1600;//ã‚µã‚¤ã‚ºã®æœ€å¤§ä¹±æ•°åœ°
+	const int SIZE_RAND_MIN = 800;//ã‚µã‚¤ã‚ºã®æœ€å°ä¹±æ•°åœ°
 
-	const int VISIBLE_TIME_RAND_MAX = 30;//•\¦ŠÔ‚ÌÅ‘å—”’n
-	const int VISIBLE_TIME_RAND_MIN = 5;//•\¦ŠÔ‚ÌÅ¬—”’n
+	const int VISIBLE_TIME_RAND_MAX = 30;//è¡¨ç¤ºæ™‚é–“ã®æœ€å¤§ä¹±æ•°åœ°
+	const int VISIBLE_TIME_RAND_MIN = 5;//è¡¨ç¤ºæ™‚é–“ã®æœ€å°ä¹±æ•°åœ°
 
 
 

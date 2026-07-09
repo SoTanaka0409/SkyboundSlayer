@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "DxLib.h"
 #include "EffekseerForDXLib.h"
 #include <string>
@@ -13,46 +13,46 @@ public:
 		return &instance;
 	}
 
-	// 初期匁E(DxLib_Initの後に呼ぶ)
+	// 蛻晄悄蛹・(DxLib_Init縺ｮ蠕後↓蜻ｼ縺ｶ)
 	void Init();
 
-	// 更新 (毎フレーム呼ぶ)
+	// 譖ｴ譁ｰ (豈弱ヵ繝ｬ繝ｼ繝蜻ｼ縺ｶ)
 	void Update();
 
-	// 描画 (3D描画の後に呼ぶ)
+	// 謠冗判 (3D謠冗判縺ｮ蠕後↓蜻ｼ縺ｶ)
 	void Draw();
 
-	// 終亁E�E琁E(DxLib_Endの前に呼ぶ)
+	// 邨ゆｺ・・逅・(DxLib_End縺ｮ蜑阪↓蜻ｼ縺ｶ)
 	void End();
 
-	// エフェクト�E読み込み
-	// name: プログラム冁E��使ぁE��録吁E
-	// filepath: efkファイルのパス
-	// magnification: 拡大玁E(チE��ォルチE.0f)
+	// 繧ｨ繝輔ぉ繧ｯ繝医・隱ｭ縺ｿ霎ｼ縺ｿ
+	// name: 繝励Ο繧ｰ繝ｩ繝蜀・〒菴ｿ縺・匳骭ｲ蜷・
+	// filepath: efk繝輔ぃ繧､繝ｫ縺ｮ繝代せ
+	// magnification: 諡｡螟ｧ邇・(繝・ヵ繧ｩ繝ｫ繝・.0f)
 	int LoadEffect(const std::string& name, const char* filepath, float magnification = 1.0f);
 
-	// エフェクト�E再生
-	// name: 読み込んだ時�E登録吁E
-	// pos: 再生する3D座樁E
-	// 戻り値: 再生中のエフェクトハンドル (停止時などに使用)
+	// 繧ｨ繝輔ぉ繧ｯ繝医・蜀咲函
+	// name: 隱ｭ縺ｿ霎ｼ繧薙□譎ゅ・逋ｻ骭ｲ蜷・
+	// pos: 蜀咲函縺吶ｋ3D蠎ｧ讓・
+	// 謌ｻ繧雁､: 蜀咲函荳ｭ縺ｮ繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν (蛛懈ｭ｢譎ゅ↑縺ｩ縺ｫ菴ｿ逕ｨ)
 	int PlayEffect(const std::string& name, VECTOR pos);
 
-	// 再生中のエフェクトを停止
+	// 蜀咲函荳ｭ縺ｮ繧ｨ繝輔ぉ繧ｯ繝医ｒ蛛懈ｭ｢
 	void StopEffect(int playingHandle);
 
-	// �Đ������m�F
+	// 再生中か確認
 	bool IsPlaying(int playingHandle);
 
-	// �Đ����x��ݒ�
+	// 再生速度を設定
 	void SetEffectSpeed(int playingHandle, float speed);
 
-	// 特定�Eエフェクトハンドルの位置を更新する
+	// 迚ｹ螳壹・繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν縺ｮ菴咲ｽｮ繧呈峩譁ｰ縺吶ｋ
 	void SetEffectPosition(int playingHandle, VECTOR pos);
 
-	// 特定�Eエフェクトハンドルの回転を更新する (ラジアン)
+	// 迚ｹ螳壹・繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν縺ｮ蝗櫁ｻ｢繧呈峩譁ｰ縺吶ｋ (繝ｩ繧ｸ繧｢繝ｳ)
 	void SetEffectRotation(int playingHandle, float x, float y, float z);
 
-	// 特定�Eエフェクトハンドルのスケールを更新する
+	// 迚ｹ螳壹・繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν縺ｮ繧ｹ繧ｱ繝ｼ繝ｫ繧呈峩譁ｰ縺吶ｋ
 	void SetEffectScale(int playingHandle, float x, float y, float z);
 
 private:

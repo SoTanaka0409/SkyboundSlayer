@@ -1,4 +1,4 @@
-#include"EquipmentManager.h"
+ï»¿#include"EquipmentManager.h"
 #include"Master.h"
 #include"InfClass.h"
 #include"SceneManager.h"
@@ -33,7 +33,7 @@ void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 	{
 		if((*itr)->id==date->id)
 		{
-			if ((*itr)->damage < date->damage)//‚à‚µ¡Œ»İŠl“¾‚µ‚½‚¨‚È‚¶ID‚Ì•Ší‚ÌUŒ‚—Í‚ªŠî‚Ì‚æ‚è‚‚©‚Á‚½‚çUŒ‚—Í‚ğXV‚·‚é
+			if ((*itr)->damage < date->damage)//ã‚‚ã—ä»Šç¾åœ¨ç²å¾—ã—ãŸãŠãªã˜IDã®æ­¦å™¨ã®æ”»æ’ƒåŠ›ãŒåŸºã®ã‚ˆã‚Šé«˜ã‹ã£ãŸã‚‰æ”»æ’ƒåŠ›ã‚’æ›´æ–°ã™ã‚‹
 			{
 				(*itr)->damage = date->damage;
 				if(date->isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
@@ -44,15 +44,15 @@ void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 	}
 	switch (date->id)
 	{		date->price = 1000;
-		date->name= "‚½‚¾‚Ì‘•”õ";
+		date->name= "ãŸã ã®è£…å‚™";
 		break;		date->price = 200;
-		date->name = "•’Ê‚Ì‘•”õ";
+		date->name = "æ™®é€šã®è£…å‚™";
 		break;		date->price = 3200;
-		date->name = "‹­‚¢‘•”õ";
+		date->name = "å¼·ã„è£…å‚™";
 		break;		date->price = 4600;
-		date->name = "‚Â‚¨[‚¢‘•”õ";
+		date->name = "ã¤ãŠãƒ¼ã„è£…å‚™";
 		break;		date->price = 5000;
-		date->name = "Å‹­‚Ì‘•”õ";
+		date->name = "æœ€å¼·ã®è£…å‚™";
 		break;
 	default:
 		break;
@@ -77,7 +77,7 @@ void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 			(*itr)->mbGet = true;
 		}
 	}
-	GetDamage();//‘•”õ‚µ‚½‚Æ‚«‚ÉXV‚·‚é
+	GetDamage();//è£…å‚™ã—ãŸã¨ãã«æ›´æ–°ã™ã‚‹
 }
 
 float EquipmentManager::GetDamage()

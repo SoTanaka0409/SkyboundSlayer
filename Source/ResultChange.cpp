@@ -1,4 +1,4 @@
-#include"ResultChange.h"
+﻿#include"ResultChange.h"
 #include"Master.h"
 
 

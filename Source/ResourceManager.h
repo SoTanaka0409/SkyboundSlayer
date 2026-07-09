@@ -1,42 +1,42 @@
-#pragma once
+﻿#pragma once
 #pragma once
 #include <vector>
 #include <string>
 
-// �����\�[�X�Ǘ��N���X�̎g������
+// ★リソース管理クラスの使い方★
 //
-// Master �N���X�ɁASceneManager�Ɠ����悤�Ȍ`�ŃN���X�̃|�C���^�����
-// Main.cpp �ɂď������Adelete ����������
-// Model�N���X�ȂǂŎg�p���Ă��� �wMV1LoadModel(filename.c_str())�x �� �wMaster::mpResourceManager->LoadModel(filename.c_str())�x
-// �i�������͈��B�ϐ����Ȃǂ͊F���񂪏������ߑ����ς��\���͂���j
-// �Ȃǂƒu��������B
+// Master クラスに、SceneManagerと同じような形でクラスのポインタを作る
+// Main.cpp にて初期化、delete 処理を書く
+// Modelクラスなどで使用している 『MV1LoadModel(filename.c_str())』 を 『Master::mpResourceManager->LoadModel(filename.c_str())』
+// （書き方は一例。変数名などは皆さんが書くため多少変わる可能性はあり）
+// などと置き換える。
 //
 
-// ���Ȃ��g���̂���
+// ★なぜ使うのか★
 // 
-// �G�Ȃǂ𐶐������ۂɃJ�N���ꍇ�A��̂̌��������f���̓ǂݍ��݂ɂ��邽�߁A
-// ���̓ǂݍ��ݏ��������Ȃ����邽�߂Ƀ��\�[�X�Ǘ��N���X���g���B
-// ��ʂɃ��f����ǂݍ��ސl�قǉ��b���ł����B
-// ����Ɠ������R�ŁA�摜�t�@�C���Ȃǂ��傫�ȃT�C�Y��ǂݍ��ނƃJ�N�����߁A
-// �����悤�Ȍ��ʂ�������B
-// �i�摜�ǂݍ��݂� LoadGraphics �ŏo����j
+// 敵などを生成した際にカクつく場合、大体の原因がモデルの読み込みにあるため、
+// その読み込み処理を少なくするためにリソース管理クラスを使う。
+// 大量にモデルを読み込む人ほど恩恵がでかい。
+// それと同じ理由で、画像ファイルなども大きなサイズを読み込むとカクつくため、
+// 同じような効果が得られる。
+// （画像読み込みは LoadGraphics で出来る）
 //
 
-// �����Ӂ�
-// LoadGraphics, LoadDivGraphics ���g���ꍇ�A
-// ����ł͂��ꂼ��̃N���X�� �wDeleteGraph�x �Ȃǂ��Ăяo���āA�ǂݍ��񂾉摜���폜���Ă��鏈��������͂��ł����A
-// ���̏����͏����Ă��܂��đ��v�ł��B
-// �i�摜�Ɋւ��Ắw�����x�����Ă��炸�ADeleteGraph �����Ă��܂��Ƒ�{�̃f�[�^���폜����Ă��Ă��܂����߁A�f�[�^���g���܂킷���Ƃ��o���Ȃ��Ȃ�j
+// ★注意★
+// LoadGraphics, LoadDivGraphics を使う場合、
+// 現状ではそれぞれのクラスで 『DeleteGraph』 などを呼び出して、読み込んだ画像を削除している処理があるはずですが、
+// その処理は消してしまって大丈夫です。
+// （画像に関しては『複製』をしておらず、DeleteGraph をしてしまうと大本のデータが削除されてしてしまうため、データを使いまわすことが出来なくなる）
 // 
 
-// �e�N�X�`���̕����ǂݍ��ݗp�f�[�^
+// テクスチャの分割読み込み用データ
 struct DivGraphData
 {
-	std::string filePath;	// �e�N�X�`���̃p�X��
-	int* divHandleList;		// �������ꂽ�e�N�X�`���n���h���̃��X�g
-	int divX;				// ���̕�����
-	int divY;				// �c�̕�����
-	int allNum;				// �����ő吔
+	std::string filePath;	// テクスチャのパス名
+	int* divHandleList;		// 分割されたテクスチャハンドルのリスト
+	int divX;				// 横の分割数
+	int divY;				// 縦の分割数
+	int allNum;				// 分割最大数
 
 	DivGraphData(
 		std::string filePath,
@@ -53,21 +53,21 @@ struct DivGraphData
 	}
 };
 
-// ���\�[�X�Ǘ��N���X
+// リソース管理クラス
 class ResourceManager
 {
 public:
 	ResourceManager();
 	~ResourceManager();
 
-	int LoadModel(std::string pathName);	// ���f�����\�[�X����
-	int LoadGraphics(std::string pathName);	// �O���t�B�b�N���\�[�X����
-	DivGraphData* LoadDivGraphics(std::string pathName, int allNum, int numX, int numY);	// �������ꂽ�O���t�B�b�N���\�[�X����
+	int LoadModel(std::string pathName);	// モデルリソース生成
+	int LoadGraphics(std::string pathName);	// グラフィックリソース生成
+	DivGraphData* LoadDivGraphics(std::string pathName, int allNum, int numX, int numY);	// 分割されたグラフィックリソース生成
 
 	int GetTotalResource() { return resourceMapList.size() + graphicResourceMapList.size() + divGraphicResourceMapList.size(); }
 
 private:
-	std::vector<std::pair<std::string, int>> resourceMapList;			// ���f�����\�[�X���X�g
-	std::vector<std::pair<std::string, int>> graphicResourceMapList;	// �e�N�X�`�����X�g
-	std::vector<DivGraphData*> divGraphicResourceMapList;				// �����e�N�X�`�����X�g
+	std::vector<std::pair<std::string, int>> resourceMapList;			// モデルリソースリスト
+	std::vector<std::pair<std::string, int>> graphicResourceMapList;	// テクスチャリスト
+	std::vector<DivGraphData*> divGraphicResourceMapList;				// 分割テクスチャリスト
 };

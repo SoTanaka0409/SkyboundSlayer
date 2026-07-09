@@ -1,4 +1,4 @@
-#include"Buff.h"
+ï»¿#include"Buff.h"
 #include"Master.h"
 #include"ObjectManager.h"
 
@@ -31,7 +31,7 @@ void Buff::Update()
 	}
 	else
 	{
-		DrawFormatString(200, 800, GetColor(255, 0, 0), "buffŽg—p’†");
+		DrawFormatString(200, 800, GetColor(255, 0, 0), "buffä½¿ç”¨ä¸­");
 	}
 
 

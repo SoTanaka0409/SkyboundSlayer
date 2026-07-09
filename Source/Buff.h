@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"dxlib.h"
 #include"Object2D.h"
 #include"Object3D.h"
@@ -26,7 +26,7 @@ public:
 private:
 	
 	
-	float OldNum;//‚»‚ê‚¼‚ê‚Ìbuff‚ğ‚·‚é‘O‚Ì’lAbuff‚ªI‚í‚Á‚½‚ç•Ô‚·
+	float OldNum;//ãã‚Œãã‚Œã®buffã‚’ã™ã‚‹å‰ã®å€¤ã€buffãŒçµ‚ã‚ã£ãŸã‚‰è¿”ã™
 	
 	bool Do_buff;
 };

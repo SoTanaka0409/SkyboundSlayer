@@ -1,4 +1,4 @@
-#include "ResultWin.h"
+ï»¿#include "ResultWin.h"
 #include "Master.h"
 #include "SceneManager.h"
 #include "InputManager.h"
@@ -24,7 +24,7 @@ void ResultWin::Update()
 
 void ResultWin::Draw()
 {
-	// ‰æ–Ê‘S‘Ì‚ð–¾‚é‚­_¹‚È•µˆÍ‹C‚Éi”’EƒS[ƒ‹ƒhŒn‚Ì”¼“§–¾ƒtƒBƒ‹ƒ^[j
+	// ï¿½ï¿½Ê‘Sï¿½Ì‚ð–¾‚é‚­ï¿½_ï¿½ï¿½ï¿½È•ï¿½ï¿½Í‹Cï¿½Éiï¿½ï¿½ï¿½Eï¿½Sï¿½[ï¿½ï¿½ï¿½hï¿½nï¿½Ì”ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½[ï¿½j
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 120);
 	DrawBox(0, 0, 1920, 1080, GetColor(255, 255, 200), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -41,17 +41,17 @@ void ResultWin::Draw()
 	if (mnAllTimer >= 100)
 	{
 		SetFontSize(40);
-		DrawFormatString(320, 500, GetColor(255, 255, 255), "ÜŽ^‚µ‚æ‚¤A%s", Master::NameTest);
+		DrawFormatString(320, 500, GetColor(255, 255, 255), "ï¿½ÜŽ^ï¿½ï¿½ï¿½æ‚¤ï¿½A%s", Master::NameTest);
 	}
 	
 	if (mnAllTimer >= 200)
 	{
 		SetFontSize(40);
-		DrawFormatString(400, 750, GetColor(255, 255, 255), "‰æ–Ê‚ðƒ^ƒbƒviƒNƒŠƒbƒNj‚µ‚ÄŽŸ‚Ö");
+		DrawFormatString(400, 750, GetColor(255, 255, 255), "ï¿½ï¿½Ê‚ï¿½^ï¿½bï¿½vï¿½iï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½jï¿½ï¿½ï¿½ÄŽï¿½ï¿½ï¿½");
 		if (InputManager::CheckMouseClickLeft() || InputManager::CheckDownKey(KEY_INPUT_BACK))
 		{
-			// ResultWin‚ÍName‰æ–Ê‚Ö‘JˆÚ‚·‚é
-			Master::mpSceneManager->SetNextScene(SceneManager::SCENE_NAME);
+			// ResultWinï¿½ï¿½Nameï¿½ï¿½Ê‚Ö‘Jï¿½Ú‚ï¿½ï¿½ï¿½
+			Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TITLE);
 		}
 	}
 	

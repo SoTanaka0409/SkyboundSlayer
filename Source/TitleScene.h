@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 #include"Scene.h"
 #include"Texture.h"
@@ -23,7 +23,7 @@ public:
 	bool GetResetCameraPlayer() { return mnResetCamera; }
 
 
-	//////result‚É‚Á‚Ä‚¢‚­ˆ×//////
+	//////resultã«æŒã£ã¦ã„ãç‚º//////
 	char String[256];
 	int InputHandle;
 	int Name;
@@ -42,7 +42,7 @@ private:
 
 	bool mnResetCamera;
 
-	int mnColorFade;//ƒJƒ‰[•ÏX
+	int mnColorFade;//ã‚«ãƒ©ãƒ¼å¤‰æ›´
 	int mnColorCount;
 	bool mbColorFlag;
 	

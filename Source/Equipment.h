@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"vector"
 #include"dxlib.h"
 #include<string>
@@ -20,7 +20,7 @@ public:
 		Tag_Equipment id;
 		int damage;
 		std::string name;
-		bool mbGet = false;//’…‚¯‚Ä‚¢‚éó‘Ôtrue
+		bool mbGet = false;//ç€ã‘ã¦ã„ã‚‹çŠ¶æ…‹true
 		std::string filename;
 		int price;
 		bool isLog = true;

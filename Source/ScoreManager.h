@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma once
 #include<string>
 #include<vector>
@@ -10,11 +10,11 @@ public:
 	ScoreManager(float score);
 	~ScoreManager();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize();
 	void Update();
 	void Draw();
-	//I—¹ˆ—
+	//çµ‚äº†å‡¦ç†
 	void Finalize();
 
 	struct SaveDate
@@ -24,17 +24,17 @@ public:
 	};
 	void PrintSaveDate(SaveDate date);
 
-	// ƒXƒRƒA‰ÁZ‚·‚éŠÖ”
+	// ã‚¹ã‚³ã‚¢åŠ ç®—ã™ã‚‹é–¢æ•°
 	void AddScore(float add)
 	{
 		mnScore += add;
 	}
-	// ƒXƒRƒAæ“¾ŠÖ”
+	// ã‚¹ã‚³ã‚¢å–å¾—é–¢æ•°
 	int GetScore()
 	{
 		return mnScore;
 	}
-	// ƒXƒRƒAƒŠƒZƒbƒgˆ—
+	// ã‚¹ã‚³ã‚¢ãƒªã‚»ãƒƒãƒˆå‡¦ç†
 	void ResetScore()
 	{
 		mnScore = 0;
@@ -74,12 +74,12 @@ public:
 		return msName3;
 	}
 
-	//ƒnƒCƒXƒRƒA‚ğ•Û‘¶
-	void SaveHighScore();//•Û‘¶ˆ—‚ğ‚±‚±‚Ås‚¤
-	//ƒnƒCƒXƒRƒAƒ[ƒh
-	void LoadHighScore();  //ƒ[ƒhˆ—‚ğŠÖ”‚Ås‚¤
+	//ãƒã‚¤ã‚¹ã‚³ã‚¢ã‚’ä¿å­˜
+	void SaveHighScore();//ä¿å­˜å‡¦ç†ã‚’ã“ã“ã§è¡Œã†
+	//ãƒã‚¤ã‚¹ã‚³ã‚¢ãƒ­ãƒ¼ãƒ‰
+	void LoadHighScore();  //ãƒ­ãƒ¼ãƒ‰å‡¦ç†ã‚’é–¢æ•°ã§è¡Œã†
 
-	void SetDoFlag(bool flag) { mnNflag = flag; } //“G‚Ìíœƒtƒ‰ƒOİ’è@
+	void SetDoFlag(bool flag) { mnNflag = flag; } //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°è¨­å®šã€€
 	bool IsDoFlag() { return mnNflag; }
 
 	void SaveName();
@@ -90,14 +90,14 @@ public:
 private:
 	int Name;
 	float mnScore;
-	std:: string msName;//•Û‘¶ˆ—‚ğ‚±‚ÌŠÖ”‚Ås‚¤
+	std:: string msName;//ä¿å­˜å‡¦ç†ã‚’ã“ã®é–¢æ•°ã§è¡Œã†
 	std::string msName1;
 	std::string msName2;
 	std::string msName3;
 
-	float mnHighScore;//ƒ[ƒhˆ—‚ğ‚±‚ÌŠÖ”‚Ås‚¤
+	float mnHighScore;//ãƒ­ãƒ¼ãƒ‰å‡¦ç†ã‚’ã“ã®é–¢æ•°ã§è¡Œã†
 	float mnHighScore2;
 	float mnHighScore3;
 
-	bool mnNflag;//Normal‚©‚Ç‚¤‚©‚Ì”»’è
+	bool mnNflag;//Normalã‹ã©ã†ã‹ã®åˆ¤å®š
 };

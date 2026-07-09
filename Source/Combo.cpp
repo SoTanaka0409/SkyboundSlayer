@@ -1,4 +1,4 @@
-#include"Combo.h"
+﻿#include"Combo.h"
 
 Combo::Combo()
 	:Object2D(VGet(0,0,0))

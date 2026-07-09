@@ -1,4 +1,4 @@
-#include "SceneGame.h"
+﻿#include "SceneGame.h"
 
 SceneGame::SceneGame(GameManager::Difficulty diff)
 	: mInitialDifficulty(diff)

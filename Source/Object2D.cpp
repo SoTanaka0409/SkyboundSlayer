@@ -1,4 +1,4 @@
-#include"Object2D.h"
+ï»¿#include"Object2D.h"
 #include"Master.h"
 #include"ObjectManager.h"
 #include"Scene3D.h"
@@ -13,22 +13,22 @@ Object2D::Object2D(VECTOR initPos)
 	, tag_(Tag2D::None2D)
 	, draw_flag_(true)
 {
-	//Œ»İ‚ÌƒV[ƒ“‚ÌobjectManager‚É©Mithis)‚ğ’Ç‰Á‚·‚é
+	//ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®objectManagerã«è‡ªä¿¡ï¼ˆthis)ã‚’è¿½åŠ ã™ã‚‹
 	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
-//ƒfƒXƒgƒ‰ƒNƒ^
+//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Object2D::~Object2D()
 {
 
 }
-//•`‰æ
+//æç”»
 void Object2D::Draw()
 {
 
 }
 
-//XV
+//æ›´æ–°
 void Object2D::Update()
 {
 

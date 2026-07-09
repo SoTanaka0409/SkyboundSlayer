@@ -1,4 +1,4 @@
-#include "SphereCollider.h"
+ï»¿#include "SphereCollider.h"
 #include"CapsuleCollider.h"
 
 SphereCollider::SphereCollider(Object3D* parent, VECTOR center, float radius)
@@ -17,7 +17,7 @@ void SphereCollider::Update(Collider* check)
 {
 	if (check != nullptr)
 	{
-		// ‘Šè‚ªƒJƒvƒZƒ‹‚Ìê‡
+		// ç›¸æ‰‹ãŒã‚«ãƒ—ã‚»ãƒ«ã®å ´åˆ
 		CapsuleCollider* capsule = dynamic_cast<CapsuleCollider*>(check);
 		if (capsule != nullptr)
 		{
@@ -32,7 +32,7 @@ void SphereCollider::Update(Collider* check)
 			HitCheck(check, isHit);
 		}
 
-		// ‘Šè‚ªƒXƒtƒBƒA‚Ìê‡
+		// ç›¸æ‰‹ãŒã‚¹ãƒ•ã‚£ã‚¢ã®å ´åˆ
 		SphereCollider* sphere = dynamic_cast<SphereCollider*>(check);
 		if (sphere != nullptr)
 		{

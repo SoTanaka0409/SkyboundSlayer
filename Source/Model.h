@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "DxLib.h"
 #include <string>
 #include "ModelUtility.h"
 #include "ModelAnimation.h"
 #include "SeparateModelAnimation.h"
 
-// 前方宣言
+// 蜑肴婿螳｣險
 class AttachmentModel;
 
 
@@ -13,68 +13,68 @@ class Model
 {
 public:
 
-    // ☁Eew☁E
-    // コンストラクタ
-    // note: 刁E��アニメーションを使ぁE��どぁE��の設定を追加、E
+    // 笘・ew笘・
+    // 繧ｳ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
+    // note: 蛻・牡繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧剃ｽｿ縺・°縺ｩ縺・°縺ｮ險ｭ螳壹ｒ霑ｽ蜉縲・
     Model(std::string filename, VECTOR initPos, bool isSeparateAnimation = false);
-    ~Model();   // チE��トラクタ
+    ~Model();   // 繝・せ繝医Λ繧ｯ繧ｿ
 
-    void Update();  // 更新
-    void Draw();    // 描画
+    void Update();  // 譖ｴ譁ｰ
+    void Draw();    // 謠冗判
 
-    // アニメーション刁E��替ぁE
+    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ蛻・ｊ譖ｿ縺・
     void ChangeAnimation(AnimationState state);
-    // ループ設宁E
+    // 繝ｫ繝ｼ繝苓ｨｭ螳・
     void SetLoop(bool loop);
     void SetLoopFinishState(AnimationState state);
-    // アニメーションのブレンド設宁E
+    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝悶Ξ繝ｳ繝芽ｨｭ螳・
     void SetAnimationBlend(bool isBlend);
-    // 現在再生されてぁE��アニメーションの取征E
+    // 迴ｾ蝨ｨ蜀咲函縺輔ｌ縺ｦ縺・ｋ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ蜿門ｾ・
     AnimationState GetNowState();
-    // アニメーションのループが終亁E��てぁE��かどぁE�� 
+    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝ｫ繝ｼ繝励′邨ゆｺ・＠縺ｦ縺・ｋ縺九←縺・° 
     bool IsAnimationLoopFinish();
 
 
-    // アタチE��モチE��関連 //
-    // アタチE��メントを追加
+    // 繧｢繧ｿ繝・メ繝｢繝・Ν髢｢騾｣ //
+    // 繧｢繧ｿ繝・メ繝｡繝ｳ繝医ｒ霑ｽ蜉
     void AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos = VGet(0.0f, 0.0f, 0.0f), VECTOR offsetRot = VGet(0.0f, 0.0f, 0.0f));
     
    
-    // アタチE��モチE��の座標取征E
+    // 繧｢繧ｿ繝・メ繝｢繝・Ν縺ｮ蠎ｧ讓吝叙蠕・
     VECTOR GetAttachmentPosition();
     VECTOR GetAttachmentPosition_None(std::string attachFrameName);
 
 
-    VECTOR GetPosition() { return position_; } // 座標取征E
-    void SetPosition(VECTOR pos) { position_ = pos; }  // 座標設宁E
+    VECTOR GetPosition() { return position_; } // 蠎ｧ讓吝叙蠕・
+    void SetPosition(VECTOR pos) { position_ = pos; }  // 蠎ｧ讓呵ｨｭ螳・
 
-    VECTOR GetRotation() { return rotation_; } // 回転取征E
-    void SetRotation(VECTOR rot) { rotation_ = rot; }  // 回転設宁E
+    VECTOR GetRotation() { return rotation_; } // 蝗櫁ｻ｢蜿門ｾ・
+    void SetRotation(VECTOR rot) { rotation_ = rot; }  // 蝗櫁ｻ｢險ｭ螳・
 
     void SetScale(VECTOR scale);
     void SetTexture(std::string filename, int index = 0);
 
     bool GetIsSeparate() { return isSeparate; }
 
-    // ☁Eew☁E
-    // アニメーションチE�Eタの追加
-    // note: SeparateModelAnimation クラスへの橋渡し関数
+    // 笘・ew笘・
+    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繝・・繧ｿ縺ｮ霑ｽ蜉
+    // note: SeparateModelAnimation 繧ｯ繝ｩ繧ｹ縺ｸ縺ｮ讖区ｸ｡縺鈴未謨ｰ
     void AddAnimation(AnimationState state, std::string filename);
 
-    // 刁E��読み込みバ�EジョンのモチE��アニメーションクラスのポインタ
+    // 蛻・牡隱ｭ縺ｿ霎ｼ縺ｿ繝舌・繧ｸ繝ｧ繝ｳ縺ｮ繝｢繝・Ν繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧ｯ繝ｩ繧ｹ縺ｮ繝昴う繝ｳ繧ｿ
     SeparateModelAnimation* mpSeparateAnimation;
-    ModelAnimation* mpAnimation;    // モチE��アニメーションクラスのポインタ
+    ModelAnimation* mpAnimation;    // 繝｢繝・Ν繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧ｯ繝ｩ繧ｹ縺ｮ繝昴う繝ｳ繧ｿ
 private:
-    int mnHandle;   // 読み込んだモチE��のハンドル
-    VECTOR position_;  // 座樁E
-    VECTOR rotation_;  // 回転
+    int mnHandle;   // 隱ｭ縺ｿ霎ｼ繧薙□繝｢繝・Ν縺ｮ繝上Φ繝峨Ν
+    VECTOR position_;  // 蠎ｧ讓・
+    VECTOR rotation_;  // 蝗櫁ｻ｢
     VECTOR mvScale;
     int mnChangeTextureHandle;
 
     bool isSeparate;
 
-    // ☁Eew☁E
+    // 笘・ew笘・
    
 
-    AttachmentModel* mpAttachment;  // アタチE��モチE���E�褁E��持たせたぁE��合�E std::vector めE�E列で管琁E��ると良ぁE��E
+    AttachmentModel* mpAttachment;  // 繧｢繧ｿ繝・メ繝｢繝・Ν・郁､・焚謖√◆縺帙◆縺・ｴ蜷医・ std::vector 繧・・蛻励〒邂｡逅・☆繧九→濶ｯ縺・ｼ・
 };

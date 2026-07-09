@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"Magic.h"
 
 class Magic_Ene:public Magic

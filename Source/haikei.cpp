@@ -1,4 +1,4 @@
-#include"haikei.h"
+﻿#include"haikei.h"
 #include"Object2D.h"
 #include"ObjectManager.h"
 #include"Master.h"

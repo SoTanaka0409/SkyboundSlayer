@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 #include <string>
 
 class TextureAnimation
 {
 public:
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     TextureAnimation(
         VECTOR position,
         std::string filename,
@@ -14,17 +14,17 @@ public:
         int yNum,
         int interval
     );
-    // ƒfƒXƒgƒ‰ƒNƒ^
+    // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     ~TextureAnimation();
 
-    void Update();  // XV
-    void Draw();    // •`‰æ
+    void Update();  // æ›´æ–°
+    void Draw();    // æç”»
 
 private:
-    VECTOR position_;  // ƒ|ƒWƒVƒ‡ƒ“
-    int mnCounter;      // ƒAƒjƒ[ƒVƒ‡ƒ“ƒJƒEƒ“ƒ^
-    int mnInterval;     // ƒeƒNƒXƒ`ƒƒØ‚è‘Ö‚¦‚ÌƒtƒŒ[ƒ€”
-    int mnCurrentNum;   // ‰½”Ô–Ú‚ÌƒeƒNƒXƒ`ƒƒ‚ğ•\¦‚·‚é‚©
-    int* mnHandleList;  // •ªŠ„‚³‚ê‚½ƒeƒNƒXƒ`ƒƒ‚Ìƒnƒ“ƒhƒ‹ƒŠƒXƒg
-    int mnAllNum;       // ƒeƒNƒXƒ`ƒƒ•ªŠ„”
+    VECTOR position_;  // ãƒã‚¸ã‚·ãƒ§ãƒ³
+    int mnCounter;      // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚«ã‚¦ãƒ³ã‚¿
+    int mnInterval;     // ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ‡ã‚Šæ›¿ãˆã®ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
+    int mnCurrentNum;   // ä½•ç•ªç›®ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¡¨ç¤ºã™ã‚‹ã‹
+    int* mnHandleList;  // åˆ†å‰²ã•ã‚ŒãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒãƒ³ãƒ‰ãƒ«ãƒªã‚¹ãƒˆ
+    int mnAllNum;       // ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ†å‰²æ•°
 };

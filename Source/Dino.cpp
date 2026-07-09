@@ -1,4 +1,4 @@
-#include"Dino.h"
+﻿#include"Dino.h"
 #include"Model.h"
 #include"Master.h"
 #include"Player3D.h"
@@ -22,7 +22,7 @@ Dino::Dino(std::string filename, VECTOR initPos, float hp,float speed)
 	
 {
 	
-	//���f���̐���
+	//モデルの生成
 	model_ = new Model(filename, initPos);
 
 }
@@ -73,12 +73,12 @@ void Dino::Move()
 	VECTOR UpMoveVector = VGet(0.0f, 0.0f, 0.0f);
 	VECTOR leftMoveVector = VGet(0.0f, 0.0f, 0.0f);
 	{
-		////������ւ̈ړ��x�N�g���́A�J�������_��������y�����𔲂������̂Ƃ���
+		////上方向への移動ベクトルは、カメラ視点方向からy成分を抜いたものとする
 
-		////�������ւ̈ړ��x�N�g�����A������̈ړ��x�N�g���ƁAY���̃v���X�����ւ̃x�N�g���ɐ����ȕ����i�O�ρj
+		////左方向への移動ベクトルが、上方向の移動ベクトルと、Y軸のプラス方向へのベクトルに垂直な方向（外積）
 
 
-		////�ړ��x�N�g���͈ړ��ʂ��������Ȃ��̂ŁA���K�����Ă���(�x�N�g���̒������P�ɂ��邱��)
+		////移動ベクトルは移動量を加味しないので、正規化しておく(ベクトルの長さを１にすること)
 	}
 
 	{
@@ -92,7 +92,7 @@ void Dino::Move()
 		Player3D* pPlayer = Master::mpPlayer;
 
 		VECTOR GoPosition = VSub(pPlayer->GetPosition(), position_);
-		GoPosition = VNorm(GoPosition);*///�v���C���[�֌���������
+		GoPosition = VNorm(GoPosition);*///プレイヤーへ向かう処理
 
 		float GetmvPositionY = position_.y;
 		if (isWalk)
@@ -111,24 +111,24 @@ void Dino::Move()
 		{
 			model_->ChangeAnimation(ANIMATION_RUN);
 
-			//�ړ������𐳋K�����Ă���
+			//移動方向を正規化しておく
 			mfTargetAngle = atan2f(moveVec.x, moveVec.z);
 
 		}
 		
-		VECTOR oldPosition = position_;//�O��̍��W����U�ێ�
+		VECTOR oldPosition = position_;//前回の座標を一旦保持
 		position_ = VAdd(position_, VScale(moveVec, mnSpeed));
 		VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
-		//�X�e�[�W�Ƃ̓����蔻�������
-		// �n�`�ɉ�������
+		//ステージとの当たり判定をする
+		// 地形に沿う処理
 		TerrainFollow(0.0f, 150.0f, 40.0f, 150.0f, -40.0f, 4.0f);
 		bool hitwall = false;
 		bool hitwalls = false;
 		const auto& walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
 		if (!walls.empty())
 		{
-			// �������Ă���ǂ𒲂ׂ�
-			// hint: ����̏����ł�1���̕ǂ����ŏI�I�ɔ��肳��Ȃ��̂ŁA2���i�ȏ�j�ɓ������Ă����ꍇ�̏������l����
+			// 当たっている壁を調べる
+			// hint: 現状の処理では1枚の壁しか最終的に判定されないので、2枚（以上）に当たっていた場合の処理を考える
 			for (int i = 0; i < walls.size(); i++)
 			{
 				Wall* wall = walls.at(i)->CastTo<Wall>();
@@ -136,7 +136,7 @@ void Dino::Move()
 				{
 					std::vector<VERTEX3D> vertex = wall->GetVertex();
 
-					// �v���C���[���ނ悤�ȃJ�v�Z���^�̔���ƁA�ǂ̎O�p�`�|���S���Ƃ̓����蔻����s��
+					// プレイヤーを包むようなカプセル型の判定と、壁の三角形ポリゴンとの当たり判定を行う
 					if (HitCheck_Capsule_Triangle(
 						position_,
 						VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
@@ -150,10 +150,10 @@ void Dino::Move()
 						)
 					{
 						hitwall = true;
-						// �ǂɉ����čs���悤�ȃx�N�g�����擾
-						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // �ǉ����x�N�g��
-						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // �ړ������x�N�g���̔��΃x�N�g���ƁA�ǂ̖@���Ƃ̓��ς����߂�
-						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // �ǉ����x�N�g�����v�Z
+						// 壁に沿って行くようなベクトルを取得
+						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 壁沿いベクトル
+						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 移動方向ベクトルの反対ベクトルと、壁の法線との内積を求める
+						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 壁沿いベクトルを計算
 
 						if (hitwall == true && hitwalls == false)
 						{
@@ -176,11 +176,11 @@ void Dino::Move()
 }
 void Dino::RotationByMove()
 {
-	//���݂̉�]�l����ڕW�̉�]�l�̍��������߂�
+	//現在の回転値から目標の回転値の差分を求める
 	float subAngle = mfTargetAngle - mfAngle;
 
-	//����������炠������̍����P�W�O�x�ȏ�i�ȉ��j�ɂȂ邱�Ƃ��Ȃ��͂��Ȃ̂�
-	//���̒l���P�W�O�ȏ�i�ȉ��j�ɂȂ��Ă����狸������
+	//ある方向からある方向の差が１８０度以上（以下）になることがないはずなので
+	//差の値が１８０以上（以下）になっていたら矯正する
 	if (subAngle < -DX_PI_F)
 	{
 		subAngle += DX_TWO_PI_F;
@@ -190,7 +190,7 @@ void Dino::RotationByMove()
 		subAngle -= DX_TWO_PI_F;
 	}
 
-	//�p�x�̍��������X�ɂO�ɋ߂Â���
+	//角度の差分を徐々に０に近づける
 	if (subAngle > 0.0f)
 	{
 		subAngle -= ROTATE_SPEED;
@@ -207,12 +207,12 @@ void Dino::RotationByMove()
 			subAngle = 0.0f;
 		}
 	}
-	//�������Ăق����p�x���Y�o
+	//今向いてほしい角度を産出
 	mfAngle = mfTargetAngle - subAngle;
 
-	//��]�l��ݒ�
+	//回転値を設定
 	rotation_.y = mfAngle + DX_PI_F;
-	//���f���ɓ`����
+	//モデルに伝える
 	model_->SetRotation(rotation_);
 
 

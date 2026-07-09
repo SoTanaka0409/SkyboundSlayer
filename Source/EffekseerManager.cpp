@@ -1,4 +1,4 @@
-#include "EffekseerManager.h"
+﻿#include "EffekseerManager.h"
 
 EffekseerManager::EffekseerManager()
 {
@@ -11,33 +11,33 @@ EffekseerManager::~EffekseerManager()
 
 void EffekseerManager::Init()
 {
-	// 譛螟ｧ繝代・繝・ぅ繧ｯ繝ｫ謠冗判謨ｰ繧呈欠螳壹＠縺ｦ蛻晄悄蛹・	Effekseer_Init(8000);
+	// 隴崢陞滂ｽｧ郢昜ｻ｣繝ｻ郢昴・縺・ｹｧ・ｯ郢晢ｽｫ隰蜀怜愛隰ｨ・ｰ郢ｧ蜻域ｬ陞ｳ螢ｹ・邵ｺ・ｦ陋ｻ譎・ｄ陋ｹ繝ｻ	Effekseer_Init(8000);
 
-	// 繝・ヰ繧､繧ｹ繝ｭ繧ｹ繝医′逋ｺ逕溘＠縺滓凾縺ｫ蛯吶∴縺ｦ繧ｳ繝ｼ繝ｫ繝舌ャ繧ｯ繧堤匳骭ｲ
+	// 郢昴・繝ｰ郢ｧ・､郢ｧ・ｹ郢晢ｽｭ郢ｧ・ｹ郢晏現窶ｲ騾具ｽｺ騾墓ｺ假ｼ邵ｺ貊灘・邵ｺ・ｫ陋ｯ蜷ｶ竏ｴ邵ｺ・ｦ郢ｧ・ｳ郢晢ｽｼ郢晢ｽｫ郢晁・繝｣郢ｧ・ｯ郢ｧ蝣､蛹ｳ鬪ｭ・ｲ
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
 
 }
 
 void EffekseerManager::Update()
 {
-	// 豈弱ヵ繝ｬ繝ｼ繝縺ｮ繧ｨ繝輔ぉ繧ｯ繝域峩譁ｰ蜃ｦ逅・	UpdateEffekseer3D();
+	// 雎亥ｼｱ繝ｵ郢晢ｽｬ郢晢ｽｼ郢晢｣ｰ邵ｺ・ｮ郢ｧ・ｨ郢晁ｼ斐♂郢ｧ・ｯ郢晏沺蟲ｩ隴・ｽｰ陷・ｽｦ騾・・	UpdateEffekseer3D();
 }
 
 void EffekseerManager::Draw()
 {
-	// 豈弱ヵ繝ｬ繝ｼ繝縺ｮ繧ｨ繝輔ぉ繧ｯ繝域緒逕ｻ蜃ｦ逅・	DrawEffekseer3D();
+	// 雎亥ｼｱ繝ｵ郢晢ｽｬ郢晢ｽｼ郢晢｣ｰ邵ｺ・ｮ郢ｧ・ｨ郢晁ｼ斐♂郢ｧ・ｯ郢晏沺邱帝包ｽｻ陷・ｽｦ騾・・	DrawEffekseer3D();
 }
 
 void EffekseerManager::End()
 {
-	// 繝ｭ繝ｼ繝峨＠縺溘お繝輔ぉ繧ｯ繝医ｒ隗｣謾ｾ
+	// 郢晢ｽｭ郢晢ｽｼ郢晏ｳｨ・邵ｺ貅倥♀郢晁ｼ斐♂郢ｧ・ｯ郢晏現・帝囓・｣隰ｾ・ｾ
 	for (auto& effect : mEffects)
 	{
 		DeleteEffekseerEffect(effect.second);
 	}
 	mEffects.clear();
 
-	// Effekseer縺ｮ邨ゆｺ・・逅・	Effekseer_End();
+	// Effekseer邵ｺ・ｮ驍ｨ繧・ｽｺ繝ｻ繝ｻ騾・・	Effekseer_End();
 }
 
 int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, float magnification)

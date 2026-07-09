@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 #include"Object3D.h"
 
@@ -33,18 +33,18 @@ public:
 private:
 	Debug* mpDebug;
 
-	//SphereCollider* mpAttachCollider;//UŒ‚‚Ì“–‚½‚è”»’è‚Ì‰~
-	//CapsuleCollider* mpCapsuleCollider;//©g‚Ì“–‚½‚è”»’è‚Ì‰~
-	//SphereCollider* mpSerchCollider;//“G‚ğŒ©‚Â‚¯‚é‚½‚ß‚Ì‰~
-	//SphereCollider* mpAttackCollider;//UŒ‚‚µn‚ß‚é‰~
-	//SphereCollider* mpStopCollider;//‚ ‚é’ö“x‚Ì‹——£‚Å—§‚¿~‚Ü‚é‰~
+	//SphereCollider* mpAttachCollider;//æ”»æ’ƒã®å½“ãŸã‚Šåˆ¤å®šã®å††
+	//CapsuleCollider* mpCapsuleCollider;//è‡ªèº«ã®å½“ãŸã‚Šåˆ¤å®šã®å††
+	//SphereCollider* mpSerchCollider;//æ•µã‚’è¦‹ã¤ã‘ã‚‹ãŸã‚ã®å††
+	//SphereCollider* mpAttackCollider;//æ”»æ’ƒã—å§‹ã‚ã‚‹å††
+	//SphereCollider* mpStopCollider;//ã‚ã‚‹ç¨‹åº¦ã®è·é›¢ã§ç«‹ã¡æ­¢ã¾ã‚‹å††
 	
 
 	
 	
 
 	/// <summary>
-	/// ///////////ƒ`ƒ…[ƒgƒŠƒAƒ‹
+	/// ///////////ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 	/// </summary>
 
 

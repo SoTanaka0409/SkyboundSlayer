@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Object3D.h"
 #include"Dxlib.h"
 #include<vector>
@@ -11,8 +11,8 @@ public:
 
 	~DrawCircle1();
 
-	void Update()override;//XV
-	void Draw()override;//•`‰æ
+	void Update()override;//æ›´æ–°
+	void Draw()override;//æç”»
 
 	
 
@@ -29,14 +29,14 @@ public:
 	}
 
 private:
-	int mnGraphHandle; //‰æ‘œƒnƒ“ƒhƒ‹
+	int mnGraphHandle; //ç”»åƒãƒãƒ³ãƒ‰ãƒ«
 
 
-	VERTEX3D mVertex[3];//’¸“_î•ñ(ÅI“I‚ÉlŠp‚Å•`‚­‚Ì‚Å4‚Â)
+	VERTEX3D mVertex[3];//é ‚ç‚¹æƒ…å ±(æœ€çµ‚çš„ã«å››è§’ã§æãã®ã§4ã¤)
 
 	float radius;
 	float Maxradius;
-	const int div = 48;  // •ªŠ„”
+	const int div = 48;  // åˆ†å‰²æ•°
 	
 
 	std::vector<VERTEX3D> vtx;

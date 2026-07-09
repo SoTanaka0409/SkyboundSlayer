@@ -1,4 +1,4 @@
-#include"Tree.h"
+﻿#include"Tree.h"
 #include"ObjectManager.h"
 #include"Scene3D.h"
 #include"SceneManager.h"
@@ -9,7 +9,7 @@
 
 Tree::Tree(std::string filename, VECTOR initPos,float Size,float getSize,bool HitFlag)
 	:Object3D(initPos)
-	,mfSize(getSize)//あたり判定のっサイズ
+	,mfSize(getSize)//縺ゅ◆繧雁愛螳壹・縺｣繧ｵ繧､繧ｺ
 {
 	model_ = new Model(filename, initPos);
 	model_->SetScale(VGet(Size, Size, Size));
@@ -26,7 +26,7 @@ Tree::~Tree()
 
 void Tree::Update()
 {
-	// 地形に沿う処理
+	// 蝨ｰ蠖｢縺ｫ豐ｿ縺・・逅・
 	TerrainFollow();
 
 }

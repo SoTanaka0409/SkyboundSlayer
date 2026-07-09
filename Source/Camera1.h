@@ -1,34 +1,34 @@
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 
-//ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
+//ã‚¯ãƒ©ã‚¹ã®å‰æ–¹å®£è¨€
 class Object3D;
 
 class Camera1
 {
 public:
-	Camera1();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	Camera1();//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	~Camera1();//ƒfƒXƒgƒ‰ƒNƒ^
+	~Camera1();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 
-	void Initialize();//‰Šú‰»
+	void Initialize();//åˆæœŸåŒ–
 
-	void Update();//XV
+	void Update();//æ›´æ–°
 
-	void UpdateRotation();//‰ñ“]ˆ—
+	void UpdateRotation();//å›è»¢å‡¦ç†
 
-	VECTOR GetPosition() { return position_; }//À•Wæ“¾
-	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//’‹“_æ“¾
+	VECTOR GetPosition() { return position_; }//åº§æ¨™å–å¾—
+	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//æ³¨è¦–ç‚¹å–å¾—
 
 private:
-	float mfHorizontalAngle;  //…•½•ûŒüƒAƒ“ƒOƒ‹
-	float mfVerticalAngle;   // ‚’¼•ûŒüƒAƒ“ƒOƒ‹
+	float mfHorizontalAngle;  //æ°´å¹³æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
+	float mfVerticalAngle;   // å‚ç›´æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
 
-	VECTOR position_; //ƒJƒƒ‰À•W
-	VECTOR mvLookAtPosition;   //ƒJƒƒ‰‚Ì’ˆÚ“]À•W   À•WŒÅ’è (¡‰ñ‚Í)
+	VECTOR position_; //ã‚«ãƒ¡ãƒ©åº§æ¨™
+	VECTOR mvLookAtPosition;   //ã‚«ãƒ¡ãƒ©ã®æ³¨ç§»è»¢åº§æ¨™   åº§æ¨™å›ºå®š (ä»Šå›ã¯)
 
-	Object3D* target_;    //ƒJƒƒ‰‚ğŒü‚¯‚é‘ÎÛ
+	Object3D* target_;    //ã‚«ãƒ¡ãƒ©ã‚’å‘ã‘ã‚‹å¯¾è±¡
 	int centerX = 640;
 	int centerY = 360;
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma once
 #include"DxLib.h"
 #include"Texture.h"
@@ -12,14 +12,14 @@ class haikei : public Object2D
 {
 
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	haikei(VECTOR initPos, std::string filename);
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~haikei();
 
-	void Update()override;//XV
+	void Update()override;//æ›´æ–°
 
-	void Draw()override;//•`‰æ
+	void Draw()override;//æç”»
 private:
 	Texture* mpTexture;
 };

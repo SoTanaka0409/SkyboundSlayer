@@ -1,4 +1,4 @@
-#include"Effect.h"
+ï»¿#include"Effect.h"
 
 
 Effect::Effect()
@@ -39,8 +39,8 @@ Effect::~Effect()
 
 void Effect::Update()
 {
-	bool isEnd = true;  //ƒp[ƒeƒBƒNƒ‹‚ª‚·‚×‚ÄÁ‚¦‚½‚©‚Ç‚¤‚©
-	float stepTime = 1.0f / 60.0f;//1ƒtƒŒ[ƒ€‚É‚Ç‚ê‚¾‚¯i‚ß‚é‚©‚ÌŠî–{’l
+	bool isEnd = true;  //ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãŒã™ã¹ã¦æ¶ˆãˆãŸã‹ã©ã†ã‹
+	float stepTime = 1.0f / 60.0f;//1ãƒ•ãƒ¬ãƒ¼ãƒ ã«ã©ã‚Œã ã‘é€²ã‚ã‚‹ã‹ã®åŸºæœ¬å€¤
 
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
@@ -49,17 +49,17 @@ void Effect::Update()
 			continue;
 		}
 
-		//‚±‚±‚Ü‚Å‚­‚é‚Æ‚¢‚¤‚±‚Æ‚Í­‚È‚­‚Ä‚àˆê‚Â‚Íƒp[ƒeƒBƒNƒ‹‚ª‘¶İ‚µ‚Ä‚¢‚é‚Ì‚ÅI—¹‚³‚¹‚È‚¢
+		//ã“ã“ã¾ã§ãã‚‹ã¨ã„ã†ã“ã¨ã¯å°‘ãªãã¦ã‚‚ä¸€ã¤ã¯ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãŒå­˜åœ¨ã—ã¦ã„ã‚‹ã®ã§çµ‚äº†ã•ã›ãªã„
 		isEnd = false;
 		if (mpEffect->particle[i].speed > 0.0f)
 		{
-			//À•W‚ğˆÚ“®‚³‚¹‚é
+			//åº§æ¨™ã‚’ç§»å‹•ã•ã›ã‚‹
 			mpEffect->particle[i].pos = VAdd(mpEffect->particle[i].pos, VScale(mpEffect->particle[i].dir, mpEffect->particle[i].speed));
 
 
 			mpEffect->particle[i].speed -= 2.0f * stepTime;
 
-			//‘¬“x‚ª‚OˆÈ‰º‚É‚È‚Á‚½ê‡
+			//é€Ÿåº¦ãŒï¼ä»¥ä¸‹ã«ãªã£ãŸå ´åˆ
 			if (mpEffect->particle[i].speed <= 0.0f)
 			{
 				mpEffect->particle[i].visibleTime = 0.0f;
@@ -71,17 +71,17 @@ void Effect::Update()
 		//
 		if (mpEffect->particle[i].visibleTime > 0.0f)
 		{
-			//•\¦ŠÔ‚ğŒ¸‚ç‚µ‚Ä‚¢‚­
+			//è¡¨ç¤ºæ™‚é–“ã‚’æ¸›ã‚‰ã—ã¦ã„ã
 			mpEffect->particle[i].visibleTime -= 0.75f * stepTime;
 		}
 		else
 		{
-			//ƒAƒ‹ƒtƒ@’l‚ğ—‚Æ‚µ‚Ä‚¢‚­i™X‚É—‚Æ‚µ‚Ä‚¢‚­)
+			//ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã‚’è½ã¨ã—ã¦ã„ãï¼ˆå¾ã€…ã«è½ã¨ã—ã¦ã„ã)
 			mpEffect->particle[i].alpha -= 12.0f * stepTime;
 		}
 
 	}
-	//ƒp[ƒeƒBƒNƒ‹‚ª‚P‚Â‚à‘¶İ‚µ‚Ä‚¢‚È‚¢‚Ì‚Å‚ ‚ê‚ÎíœƒE‚·‚é
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãŒï¼‘ã¤ã‚‚å­˜åœ¨ã—ã¦ã„ãªã„ã®ã§ã‚ã‚Œã°å‰Šé™¤ã‚¦ã™ã‚‹
 	if (isEnd)
 	{
 		mActive = false;
@@ -99,21 +99,21 @@ void Effect::Draw()
 	SetUseZBufferFlag(TRUE);
 	//Zbaxtufanikakikomisinai 
 	SetWriteZBufferFlag(FALSE);
-	//•`‰æ‹P“x
+	//æç”»è¼åº¦
 	SetDrawBright(mpEffect->color.r, mpEffect->color.g, mpEffect->color.b);
 
-	//•`‰æ‚µ‚Ä‚¢‚­
+	//æç”»ã—ã¦ã„ã
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		//ƒAƒ‹ƒtƒ@’l‚ª‚OˆÈ‰º‚È‚ç•`‰æ‚µ‚È‚¢
+		//ã‚¢ãƒ«ãƒ•ã‚¡å€¤ãŒï¼ä»¥ä¸‹ãªã‚‰æç”»ã—ãªã„
 		if (mpEffect->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
-		//u”½“]ƒuƒŒƒ“ƒhv‚ğs‚¢‚Â‚Âƒp[ƒeƒBƒNƒ‹‚ğƒrƒ‹ƒ{[ƒh‚Å•`‰æ
-		// //”½“]ƒuƒŒƒ“ƒh...F‚ğ”½“]‚µ‚Ä‚­‚ê‚é
-		//ƒrƒ‹ƒ{[ƒhBBBƒJƒƒ‰•ûŒü‚Éí‚ÉŒü‚¢‚Ä‚­‚ê‚é‚RDƒ|ƒŠƒSƒ“
+		//ã€Œåè»¢ãƒ–ãƒ¬ãƒ³ãƒ‰ã€ã‚’è¡Œã„ã¤ã¤ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰ã§æç”»
+		// //åè»¢ãƒ–ãƒ¬ãƒ³ãƒ‰...è‰²ã‚’åè»¢ã—ã¦ãã‚Œã‚‹
+		//ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰ã€‚ã€‚ã€‚ã‚«ãƒ¡ãƒ©æ–¹å‘ã«å¸¸ã«å‘ã„ã¦ãã‚Œã‚‹ï¼“Dãƒãƒªã‚´ãƒ³
 		SetDrawBlendMode(DX_BLENDMODE_INVSRC, (int)mpEffect->particle[i].alpha * 255.0f);
 		DrawBillboard3D(
 			mpEffect->particle[i].pos, 0.5f, 0.5f,
@@ -128,16 +128,16 @@ void Effect::Draw()
 
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		//ƒAƒ‹ƒtƒ@’l‚ª‚OˆÈ‰º‚È‚ç•`‰æ‚µ‚È‚¢
+		//ã‚¢ãƒ«ãƒ•ã‚¡å€¤ãŒï¼ä»¥ä¸‹ãªã‚‰æç”»ã—ãªã„
 		if (mpEffect->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
-		//u‰ÁZƒuƒŒƒ“ƒhv‚ğs‚¢‚Â‚Âƒp[ƒeƒBƒNƒ‹‚ğƒrƒ‹ƒ{[ƒh‚Å•`‰æ
-		// ‰ÁZƒuƒŒƒ“ƒh...d‚È‚Á‚½ƒ|ƒŠƒSƒ“•”•ª‚ÌF‚ª‰ÁZ‚³‚ê‚Ä‚¢‚­•`‰æ•û–@
-		// Œ¸ZƒuƒŒƒ“ƒhiSUB)F‚ğŒ¸‚ç‚µ‚Ä‚¢‚­
-		//ƒrƒ‹ƒ{[ƒhBBBƒJƒƒ‰•ûŒü‚Éí‚ÉŒü‚¢‚Ä‚­‚ê‚é‚RDƒ|ƒŠƒSƒ“
+		//ã€ŒåŠ ç®—ãƒ–ãƒ¬ãƒ³ãƒ‰ã€ã‚’è¡Œã„ã¤ã¤ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰ã§æç”»
+		// åŠ ç®—ãƒ–ãƒ¬ãƒ³ãƒ‰...é‡ãªã£ãŸãƒãƒªã‚´ãƒ³éƒ¨åˆ†ã®è‰²ãŒåŠ ç®—ã•ã‚Œã¦ã„ãæç”»æ–¹æ³•
+		// æ¸›ç®—ãƒ–ãƒ¬ãƒ³ãƒ‰ï¼ˆSUB)è‰²ã‚’æ¸›ã‚‰ã—ã¦ã„ã
+		//ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰ã€‚ã€‚ã€‚ã‚«ãƒ¡ãƒ©æ–¹å‘ã«å¸¸ã«å‘ã„ã¦ãã‚Œã‚‹ï¼“Dãƒãƒªã‚´ãƒ³
 		SetDrawBlendMode(DX_BLENDMODE_ADD, (int)mpEffect->particle[i].alpha * 255.0f);
 		DrawBillboard3D(
 			mpEffect->particle[i].pos, 0.5f, 0.5f,
@@ -152,13 +152,13 @@ void Effect::Draw()
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
-	//•`‰æ‹P“x‚ğŒ³‚É–ß‚·
+	//æç”»è¼åº¦ã‚’å…ƒã«æˆ»ã™
 	SetDrawBright(255, 255, 255);
 
-	//Zƒoƒbƒtƒ@‚ğg—p‚·‚é
+	//Zãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ç”¨ã™ã‚‹
 	SetUseZBufferFlag(TRUE);
 
-	//Zƒoƒbƒtƒ@[‚Ö‚Ì‘‚«‚İ‚Í‚µ‚È‚¢
+	//Zãƒãƒƒãƒ•ã‚¡ãƒ¼ã¸ã®æ›¸ãè¾¼ã¿ã¯ã—ãªã„
 	SetWriteZBufferFlag(TRUE);
 
 

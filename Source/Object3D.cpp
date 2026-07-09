@@ -1,4 +1,4 @@
-#include"Object3D.h"
+﻿#include"Object3D.h"
 #include"Master.h"
 #include"ObjectManager.h"
 #include"Scene3D.h"
@@ -17,22 +17,22 @@ Object3D::Object3D(VECTOR initPos)
 	, tag_(Tag3D::None3D)
 	,draw_flag_(true)
 {
-	//現在のシーンのobjectManagerに自信�this)を追�する
+	//迴ｾ蝨ｨ縺ｮ繧ｷ繝ｼ繝ｳ縺ｮobjectManager縺ｫ閾ｪ菫｡ｼthis)繧定ｿｽ蜉縺吶ｋ
 	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
-//�ストラクタ
+//繝繧ｹ繝医Λ繧ｯ繧ｿ
 Object3D::~Object3D()
 {
 
 }
-//描画
+//謠冗判
 void Object3D::Draw()
 {
 
 }
 
-//更新
+//譖ｴ譁ｰ
 void Object3D::Update()
 {
 
@@ -91,7 +91,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 		}
 	}
 
-	// StageObject��木�岩など��とのスライド判�
+	// StageObjectｼ域惠繧蟯ｩ縺ｪ縺ｩｼ峨→縺ｮ繧ｹ繝ｩ繧､繝牙愛螳
 	if (tag_ != Object3D::Tag3D_Object && tag_ != Object3D::Tag3D_Stage)
 	{
 		const auto& objs = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);

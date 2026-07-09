@@ -1,4 +1,4 @@
-#include"Magic_Ene.h"
+﻿#include"Magic_Ene.h"
 #include"SphereCollider.h"
 #include"CapsuleCollider.h"
 #include"Effect.h"
@@ -9,7 +9,7 @@
 Magic_Ene::Magic_Ene(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time)
 	:Magic(filename,initPos,r,damage,speed,movevec,count,time)
 {
-	attack_ = 3;//こ�E攻撁E�Eダメージ
+	attack_ = 3;//縺薙・謾ｻ謦・・繝繝｡繝ｼ繧ｸ
 	Master::mpSoundManager->PlaySE(SoundManager::SE_FIRE);
 }
 Magic_Ene::~Magic_Ene()
@@ -21,15 +21,15 @@ void Magic_Ene::Update()
 {
 	DeleteCount++;
 	Move();
-	mpHitCollider->position_ = position_;//当たり判定�E移勁E
-	if (DeleteCount > DeleteTime)//時間経過で消えるよぁE��する
+	mpHitCollider->position_ = position_;//蠖薙◆繧雁愛螳壹・遘ｻ蜍・
+	if (DeleteCount > DeleteTime)//譎る俣邨碁℃縺ｧ豸医∴繧九ｈ縺・↓縺吶ｋ
 	{
 		Death();
 	}
 }
 
 
-void Magic_Ene::OnEnter(Collider* collider, Collider* check)//左側.
+void Magic_Ene::OnEnter(Collider* collider, Collider* check)//蟾ｦ蛛ｴ.
 {
 	
 	
@@ -39,7 +39,7 @@ void Magic_Ene::OnEnter(Collider* collider, Collider* check)//左側.
 }
 
 void Magic_Ene::OnTrigger(Collider* collider, Collider* check)
-{//当たった瞬間�E処琁E
+{//蠖薙◆縺｣縺溽椪髢薙・蜃ｦ逅・
 	
 	if (collider == mpHitCollider && check->parent_object_->GetTag() == Tag3D_Player3D)
 	{

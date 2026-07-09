@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 
 
@@ -11,6 +11,6 @@ public:
 
 
 private:
-	bool SerchOn=false;//“G‚ª‹ß‚­‚É‚¢‚é‚©
+	bool SerchOn=false;//æ•µãŒè¿‘ãã«ã„ã‚‹ã‹
 
 };

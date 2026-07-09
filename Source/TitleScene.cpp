@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+ï»¿#include "TitleScene.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -26,12 +26,12 @@ void TitleScene::Initialize()
 	
 	Master::mpSoundManager->PlayBGM(SoundManager::BGM_TITLE);
 	
-	// 3Dƒ‚ƒfƒ‹‚Ìƒ[ƒh
+	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒ­ãƒ¼ãƒ‰
 	mnSkyBoxHandle = MV1LoadModel("Resource/3D/SkyBox/SkyBox.x");
 	mnStageHandle = MV1LoadModel("Resource/3D/stage_sky/source/Flooting_Stage.mv1");
 	mnCastleHandle = MV1LoadModel("Resource/3D/Stage_casule/source/Parede castelo.mv1");
 	
-	// ƒXƒP[ƒ‹‚ÆˆÊ’u‚Ìİ’è
+	// ã‚¹ã‚±ãƒ¼ãƒ«ã¨ä½ç½®ã®è¨­å®š
 	MV1SetScale(mnSkyBoxHandle, VGet(13.0f, 13.0f, 13.0f));
 	MV1SetPosition(mnSkyBoxHandle, VGet(0, 0, -5000));
 	
@@ -48,7 +48,7 @@ void TitleScene::Update()
 {
 	Scene::Update();
 	
-	// ƒJƒƒ‰‚ğ‚ä‚Á‚­‚è‰ñ‚·
+	// ã‚«ãƒ¡ãƒ©ã‚’ã‚†ã£ãã‚Šå›ã™
 	mCameraAngle += 0.002f;
 	if (mCameraAngle >= DX_PI_F * 2.0f) mCameraAngle -= DX_PI_F * 2.0f;
 	
@@ -79,12 +79,12 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	// 3D”wŒi‚Ì•`‰æ
+	// 3DèƒŒæ™¯ã®æç”»
 	MV1DrawModel(mnSkyBoxHandle);
 	MV1DrawModel(mnStageHandle);
 	MV1DrawModel(mnCastleHandle);
 	
-	// UI‚ÌƒtƒF[ƒh—p
+	// UIã®ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨
 	if (mbColorFlag)
 	{
 		mnColorFade -= 4;
@@ -102,7 +102,7 @@ void TitleScene::Draw()
 	int oldSize = GetFontSize();
 	
 	SetFontSize(80);
-	// ƒS[ƒ‹ƒhŒn‚ÌF‚Åƒ^ƒCƒgƒ‹
+	// ã‚´ãƒ¼ãƒ«ãƒ‰ç³»ã®è‰²ã§ã‚¿ã‚¤ãƒˆãƒ«
 	DrawFormatString(300, 100, GetColor(255, 215, 0), "Sky Castle Hunter");
 	
 	Master::mpScoreManager->LoadHighScore();
@@ -115,7 +115,7 @@ void TitleScene::Draw()
 	
 	SetFontSize(40);
 	
-	// ’W‚¢Â / ”’‚ÌF‡‚¢
+	// æ·¡ã„é’ / ç™½ã®è‰²åˆã„
 	int colorNormal = GetColor(220, 240, 255);
 	int colorHover = GetColor(255, 255, 255);
 	
@@ -130,15 +130,15 @@ void TitleScene::Draw()
 	
 	if (hoverRule)
 	{
-		DrawFormatString(50, 820, colorHover, "> ƒ‹[ƒ‹ (Rule)");
+		DrawFormatString(50, 820, colorHover, "> ãƒ«ãƒ¼ãƒ« (Rule)");
 	}
 	else
 	{
-		DrawFormatString(50, 820, colorNormal, "  ƒ‹[ƒ‹ (Rule)");
+		DrawFormatString(50, 820, colorNormal, "  ãƒ«ãƒ¼ãƒ« (Rule)");
 	}
 	
 	SetFontSize(25);
-	DrawFormatString(700, 960, GetColor(200, 200, 200), "ƒ}ƒEƒX‚Å€–Ú‚ğƒ^ƒbƒviƒNƒŠƒbƒNj‚µ‚ÄŒˆ’è");
+	DrawFormatString(700, 960, GetColor(200, 200, 200), "ãƒã‚¦ã‚¹ã§é …ç›®ã‚’ã‚¿ãƒƒãƒ—ï¼ˆã‚¯ãƒªãƒƒã‚¯ï¼‰ã—ã¦æ±ºå®š");
 	
 	SetFontSize(oldSize);
 }

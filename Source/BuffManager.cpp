@@ -1,4 +1,4 @@
-#include"BuffManager.h"
+﻿#include"BuffManager.h"
 
 BuffManager::BuffManager()
 {

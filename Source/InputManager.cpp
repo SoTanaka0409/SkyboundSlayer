@@ -1,4 +1,4 @@
-#include"InputManager.h"
+ï»¿#include"InputManager.h"
 #include"DxLib.h"
 
 int InputManager::mDownBuffer[256] = { 0 };
@@ -17,19 +17,19 @@ InputManager::~InputManager()
 
 int InputManager::CheckDownKey(int KeyCode)
 {
-	// –ß‚è’l—p‚Ì•Ï”‚ğ—pˆÓ
+	// æˆ»ã‚Šå€¤ç”¨ã®å¤‰æ•°ã‚’ç”¨æ„
 	int result = 0;
 
-	// w’èƒL[‚ÌŒ»İ‚Ìó‘Ô‚ğæ“¾
+	// æŒ‡å®šã‚­ãƒ¼ã®ç¾åœ¨ã®çŠ¶æ…‹ã‚’å–å¾—
 	int keyState = CheckHitKey(KeyCode);
 	
-	//‘O‰ñƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¨‚ç‚¸AŒ»İƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
+	//å‰å›ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ãŠã‚‰ãšã€ç¾åœ¨ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰
 	if (mDownBuffer[KeyCode] == 0 && keyState == 1)
 	{
 		result = 1;
 	}
 
-	//Œ»İ‚ÌƒL[‚Ìó‘Ô‚ğƒoƒbƒtƒ@‚ÉŠi”[
+	//ç¾åœ¨ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’ãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´
 	mDownBuffer[KeyCode] = keyState;
 	return result;
 }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<vector>
 #include"Object3D.h"
 #include"Dxlib.h"
@@ -29,7 +29,7 @@ public:
 	}
 
 private:
-	VERTEX3D mVertex[8];//’¸“_î•ñ(ÅI“I‚ÉlŠp‚Å•`‚­‚Ì‚Å4‚Â)
+	VERTEX3D mVertex[8];//é ‚ç‚¹æƒ…å ±(æœ€çµ‚çš„ã«å››è§’ã§æãã®ã§4ã¤)
 
 	/*int mnColor1;
 	int mnColor2;

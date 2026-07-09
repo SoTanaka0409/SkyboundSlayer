@@ -1,16 +1,16 @@
-#pragma once
+ï»¿#pragma once
 #include <DxLib.h>
 #include <vector>
 
 //====================================================
-// EffectU ƒNƒ‰ƒX
-// UƒL[—pF–‚–@w‰‰o
+// EffectU ã‚¯ãƒ©ã‚¹
+// Uã‚­ãƒ¼ç”¨ï¼šé­”æ³•é™£æ¼”å‡º
 //
-// E‰Ÿ‚µ‚Ä‚¢‚éŠÔiHoldingj
-//   - –‚–@w‚ğ•\¦‚µ‚Ä‚ä‚Á‚­‚è‰ñ“]iY²j
-// E—£‚µ‚½uŠÔiRelease & Shatterj
-//   - Œ´Œ^‚ğ­‚µc‚·iPreShatterj
-//   - Ó‚¯‚Ä”j•Ğ‚²‚Æ‚Éã¸‚µ‚È‚ª‚çƒtƒF[ƒhƒAƒEƒgiShatterj
+// ãƒ»æŠ¼ã—ã¦ã„ã‚‹é–“ï¼ˆHoldingï¼‰
+//   - é­”æ³•é™£ã‚’è¡¨ç¤ºã—ã¦ã‚†ã£ãã‚Šå›è»¢ï¼ˆYè»¸ï¼‰
+// ãƒ»é›¢ã—ãŸç¬é–“ï¼ˆRelease & Shatterï¼‰
+//   - åŸå‹ã‚’å°‘ã—æ®‹ã™ï¼ˆPreShatterï¼‰
+//   - ç •ã‘ã¦ç ´ç‰‡ã”ã¨ã«ä¸Šæ˜‡ã—ãªãŒã‚‰ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆï¼ˆShatterï¼‰
 //====================================================
 class EffectU
 {
@@ -19,130 +19,130 @@ public:
     ~EffectU() = default;
 
     //====================================================
-    // ƒeƒNƒXƒ`ƒƒ‚â‰Šúƒf[ƒ^‚Ì“Ç‚İ‚İ
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚„åˆæœŸãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
     //====================================================
     bool Load();
 
     //====================================================
-    // UƒL[‰Ÿ‚µ‚½uŠÔF–‚–@w‚ğo‚·
-    // Holdingó‘Ô‚É‘JˆÚ
+    // Uã‚­ãƒ¼æŠ¼ã—ãŸç¬é–“ï¼šé­”æ³•é™£ã‚’å‡ºã™
+    // HoldingçŠ¶æ…‹ã«é·ç§»
     //====================================================
     void StartHold(const VECTOR& playerPos);
 
     //====================================================
-    // UƒL[—£‚µ‚½uŠÔ
-    // - PreShatteró‘Ô‚ÉˆÚs
-    // - ­‚µc‚µ‚Ä‚©‚çShatteró‘Ô‚ÉˆÚs
+    // Uã‚­ãƒ¼é›¢ã—ãŸç¬é–“
+    // - PreShatterçŠ¶æ…‹ã«ç§»è¡Œ
+    // - å°‘ã—æ®‹ã—ã¦ã‹ã‚‰ShatterçŠ¶æ…‹ã«ç§»è¡Œ
     //====================================================
     void ReleaseAndShatter();
 
     //====================================================
-    // –ˆƒtƒŒ[ƒ€ŒÄ‚Ô
-    // - ’†SˆÊ’u’Ç]
-    // - ‰ñ“]‚â”j•Ğ‚ÌXV
+    // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã¶
+    // - ä¸­å¿ƒä½ç½®è¿½å¾“
+    // - å›è»¢ã‚„ç ´ç‰‡ã®æ›´æ–°
     //====================================================
     void UpdateFollow(const VECTOR& playerPos);
 
     //====================================================
-    // •`‰æ
-    // - Holding: –‚–@w‘S‘Ì
-    // - Shatter: ”j•Ğ‚²‚Æ‚É•`‰æ
+    // æç”»
+    // - Holding: é­”æ³•é™£å…¨ä½“
+    // - Shatter: ç ´ç‰‡ã”ã¨ã«æç”»
     //====================================================
     void Draw() const;
 
 private:
     //====================================================
-    // “à•”ó‘Ô
+    // å†…éƒ¨çŠ¶æ…‹
     //====================================================
     enum class State
     {
-        Idle,        // ‰½‚à‚µ‚Ä‚¢‚È‚¢
-        Holding,     // –‚–@w•\¦’†
-        PreShatter,  // Œ´Œ^‚Å­‚µc‚·
-        Shatter      // ”j•Ğ‚É•ª‚©‚ê‚ÄƒtƒF[ƒh•ã¸
+        Idle,        // ä½•ã‚‚ã—ã¦ã„ãªã„
+        Holding,     // é­”æ³•é™£è¡¨ç¤ºä¸­
+        PreShatter,  // åŸå‹ã§å°‘ã—æ®‹ã™
+        Shatter      // ç ´ç‰‡ã«åˆ†ã‹ã‚Œã¦ãƒ•ã‚§ãƒ¼ãƒ‰ï¼†ä¸Šæ˜‡
     };
 
     //====================================================
-    // ”j•Ğî•ñ
+    // ç ´ç‰‡æƒ…å ±
     //====================================================
     struct Piece
     {
-        bool   alive = false;   // ¶‘¶’†‚©‚Ç‚¤‚©
+        bool   alive = false;   // ç”Ÿå­˜ä¸­ã‹ã©ã†ã‹
 
-        VECTOR pos = VGet(0, 0, 0); // Œ»İˆÊ’u
-        VECTOR vel = VGet(0, 0, 0); // ‘¬“x
+        VECTOR pos = VGet(0, 0, 0); // ç¾åœ¨ä½ç½®
+        VECTOR vel = VGet(0, 0, 0); // é€Ÿåº¦
 
-        float  alpha = 0.0f;    // “§–¾“xi255¨0j
-        float  rotY = 0.0f;     // ‰ñ“]Šp“xiY²j
-        float  rotSpd = 0.0f;   // ‰ñ“]‘¬“x
+        float  alpha = 0.0f;    // é€æ˜åº¦ï¼ˆ255â†’0ï¼‰
+        float  rotY = 0.0f;     // å›è»¢è§’åº¦ï¼ˆYè»¸ï¼‰
+        float  rotSpd = 0.0f;   // å›è»¢é€Ÿåº¦
 
-        float  halfSize = 1.0f; // ƒTƒCƒY”¼•ªiƒXƒP[ƒŠƒ“ƒO—pj
+        float  halfSize = 1.0f; // ã‚µã‚¤ã‚ºåŠåˆ†ï¼ˆã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ç”¨ï¼‰
 
-        // UViƒeƒNƒXƒ`ƒƒÀ•W 0..1j
+        // UVï¼ˆãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ 0..1ï¼‰
         float u0 = 0.0f, v0 = 0.0f;
         float u1 = 0.0f, v1 = 0.0f;
 
-        // Shatter—p
-        int   startDelay = 0;   // ã¸ŠJn‚Ü‚Å‚Ì’x‰„iƒtƒŒ[ƒ€j
-        int   age = 0;          // ¶‘¶ƒtƒŒ[ƒ€
-        float upAccel = 0.0f;   // ã¸‰Á‘¬
+        // Shatterç”¨
+        int   startDelay = 0;   // ä¸Šæ˜‡é–‹å§‹ã¾ã§ã®é…å»¶ï¼ˆãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰
+        int   age = 0;          // ç”Ÿå­˜ãƒ•ãƒ¬ãƒ¼ãƒ 
+        float upAccel = 0.0f;   // ä¸Šæ˜‡åŠ é€Ÿ
     };
 
 
     //====================================================
-    // “à•”ˆ—
+    // å†…éƒ¨å‡¦ç†
     //====================================================
-    void BuildPieces(const VECTOR& center, float baseRotY); // ”j•Ğ¶¬
-    void DrawHoldingBoard() const;  // Holdingó‘Ô•`‰æ
-    void DrawPiece(const Piece& p) const; // ”j•Ğ•`‰æ
+    void BuildPieces(const VECTOR& center, float baseRotY); // ç ´ç‰‡ç”Ÿæˆ
+    void DrawHoldingBoard() const;  // HoldingçŠ¶æ…‹æç”»
+    void DrawPiece(const Piece& p) const; // ç ´ç‰‡æç”»
 
 
-    int   mTex = -1;       // –‚–@wƒeƒNƒXƒ`ƒƒ
+    int   mTex = -1;       // é­”æ³•é™£ãƒ†ã‚¯ã‚¹ãƒãƒ£
     State mState = State::Idle;
 
-    VECTOR mCenter = VGet(0, 0, 0); // –‚–@w’†S
+    VECTOR mCenter = VGet(0, 0, 0); // é­”æ³•é™£ä¸­å¿ƒ
 
-    // Holding’†‚Ì‰ñ“]
-    float mHoldRotY = 0.0f;       // Œ»İŠp“x
-    float mHoldRotSpd = 0.02f;    // ‰ñ“]‘¬“xi0.01`0.05‚ª–ÚˆÀj
+    // Holdingä¸­ã®å›è»¢
+    float mHoldRotY = 0.0f;       // ç¾åœ¨è§’åº¦
+    float mHoldRotSpd = 0.02f;    // å›è»¢é€Ÿåº¦ï¼ˆ0.01ï½0.05ãŒç›®å®‰ï¼‰
 
-    // PreShatterFŒ´Œ^‚Åc‚·ŠÔ
-    int   mPreShatterTimer = 0;           // Œo‰ßƒtƒŒ[ƒ€
-    int   mPreShatterFrames = 10;         // c‚·ƒtƒŒ[ƒ€”
-    bool  mPreShatterKeepRotating = false; // c‚Á‚Ä‚¢‚éŠÔ‚à‰ñ“]‚·‚é‚©
+    // PreShatterï¼šåŸå‹ã§æ®‹ã™æ™‚é–“
+    int   mPreShatterTimer = 0;           // çµŒéãƒ•ãƒ¬ãƒ¼ãƒ 
+    int   mPreShatterFrames = 10;         // æ®‹ã™ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
+    bool  mPreShatterKeepRotating = false; // æ®‹ã£ã¦ã„ã‚‹é–“ã‚‚å›è»¢ã™ã‚‹ã‹
 
-    std::vector<Piece> mPieces;           // ”j•Ğ”z—ñ
+    std::vector<Piece> mPieces;           // ç ´ç‰‡é…åˆ—
 
     //====================================================
-    // Œ©‚½–Ú’²®ƒpƒ‰ƒ[ƒ^
+    // è¦‹ãŸç›®èª¿æ•´ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
     //====================================================
-    int   mDiv = 12;              // –‚–@w•ªŠ„”
-    float mBoardSize = 220.0f;    // –‚–@wƒTƒCƒY
-    float mYOffset = 2.0f;        // ’n–Ê‚©‚ç­‚µ•‚‚©‚¹‚é
+    int   mDiv = 12;              // é­”æ³•é™£åˆ†å‰²æ•°
+    float mBoardSize = 220.0f;    // é­”æ³•é™£ã‚µã‚¤ã‚º
+    float mYOffset = 2.0f;        // åœ°é¢ã‹ã‚‰å°‘ã—æµ®ã‹ã›ã‚‹
 
-    // ShatterFƒtƒF[ƒh
+    // Shatterï¼šãƒ•ã‚§ãƒ¼ãƒ‰
     float mFadeSpd = 3.2f;
 
-    // ShatterFã¸
+    // Shatterï¼šä¸Šæ˜‡
     float mUpAccelBase = 0.0040f;
-    float mUpStartMin = 0.06f;    // ’x‰„Å¬
-    float mUpStartMax = 0.13f;    // ’x‰„Å‘å
+    float mUpStartMin = 0.06f;    // é…å»¶æœ€å°
+    float mUpStartMax = 0.13f;    // é…å»¶æœ€å¤§
 
-    // Œ¸Š
+    // æ¸›è¡°
     float mDampXZ = 0.985f;
     float mDampY = 0.999f;
 
-    // ‰¡•ûŒü‚ÌU‚è
+    // æ¨ªæ–¹å‘ã®æ•£ã‚Š
     float mOutPower = 0.018f;
     float mRandJitter = 0.006f;
 
-    // ƒoƒ‰ƒoƒ‰ŠJn’x‰„iÅ‘å80F‚Å‰^—pj
+    // ãƒãƒ©ãƒãƒ©é–‹å§‹é…å»¶ï¼ˆæœ€å¤§80Fã§é‹ç”¨ï¼‰
     int   mStartDelayMin = 0;
     int   mStartDelayMax = 80;
 
-    // PreShatter’†‚Ì”÷U“®
+    // PreShatterä¸­ã®å¾®æŒ¯å‹•
     float mIdleJitter = 0.25f;
 
-    // ŠD‚Á‚Û‚³
+    // ç°ã£ã½ã•
     int mBright = 200;
 };

@@ -1,4 +1,4 @@
-#include "ResultScene.h"
+ï»¿#include "ResultScene.h"
 #include "Master.h"
 #include "SceneManager.h"
 #include "InputManager.h"
@@ -23,7 +23,7 @@ void ResultScene::Update()
 
 void ResultScene::Draw()
 {
-	// ‰æ–Ê‘S‘Ì‚ğˆÃ‚­‚·‚é”¼“§–¾‚Ì‹éŒ`‚ğ•`‰æiƒVƒŠƒAƒX‚ÈÂ•‚¢ƒtƒBƒ‹ƒ^[j
+	// ç”»é¢å…¨ä½“ã‚’æš—ãã™ã‚‹åŠé€æ˜ã®çŸ©å½¢ã‚’æç”»ï¼ˆã‚·ãƒªã‚¢ã‚¹ãªé’é»’ã„ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ï¼‰
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 	DrawBox(0, 0, 1920, 1080, GetColor(10, 10, 30), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -49,7 +49,7 @@ void ResultScene::Draw()
 		}
 		
 		SetFontSize(40);
-		DrawFormatString(300, 600, GetColor(mnColorFade, mnColorFade, 255), "Ä‹N‚·‚é‚É‚Í‰æ–Ê‚ğƒ^ƒbƒviƒNƒŠƒbƒNj");
+		DrawFormatString(300, 600, GetColor(mnColorFade, mnColorFade, 255), "å†èµ·ã™ã‚‹ã«ã¯ç”»é¢ã‚’ã‚¿ãƒƒãƒ—ï¼ˆã‚¯ãƒªãƒƒã‚¯ï¼‰");
 		
 		if (InputManager::CheckMouseClickLeft() || InputManager::CheckDownKey(KEY_INPUT_BACK))
 		{

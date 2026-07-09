@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 #include<String>
 #include"Object3D.h"
@@ -26,7 +26,7 @@ private:
 	Model* model_;
 	
 	int mnHp;
-	float mnSizeS;//ƒV[ƒ‹ƒh‚ÌƒTƒCƒY
-	bool NewShield;//V‚µ‚­¶¬‚³‚ê‚Ä‚¢‚é‚©
+	float mnSizeS;//ã‚·ãƒ¼ãƒ«ãƒ‰ã®ã‚µã‚¤ã‚º
+	bool NewShield;//æ–°ã—ãç”Ÿæˆã•ã‚Œã¦ã„ã‚‹ã‹
 
 };

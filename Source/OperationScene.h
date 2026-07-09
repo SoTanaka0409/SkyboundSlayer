@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 #include"Master.h"
 #include"InputManager.h"
@@ -26,14 +26,14 @@ private:
 	Texture* mpTexture2;
 	Texture* mpTexture3;
 	Scene* mpScene;
-	///////‘I‘ğ///////////
-	int mnC;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©
-	int mnS;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	int mnE;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	///////é¸æŠ///////////
+	int mnC;//ã‚¯ãƒªã‚¢æ–¹æ³•ãŒé¸ã°ã‚ŒãŸã‚¤ãƒ«ã‹ã©ã†ã‹
+	int mnS;//æ“ä½œæ–¹æ³•ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+	int mnE;//ã‚¨ãƒ³ãƒ‰ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 
-	bool C;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©
-	bool S;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool E;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	bool C;//ã‚¯ãƒªã‚¢æ–¹æ³•ãŒé¸ã°ã‚ŒãŸã‚¤ãƒ«ã‹ã©ã†ã‹
+	bool S;//æ“ä½œæ–¹æ³•ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+	bool E;//ã‚¨ãƒ³ãƒ‰ãŒé¸ã°ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 
 	bool C_Enter; //(enter)
 	bool S_Enter; //(enter)
@@ -41,10 +41,10 @@ private:
 
 	
 	/// //////////////////////////////
-	int mnPause;//ƒ|[ƒY‰æ–Ê‚©‚Ç‚¤‚©
+	int mnPause;//ãƒãƒ¼ã‚ºç”»é¢ã‹ã©ã†ã‹
 	int size = GetFontSize();
 
-	int Color1;//ƒJƒ‰[•ÏX
+	int Color1;//ã‚«ãƒ©ãƒ¼å¤‰æ›´
 	int Colorflag;
 
 	int color = GetColor(255,255,255);

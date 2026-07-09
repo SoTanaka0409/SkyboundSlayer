@@ -1,4 +1,4 @@
-#include "TestCollisionScene.h"
+﻿#include "TestCollisionScene.h"
 #include"Player3D.h"
 TestCollisionScene::TestCollisionScene()
 {
@@ -10,7 +10,7 @@ TestCollisionScene::~TestCollisionScene() {
 
 void TestCollisionScene::Initialize() {
     // Player settings (starts high up)
-    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//ジャンプ、アタック、スピード、ｈｐ
+    new Player3D("Resource/Model/T.mv1", VGet(-1200, 2000.0f, 0), 30.0f, 12.0f, 150.0f, true);//繧ｸ繝｣繝ｳ繝励√い繧ｿ繝・け縲√せ繝斐・繝峨・ｽ茨ｽ・
 
     // Block settings
     mBlockPos = VGet(0.0f, 100.0f, 0.0f);
@@ -18,7 +18,7 @@ void TestCollisionScene::Initialize() {
 
     // Load Player Model
     mPlayerModelHandle = MV1LoadModel("Resource/3D/Hero.mv1");
-    // Wave 3: 重量級代用
+    // Wave 3: 驥埼㍼邏壻ｻ｣逕ｨ
     mpEnemyManager = new EnemyManager();
     EnemyManager::enemydate e_heavy;
     e_heavy.filename = "Resource/Model/monster.mv1";
@@ -102,7 +102,7 @@ void TestCollisionScene::Draw() {
     DrawFormatString(10, 50, GetColor(255,255,255), "Grounded: %s", mIsGrounded ? "TRUE" : "FALSE");
     DrawFormatString(10, 70, GetColor(255,255,255), "Block Top: %.2f", mBlockPos.y + mBlockSize.y);
     DrawFormatString(10, 100, GetColor(200,200,200), "Controls: Arrow Keys to move, SPACE to jump");
-    // 地面のグリッド（ステージ）を描画
+    // 蝨ｰ髱｢縺ｮ繧ｰ繝ｪ繝・ラ・医せ繝・・繧ｸ・峨ｒ謠冗判
     const int count = 51;
     const float distance = 500.0f;
     for (int i = 0; i < count; i++)

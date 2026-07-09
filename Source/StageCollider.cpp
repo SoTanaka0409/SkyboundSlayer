@@ -1,4 +1,4 @@
-#include"StageCollider.h"
+﻿#include"StageCollider.h"
 #include"SphereCollider.h"
 #include"CapsuleCollider.h"
 #include"Master.h"
@@ -58,7 +58,7 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 	
 	
 
-		if (collider == mpGoBossCollider && check->parent_object_->GetTag() == Tag3D_Player3D)//normalstageに行く
+		if (collider == mpGoBossCollider && check->parent_object_->GetTag() == Tag3D_Player3D)//normalstage縺ｫ陦後￥
 		{
 			
 			Player3D* player = Master::mpPlayer;
@@ -66,8 +66,8 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 			mpTexture2->Draw();
 			if (check == player->GetCollisionCollider())
 			{
-				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//場所を移動
-				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warp音を鳴らす
+				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//蝣ｴ謇繧堤ｧｻ蜍・
+				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warp髻ｳ繧帝ｳｴ繧峨☆
 				/*new Effect(VGet(17000, 0, 16000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
 				new Effect(VGet(16000, 0, 17000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);*/
 			}

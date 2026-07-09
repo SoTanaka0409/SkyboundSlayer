@@ -1,10 +1,10 @@
-#include"Scene.h"
+ï»¿#include"Scene.h"
 #include"ObjectManager.h"
 #include"Master.h"
 #include"ColliderManager.h"
 Scene::Scene()
 {
-	//ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ì¶¬
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®ç”Ÿæˆ
 	mpObjectManager = new ObjectManager();
 	mpColliderManager = new ColliderManager();
 }
@@ -17,7 +17,7 @@ Scene::~Scene()
 	}
 	
 }
-//•`‰æ
+//æç”»
 void Scene::Draw()
 {
 	if (mpObjectManager != nullptr)
@@ -25,7 +25,7 @@ void Scene::Draw()
 		mpObjectManager->Draw();
 	}
 }
-//XV
+//æ›´æ–°
 void Scene::Update()
 {
 	if (mpObjectManager != nullptr)

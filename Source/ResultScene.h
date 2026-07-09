@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Scene3D.h"
 #include"Dxlib.h"
 #include"Scene.h"
@@ -43,7 +43,7 @@ private:
 
 	int mnAllTimer;
 	
-	int mnColorFade;//ƒJƒ‰[•ÏX
+	int mnColorFade;//ã‚«ãƒ©ãƒ¼å¤‰æ›´
 	int mnColorCount;
 	bool mbColorFlag;
 };

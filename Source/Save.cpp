@@ -1,11 +1,11 @@
-#include"Save.h"
+ï»¿#include"Save.h"
 #include"Master.h"
 #include"InputManager.h"
 #include"Texture.h"
 #include"ObjectManager.h"
 #include"SceneManager.h"
 
-// Ã“Iƒƒ“ƒo•Ï”’è‹`
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°å®šç¾©
 
 Save::Save()
 	:Select(0)

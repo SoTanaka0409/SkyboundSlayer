@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include "ModelUtility.h"
@@ -6,63 +6,63 @@
 class SeparateModelAnimation
 {
 public:
-    SeparateModelAnimation(int modelHandle);   // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-    ~SeparateModelAnimation();  // ƒfƒXƒgƒ‰ƒNƒ^
+    SeparateModelAnimation(int modelHandle);   // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    ~SeparateModelAnimation();  // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-    void Update();  // XV
+    void Update();  // æ›´æ–°
 
-    // šNewš
-    // note: mixamo ‚Åƒ‚[ƒVƒ‡ƒ“‚ğƒ_ƒEƒ“ƒ[ƒh‚·‚é‚ÆA
-    //       0”Ô–Ú‚Ìƒ‚[ƒVƒ‡ƒ“ƒf[ƒ^‚Íƒ_ƒ~[‚ª“ü‚Á‚Ä‚¢‚é‚ç‚µ‚¢‚Ì‚ÅA
-    //       ƒfƒtƒHƒ‹ƒg‚Å“K—p‚·‚éƒCƒ“ƒfƒbƒNƒX‚ğ 1 ‚É‚µ‚Ä‚¨‚­
-    void ChangeAnimation(AnimationState state, int index = 0); // ƒ‚[ƒVƒ‡ƒ“Ø‚è‘Ö‚¦ˆ—
+    // â˜…Newâ˜…
+    // note: mixamo ã§ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã¨ã€
+    //       0ç•ªç›®ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã¯ãƒ€ãƒŸãƒ¼ãŒå…¥ã£ã¦ã„ã‚‹ã‚‰ã—ã„ã®ã§ã€
+    //       ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§é©ç”¨ã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ 1 ã«ã—ã¦ãŠã
+    void ChangeAnimation(AnimationState state, int index = 0); // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³åˆ‡ã‚Šæ›¿ãˆå‡¦ç†
 
-    // šNewš
-    // ƒ‚[ƒVƒ‡ƒ“ƒf[ƒ^‚Ì’Ç‰Á
-    // note: •ªŠ„‚³‚ê‚Ä‚¢‚éƒ‚[ƒVƒ‡ƒ“‚ğƒf[ƒ^‚Æ‚µ‚Ä“o˜^‚·‚éB
+    // â˜…Newâ˜…
+    // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
+    // note: åˆ†å‰²ã•ã‚Œã¦ã„ã‚‹ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ãƒ‡ãƒ¼ã‚¿ã¨ã—ã¦ç™»éŒ²ã™ã‚‹ã€‚
     void AddAnimation(AnimationState state, std::string filename);
 
-    // šNewš
-    // ‘Î‰‚µ‚½ƒ‚[ƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹‚Ìæ“¾
-    // note: vector”z—ñ‚Éƒf[ƒ^‚ªŠi”[‚³‚ê‚Ä‚¢‚é‚½‚ßA
-    //       –ˆ‰ñƒnƒ“ƒhƒ‹‚ğŒŸõ‚·‚éèŠÔ‚ªo‚Ä‚«‚Ä‚µ‚Ü‚¤‚Ì‚ÅA
-    //       ‚»‚ê‚ğs‚¤‚½‚ß‚ÌŠÖ”B
+    // â˜…Newâ˜…
+    // å¯¾å¿œã—ãŸãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«ã®å–å¾—
+    // note: vectoré…åˆ—ã«ãƒ‡ãƒ¼ã‚¿ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãŸã‚ã€
+    //       æ¯å›ãƒãƒ³ãƒ‰ãƒ«ã‚’æ¤œç´¢ã™ã‚‹æ‰‹é–“ãŒå‡ºã¦ãã¦ã—ã¾ã†ã®ã§ã€
+    //       ãã‚Œã‚’è¡Œã†ãŸã‚ã®é–¢æ•°ã€‚
     int GetAnimationHandle(AnimationState state);
 
 
-    // ƒ‹[ƒvİ’è
+    // ãƒ«ãƒ¼ãƒ—è¨­å®š
     void SetLoop(bool isLoop) { mbLoop = isLoop; }
-    // ƒ‹[ƒvI—¹‚ÉÄ¶‚·‚éƒ‚[ƒVƒ‡ƒ“
+    // ãƒ«ãƒ¼ãƒ—çµ‚äº†æ™‚ã«å†ç”Ÿã™ã‚‹ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³
     void SetLoopFinishState(AnimationState state) { mnLoopFinishState = state; }
-    // ƒ‚[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhİ’è
+    // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¬ãƒ³ãƒ‰è¨­å®š
     void SetAnimationBlend(bool isBlend);
 
-    // Œ»İÄ¶‚³‚ê‚Ä‚¢‚éƒ‚[ƒVƒ‡ƒ“‚Ìæ“¾
+    // ç¾åœ¨å†ç”Ÿã•ã‚Œã¦ã„ã‚‹ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®å–å¾—
     AnimationState GetNowState() { return mnState; }
-    // ƒ‚[ƒVƒ‡ƒ“‚Ìƒ‹[ƒv‚ªI—¹‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+    // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ«ãƒ¼ãƒ—ãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
     bool IsLoopFinish() { return mbLoopFinish; }
 
     void SetAnimationCount(float count) { mfAnimationCount = count; }
 
 private:
-    int mnModelHandle;  // ƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
+    int mnModelHandle;  // ãƒ¢ãƒ‡ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
 
-    float mfAnimationTime;  // Ä¶‚µ‚Ä‚¢‚éƒ‚[ƒVƒ‡ƒ“‚ÌŒ»İ‚ÌÄ¶ŠÔ
+    float mfAnimationTime;  // å†ç”Ÿã—ã¦ã„ã‚‹ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ç¾åœ¨ã®å†ç”Ÿæ™‚é–“
     float mfAnimationCount;
-    int mnAnimationIndex;   // Ä¶‚µ‚Ä‚¢‚éƒ‚[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX
+    int mnAnimationIndex;   // å†ç”Ÿã—ã¦ã„ã‚‹ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 
-    float mfOldAnimationTime;   // 1‚Â‘O‚Ìƒ‚[ƒVƒ‡ƒ“Ä¶ŠÔ
-    int mnOldAnimationIndex;    // ‚P‚Â‘O‚Ìƒ‚[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX
+    float mfOldAnimationTime;   // 1ã¤å‰ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿæ™‚é–“
+    int mnOldAnimationIndex;    // ï¼‘ã¤å‰ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 
-    float mfAnimBlendRate;      // ƒ‚[ƒVƒ‡ƒ“‚ÌØ‚è‘Ö‚í‚è“x‡
+    float mfAnimBlendRate;      // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®åˆ‡ã‚Šæ›¿ã‚ã‚Šåº¦åˆ
 
-    AnimationState mnState; // Œ»İÄ¶‚µ‚Ä‚¢‚éƒ‚[ƒVƒ‡ƒ“‚Ì”Ô†
+    AnimationState mnState; // ç¾åœ¨å†ç”Ÿã—ã¦ã„ã‚‹ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ç•ªå·
 
-    bool mbLoop;            // ƒ‚[ƒVƒ‡ƒ“‚ğƒ‹[ƒv‚³‚¹‚é‚©‚Ç‚¤‚©
-    AnimationState mnLoopFinishState;   // ƒ‹[ƒv‚ªI‚í‚Á‚½‚ÉÄ¶‚µ‚½‚¢ƒ‚[ƒVƒ‡ƒ“”Ô†
-    bool mbLoopFinish;      // ƒ‚[ƒVƒ‡ƒ“ƒ‹[ƒv‚ªI‚í‚Á‚½‚©‚Ç‚¤‚©
+    bool mbLoop;            // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹ã‹ã©ã†ã‹
+    AnimationState mnLoopFinishState;   // ãƒ«ãƒ¼ãƒ—ãŒçµ‚ã‚ã£ãŸæ™‚ã«å†ç”Ÿã—ãŸã„ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ç•ªå·
+    bool mbLoopFinish;      // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒ«ãƒ¼ãƒ—ãŒçµ‚ã‚ã£ãŸã‹ã©ã†ã‹
 
-    // šNewš
-    // ƒ‚[ƒVƒ‡ƒ“ƒf[ƒ^‚ÌƒŠƒXƒg
+    // â˜…Newâ˜…
+    // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
     std::vector<AnimationInfo*> mAnimationInfoList;
 };

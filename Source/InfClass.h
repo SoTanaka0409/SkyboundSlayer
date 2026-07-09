@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 #include"Item.h"
 #include"vector"
@@ -21,11 +21,11 @@ public:
 
 private:
 	int LogTime;
-	std::string LogDate;//log‚ğ•Û‘¶‚·‚é
-	int LogCount;//ƒƒOêŠ‚ÌˆÚ“®‚Ì’™‚ß‚ÌƒJƒEƒ“ƒg
-	bool mbElaseFlag;//ewase‚·‚é‚½‚ß‚Ìƒtƒ‰ƒO
+	std::string LogDate;//logã‚’ä¿å­˜ã™ã‚‹
+	int LogCount;//ãƒ­ã‚°å ´æ‰€ã®ç§»å‹•ã®è²¯ã‚ã®ã‚«ã‚¦ãƒ³ãƒˆ
+	bool mbElaseFlag;//ewaseã™ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°
 
-	int LogNumber;//g—p‚·‚éƒƒO‚Ìí—Ş‚ğ‘I‘ğ
+	int LogNumber;//ä½¿ç”¨ã™ã‚‹ãƒ­ã‚°ã®ç¨®é¡ã‚’é¸æŠ
 	
 	
 };

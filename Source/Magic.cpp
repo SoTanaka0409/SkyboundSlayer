@@ -1,4 +1,4 @@
-#include"Magic.h"
+﻿#include"Magic.h"
 #include"SphereCollider.h"
 #include"CapsuleCollider.h"
 #include"Master.h"
@@ -39,7 +39,7 @@ void Magic::Update()
 {
 	DeleteCount++;
 	Move();
-	if (DeleteCount > DeleteTime)//時間経過で消えるよぁE��する
+	if (DeleteCount > DeleteTime)//譎る俣邨碁℃縺ｧ豸医∴繧九ｈ縺・↓縺吶ｋ
 	{
 		Death();
 	}
@@ -57,13 +57,13 @@ void Magic::Death()
 	SetDeleteFlag(true);
 	mpHitCollider->SetDeleteFlag(true);
 }
-void Magic::OnEnter(Collider* collider, Collider* check)//左側.
+void Magic::OnEnter(Collider* collider, Collider* check)//蟾ｦ蛛ｴ.
 {
 	
 }
 
 void Magic::OnTrigger(Collider* collider, Collider* check)
-{//当たった瞬間�E処琁E
+{//蠖薙◆縺｣縺溽椪髢薙・蜃ｦ逅・
 	
 }
 

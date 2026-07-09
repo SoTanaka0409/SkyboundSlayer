@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"Model.h"
 #include"Object3D.h"
 class StageObject:public Object3D

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma once
 #include"DxLib.h"
 #include"Object3D.h"
@@ -9,15 +9,15 @@
 class DrawHp 
 {
 public:
-	//centerPos,,,’†SÀ•W
-	//topLeft... ¶ãÀ•W
-	//bottomRight...‰E‰ºÀ•W
-	DrawHp();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//centerPos,,,ä¸­å¿ƒåº§æ¨™
+	//topLeft... å·¦ä¸Šåº§æ¨™
+	//bottomRight...å³ä¸‹åº§æ¨™
+	DrawHp();//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	~DrawHp();//ƒfƒXƒgƒ‰ƒNƒ^
+	~DrawHp();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	void Update();//XV
-	void Draw();//•`‰æ
+	void Update();//æ›´æ–°
+	void Draw();//æç”»
 
 
 private:

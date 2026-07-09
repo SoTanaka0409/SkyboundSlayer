@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 #include<string>
 #include"Object3D.h"
@@ -33,7 +33,7 @@ public:
 	}AttackState;
 	
 public:
-	// •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“‚ğg—p‚·‚é‚©‚Ìİ’è‚ğ’Ç‰ÁiƒfƒtƒHƒ‹ƒg‚Ífalseig—p‚µ‚È‚¢jj
+	// åˆ†å‰²ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã®è¨­å®šã‚’è¿½åŠ ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯falseï¼ˆä½¿ç”¨ã—ãªã„ï¼‰ï¼‰
 	Player3D(std::string filename, VECTOR initPos, float junppower, float speed, float hp, bool isSeparateAnim = false);
 
 	~Player3D();
@@ -68,12 +68,12 @@ public:
 	void AttackCountClass();
 	void Evasion();
 	void CollDelete();
-	void mpTargetOn();//target‚ª‚¢‚éó‘Ô‚©.‚±‚ê‚ª‚È‚¢‚Ætarget‚ª‚¢‚È‚­‚È‚Á‚½uŠÔ‚Énull‚É‚È‚é
+	void mpTargetOn();//targetãŒã„ã‚‹çŠ¶æ…‹ã‹.ã“ã‚ŒãŒãªã„ã¨targetãŒã„ãªããªã£ãŸç¬é–“ã«nullã«ãªã‚‹
 
 
 	float GetAngle() { return mfAngle; }
 
-	void RotationByMove();//ˆÚ“®‚É‚æ‚é‰ñ“]ˆ—
+	void RotationByMove();//ç§»å‹•ã«ã‚ˆã‚‹å›è»¢å‡¦ç†
 
 	float GetHp() { return hp_; }
 	void SetHp(float hp) { hp_ = hp; }
@@ -97,8 +97,8 @@ public:
 	void bar();
 
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“’Ç‰Á
-   // ModelƒNƒ‰ƒX‚Ö‚Ì‹´“n‚µŠÖ”
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¿½åŠ 
+   // Modelã‚¯ãƒ©ã‚¹ã¸ã®æ©‹æ¸¡ã—é–¢æ•°
 	void AddAnimation(AnimationState state, std::string filename);
 
 
@@ -109,7 +109,7 @@ public:
 	CapsuleCollider* GetCollisionCollider() { return mpCapsuleCollider; }
 	SphereCollider* Get500Collider() { return mpSerchEnemyCollider; }
 
-	Model* model_;//ƒ‚ƒfƒ‹ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
+	Model* model_;//ãƒ¢ãƒ‡ãƒ«ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
 	ShortInventory* mpShortInventory;
 	BuffManager* mpBuffManager;
 	ItemManager* mpItemManager;
@@ -133,20 +133,20 @@ private:
 	bool Animation;
 	int NewShieldCount;
 	bool NewShieldFast;
-	float mfTargetAngle;//–Ú•W‚Ì‰ñ“]’n
-	float mfAngle;//Œ»İ‚Ì‰ñ“]’n
+	float mfTargetAngle;//ç›®æ¨™ã®å›è»¢åœ°
+	float mfAngle;//ç¾åœ¨ã®å›è»¢åœ°
 	VECTOR mvFirstPosition;
 
-	const float ROTATE_SPEED = 0.2f;//‰ñ“]‘¬“x
-	const float JUMP_POWER = 30.0f;//ƒWƒƒƒ“ƒv—Í
+	const float ROTATE_SPEED = 0.2f;//å›è»¢é€Ÿåº¦
+	const float JUMP_POWER = 30.0f;//ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
 
-	bool mbjump;//ƒWƒƒƒ“ƒvƒ‚[ƒVƒ‡ƒ“‚ğ‚·‚é‚©”Û‚©
-	bool mbjumpDown;//—‰º‚·‚éÀ•W‚É‚¢‚Á‚½‚ç‰º~‚ğ‚·‚éƒtƒ‰ƒO
-	bool HighPositionFlag;//–Ú•WÀ•W‚És‚Á‚½‚Æ‚«‚Étrue
+	bool mbjump;//ã‚¸ãƒ£ãƒ³ãƒ—ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã™ã‚‹ã‹å¦ã‹
+	bool mbjumpDown;//è½ä¸‹ã™ã‚‹åº§æ¨™ã«ã„ã£ãŸã‚‰ä¸‹é™ã‚’ã™ã‚‹ãƒ•ãƒ©ã‚°
+	bool HighPositionFlag;//ç›®æ¨™åº§æ¨™ã«è¡Œã£ãŸã¨ãã«true
 	bool OnJumpCollider;
 	bool mbAttackSlideSerch;
 
-	float mfjumpPower;//ƒWƒƒƒ“ƒv—Í
+	float mfjumpPower;//ã‚¸ãƒ£ãƒ³ãƒ—åŠ›
 	float speed_;
 	float mfEvasionSpeed;
 	float mfDashSpeed;
@@ -162,42 +162,42 @@ private:
 	float mfUpgradeAttack = 0.0f;
 	float mfUpgradeSpeed = 0.0f;
 	float mfUpgradeEvasionSpeed = 0.0f;
-	int mnUpgradeEvasionInvincibility = 0; // ’Ç‰Á–³“GƒtƒŒ[ƒ€
-	int mnInvincibleTimer = 0; // Œ»İ‚Ì–³“Gƒ^ƒCƒ}[
+	int mnUpgradeEvasionInvincibility = 0; // è¿½åŠ ç„¡æ•µãƒ•ãƒ¬ãƒ¼ãƒ 
+	int mnInvincibleTimer = 0; // ç¾åœ¨ã®ç„¡æ•µã‚¿ã‚¤ãƒãƒ¼
 	// -----------------------------------
 
-	int AttackSlideCount;//UŒ‚ŠÔŠu‚ğƒJƒEƒ“ƒg‚·‚é
+	int AttackSlideCount;//æ”»æ’ƒé–“éš”ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
 	int AttackJumpCount;
 	int AttackCount;
 
-	int AttackSlideTime = 200;//UŒ‚‰Â”\‚ÌƒN[ƒ‹ƒ^ƒCƒ€
+	int AttackSlideTime = 200;//æ”»æ’ƒå¯èƒ½æ™‚ã®ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ 
 	int AttackTime = 30;
 	int AttackJumpTime=200;
-	////////////////	UŒ‚—Í	
+	////////////////	æ”»æ’ƒåŠ›	
 
-	float attack_;//ƒ_ƒ[ƒW‚ğŒvZ‚·‚é‚Æ‚«‚Ég‚í‚ê‚éŠî–{“I‚È’l
-	float mfNormalAttack;//‰½‚ç‚©‚Ì—vˆö‚ÅmfAttack‚Ì’l‚ğ•Ï‚¦‚½‚É–ß‚·‚½‚ß‚Ì’l
+	float attack_;//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’è¨ˆç®—ã™ã‚‹ã¨ãã«ä½¿ã‚ã‚Œã‚‹åŸºæœ¬çš„ãªå€¤
+	float mfNormalAttack;//ä½•ã‚‰ã‹ã®è¦å› ã§mfAttackã®å€¤ã‚’å¤‰ãˆãŸæ™‚ã«æˆ»ã™ãŸã‚ã®å€¤
 	float mfAttackjump;
 	float mfAttackSlide;
 	float mfAttackBullet;
 
 
 	
-	VECTOR slide = VGet(0.0f, 0.0f, 0.0f);//•Ç‰ˆ‚¢ƒxƒNƒgƒ‹
+	VECTOR slide = VGet(0.0f, 0.0f, 0.0f);//å£æ²¿ã„ãƒ™ã‚¯ãƒˆãƒ«
 	VECTOR  UpMoveVector;
-	VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//ˆÚ“®•ûŒü
+	VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);//ç§»å‹•æ–¹å‘
 	VECTOR oldmoveVec;
-	VECTOR GoPosition;//ˆÚ“®•ûŒü
-	VECTOR TargetPosition;//–Ú•W‚Æ‚·‚éÀ•W
+	VECTOR GoPosition;//ç§»å‹•æ–¹å‘
+	VECTOR TargetPosition;//ç›®æ¨™ã¨ã™ã‚‹åº§æ¨™
 
-	//ƒXƒe[ƒW‚Æ‚Ì“–‚½‚è”»’è‚ğ‚·‚é
+	//ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã®å½“ãŸã‚Šåˆ¤å®šã‚’ã™ã‚‹
 	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
 	VECTOR hitPos2 = VGet(0.0f, 0.0f, 0.0f);
-	bool OkAttackCount;//UŒ‚‚ª˜A‘±‚Å“–‚½‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+	bool OkAttackCount;//æ”»æ’ƒãŒé€£ç¶šã§å½“ãŸã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 
 
 	bool Pause;
-	bool EffectUflag;//ƒGƒtƒFƒNƒgU‚ªÀs‚³‚ê‚½‚Æ‚«
+	bool EffectUflag;//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆUãŒå®Ÿè¡Œã•ã‚ŒãŸã¨ã
 	int EffectUCount;
 	
 
@@ -212,12 +212,12 @@ private:
 
 
 	bool mbInvisible;
-	int BulletCount;//‹Ê‚Ì‘Å‚ÂŠ´Šo
+	int BulletCount;//ç‰ã®æ‰“ã¤æ„Ÿè¦š
 	int Interval;
-	float mfHorizontalAngle;  //…•½•ûŒüƒAƒ“ƒOƒ‹
-	float mfVerticalAngle;   // ‚’¼•ûŒüƒAƒ“ƒOƒ‹
+	float mfHorizontalAngle;  //æ°´å¹³æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
+	float mfVerticalAngle;   // å‚ç›´æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
 
-	int FirstNearVec;//ˆê”Ô‹ß‚¢“G
+	int FirstNearVec;//ä¸€ç•ªè¿‘ã„æ•µ
 	float VECSizeFirst;
 	float  VECSize;;
 
@@ -237,12 +237,12 @@ private:
 
 	int EneSerchCount;
 
-	const int SIZE_RAND_MAX = 800;//ƒTƒCƒY‚ÌÅ‘å—”’n
-	const int SIZE_RAND_MIN = 400;//ƒTƒCƒY‚ÌÅ¬—”’n
+	const int SIZE_RAND_MAX = 800;//ã‚µã‚¤ã‚ºã®æœ€å¤§ä¹±æ•°åœ°
+	const int SIZE_RAND_MIN = 400;//ã‚µã‚¤ã‚ºã®æœ€å°ä¹±æ•°åœ°
 
 
-	const int VISIBLE_TIME_RAND_MAX = 30;//•\¦ŠÔ‚ÌÅ‘å—”’n
-	const int VISIBLE_TIME_RAND_MIN = 5;//•\¦ŠÔ‚ÌÅ¬—”’n
+	const int VISIBLE_TIME_RAND_MAX = 30;//è¡¨ç¤ºæ™‚é–“ã®æœ€å¤§ä¹±æ•°åœ°
+	const int VISIBLE_TIME_RAND_MIN = 5;//è¡¨ç¤ºæ™‚é–“ã®æœ€å°ä¹±æ•°åœ°
 
 	SphereCollider* mpAttachCollider;
 	SphereCollider* mpSerchEnemyCollider;
@@ -253,9 +253,9 @@ private:
 
 	int ChangeStateCount;
 
-	int mouseInput = GetMouseInput(); // ƒ}ƒEƒX‚Ìó‘Ô‚ğæ“¾
+	int mouseInput = GetMouseInput(); // ãƒã‚¦ã‚¹ã®çŠ¶æ…‹ã‚’å–å¾—
 
 	bool AttackHitJudgmentflag;
 
-	bool mbStageOutFlag;//true‚¾‚Á‚½‚çoldPosition‚É–ß‚é‚æ‚¤‚É‚·‚é
+	bool mbStageOutFlag;//trueã ã£ãŸã‚‰oldPositionã«æˆ»ã‚‹ã‚ˆã†ã«ã™ã‚‹
 };

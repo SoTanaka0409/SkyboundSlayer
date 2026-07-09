@@ -1,4 +1,4 @@
-#include"Equipment.h"
+﻿#include"Equipment.h"
 
 
 Equipment::Equipment()
