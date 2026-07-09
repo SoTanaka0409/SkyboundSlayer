@@ -8,43 +8,64 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    // ƒIƒŠƒWƒiƒ‹‚Ìƒnƒ“ƒhƒ‹‚ğíœ‚·‚é
-
-    for (int i = 0; i < resourceMapList.size(); i++)
+    // 3Dãƒ¢ãƒ‡ãƒ«ã®ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
+    for (int i = 0; i < (int)resourceMapList.size(); i++)
     {
         MV1DeleteModel(resourceMapList.at(i).second);
     }
+    resourceMapList.clear();
 
-    MV1InitModel();
-    InitGraph();
+    // ç”»åƒãƒãƒ³ãƒ‰ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
+    for (int i = 0; i < (int)graphicResourceMapList.size(); i++)
+    {
+        DeleteGraph(graphicResourceMapList.at(i).second);
+    }
+    graphicResourceMapList.clear();
+
+    // åˆ†å‰²ç”»åƒãƒãƒ³ãƒ‰ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
+    for (int i = 0; i < (int)divGraphicResourceMapList.size(); i++)
+    {
+        DivGraphData* data = divGraphicResourceMapList.at(i);
+        if (data != nullptr)
+        {
+            // åˆ†å‰²ã•ã‚ŒãŸå„ãƒãƒ³ãƒ‰ãƒ«ã‚’å‰Šé™¤
+            for (int j = 0; j < data->allNum; j++)
+            {
+                DeleteGraph(data->divHandleList[j]);
+            }
+            delete[] data->divHandleList;
+            delete data;
+        }
+    }
+    divGraphicResourceMapList.clear();
 }
 
-// ƒ‚ƒfƒ‹ƒŠƒ\[ƒX¶¬
+// ãƒ¢ãƒ‡ãƒ«ãƒªã‚½ãƒ¼ã‚¹ç”Ÿæˆ
 int ResourceManager::LoadModel(std::string pathName)
 {
-    // Šù‚É“Ç‚İ‚Ü‚ê‚½ƒ‚ƒfƒ‹‚©‚Ç‚¤‚©Šm”F
+    // æ—¢ã«èª­ã¿è¾¼ã¾ã‚ŒãŸãƒ¢ãƒ‡ãƒ«ã‹ã©ã†ã‹ç¢ºèª
     for (int i = 0; i < resourceMapList.size(); i++)
     {
         if (resourceMapList.at(i).first == pathName)
         {
-            // “Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚È‚çƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹‚ğ•¡»‚µ‚Ä•Ô‚·
+            // èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ãªã‚‰ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’è¤‡è£½ã—ã¦è¿”ã™
             return MV1DuplicateModel(resourceMapList.at(i).second);
         }
     }
 
-    // “Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚ÍV‚½‚É“Ç‚İ‚Ş
+    // èª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„å ´åˆã¯æ–°ãŸã«èª­ã¿è¾¼ã‚€
     int handle = MV1LoadModel(pathName.c_str());
     if (handle == -1)
     {
         return -1;
     }
 
-    // vector ‚É’Ç‰Á
+    // vector ã«è¿½åŠ 
     resourceMapList.push_back(std::pair<std::string, int>(pathName, handle));
-    return MV1DuplicateModel(handle);   // ƒIƒŠƒWƒiƒ‹‚Ìƒnƒ“ƒhƒ‹‚Íc‚µ‚Ä‚¨‚«‚½‚¢‚Ì‚Å•¡»‚µ‚Ä•Ô‚µ‚Ä‚¨‚­
+    return MV1DuplicateModel(handle);   // ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«ã¯æ®‹ã—ã¦ãŠããŸã„ã®ã§è¤‡è£½ã—ã¦è¿”ã—ã¦ãŠã
 }
 
-// ƒOƒ‰ƒtƒBƒbƒNƒŠƒ\[ƒX¶¬
+// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒªã‚½ãƒ¼ã‚¹ç”Ÿæˆ
 int ResourceManager::LoadGraphics(std::string pathName)
 {
     for (int i = 0; i < graphicResourceMapList.size(); i++)
@@ -65,7 +86,7 @@ int ResourceManager::LoadGraphics(std::string pathName)
     return handle;
 }
 
-// •ªŠ„‚³‚ê‚½ƒOƒ‰ƒtƒBƒbƒNƒŠƒ\[ƒX¶¬
+// åˆ†å‰²ã•ã‚ŒãŸã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒªã‚½ãƒ¼ã‚¹ç”Ÿæˆ
 DivGraphData* ResourceManager::LoadDivGraphics(std::string pathName, int allNum, int numX, int numY)
 {
     for (int i = 0; i < divGraphicResourceMapList.size(); i++)
@@ -76,25 +97,25 @@ DivGraphData* ResourceManager::LoadDivGraphics(std::string pathName, int allNum,
         }
     }
 
-    // ˆê’UƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚İ
+    // ä¸€æ—¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã¿
     int handle = LoadGraph(pathName.c_str());
     if (handle == -1)
     {
         return nullptr;
     }
 
-    // ©ì‚µ‚½ƒNƒ‰ƒX‚Éî•ñ‚ğŠi”[
+    // è‡ªä½œã—ãŸã‚¯ãƒ©ã‚¹ã«æƒ…å ±ã‚’æ ¼ç´
     DivGraphData *data = new DivGraphData(
         pathName,
         numX, numY,
         allNum
     );
 
-    // ˆê’U“Ç‚İ‚ñ‚¾ƒeƒNƒXƒ`ƒƒ‚Ì‰æ‘œƒTƒCƒY‚ğæ“¾
+    // ä¸€æ—¦èª­ã¿è¾¼ã‚“ã ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç”»åƒã‚µã‚¤ã‚ºã‚’å–å¾—
     int sizeX, sizeY;
     GetGraphSize(handle, &sizeX, &sizeY);
 
-    // ƒeƒNƒXƒ`ƒƒ•ªŠ„“Ç‚İ‚İ
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ†å‰²èª­ã¿è¾¼ã¿
     std::vector<int> test;
     handle = LoadDivGraph(pathName.c_str(), allNum, numX, numY, sizeX / numX, sizeY / numY, data->divHandleList);
     if (handle == -1)
@@ -102,7 +123,7 @@ DivGraphData* ResourceManager::LoadDivGraphics(std::string pathName, int allNum,
         return nullptr;
     }
 
-    // ƒf[ƒ^‚ğ•Û‘¶
+    // ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
     divGraphicResourceMapList.push_back(data);
 
     return data;
