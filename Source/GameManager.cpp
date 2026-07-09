@@ -233,8 +233,7 @@ void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 
 void GameManager::SpawnPhaseEnemies()
 {
-    return;
-    auto p = Master::mpPlayer;
+auto p = Master::mpPlayer;
     Player3D* player = p->CastTo<Player3D>();
     // 謨��縺後せ繝�・繧��縺九ｉ螟悶��縺��關ｽ荳九�蝓区����縺励↑縺・��縺・↓縲��onfig縺��繧��繝�・繧��荳��蠢・����讓吶��貉ｧ縺堺��咲����縺��蝓ｺ�悶→縺吶�
     VECTOR centerPos = Config::GetStageCenter();
