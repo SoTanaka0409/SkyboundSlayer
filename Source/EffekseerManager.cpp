@@ -1,4 +1,4 @@
-﻿#include "EffekseerManager.h"
+#include "EffekseerManager.h"
 
 EffekseerManager::EffekseerManager()
 {
@@ -47,7 +47,11 @@ int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, 
 		return mEffects[name];
 	}
 
+	// Effekseer effects do not support DxLib's asynchronous loading, so we must load them synchronously
+	int oldFlag = GetUseASyncLoadFlag();
+	SetUseASyncLoadFlag(FALSE);
 	int handle = LoadEffekseerEffect(filepath, magnification);
+	SetUseASyncLoadFlag(oldFlag);
 	if (handle != -1)
 	{
 		mEffects[name] = handle;

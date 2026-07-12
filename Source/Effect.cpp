@@ -1,4 +1,4 @@
-﻿#include"Effect.h"
+#include"Effect.h"
 
 
 Effect::Effect()
@@ -24,7 +24,10 @@ void Effect::Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,flo
 		mpEffect->particle[i].visibleTime = VisibleTime;
 	}
 	if (mnGraphHandle == -1) {
+		int oldFlag = GetUseASyncLoadFlag();
+		SetUseASyncLoadFlag(FALSE);
 		mnGraphHandle = LoadGraph(filename.c_str());
+		SetUseASyncLoadFlag(oldFlag);
 	}
 }
 

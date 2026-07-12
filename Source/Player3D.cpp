@@ -1,4 +1,4 @@
-﻿#include"Player3D.h"
+#include"Player3D.h"
 #include"Model.h"
 #include"ModelAnimation.h"
 #include"Master.h"
@@ -175,6 +175,18 @@ void Player3D::Update()
 	{
 		if (model_ != nullptr)
 		{
+			if (target_ != nullptr) {
+				bool isValid = false;
+				const auto& mpEneList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+				for (auto obj : mpEneList) {
+					if (target_ == obj && !obj->IsDeleteFlag()) {
+						isValid = true;
+						break;
+					}
+				}
+				if (!isValid) target_ = nullptr;
+			}
+			
 			mpTargetOn();
 			Test();
 			ManagerUpdate();

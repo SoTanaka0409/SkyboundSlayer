@@ -1,103 +1,122 @@
-ï»¿#include"Rule.h"
+#include"Rule.h"
 #include"Texture.h"
 #include"Master.h"
 #include"SceneManager.h"
 #include"InputManager.h"
 
-
 Rule::Rule()
-	:mnPause(0)
-	, Color1(1)
-	, Colorflag(false)
+	: mPage(1)
+	, mBgHandle1(-1)
+	, mBgHandle2(-1)
 {
-	mnPause = 1;
-	mpTexture = new Texture("Resource/Rure.png", VGet(500, 500, 0), true);
-	mpTexture2 = new Texture("Resource/Set.png", VGet(540, 460, 0), true);
-	mpTexture3 = new Texture("",VGet(350,300,0),true);
 }
 
 Rule::~Rule()
 {
-
-
 }
+
 void Rule::Initialize()
 {
-	filename1 = "Resource/ruleB1.jpg";
-	mnHandle1 = LoadGraph(filename1.c_str());
-	new Texture("Resource/ruleA.jpg", VGet(500, 900, 0), true);
-	new Texture("Resource/ruleB.jpg", VGet(300, 300, 0), true);
-
-
+	mPage = 1;
+	mBgHandle1 = LoadGraph("Resource/2D/rule_bg_1.png");
+	mBgHandle2 = LoadGraph("Resource/2D/rule_bg_2.png");
 }
 
 void Rule::Update()
 {
 	Scene::Update();
 
+	// Page navigation
+	if (InputManager::CheckDownKey(KEY_INPUT_RIGHT) || InputManager::CheckDownKey(KEY_INPUT_D))
+	{
+		if (mPage == 1) mPage = 2;
+	}
+	else if (InputManager::CheckDownKey(KEY_INPUT_LEFT) || InputManager::CheckDownKey(KEY_INPUT_A))
+	{
+		if (mPage == 2) mPage = 1;
+	}
 
-
+	// Back to Title
+	if (InputManager::CheckDownKey(KEY_INPUT_BACK) || InputManager::CheckDownKey(KEY_INPUT_ESCAPE))
+	{
+		Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TITLE);
+	}
 }
 
 void Rule::Draw()
 {
-	int size = GetFontSize();
 	Scene::Draw();
-	
-	mpTexture->Draw();
-	
 
-
-	//// åŠé€æ˜ã®é»’ã„çŸ©å½¢ã‚’æç”»
-
-	//// ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒ¢ãƒ¼ãƒ‰ã‚’å…ƒã«æˆ»ã™ï¼ˆé‡è¦ï¼‰
-
-	if (Colorflag == true)
+	int handle = (mPage == 1) ? mBgHandle1 : mBgHandle2;
+	if (handle != -1)
 	{
-		Color1 -= 4;
-		if (Color1 <= 0)
-		{
-			Color1 = 0;
-			Colorflag = false;
-		}
+		DrawExtendGraph(0, 0, 1980, 1080, handle, TRUE);
 	}
-	if (Color1 >= 0 && Colorflag == false)
+	else
 	{
-		Color1 += 4;
-		if (Color1 >= 255)
-		{
-			Color1 = 255;
-			Colorflag = true;
-		}
+		DrawBox(0, 0, 1980, 1080, GetColor(0, 0, 0), TRUE);
 	}
 
-	(25);
-	mpTexture3->Draw();
-	DrawBox(0, 700, 1000, 1000, GetColor(0, 0, 0), true);
-	DrawFormatString(10, 710, GetColor(255, 255, 255), "ã‚¯ãƒªã‚¢æ¡ä»¶ï¼šæ•µã‚’ã™ã¹ã¦å€’ã™\n(ã‚¯ãƒªã‚¢æ™‚é–“ãŒçŸ­ã„ã»ã©ã‚¹ã‚³ã‚¢ãŒä¸Šæ˜‡ã™ã‚‹):æ•µã®è¦‹ãŸç›®ã¯æç«œä»¥å¤–");
-	DrawFormatString(10, 780, GetColor(255,0, 0), "...æ•µã®æ•°ï¼ˆï¼ã«ãªã£ãŸã‚‰ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ï¼ï¼‰");
-	DrawFormatString(10, 780, GetColor(185, 0, 255), "\nå¼¾ã®ç¨®é¡ã¯å¼±ãƒ»ä¸­ãƒ»å¼·ã®3ç¨®é¡ãŒã‚ã‚Šã€ä¸Šéƒ¨ã«ãã‚Œãã‚Œã®åŠ¹æœãŒè¡¨ç¤ºã•ã‚Œã‚‹\nä¾‹ï¼šä¸€å®šç¢ºç‡ã§æ•µã‚’å³æ­»ã•ã›ã‚‹ ãªã©");
-	DrawFormatString(10, 780, GetColor(205, 255, 0), "\n\n\nOkãŒå‡ºã¦ããŸã‚‰ã§ãã‚‹ã€‚");
-	DrawFormatString(10, 780, GetColor(0, 255, 0), "\n\n\n\næ­¦å™¨ã®ç¨®é¡ï¼ˆæç«œã‚’å€’ã—ãŸã‚‰åˆ‡ã‚Šæ›¿ã‚ã‚‹)1...ãƒˆãƒªã‚±ãƒ©  2...ã‚¹ãƒ”ãƒ");
-	DrawFormatString(10, 780, GetColor(0, 255, 0), "\n\n\n\n\n1...å¹³å‡çš„ã«ç«åŠ›ãŒå¼±ãã€è‡ªå‹•å›å¾©ã™ã‚‹ãƒ¢ãƒ¼ãƒ‰\n2...ç«åŠ›ãŒé«˜ãã‚¹ã‚³ã‚¢ãŒç¨¼ãæ˜“ãã€hpãŒæ¸›ã‚Šç¶šã‘ã‚‹ãƒ¢ãƒ¼ãƒ‰  ");
-	DrawFormatString(10, 780, GetColor(255, 0, 255), "\n\n\n\n\n\n\næ®‹å¼¾æ•°ï¼ˆä¸Šã‹ã‚‰å¼±ã€ä¸­ã€å¼·ï¼‰");    
+	// Draw semi-transparent background for text readability
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+	DrawBox(100, 100, 1880, 980, GetColor(0, 0, 0), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	mpTexture2->Draw();
-	/*DrawBox(700, 850, 850, 900, GetColor(0, 255, 0), true);
-	DrawFormatString(700, 850, GetColor(0, 0, 0), "ãƒˆãƒªã‚±ãƒ©");
-	DrawFormatString(940, 860, GetColor(0, 0, 0), "ä¸­");
-	DrawFormatString(700, 960, GetColor(0, 0, 0), "ãƒªãƒ­ãƒ¼ãƒ‰ok");
-	DrawFormatString(50, 750, GetColor(Color1, Color1, Color1), "BackSpaceã§æˆ»ã‚‹");*/
+	SetFontSize(48);
 
-	if (InputManager::CheckDownKey(KEY_INPUT_BACK))
+	if (mPage == 1)
 	{
-		(size);
-		Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TITLE);
+		DrawFormatString(150, 150, GetColor(255, 255, 255), "y ƒ‹[ƒ‹à–¾ (1/2) z");
+		
+		SetFontSize(40);
+		int textY = 250;
+		int lineHeight = 60;
+		DrawFormatString(150, textY, GetColor(200, 255, 200), "ƒQ[ƒ€‚Ìis‚É‚Â‚¢‚ÄF");
+		textY += (int)(lineHeight * 1.5);
+		DrawFormatString(150, textY, GetColor(255, 255, 255), "’ÊíPhase1?Phase3‚Ü‚Å‚ÍAoŒ»‚·‚é“G‚ğ‘S‚Ä“|‚µ‚Ü‚·B");
+		textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 255, 255), "‚·‚×‚Ä‚Ì“G‚ğ“|‚·‚ÆŸ‚ÌPhase‚Éi‚İ‚Ü‚·B");
+		textY += (int)(lineHeight * 2);
+		DrawFormatString(150, textY, GetColor(200, 255, 200), "ƒ{ƒX‚Ì“¢”°F");
+		textY += (int)(lineHeight * 1.5);
+		DrawFormatString(150, textY, GetColor(255, 255, 255), "Phase3‚ğƒNƒŠƒA‚µ‚½ŒãAƒ{ƒXƒ|[ƒ^ƒ‹‚ÉŒü‚©‚¢‚Ü‚·B");
+		textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 255, 255), "ƒ|[ƒ^ƒ‹‚É“ü‚é‚Æƒ{ƒXí‚ªn‚Ü‚èAƒ{ƒX‚ğ“|‚¹‚ÎƒQ[ƒ€ƒNƒŠƒA‚Å‚·I");
+		
+	}
+	else if (mPage == 2)
+	{
+		DrawFormatString(150, 150, GetColor(255, 255, 255), "y ‘€ìà–¾ (2/2) z");
+
+		SetFontSize(40);
+		int textY = 250;
+		int lineHeight = 65;
+		DrawFormatString(150, textY, GetColor(255, 255, 200), "[W] [A] [S] [D]  ... ˆÚ“®"); textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 255, 200), "[SPACE]          ... ƒWƒƒƒ“ƒv / ‰ñ”ğ"); textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 255, 200), "[SHIFT]          ... ƒ_ƒbƒVƒ…"); textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 200, 200), "[¶ƒNƒŠƒbƒN]     ... UŒ‚"); textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(200, 255, 200), "[R]              ... ƒAƒCƒeƒ€g—p"); textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 255, 200), "[E]              ... ƒCƒ“ƒ^ƒ‰ƒNƒg / ƒVƒ‡ƒbƒv‚ğŠJ‚­ / ’²‚×‚é"); textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 255, 200), "[Tab]            ... ƒCƒ“ƒxƒ“ƒgƒŠ / ƒXƒe[ƒ^ƒX"); textY += lineHeight;
+		DrawFormatString(150, textY, GetColor(255, 255, 200), "[ESC]            ... ƒ|[ƒY / ƒƒjƒ…["); textY += lineHeight;
 	}
 
+	SetFontSize(32);
+	DrawFormatString(150, 900, GetColor(200, 200, 200), "? [A]/[¶–îˆó] ‘O‚Ìƒy[ƒW   |   Ÿ‚Ìƒy[ƒW [D]/[‰E–îˆó] ?");
+	DrawFormatString(150, 950, GetColor(150, 150, 150), "[BackSpace] / [ESC] ƒ^ƒCƒgƒ‹‚É–ß‚é");
+
+	// Reset font size if needed
+	SetFontSize(24);
 }
 
 void Rule::Finalize()
 {
-
+	if (mBgHandle1 != -1) {
+		DeleteGraph(mBgHandle1);
+		mBgHandle1 = -1;
+	}
+	if (mBgHandle2 != -1) {
+		DeleteGraph(mBgHandle2);
+		mBgHandle2 = -1;
+	}
 }

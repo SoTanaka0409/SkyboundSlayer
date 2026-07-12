@@ -33,7 +33,7 @@ void SceneManager::Initialize()
 {
 	////蛻晄悄繧ｷ繝ｼ繝ｳ縺ｮ險ｭ螳・
 
-	mnNextSceneType = SCENE_TYPE::SCENE_3D;
+	mnNextSceneType = SCENE_TYPE::SCENE_TITLE;
 
 	//繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ縺輔○繧・
 	ChangeSceneIfNeeded();
