@@ -1,4 +1,4 @@
-﻿
+
 #include "DxLib.h"
 #include "Config.h"
 #include"Texture.h"
@@ -31,10 +31,10 @@
 #include"Chat.h"
 #include"Save.h"
 /**
-* @note 郢晢ｽｪ郢晁ｼ斐＜郢晢ｽｬ郢晢ｽｳ郢ｧ・ｽE・ｽ https://dxlib.xsrv.jp/dxfunc.html
+* @note 繝ｪ繝輔ぃ繝ｬ繝ｳ繧�E�E�E� https://dxlib.xsrv.jp/dxfunc.html
 */
 
-//郢ｧ・ｽE・ｽ郢晢ｽｼ郢晢ｿｽ邵ｺ・ｽE・ｽ繝ｻ豕･郢晢ｽ｢郢晢ｿｽEﾎ・  metaseq316
+//繧�E�E�E�繝ｼ繝�縺�E�E�E�・泥繝｢繝�E΁E  metaseq316
 //https://www.d5render.com/ja/workflow/blender?utm_campaign=bingsearchILJPblender&utm_source=bing&utm_medium=cpc&msclkid=929170cec1521e953f1c187910ba1cae
 
 
@@ -42,15 +42,15 @@
 /**
 /**
 * @fn WinMain
-* @brief Main鬮｢・ｽE・ｽ隰ｨ・ｽE・ｽ
+* @brief Main髢�E�E�E�謨�E�E�E�
 * @param[in] HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
-* @return int 0 雎・・ｽ・ｽ陝ｶ・ｽE・ｽ驍ｨ繧・・ｽ・ｽ繝ｻ・ｽE・ｽ繝ｻ1 郢ｧ・ｽE・ｽ郢晢ｽｩ郢晢ｽｼ
-* @details Main鬮｢・ｽE・ｽ隰ｨ・ｽE・ｽ
+* @return int 0 豁E�E��E�蟶�E�E�E�邨めE�E��E�・�E�E�E�・1 繧�E�E�E�繝ｩ繝ｼ
+* @details Main髢�E�E�E�謨�E�E�E�
 */
 
-//Master郢ｧ・ｽE・ｽ郢晢ｽｩ郢ｧ・ｽE・ｽ邵ｺ・ｽE・ｽ鬮ｱ蜥丞飭郢晢ｽ｡郢晢ｽｳ郢昜ｻ呻ｽ､逕ｻ辟夊楜螟ゑｽｾ・ｽE・ｽ
+//Master繧�E�E�E�繝ｩ繧�E�E�E�縺�E�E�E�髱咏噪繝｡繝ｳ繝仙､画焚螳夂ｾ�E�E�E�
 Player3D* Master::mpPlayer = nullptr;
-SceneManager* Master::mpSceneManager = new SceneManager();//陷ｻ・ｽE・ｽ邵ｺ・ｽE・ｽ陷・・ｽ・ｽ邵ｺ繝ｻ
+SceneManager* Master::mpSceneManager = new SceneManager();//蜻�E�E�E�縺�E�E�E�蜁E�E��E�縺・
 SoundManager* Master::mpSoundManager = new SoundManager();
 ResourceManager* Master::mpResourceManager = new ResourceManager();
 Debug* Master::mpDebug = new Debug();
@@ -89,14 +89,14 @@ int Master::GameClearCount = 0;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	// 郢ｧ・ｽE・ｽ郢ｧ・ｽE・ｽ郢晢ｽｳ郢晏ｳｨ縺育ｹ晢ｽ｢郢晢ｽｼ郢晏ｳｨ縲定･搾ｽｷ陷搾ｿｽE
+	// 繧�E�E�E�繧�E�E�E�繝ｳ繝峨え繝｢繝ｼ繝峨〒襍ｷ蜍�E
 	ChangeWindowMode(true);
 
 	SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32);
 	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	
-	// DX郢晢ｽｩ郢ｧ・ｽE・ｽ郢晄じﾎ帷ｹ晢ｽｪ陋ｻ譎・・ｽ・ｽ陋ｹ繝ｻ
+	// DX繝ｩ繧�E�E�E�繝悶Λ繝ｪ蛻晁E�E��E�蛹・
 	SetDoubleStartValidFlag(TRUE);
 	if (DxLib_Init() == -1)
 	{
@@ -104,39 +104,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 	EffekseerManager::GetInstance()->Init();
 
-	// --- 陷茨ｽｨ闖ｴ阮呻ｿｽE郢晢ｽｩ郢ｧ・ｽE・ｽ郢晢ｿｽE縺・・ｽ・ｽ・ｳ郢ｧ・ｽE・ｽ繝ｻ閧ｲ閻ｸ陟・・ｽE繝ｻ郢晢ｽｻ陞滂ｽｪ鬮ｯ・ｽE・ｽ陷井ｼ夲ｽｼ闃ｽ・ｽE・ｽ・ｽE・ｽ陞ｳ繝ｻ---
+	// --- 蜈ｨ菴薙�E繝ｩ繧�E�E�E�繝�EぁE�E��E��E�繧�E�E�E�・育腸蠁E�E�E・繝ｻ螟ｪ髯�E�E�E�蜈会ｼ芽�E�E�E��E�E�E�螳・---
 	SetLightEnable(TRUE);
-	// 霑ｺ・ｽE・ｽ陟・・ｽE繝ｻ繝ｻ繝ｻmbColor繝ｻ蟲ｨ・ｽE・ｽ陝・ｻ｣・ｽE鬯ｮ蛟･・ｽE・ｽ邵ｺ・ｽE・ｽ髫ｪ・ｽE・ｽ陞ｳ螢ｹ・ｽE邵ｲ竏晢ｽｽ・ｽE・ｽ邵ｺ・ｽE・ｽ邵ｺ・ｽE・ｽ郢ｧ鄙ｫ・ｽE・ｽE・ｽ・ｽ蜷ｶ・ｽE・ｽ鬩幢ｽｨ陋ｻ繝ｻ・ｽE・ｽ莠･・ｽE・ｽ證ｮ謫・・ｽ・ｽ繝ｻ繝ｻ鬮ｱ・ｽE・ｽ繝ｻ蟲ｨ窶ｲ騾ｵ貅倪夢魄滂ｿｽE竊楢ｱ仙現竏ｪ邵ｺ・ｽE・ｽ邵ｺ繝ｻ・ｽE・ｽ邵ｺ繝ｻ竊鍋ｸｺ蜷ｶ・ｽE・ｽE
+	// 迺�E�E�E�蠁E�E�E・・・mbColor・峨�E�E�E�蟁E���E�E鬮倥�E�E�E�縺�E�E�E�險�E�E�E�螳壹�E�E縲∝ｽ�E�E�E�縺�E�E�E�縺�E�E�E�繧翫�E�E�E�E�E��E�吶�E�E�E�驛ｨ蛻・�E�E�E�亥�E�E�E�暮擁E�E��E�・・髱�E�E�E�・峨′逵溘▲鮟�E↓豐医∪縺�E�E�E�縺・�E�E�E�縺・↓縺吶�E�E�E�E
 	SetLightAmbColor(GetColorF(0.6f, 0.6f, 0.6f, 1.0f));
-	// 陞滂ｽｪ鬮ｯ・ｽE・ｽ陷井ｼ夲ｽｼ蛹ｻ繝ｧ郢ｧ・ｽE・ｽ郢晢ｽｬ郢ｧ・ｽE・ｽ郢ｧ・ｽE・ｽ郢晢ｽｧ郢晉ｿｫﾎ晉ｹ晢ｽｩ郢ｧ・ｽE・ｽ郢晁肩・ｽE・ｽ蟲ｨ繝ｻ陷ｷ莉｣窶ｳ郢ｧ蜻井ｸ・・ｽ・ｽ竏ｽ・ｽE・ｽ荵晢ｿｽE陷ｷ莉｣・ｽE郢ｧ繝ｻ
+	// 螟ｪ髯�E�E�E�蜈会ｼ医ョ繧�E�E�E�繝ｬ繧�E�E�E�繧�E�E�E�繝ｧ繝翫Ν繝ｩ繧�E�E�E�繝茨�E�E�E�峨・蜷代″繧呈丁E�E��E�∽�E�E�E�九�E蜷代�E�E繧・
 	SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
-	// 陞滂ｽｪ鬮ｯ・ｽE・ｽ陷亥ｳｨ繝ｻ豼ｶ・ｽE・ｽ繝ｻ莠･・ｽE・ｽ莉｣・ｽE騾具ｽｽ邵ｺ・ｽE・ｽ邵ｺ蠕個ｰ邵ｺ・ｽE・ｽ邵ｺ貊難ｿｽE郢ｧ荵晢ｼ樊ｿｶ・ｽE・ｽ繝ｻ繝ｻ
+	// 螟ｪ髯�E�E�E�蜈峨・濶�E�E�E�・亥�E�E�E�代�E�E逋ｽ縺�E�E�E�縺後°縺�E�E�E�縺滓�E繧九＞濶�E�E�E�・・
 	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
 	// ------------------------------------------------
 
 
-	//BGM邵ｺ・ｽE・ｽ髫ｱ・ｽE・ｽ邵ｺ・ｽE・ｽ髴趣ｽｼ邵ｺ・ｽE・ｽ
+	//BGM縺�E�E�E�隱�E�E�E�縺�E�E�E�霎ｼ縺�E�E�E�
 
-	//郢ｧ・ｽE・ｽ郢ｧ・ｽE・ｽ郢晢ｽｳ郢晏ｳｨ繝ｻ郢晞亂繝ｻ郢ｧ・ｽE・ｽ郢晢ｽ｣郢晢ｽｼ邵ｺ・ｽE・ｽ陋ｻ譎・・ｽ・ｽ陋ｹ繝ｻ
+	//繧�E�E�E�繧�E�E�E�繝ｳ繝峨・繝阪・繧�E�E�E�繝｣繝ｼ縺�E�E�E�蛻晁E�E��E�蛹・
 	SetUseASyncLoadFlag(TRUE);
-	Master::mpSoundManager->Initialize();//邵ｺ蜷ｶ竏狗ｸｺ・ｽE・ｽ邵ｺ・ｽE・ｽ郢ｧ・ｽE・ｽ郢ｧ・ｽE・ｽ郢晢ｽｳ郢晏ｳｨ窶ｲ髫ｱ・ｽE・ｽ邵ｺ・ｽE・ｽ髴趣ｽｼ邵ｺ・ｽE・ｽ郢ｧ鄂ｫu----
+	Master::mpSoundManager->Initialize();//縺吶∋縺�E�E�E�縺�E�E�E�繧�E�E�E�繧�E�E�E�繝ｳ繝峨′隱�E�E�E�縺�E�E�E�霎ｼ縺�E�E�E�繧罫u----
 
-	//郢ｧ・ｽE・ｽ郢晢ｽｼ郢晢ｽｳ郢晄ｧｭ繝ｭ郢晢ｽｼ郢ｧ・ｽE・ｽ郢晢ｽ｣郢晢ｽｼ邵ｺ・ｽE・ｽ騾墓ｻ難ｿｽE邵ｺ・ｽE・ｽ陋ｻ譎・・ｽ・ｽ陋ｹ繝ｻ
+	//繧�E�E�E�繝ｼ繝ｳ繝槭ロ繝ｼ繧�E�E�E�繝｣繝ｼ縺�E�E�E�逕滓�E縺�E�E�E�蛻晁E�E��E�蛹・
 	Master::mpSceneManager->Initialize();
 
 	Master::mpScoreManager->Initialize();
 
-	//郢ｧ・ｽE・ｽ郢晢ｽ｡郢晢ｽｩ邵ｺ・ｽE・ｽ隴厄ｽｴ隴・・ｽ・ｽ
+	//繧�E�E�E�繝｡繝ｩ縺�E�E�E�譖ｴ譁E�E��E�
 	Master::mpCamera->Initialize();
 
 	
 
 
 
-	//・ｽ蜀怜愛陷磯メ・ｽE・ｽ・ｽE・ｽ陞ｳ螢ｹ・ｽE・ｽ髯ｬ蜀怜愛鬮ｱ・ｽE・ｽ邵ｺ・ｽE・ｽ髫ｪ・ｽE・ｽ陞ｳ螢ｹ笘・・ｽ・ｽ繝ｻ
+	//�E�冗判蜈郁�E�E�E��E�E�E�螳壹�E�E�E�陬冗判髱�E�E�E�縺�E�E�E�險�E�E�E�螳壹☁E�E��E�・
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//Z郢晢ｿｽE繝｣郢晁ｼ斐＜邵ｺ・ｽE・ｽ隴厄ｽｸ邵ｺ蟠趣ｽｾ・ｽE・ｽ郢ｧ・ｽ雋・・ｽ・ｽ・ｽE・ｽE
+	//Z繝�Eャ繝輔ぃ縺�E�E�E�譖ｸ縺崎ｾ�E�E�E�繧�E�貁E�E��E��E�E�E�E
 	SetUseZBufferFlag(true);
 	SetWriteZBufferFlag(true);
 
@@ -144,11 +144,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	int animationCounter = 0;
 	int textureCurrentNum = 0;
 
-	//郢ｧ・ｽE・ｽ郢晢ｽｼ郢晢ｿｽ邵ｺ・ｽE・ｽ郢晢ｽ｡郢ｧ・ｽE・ｽ郢晢ｽｳ郢晢ｽｫ郢晢ｽｼ郢晢ｿｽE
+	//繧�E�E�E�繝ｼ繝�縺�E�E�E�繝｡繧�E�E�E�繝ｳ繝ｫ繝ｼ繝�E
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 
-		//騾包ｽｻ鬮ｱ・ｽE・ｽ郢ｧ雋橸ｿｽE隴帶ｺｷ蝟ｧ邵ｺ蜷ｶ・ｽE・ｽE
+		//逕ｻ髱�E�E�E�繧貞�E譛溷喧縺吶�E�E�E�E
 		ClearDrawScreen();
 		int time = GetNowCount();
 
@@ -177,39 +177,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 
 
-		//髯ｬ蜀怜愛鬮ｱ・ｽE・ｽ邵ｺ・ｽE・ｽ・ｽ繝ｻ・ｽE・ｽ・ｽE・ｽ郢ｧ螳夲ｽ｡・ｽE・ｽ騾包ｽｻ鬮ｱ・ｽE・ｽ邵ｺ・ｽE・ｽ隴擾ｿｽ邵ｺ繝ｻ
+		//陬冗判髱�E�E�E�縺�E�E�E��E�・�E�E�E��E�E�E�繧定｡�E�E�E�逕ｻ髱�E�E�E�縺�E�E�E�譏�縺・
 		if (GetASyncLoadNum() > 0)
 		{
 			DrawFormatString(600, 360, GetColor(255, 255, 255), "NOW LOADING... %d", GetASyncLoadNum());
 		}
 		ScreenFlip();
 
-		//繝ｻ謇假ｽｼ蜉ｱﾎ醍ｹ晢ｽｪ驕俶慣・ｽE・ｽ閧ｲ・ｽE・ｽ蜻茨ｿｽE鬮｢讌｢・ｽE・ｽ・ｽE・ｽ繝ｻ蜴・・ｽ・ｽ闊後Ψ郢晢ｽｬ郢晢ｽｼ郢晢ｿｽ邵ｺ・ｽE・ｽ邵ｺ・ｽE・ｽ邵ｺ貅倪夢陜｣・ｽE・ｽ陷ｷ闌ｨ・ｽE・ｽ莉｣繝ｵ郢晢ｽｬ郢晢ｽｼ郢晢ｿｽ陟冶侭笳・・ｽ・ｽ鄙ｫ繝ｻ驍ｨ遒≫с隴弱ｋ菫｣
-		//繝ｻ謇假ｽｼ蜉ｱﾎ醍ｹ晢ｽｪ驕俶慣・ｽE・ｽ閧ｲ・ｽE・ｽ蜻茨ｿｽE鬮｢讌｢・ｽE・ｽ・ｽE・ｽ繝ｻ蜴・・ｽ・ｽ闊後Ψ郢晢ｽｬ郢晢ｽｼ郢晉ｸｺ邵ｺ・ｽE・ｽ邵ｺ貅倪夢陜｣・ｽE・ｽ陷ｷ闌ｨ・ｽE・ｽ莉｣繝ｵ郢晢ｽｬ郢晢ｽｼ郢晢ｿｽ阮吮浴E・ｽ・ｽ鄙ｫ繝ｻ驍ｨ遒≫с隴弱ｋ菫｣
-		//繝ｻ謇假ｽｼ蜉ｱﾎ醍ｹ晢ｽｪ驕俶慣E閧ｲE蜻・鬮｢讌｢EE繝ｻ蜴・闊後Ψ郢晢ｽｬ郢晢ｽｼ郢晉ｸｺE邵ｺE邵ｺ貅倪夢陜｣E陷ｷ闌ｨE莉｣繝ｵ郢晢ｽｬ郢晢ｽｼ郢晁冶侭笳・鄙ｫ繝ｻ驍ｨ遒≫с隴弱ｋ菫｣
-		//繝ｻ謇假ｽｼ蜉ｱﾎ醍ｹ晢ｽｪ驕俶慣E閧ｲE蜻・鬮｢讌｢EE繝ｻ蜴・闊後Ψ郢晢ｽｬ郢晢ｽｼ郢晉ｸｺ邵ｺE邵ｺ貅倪夢陜｣E陷ｷ闌ｨE莉｣繝ｵ郢晢ｽｬ郢晢ｽｼ郢晁侭笳・鄙ｫ繝ｻ驍ｨ遒≫с隴弱ｋ菫｣
-		//驍ｨ遒≫с邵ｺ蜷ｶE邵ｺE邵ｺE邵ｺ阮呻ｼ・E陟髭笆ｽ
+		//・托ｼ励Α繝ｪ遘抵�E�E�E�育�E�E�E�呈�E髢楢�E�E�E��E�E�E�・厁E�E��E�舌ヵ繝ｬ繝ｼ繝�縺�E�E�E�縺�E�E�E�縺溘▲蝣�E�E�E�蜷茨�E�E�E�代ヵ繝ｬ繝ｼ繝�蠖薙◁E�E��E�翫・邨碁℃譎る俣
+		//・托ｼ励Α繝ｪ遘抵�E�E�E�育�E�E�E�呈�E髢楢�E�E�E��E�E�E�・厁E�E��E�舌ヵ繝ｬ繝ｼ繝縺縺�E�E�E�縺溘▲蝣�E�E�E�蜷茨�E�E�E�代ヵ繝ｬ繝ｼ繝�薙◁E�E��E�翫・邨碁℃譎る俣
+		//・托ｼ励Α繝ｪ遘抵E育E呁E髢楢EE・厁E舌ヵ繝ｬ繝ｼ繝縺E縺E縺溘▲蝣E蜷茨E代ヵ繝ｬ繝ｼ繝蠖薙◁E翫・邨碁℃譎る俣
+		//・托ｼ励Α繝ｪ遘抵E育E呁E髢楢EE・厁E舌ヵ繝ｬ繝ｼ繝縺縺E縺溘▲蝣E蜷茨E代ヵ繝ｬ繝ｼ繝薙◁E翫・邨碁℃譎る俣
+		//邨碁℃縺吶E縺E縺E縺薙！EE蠕E▽
 		while (GetNowCount() - time < 17)
 		{
-			//陟髭笆ｽ邵ｺ邵ｺ莉｣竊醍ｸｺE邵ｺE邵ｺ阮呻ｼ・E邵ｺE闖ｴ霈費ｽりｭ厄ｽｸ邵ｺ荵戲邵ｺ繝ｻ
+			//蠕E▽縺縺代↑縺E縺E縺薙！EE縺E菴輔ｂ譖ｸ縺九E縺・
 		}
 
-		//陷台ｼ∝求邵ｺ蜷ｶE繝ｻE竏哘邵ｺ繧・郢ｧ
+		//蜑企勁縺吶E・E√E縺めE繧
 		if (GetASyncLoadNum() == 0)
 		{
-			//蜑企勁縺吶ｋ繝輔Λ繧ｰ縺後≠繧九が繝悶ず繧ｧ繧ｯ繝医′縺ゅｌ縺ｰ蜑企勁縺吶ｋ
+			//削除するフラグがあるオブジェクトがあれば削除する
 			Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
 			Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
 			ColliderManager::GetInstance()->DeleteAllColliderIfNeeded();
 
-			//繝ｫ繝ｼ繝励・逶ｴ蜑阪↓繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ繧偵＞繧後※縺翫￥
+			//ループ�E直前にシーン遷移をいれておく
 			Master::mpSceneManager->ChangeSceneIfNeeded();
 		}
 		
 
 		
 	}
-	//驍ｨ繧・繝ｻ繝ｻ騾・E
+	//邨めE・・送EE
 	Master::mpSceneManager->Finalize();
 	delete Master::mpSceneManager;
 	Master::mpSoundManager->Finalize();
@@ -224,11 +224,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-	// DX郢晢ｽｩ郢ｧ・ｽE・ｽ郢晄じﾎ帷ｹ晢ｽｪ闖ｴ・ｽE・ｽ騾包ｽｨ邵ｺ・ｽE・ｽ驍ｨ繧・・ｽ・ｽ繝ｻ
+	// DX繝ｩ繧�E�E�E�繝悶Λ繝ｪ菴�E�E�E�逕ｨ縺�E�E�E�邨めE�E��E�・
 	EffekseerManager::GetInstance()->End();
 	DxLib_End();
 
-	// 郢ｧ・ｽE・ｽ郢晁ｼ斐Κ邵ｺ・ｽE・ｽ驍ｨ繧・・ｽ・ｽ繝ｻ
+	// 繧�E�E�E�繝輔ヨ縺�E�E�E�邨めE�E��E�・
 	return 0;
 }
 

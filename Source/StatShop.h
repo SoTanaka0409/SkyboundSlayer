@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "DxLib.h"
 #include "Object3D.h"
 #include "Model.h"
@@ -40,8 +40,6 @@ private:
 	int mnSelect;
 	int mnSelectMax;
 	int mnSelectMin;
-
-	int mnBgImageHandle;
 	bool mbOldMouseDown;
 
 	// Upgrade Levels

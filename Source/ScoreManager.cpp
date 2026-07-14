@@ -1,4 +1,4 @@
-﻿
+
 #define _CRT_SECURE_NO_WARNINGS
 #include"ScoreManager.h"
 #include"DxLib.h"
@@ -109,9 +109,10 @@ void ScoreManager::LoadHighScore()
 		return;
 	}
 
-	fscanf(fp, "SCORE:%d\n", (int)&mnHighScore);
-	fscanf(fp, "SCORE:%d\n", (int)&mnHighScore2);
-	fscanf(fp, "SCORE:%d\n", (int)&mnHighScore3);
+	int s1 = 0, s2 = 0, s3 = 0;
+	fscanf(fp, "SCORE:%d\n", &s1); mnHighScore = (float)s1;
+	fscanf(fp, "SCORE:%d\n", &s2); mnHighScore2 = (float)s2;
+	fscanf(fp, "SCORE:%d\n", &s3); mnHighScore3 = (float)s3;
 
 	char name[256];
 	fscanf(fp, "NAME :%s\n", name);

@@ -1,4 +1,4 @@
-﻿#include "StatShop.h"
+#include "StatShop.h"
 #include <fstream>
 
 #include "ModelUtility.h"
@@ -48,9 +48,7 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	mpShopIn = new SphereCollider(this, position_, 200.0f);
-	mpSafeZoon = new SphereCollider(this, position_, 1000.0f); // 隰ｨｽｵ邵ｺ迹夲ｽｿ莉｣笆ｼ邵ｺ莉｣竊醍ｸｺ繝ｻ縺晉ｹ晢ｽｼ郢晁ｼ斐□郢晢ｽｼ郢晢ｽｳ
-	
-	mnBgImageHandle = LoadGraph("Resource/stat_shop_bg.png");
+	mpSafeZoon = new SphereCollider(this, position_, 1000.0f); // 謨��縺瑚ｿ代▼縺代↑縺・そ繝ｼ繝輔だ繝ｼ繝ｳ
 	mbOldMouseDown = false;
 
 	mnIconMaxHpHandle = LoadGraph("Resource/2D/icon_hp_up.png");
@@ -66,7 +64,6 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 
 StatShop::~StatShop()
 {
-	DeleteGraph(mnBgImageHandle);
 	DeleteGraph(mnIconMaxHpHandle);
 	DeleteGraph(mnIconAttackHandle);
 	DeleteGraph(mnIconSpeedHandle);
@@ -93,8 +90,7 @@ void StatShop::Draw()
 	{
 		player->mpHaveMoney->Draw();
 
-		// 髢ｭ譴ｧ蜍ｹ郢ｧﾐ､I
-		DrawExtendGraph(300, 100, 1620, 800, mnBgImageHandle, TRUE);
+		// 閭梧勹繧ФI
 		
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 		DrawBox(300, 100, 1620, 800, GetColor(0, 0, 50), TRUE);
@@ -122,7 +118,7 @@ void StatShop::Draw()
 			int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
 			if (i == mnSelect) DrawFormatString(330, 250 + i * 60, color, ">");
 			
-			// 繧｢繧､繧ｳ繝ｳ謠冗判 (40x40 繧ｵ繧､繧ｺ縺ｫ邵ｮ蟆上＠縺ｦ陦ｨ遉ｺ)
+			// アイコン描画 (40x40 サイズに縮小して表示)
 			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
 
 			if (i == 4) {
@@ -145,14 +141,14 @@ void StatShop::Draw()
 		float dz = playerPos.z - position_.z;
 		float dist = sqrtf(dx * dx + dz * dz);
 		
-		// ショップ名と操作説明
-		DrawFormatString(DrawNameWorld.x - 30, DrawNameWorld.y, GetColor(255, 255, 0), "[ ステータスショップ ]");
-		DrawFormatString(DrawNameWorld.x - 10, DrawNameWorld.y + 20, GetColor(255, 255, 255), "Enterキーで開く");
+		// �V���b�v���Ƒ������
+		DrawFormatString(DrawNameWorld.x - 30, DrawNameWorld.y, GetColor(255, 255, 0), "[ �X�e�[�^�X�V���b�v ]");
+		DrawFormatString(DrawNameWorld.x - 10, DrawNameWorld.y + 20, GetColor(255, 255, 255), "Enter�L�[�ŊJ��");
 
-		// プレイヤーが近づいたらメッセージを表示
+		// �v���C���[���߂Â����烁�b�Z�[�W��\��
 		if (dist < 1000.0f)
 		{
-			DrawFormatString(DrawNameWorld.x - 60, DrawNameWorld.y - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」");
+			DrawFormatString(DrawNameWorld.x - 60, DrawNameWorld.y - 30, GetColor(100, 255, 100), "�u��������Ⴂ�I ���������������̂͂��邩���H�v");
 		}
 
 		model_->Draw();
@@ -183,7 +179,7 @@ void StatShop::Update()
 	
 	if (mShopState == ShopState::WAIT_PHASE) return;
 	
-	// WALKING_OUT邵ｺｽｮ隴弱ｅ繝ｻ邵ｲ竏壹Ψ郢ｧｽｧ郢晢ｽｼ郢ｧｽｺ邵ｺ讙趣ｽｵ繧ｽｺ繝ｻｼ邵ｺｽｦ邵ｺ繝ｻ窶ｻ郢ｧ繧会ｽｧｽｻ陷榊供繝ｻ騾繝ｻｽ帝け螢ｹｿ郢ｧ蜿･ｽｿ繝ｻｽｦ竏壺ｲ邵ｺ繧ｽ狗ｸｺ貅假ｽ∫ｸｲ竏夲ｼ邵ｺ阮吶定崕繝ｻｽｲ闊鯉ｼ邵ｺｽｾ邵ｺ蜷ｶﾂ繝ｻ
+	// WALKING_OUT縺��譎ゅ・縲√ヵ繧��繝ｼ繧��縺檎ｵソ�・�縺��縺・※繧らｧ��蜍募・�・��邯壹�繧句��・��√�縺ソ�縺溘ａ縲√�縺薙�蛻・��舌�縺��縺吶�・
 	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
 
 	auto currentScene = Master::mpSceneManager->GetCurrentScene();
@@ -238,7 +234,7 @@ void StatShop::movePosition()
 		{
 			VECTOR nDir = VNorm(dir);
 			position_ = VAdd(position_, VScale(nDir, 4.0f));
-			rotation_.y = atan2f(-nDir.x, -nDir.z); // 騾ｲ陦梧婿蜷代ｒ蜷代￥
+			rotation_.y = atan2f(-nDir.x, -nDir.z); // 進行方向を向く
 			model_->ChangeAnimation(ANIMATION_RUN);
 		}
 	}
@@ -257,7 +253,7 @@ void StatShop::movePosition()
 		{
 			VECTOR nDir = VNorm(dir);
 			position_ = VAdd(position_, VScale(nDir, 4.0f));
-			rotation_.y = atan2f(-nDir.x, -nDir.z); // 騾ｲ陦梧婿蜷代ｒ蜷代￥
+			rotation_.y = atan2f(-nDir.x, -nDir.z); // 進行方向を向く
 			model_->ChangeAnimation(ANIMATION_RUN);
 		}
 	}
@@ -267,7 +263,7 @@ void StatShop::movePosition()
 		model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	}
 
-	// 蛻､螳壹ｒ逕ｻ髱｢螟悶↓遘ｻ蜍輔＆縺帙ｋ蜃ｦ逅縺ｪ縺ｩ
+	// 判定を画面外に移動させる処�など
 	if (mShopState == ShopState::ARRIVED)
 	{
 		mpShopIn->position_ = position_;
@@ -283,7 +279,7 @@ void StatShop::movePosition()
 	if(model_) {
 		model_->SetPosition(position_);
 		model_->SetRotation(rotation_);
-		model_->Update(); // 縺薙％縺悟他縺ｰ繧後※縺縺ｪ縺九▲縺溘◆繧√√い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ(繝｢繝ｼ繧ｷ繝ｧ繝ｳ)縺碁ｲ縺ｾ縺ｪ縺九▲縺
+		model_->Update(); // ここが呼ばれて�なかったため�アニメーション(モーション)が�まなかっ�
 	}
 }
 void StatShop::StartWalkingIn()

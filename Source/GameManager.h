@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "DxLib.h"
 #include "EnemyManager.h"
 #include "ObjectManager.h"
@@ -44,6 +44,7 @@ public:
 
     void Update();
     void Draw();
+    void DrawMinimap();
 
     Phase GetCurrentPhase() const { return mCurrentPhase; }
     int GetShopTimer() const { return mShopTimer; }

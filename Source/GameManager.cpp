@@ -26,7 +26,7 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     
     // Portal Base
     float portalSize = 100.0f;
-    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/転送陣/source/portal.mv1", "Resource/3D/転送陣/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
+    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/�]���w/source/portal.mv1", "Resource/3D/�]���w/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
 }
 
 GameManager::~GameManager()
@@ -51,25 +51,25 @@ void GameManager::Update()
         mFadeAlpha += 5;
         if (mFadeAlpha >= 255) {
             mFadeAlpha = 255;
-            mCurrentPhase = Phase::BOSS; // 荳譎ら噪縺ｫBOSS縺ｫ縺励※蜃ｺ迴ｾ縺輔○繧
-            SpawnPhaseEnemies(); // 縺薙％縺ｧ繝懊せ蜃ｺ迴ｾ
+            mCurrentPhase = Phase::BOSS; // �時的にBOSSにして出現させ�
+            SpawnPhaseEnemies(); // ここでボス出現
 
             mCurrentPhase = Phase::FADE_IN_BOSS;
             
-            // 繝懊せ繧ｨ繝ｪ繧｢縺ｸ繝励Ξ繧､繝､繝ｼ繧偵Ρ繝ｼ繝励＆縺帙ｋ
+            // ボスエリアへプレイヤーをワープさせる
             Master::mpPlayer->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0.0f, -2000.0f)));
             if (Master::mpSoundManager) {
                 Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
             }
         }
-        return; // 繝輔ぉ繝ｼ繝我ｸｭ縺ｯ莉悶ｮ譖ｴ譁ｰ繧偵せ繧ｭ繝繝
+        return; // フェード中は他�更新をスキ��
     } else if (mCurrentPhase == Phase::FADE_IN_BOSS) {
         mFadeAlpha -= 5;
         if (mFadeAlpha <= 0) {
             mFadeAlpha = 0;
             mCurrentPhase = Phase::BOSS;
         }
-        return; // 繝輔ぉ繝ｼ繝我ｸｭ縺ｯ莉悶ｮ譖ｴ譁ｰ繧偵せ繧ｭ繝繝
+        return; // フェード中は他�更新をスキ��
     }
 
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)
@@ -134,13 +134,13 @@ void GameManager::Update()
             Phase oldPhase = mCurrentPhase;
             if (mCurrentPhase == Phase::PHASE_1) {
                 mCurrentPhase = Phase::SHOP_1;
-                mShopTimer = 60 * 20; // 20驕倥ｻ
+                mShopTimer = 60 * 20; // 20遘�
             } else if (mCurrentPhase == Phase::PHASE_2) {
                 mCurrentPhase = Phase::SHOP_2;
-                mShopTimer = 60 * 20; // 20驕倥ｻ
+                mShopTimer = 60 * 20; // 20遘�
             } else if (mCurrentPhase == Phase::PHASE_3) {
                 mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20驕倥ｻ
+                mShopTimer = 60 * 20; // 20遘�
             } else if (mCurrentPhase == Phase::BOSS) {
                 mCurrentPhase = Phase::CLEAR;
             }
@@ -180,6 +180,8 @@ void GameManager::Draw()
     DrawFormatString(20, 140, GetColor(255, 255, 255), "Enemies Remaining: %d", enemyCount);
 
     SetFontSize(fontSize);
+
+    DrawMinimap();
 
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3) {
         if (mCurrentPhase != Phase::SHOP_3) {
@@ -235,7 +237,7 @@ void GameManager::SpawnPhaseEnemies()
 {
 auto p = Master::mpPlayer;
     Player3D* player = p->CastTo<Player3D>();
-    // 隰ｨｽｵ邵ｺ蠕後○郢昴ｻ繝ｻ郢ｧｽｸ邵ｺ荵晢ｽ芽棔謔ｶｽ檎ｸｺｽｦ髣懶ｽｽ闕ｳ荵昴ｻ陜灘玄ｽｲｽ｡邵ｺ蜉ｱ竊醍ｸｺ繝ｻｽ育ｸｺ繝ｻ竊鍋ｸｲｼ経nfig邵ｺｽｮ郢ｧｽｹ郢昴ｻ繝ｻ郢ｧｽｸ闕ｳｽｭ陟｢繝ｻｽｺｽｧ隶灘生ｽ定ｲ会ｽｧ邵ｺ蝣ｺｽｽ蜥ｲｽｽｽｮ邵ｺｽｮ陜難ｽｺ雋謔ｶ竊堤ｸｺ蜷ｶｽ
+    // 謨��縺後せ繝�・繧��縺九ｉ螟悶��縺��關ｽ荳九�蝓区����縺励↑縺・��縺・↓縲��onfig縺��繧��繝�・繧��荳��蠢・����讓吶��貉ｧ縺堺��咲����縺��蝓ｺ�悶→縺吶�
     VECTOR centerPos = Config::GetStageCenter();
     if (player != nullptr)
     {
@@ -266,7 +268,7 @@ auto p = Master::mpPlayer;
         mpEnemyManager->NewEnemyList(e);
     }
     else if (mCurrentPhase == Phase::PHASE_2) {
-        // Wave 2: 鬯ｲ逍ｲｽｳ蜍溘ｻ陞｢ｽｫ
+        // Wave 2: 鬲疲��募�螢��
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
         e1.spawnCenter = centerPos;
@@ -287,7 +289,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e1);
         mpEnemyManager->NewEnemyList(e1);
 
-        // Wave 2: 髴醍ｬｬ逎∬恆ｽ｣陞｢ｽｫ
+        // Wave 2: 霑第磁蜑��螢��
         EnemyManager::enemydate e2;
         e2.filename = "Resource/Model/T.mv1";
         e2.spawnCenter = centerPos;
@@ -309,7 +311,7 @@ auto p = Master::mpPlayer;
         mpEnemyManager->NewEnemyList(e2);
     }
     else if (mCurrentPhase == Phase::PHASE_3) {
-        // Wave 3: 鬩･蝓ｼ纃ｼ驍丞｣ｻｽｻｽ｣騾包ｽｨ
+        // Wave 3: 驥埼㍼邏壻����逕ｨ
         EnemyManager::enemydate e_heavy;
         e_heavy.filename = "Resource/Model/monster.mv1";
         e_heavy.spawnCenter = centerPos;
@@ -330,7 +332,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e_heavy);
         mpEnemyManager->NewEnemyList(e_heavy);
 
-        // Wave 3: 鬯ｲ逍ｲｽｳ蜍溘ｻ陞｢ｽｫ
+        // Wave 3: 鬲疲��募�螢��
         EnemyManager::enemydate e_magic;
         e_magic.filename = "Resource/Model/T.mv1";
         e_magic.spawnCenter = centerPos;
@@ -351,7 +353,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e_magic);
         mpEnemyManager->NewEnemyList(e_magic);
 
-        // Wave 3: 髴醍ｬｬ逎∬怦ｽｵ陞｢ｽｫ
+        // Wave 3: 霑第磁蜈��螢��
         EnemyManager::enemydate e_melee;
         e_melee.filename = "Resource/Model/T.mv1";
         e_melee.spawnCenter = centerPos;
@@ -392,5 +394,74 @@ auto p = Master::mpPlayer;
 
         ApplyDifficultyMultipliers(e2);
         mpEnemyManager->NewEnemyList(e2);
+    }
+}
+void GameManager::DrawMinimap()
+{
+    // Minimap dimensions and position
+    const float mapSize = 250.0f;
+    const float mapX = 1920.0f - mapSize - 20.0f;
+    const float mapY = 20.0f;
+    
+    // Draw minimap background (semi-transparent black)
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+    DrawBox((int)mapX, (int)mapY, (int)(mapX + mapSize), (int)(mapY + mapSize), GetColor(0, 0, 0), TRUE);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    DrawBox((int)mapX, (int)mapY, (int)(mapX + mapSize), (int)(mapY + mapSize), GetColor(255, 255, 255), FALSE);
+    
+    // Coordinate mapping (Assuming stage is roughly -6000 to +6000 in X and Z)
+    const float stageSize = 12000.0f;
+    auto WorldToMinimap = [&](VECTOR pos) -> VECTOR {
+        float relX = pos.x / stageSize;
+        float relZ = pos.z / stageSize;
+        // Map to 0-1 range based on center
+        float mapRelX = relX + 0.5f;
+        float mapRelZ = -relZ + 0.5f; // Z goes forward, but 2D Y goes down, so flip Z
+        
+        return VGet(mapX + mapRelX * mapSize, mapY + mapRelZ * mapSize, 0.0f);
+    };
+
+    // Draw Boss Portal
+    VECTOR portalMapPos = WorldToMinimap(mBossPortalPos);
+    if (portalMapPos.x >= mapX && portalMapPos.x <= mapX + mapSize &&
+        portalMapPos.y >= mapY && portalMapPos.y <= mapY + mapSize)
+    {
+        DrawCircle((int)portalMapPos.x, (int)portalMapPos.y, 6, GetColor(0, 255, 255), TRUE);
+    }
+
+    // Draw Enemies
+    const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+    for (auto obj : enemies)
+    {
+        VECTOR eMapPos = WorldToMinimap(obj->GetPosition());
+        if (eMapPos.x >= mapX && eMapPos.x <= mapX + mapSize &&
+            eMapPos.y >= mapY && eMapPos.y <= mapY + mapSize)
+        {
+            DrawCircle((int)eMapPos.x, (int)eMapPos.y, 4, GetColor(255, 0, 0), TRUE);
+        }
+    }
+
+    // Draw Player
+    if (Master::mpPlayer)
+    {
+        VECTOR pMapPos = WorldToMinimap(Master::mpPlayer->GetPosition());
+        if (pMapPos.x >= mapX && pMapPos.x <= mapX + mapSize &&
+            pMapPos.y >= mapY && pMapPos.y <= mapY + mapSize)
+        {
+            // Player dot
+            DrawCircle((int)pMapPos.x, (int)pMapPos.y, 5, GetColor(0, 255, 0), TRUE);
+            
+            // Player direction line
+            float pAngle = Master::mpPlayer->GetAngle();
+            // Note: DXLib's angle 0 is +Z direction.
+            // On minimap, +Z is mapped to -Y (up).
+            // +X is mapped to +X (right).
+            // So sin(angle) -> X, cos(angle) -> Z.
+            // Minimap Z -> -Y, so direction is (sin(angle), -cos(angle)).
+            float dirX = sinf(pAngle) * 15.0f;
+            float dirY = -cosf(pAngle) * 15.0f;
+            
+            DrawLine((int)pMapPos.x, (int)pMapPos.y, (int)(pMapPos.x + dirX), (int)(pMapPos.y + dirY), GetColor(0, 255, 0), 2);
+        }
     }
 }

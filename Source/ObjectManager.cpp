@@ -1,4 +1,4 @@
-﻿#include"ObjectManager.h"
+#include"ObjectManager.h"
 #include "Master.h"
 #include "ColliderManager.h"
 
@@ -9,7 +9,8 @@ ObjectManager::ObjectManager()
 
 ObjectManager::~ObjectManager()
 {
-
+	DeleteAll3D();
+	DeleteAll2D();
 }
 
 //譖ｴ譁ｰ

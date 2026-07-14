@@ -1,4 +1,4 @@
-ï»¿#include "TitleScene.h"
+#include "TitleScene.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -24,14 +24,15 @@ void TitleScene::Initialize()
 	Master::GameClearCount = 0;
 	ColliderManager::GetInstance()->DeleteAllCollider();
 	
+	Master::mpScoreManager->LoadHighScore();
 	Master::mpSoundManager->PlayBGM(SoundManager::BGM_TITLE);
 	
-	// 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒ­ãƒ¼ãƒ‰
+	// 3Dƒ‚ƒfƒ‹‚Ìƒ[ƒh
 	mnSkyBoxHandle = MV1LoadModel("Resource/3D/SkyBox/SkyBox.x");
 	mnStageHandle = MV1LoadModel("Resource/3D/stage_sky/source/Flooting_Stage.mv1");
 	mnCastleHandle = MV1LoadModel("Resource/3D/Stage_casule/source/Parede castelo.mv1");
 	
-	// ã‚¹ã‚±ãƒ¼ãƒ«ã¨ä½ç½®ã®è¨­å®š
+	// ƒXƒP[ƒ‹‚ÆˆÊ’u‚Ìİ’è
 	MV1SetScale(mnSkyBoxHandle, VGet(13.0f, 13.0f, 13.0f));
 	MV1SetPosition(mnSkyBoxHandle, VGet(0, 0, -5000));
 	
@@ -48,7 +49,7 @@ void TitleScene::Update()
 {
 	Scene::Update();
 	
-	// ã‚«ãƒ¡ãƒ©ã‚’ã‚†ã£ãã‚Šå›ã™
+	// ƒJƒƒ‰‚ğ‚ä‚Á‚­‚è‰ñ‚·
 	mCameraAngle += 0.002f;
 	if (mCameraAngle >= DX_PI_F * 2.0f) mCameraAngle -= DX_PI_F * 2.0f;
 	
@@ -79,12 +80,12 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	// 3DèƒŒæ™¯ã®æç”»
+	// 3D”wŒi‚Ì•`‰æ
 	MV1DrawModel(mnSkyBoxHandle);
 	MV1DrawModel(mnStageHandle);
 	MV1DrawModel(mnCastleHandle);
 	
-	// UIã®ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨
+	// UI‚ÌƒtƒF[ƒh—p
 	if (mbColorFlag)
 	{
 		mnColorFade -= 4;
@@ -102,10 +103,10 @@ void TitleScene::Draw()
 	int oldSize = GetFontSize();
 	
 	SetFontSize(80);
-	// ã‚´ãƒ¼ãƒ«ãƒ‰ç³»ã®è‰²ã§ã‚¿ã‚¤ãƒˆãƒ«
+	// ƒS[ƒ‹ƒhŒn‚ÌF‚Åƒ^ƒCƒgƒ‹
 	DrawFormatString(300, 100, GetColor(255, 215, 0), "Sky Castle Hunter");
 	
-	Master::mpScoreManager->LoadHighScore();
+	
 	
 	int mx, my;
 	InputManager::GetMousePos(mx, my);
@@ -115,7 +116,7 @@ void TitleScene::Draw()
 	
 	SetFontSize(40);
 	
-	// æ·¡ã„é’ / ç™½ã®è‰²åˆã„
+	// ’W‚¢Â / ”’‚ÌF‡‚¢
 	int colorNormal = GetColor(220, 240, 255);
 	int colorHover = GetColor(255, 255, 255);
 	
@@ -130,15 +131,15 @@ void TitleScene::Draw()
 	
 	if (hoverRule)
 	{
-		DrawFormatString(50, 820, colorHover, "> ãƒ«ãƒ¼ãƒ« (Rule)");
+		DrawFormatString(50, 820, colorHover, "> ƒ‹[ƒ‹ (Rule)");
 	}
 	else
 	{
-		DrawFormatString(50, 820, colorNormal, "  ãƒ«ãƒ¼ãƒ« (Rule)");
+		DrawFormatString(50, 820, colorNormal, "  ƒ‹[ƒ‹ (Rule)");
 	}
 	
 	SetFontSize(25);
-	DrawFormatString(700, 960, GetColor(200, 200, 200), "ãƒã‚¦ã‚¹ã§é …ç›®ã‚’ã‚¿ãƒƒãƒ—ï¼ˆã‚¯ãƒªãƒƒã‚¯ï¼‰ã—ã¦æ±ºå®š");
+	DrawFormatString(700, 960, GetColor(200, 200, 200), "ƒ}ƒEƒX‚Å€–Ú‚ğƒ^ƒbƒviƒNƒŠƒbƒNj‚µ‚ÄŒˆ’è");
 	
 	SetFontSize(oldSize);
 }

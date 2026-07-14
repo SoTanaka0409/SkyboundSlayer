@@ -1,4 +1,4 @@
-﻿#include "EnemyMonster.h"
+#include "EnemyMonster.h"
 #include "Model.h"
 #include "Master.h"
 #include "Player3D.h"
@@ -192,7 +192,7 @@ void EnemyMonster::Attack()
 			mChargeTimer = 0;
 			
 			// Visual effect for landing
-			new Magic_Ene("Resource/Damage.png", VAdd(position_, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0,0,0), 0, 150);
+			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0,0,0), 0, 150);
 		}
 	}
 	else if (mAttackState == AttackState::Landing)
