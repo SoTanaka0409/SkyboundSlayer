@@ -1,4 +1,4 @@
-ï»¿#include "GameManager.h"
+#include "GameManager.h"
 #include "Player3D.h"
 #include "Enemy.h"
 #include "StatShop.h"
@@ -88,11 +88,28 @@ void GameManager::Update()
         }
     }
 
+    // DEBUG: Press 'B' to instantly skip to BOSS phase
+    if (InputManager::CheckDownKey(KEY_INPUT_B)) {
+        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+        for (auto enemy : enemies) {
+            Enemy* e = enemy->CastTo<Enemy>();
+            if (e) {
+                e->Delete();
+            }
+            enemy->SetDeleteFlag(true);
+        }
+        mCurrentPhase = Phase::FADE_OUT_TO_BOSS;
+        mFadeAlpha = 0;
+        if (Master::mpSoundManager) {
+            Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
+        }
+    }
+
     if (mCurrentPhase == Phase::FADE_OUT_TO_BOSS) {
         mFadeAlpha += 5;
         if (mFadeAlpha >= 255) {
             mFadeAlpha = 255;
-            mCurrentPhase = Phase::BOSS; // ï¿½æ™‚çš„ã«BOSSã«ã—ã¦å‡ºç¾ã•ã›ï¿½
+            mCurrentPhase = Phase::BOSS; // E½æ™‚çš„ã«BOSSã«ã—ã¦å‡ºç¾ã•ã›E½
             SpawnPhaseEnemies(); // ã“ã“ã§ãƒœã‚¹å‡ºç¾
 
             mCurrentPhase = Phase::FADE_IN_BOSS;
@@ -103,14 +120,14 @@ void GameManager::Update()
                 Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
             }
         }
-        return; // ãƒ•ã‚§ãƒ¼ãƒ‰ä¸­ã¯ä»–ï¿½æ›´æ–°ã‚’ã‚¹ã‚­ï¿½ï¿½
+        return; // ãƒ•ã‚§ãƒ¼ãƒ‰ä¸­ã¯ä»–ï¿½æ›´æ–°ã‚’ã‚¹ã‚­E½E½
     } else if (mCurrentPhase == Phase::FADE_IN_BOSS) {
         mFadeAlpha -= 5;
         if (mFadeAlpha <= 0) {
             mFadeAlpha = 0;
             mCurrentPhase = Phase::BOSS;
         }
-        return; // ãƒ•ã‚§ãƒ¼ãƒ‰ä¸­ã¯ä»–ï¿½æ›´æ–°ã‚’ã‚¹ã‚­ï¿½ï¿½
+        return; // ãƒ•ã‚§ãƒ¼ãƒ‰ä¸­ã¯ä»–ï¿½æ›´æ–°ã‚’ã‚¹ã‚­E½E½
     }
 
     if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)
@@ -181,7 +198,7 @@ void GameManager::Update()
                 mShopTimer = 60 * 20; // 20é˜ï¿½
                         } else if (mCurrentPhase == Phase::PHASE_3) {
                 mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20ç§’
+                mShopTimer = 60 * 20; // 20ç§E
                 Master::CutscenePlaying = true;
                 mBossCutsceneTimer = 0;
                 mCutsceneStartPos = Master::mpPlayer->GetPosition();
@@ -282,7 +299,7 @@ void GameManager::SpawnPhaseEnemies()
 {
 auto p = Master::mpPlayer;
     Player3D* player = p->CastTo<Player3D>();
-    // è¬¨ï¿½ï¿½ç¸ºå¾Œã›ç¹ï¿½ãƒ»ç¹§ï¿½ï¿½ç¸ºä¹ï½‰èŸæ‚¶ï¿½ï¿½ç¸ºï¿½ï¿½é—œï½½è³ä¹ï¿½è“åŒºï¿½ï¿½ï¿½ï¿½ç¸ºåŠ±â†‘ç¸ºãƒ»ï¿½ï¿½ç¸ºãƒ»â†“ç¸²ï¿½ï¿½onfigç¸ºï¿½ï¿½ç¹§ï¿½ï¿½ç¹ï¿½ãƒ»ç¹§ï¿½ï¿½è³ï¿½ï¿½è ¢ãƒ»ï¿½ï¿½ï¿½ï¿½è®“å¶ï¿½ï¿½è²‰ï½§ç¸ºå ºï¿½ï¿½å’²ï¿½ï¿½ï¿½ï¿½ç¸ºï¿½ï¿½è“ï½ºï¿½æ‚¶â†’ç¸ºå¶ï¿½
+    // è¬¨E½E½ç¸ºå¾Œã›ç¹ï¿½ãƒ»ç¹§E½E½ç¸ºä¹ï½‰èŸæ‚¶E½E½ç¸ºE½E½é—œï½½è³ä¹ï¿½è“åŒºE½E½E½E½ç¸ºåŠ±â†‘ç¸ºãƒ»E½E½ç¸ºãƒ»â†“ç¸²E½E½onfigç¸ºE½E½ç¹§E½E½ç¹ï¿½ãƒ»ç¹§E½E½è³E½E½è ¢ãƒ»E½E½E½E½è®“å¶E½E½è²‰ï½§ç¸ºå ºE½E½å’²E½E½E½E½ç¸ºE½E½è“ï½ºE½æ‚¶â†’ç¸ºå¶E½
     VECTOR centerPos = Config::GetStageCenter();
     if (player != nullptr)
     {
@@ -313,7 +330,7 @@ auto p = Master::mpPlayer;
         mpEnemyManager->NewEnemyList(e);
     }
     else if (mCurrentPhase == Phase::PHASE_2) {
-        // Wave 2: é¬²ç–²ï¿½ï¿½å‹Ÿï¿½è¢ï¿½ï¿½
+        // Wave 2: é¬²ç–²E½E½å‹Ÿï¿½è¢E½E½
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
         e1.spawnCenter = centerPos;
@@ -334,7 +351,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e1);
         mpEnemyManager->NewEnemyList(e1);
 
-        // Wave 2: éœ‘ç¬¬ç£èœ‘ï¿½ï¿½è¢ï¿½ï¿½
+        // Wave 2: éœ‘ç¬¬ç£èœ‘E½E½è¢E½E½
         EnemyManager::enemydate e2;
         e2.filename = "Resource/Model/T.mv1";
         e2.spawnCenter = centerPos;
@@ -356,7 +373,7 @@ auto p = Master::mpPlayer;
         mpEnemyManager->NewEnemyList(e2);
     }
     else if (mCurrentPhase == Phase::PHASE_3) {
-        // Wave 3: é©¥åŸ¼ã¼é‚å£»ï¿½ï¿½ï¿½ï¿½é€•ï½¨
+        // Wave 3: é©¥åŸ¼ã¼é‚å£»E½E½E½E½é€•ï½¨
         EnemyManager::enemydate e_heavy;
         e_heavy.filename = "Resource/Model/monster.mv1";
         e_heavy.spawnCenter = centerPos;
@@ -377,7 +394,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e_heavy);
         mpEnemyManager->NewEnemyList(e_heavy);
 
-        // Wave 3: é¬²ç–²ï¿½ï¿½å‹Ÿï¿½è¢ï¿½ï¿½
+        // Wave 3: é¬²ç–²E½E½å‹Ÿï¿½è¢E½E½
         EnemyManager::enemydate e_magic;
         e_magic.filename = "Resource/Model/T.mv1";
         e_magic.spawnCenter = centerPos;
@@ -398,7 +415,7 @@ auto p = Master::mpPlayer;
         ApplyDifficultyMultipliers(e_magic);
         mpEnemyManager->NewEnemyList(e_magic);
 
-        // Wave 3: éœ‘ç¬¬ç£èœˆï¿½ï¿½è¢ï¿½ï¿½
+        // Wave 3: éœ‘ç¬¬ç£èœˆE½E½è¢E½E½
         EnemyManager::enemydate e_melee;
         e_melee.filename = "Resource/Model/T.mv1";
         e_melee.spawnCenter = centerPos;
@@ -421,7 +438,7 @@ auto p = Master::mpPlayer;
     }
     else if (mCurrentPhase == Phase::BOSS) {
         EnemyManager::enemydate e2;
-        e2.filename = "Resource/3D/Boss1.mv1";
+        e2.filename = "Resource/Model/Boss1.mv1";
         e2.spawnCenter = Config::GetStageBossCenter();
         e2.initPos = VAdd(Config::GetStageBossCenter(), VGet(-500.0f, 0.0f, 2000.0f));
         e2.hp = 300;
@@ -526,6 +543,7 @@ void GameManager::DrawMinimap()
     // Restore clipping area
     SetDrawArea(0, 0, 1920, 1080);
 }
+
 
 
 

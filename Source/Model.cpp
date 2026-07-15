@@ -44,10 +44,7 @@ void Model::AddAnimation(AnimationState state, std::string filename)
 Model::~Model()
 {
     // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧ｯ繝ｩ繧ｹ縺ｮ遐ｴ譽・
-    if (mpAnimation != nullptr)
-    {
-        delete mpAnimation;
-    }
+
 
     // 笘・ew笘・
     if (mpSeparateAnimation != nullptr)

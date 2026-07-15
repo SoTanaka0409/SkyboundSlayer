@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include"Dxlib.h"
 #include"Scene.h"
 #include"Texture.h"
@@ -28,10 +28,8 @@ public:
 	int InputHandle;
 	int Name;
 private:
-	int mnSkyBoxHandle;
-	int mnStageHandle;
-	int mnCastleHandle;
 	float mCameraAngle;
+
 
 	Texture* mpTexture;
 	Scene* mpScene;

@@ -5,10 +5,15 @@
 #include "ObjectManager.h"
 #include "ColliderManager.h"
 #include <math.h>
+#include <fstream>
+#include <sstream>
+#include "Stage.h"
+#include "StageObject.h"
+#include "SkyBox.h"
+#include "Config.h"
 
 TitleScene::TitleScene()
 : mnColorFade(1), mbColorFlag(false), mCameraAngle(0.0f)
-, mnSkyBoxHandle(-1), mnStageHandle(-1), mnCastleHandle(-1)
 {
 }
 
@@ -27,20 +32,62 @@ void TitleScene::Initialize()
 	Master::mpScoreManager->LoadHighScore();
 	Master::mpSoundManager->PlayBGM(SoundManager::BGM_TITLE);
 	
-	// 3Dƒ‚ƒfƒ‹‚Ìƒ[ƒh
-	mnSkyBoxHandle = MV1LoadModel("Resource/3D/SkyBox/SkyBox.x");
-	mnStageHandle = MV1LoadModel("Resource/3D/stage_sky/source/Flooting_Stage.mv1");
-	mnCastleHandle = MV1LoadModel("Resource/3D/Stage_casule/source/Parede castelo.mv1");
+	// æœ¬ç·¨ã¨åŒã˜ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’èª­ã¿è¾¼ã‚€
+	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", VGet(200.0f, 100.0f, 200.0f));
+	new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",VGet(3.0f,0.3f,3.0f));
 	
-	// ƒXƒP[ƒ‹‚ÆˆÊ’u‚Ìİ’è
-	MV1SetScale(mnSkyBoxHandle, VGet(13.0f, 13.0f, 13.0f));
-	MV1SetPosition(mnSkyBoxHandle, VGet(0, 0, -5000));
+	std::ifstream file("Resource/CSV/stage_objects.csv");
+	if (file.is_open())
+	{
+		std::string line;
+		std::getline(file, line); // ãƒ˜ãƒƒãƒ€ãƒ¼ã‚’ã‚¹ã‚­ãƒƒãƒ—
+		while (std::getline(file, line))
+		{
+			if (line.empty()) continue;
+			std::stringstream ss(line);
+			std::string type, model, xStr, yStr, zStr, sxStr, syStr, szStr, texture, colSizeStr, isRelativeStr;
+			std::getline(ss, type, ',');
+			std::getline(ss, model, ',');
+			std::getline(ss, xStr, ',');
+			std::getline(ss, yStr, ',');
+			std::getline(ss, zStr, ',');
+			std::getline(ss, sxStr, ',');
+			std::getline(ss, syStr, ',');
+			std::getline(ss, szStr, ',');
+			std::getline(ss, texture, ',');
+			std::getline(ss, colSizeStr, ',');
+			std::getline(ss, isRelativeStr, ',');
+			
+			float x = std::stof(xStr);
+			float y = std::stof(yStr);
+			float z = std::stof(zStr);
+			float sx = std::stof(sxStr);
+			float sy = std::stof(syStr);
+			float sz = std::stof(szStr);
+			int isRelative = 0;
+			if (!isRelativeStr.empty()) isRelative = std::stoi(isRelativeStr);
+			VECTOR pos = VGet(x, y, z);
+			if (isRelative == 1) { pos = VAdd(Config::GetStageCenter(), pos); }
+			VECTOR scale = VGet(sx, sy, sz);
+			
+			if (type == "StageObject") {
+				float colSize = 0.0f;
+				if (!colSizeStr.empty()) colSize = std::stof(colSizeStr);
+				new StageObject(pos, model, scale, "", colSize);
+			} else if (type == "Stage") {
+				new Stage(pos, model, model, scale, texture);
+			}
+		}
+		file.close();
+	}
 	
-	MV1SetScale(mnStageHandle, VGet(200.0f, 100.0f, 200.0f));
-	MV1SetPosition(mnStageHandle, VGet(0.0f, 5000.0f, -20000.0f));
+	SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(0,0,-5000));
+	float scale = 13.0f;
+	pSkyBox->SetScale(VGet(scale, scale, scale));
+	pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");
 	
-	MV1SetScale(mnCastleHandle, VGet(10.0f, 10.0f, 10.0f));
-	MV1SetPosition(mnCastleHandle, VGet(0.0f, 0.0f, 0.0f));
+	// ã‚¿ã‚¤ãƒˆãƒ«ç”¨ã«ãƒ†ãƒ¬ãƒãƒ¼ã‚¿ãƒ¼ã‚‚ä¸€ã¤ç½®ã„ã¦ãŠã
+	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3D/portal/source/portal.mv1", VGet(3.0f, 3.0f, 3.0f));
 	
 	mCameraAngle = 0.0f;
 }
@@ -49,7 +96,7 @@ void TitleScene::Update()
 {
 	Scene::Update();
 	
-	// ƒJƒƒ‰‚ğ‚ä‚Á‚­‚è‰ñ‚·
+	// ã‚«ãƒ¡ãƒ©ã‚’ã‚†ã£ãã‚Šå›ã™
 	mCameraAngle += 0.002f;
 	if (mCameraAngle >= DX_PI_F * 2.0f) mCameraAngle -= DX_PI_F * 2.0f;
 	
@@ -80,12 +127,9 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	// 3D”wŒi‚Ì•`‰æ
-	MV1DrawModel(mnSkyBoxHandle);
-	MV1DrawModel(mnStageHandle);
-	MV1DrawModel(mnCastleHandle);
+	// 3DèƒŒæ™¯ã®æç”»ã¯ Scene::Draw() ãŒ ObjectManager çµŒç”±ã§è‡ªå‹•çš„ã«è¡Œã„ã¾ã™
 	
-	// UI‚ÌƒtƒF[ƒh—p
+	// UIã®ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨
 	if (mbColorFlag)
 	{
 		mnColorFade -= 4;
@@ -103,7 +147,7 @@ void TitleScene::Draw()
 	int oldSize = GetFontSize();
 	
 	SetFontSize(80);
-	// ƒS[ƒ‹ƒhŒn‚ÌF‚Åƒ^ƒCƒgƒ‹
+	// ã‚´ãƒ¼ãƒ«ãƒ‰ç³»ã®è‰²ã§ã‚¿ã‚¤ãƒˆãƒ«
 	DrawFormatString(300, 100, GetColor(255, 215, 0), "Sky Castle Hunter");
 	
 	
@@ -116,7 +160,7 @@ void TitleScene::Draw()
 	
 	SetFontSize(40);
 	
-	// ’W‚¢Â / ”’‚ÌF‡‚¢
+	// æ·¡ã„é’ / ç™½ã®è‰²åˆã„
 	int colorNormal = GetColor(220, 240, 255);
 	int colorHover = GetColor(255, 255, 255);
 	
@@ -131,22 +175,20 @@ void TitleScene::Draw()
 	
 	if (hoverRule)
 	{
-		DrawFormatString(50, 820, colorHover, "> ƒ‹[ƒ‹ (Rule)");
+		DrawFormatString(50, 820, colorHover, "> ãƒ«ãƒ¼ãƒ« (Rule)");
 	}
 	else
 	{
-		DrawFormatString(50, 820, colorNormal, "  ƒ‹[ƒ‹ (Rule)");
+		DrawFormatString(50, 820, colorNormal, "  ãƒ«ãƒ¼ãƒ« (Rule)");
 	}
 	
 	SetFontSize(25);
-	DrawFormatString(700, 960, GetColor(200, 200, 200), "ƒ}ƒEƒX‚Å€–Ú‚ğƒ^ƒbƒviƒNƒŠƒbƒNj‚µ‚ÄŒˆ’è");
+	DrawFormatString(700, 960, GetColor(200, 200, 200), "ãƒã‚¦ã‚¹ã§é …ç›®ã‚’ã‚¿ãƒƒãƒ—ï¼ˆã‚¯ãƒªãƒƒã‚¯ï¼‰ã—ã¦æ±ºå®š ");
 	
 	SetFontSize(oldSize);
 }
 
 void TitleScene::Finalize()
 {
-	MV1DeleteModel(mnSkyBoxHandle);
-	MV1DeleteModel(mnStageHandle);
-	MV1DeleteModel(mnCastleHandle);
 }
+
