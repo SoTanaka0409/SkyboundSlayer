@@ -1,4 +1,4 @@
-#include "EffekseerManager.h"
+﻿#include "EffekseerManager.h"
 
 EffekseerManager::EffekseerManager()
 {
@@ -30,14 +30,19 @@ void EffekseerManager::Draw()
 
 void EffekseerManager::End()
 {
-	// 郢晢ｽｭ郢晢ｽｼ郢晏ｳｨ・邵ｺ貅倥♀郢晁ｼ斐♂郢ｧ・ｯ郢晏現・帝囓・｣隰ｾ・ｾ
+	static bool isEnded = false;
+	if (isEnded) return;
+	isEnded = true;
+
+	// 再生中のエフェクトを全て削除
 	for (auto& effect : mEffects)
 	{
 		DeleteEffekseerEffect(effect.second);
 	}
 	mEffects.clear();
 
-	// Effekseer邵ｺ・ｮ驍ｨ繧・ｽｺ繝ｻ繝ｻ騾・・	Effekseer_End();
+	// Effekseerの終了処理
+	Effkseer_End();
 }
 
 int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, float magnification)
@@ -112,3 +117,4 @@ void EffekseerManager::SetEffectSpeed(int playingHandle, float speed)
 		SetSpeedPlayingEffekseer3DEffect(playingHandle, speed);
 	}
 }
+

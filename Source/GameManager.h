@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "DxLib.h"
 #include "EnemyManager.h"
 #include "ObjectManager.h"
@@ -30,6 +30,8 @@ public:
 private:
     Difficulty mDifficulty;
     Phase mCurrentPhase;
+        int mBossCutsceneTimer;
+    VECTOR mCutsceneStartPos;
     int mShopTimer;
     int mFadeAlpha;
     EnemyManager* mpEnemyManager;
@@ -49,3 +51,4 @@ public:
     Phase GetCurrentPhase() const { return mCurrentPhase; }
     int GetShopTimer() const { return mShopTimer; }
 };
+

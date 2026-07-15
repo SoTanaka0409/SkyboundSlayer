@@ -72,6 +72,7 @@ public:
 	static bool NearShopOn;
 	static bool SafePointOn;
 	static bool mbSave;
+	static bool CutscenePlaying;
 	static int GameClearCount;
 private: 
 	

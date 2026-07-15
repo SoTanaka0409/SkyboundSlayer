@@ -1,3 +1,4 @@
+﻿#include "Master.h"
 #include "DxLib.h"
 #include "SeparateModelAnimation.h"
 

@@ -1,4 +1,4 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 #include "Player3D.h"
 #include "Enemy.h"
 #include "StatShop.h"
@@ -11,7 +11,7 @@
 #include "EffekseerObject.h"
 
 GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
-    : mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0), mFadeAlpha(0), mBossPortalPos(VGet(0,0,0))
+    	: mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0), mFadeAlpha(0), mBossPortalPos(VGet(0,0,0)), mBossCutsceneTimer(0), mCutsceneStartPos(VGet(0,0,0))
 {
     // Start the first wave
     SpawnPhaseEnemies();
@@ -40,6 +40,20 @@ GameManager::~GameManager()
 
 void GameManager::Update()
 {
+    if (Master::CutscenePlaying) {
+        mBossCutsceneTimer++;
+        float t = (float)mBossCutsceneTimer / 180.0f; // 3 seconds to move
+        if (t > 1.0f) t = 1.0f;
+        float easeT = t * t * (3.0f - 2.0f * t); // smoothstep
+        VECTOR currentPos = VAdd(VScale(mCutsceneStartPos, 1.0f - easeT), VScale(mBossPortalPos, easeT));
+        Master::mpCamera->SetCutsceneTarget(currentPos);
+
+        if (mBossCutsceneTimer > 240) { // 3s move + 1s hold
+            Master::CutscenePlaying = false;
+            Master::mpCamera->SetCutsceneMode(false);
+        }
+        return;
+    }
     // DEBUG: Press '0' to wipe out all enemies in the current phase
     if (CheckHitKey(KEY_INPUT_0)) {
         const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
@@ -165,9 +179,13 @@ void GameManager::Update()
             } else if (mCurrentPhase == Phase::PHASE_2) {
                 mCurrentPhase = Phase::SHOP_2;
                 mShopTimer = 60 * 20; // 20遘�
-            } else if (mCurrentPhase == Phase::PHASE_3) {
+                        } else if (mCurrentPhase == Phase::PHASE_3) {
                 mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20遘�
+                mShopTimer = 60 * 20; // 20秒
+                Master::CutscenePlaying = true;
+                mBossCutsceneTimer = 0;
+                mCutsceneStartPos = Master::mpPlayer->GetPosition();
+                Master::mpCamera->SetCutsceneMode(true);
             } else if (mCurrentPhase == Phase::BOSS) {
                 mCurrentPhase = Phase::CLEAR;
             }
@@ -436,59 +454,78 @@ void GameManager::DrawMinimap()
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
     DrawBox((int)mapX, (int)mapY, (int)(mapX + mapSize), (int)(mapY + mapSize), GetColor(255, 255, 255), FALSE);
     
-    // Coordinate mapping (Assuming stage is roughly -6000 to +6000 in X and Z)
-    const float stageSize = 12000.0f;
-    auto WorldToMinimap = [&](VECTOR pos) -> VECTOR {
-        float relX = pos.x / stageSize;
-        float relZ = pos.z / stageSize;
-        // Map to 0-1 range based on center
-        float mapRelX = relX + 0.5f;
-        float mapRelZ = -relZ + 0.5f; // Z goes forward, but 2D Y goes down, so flip Z
-        
-        return VGet(mapX + mapRelX * mapSize, mapY + mapRelZ * mapSize, 0.0f);
+    // Coordinate mapping (Player-centric)
+    VECTOR playerPos = VGet(0,0,0);
+    if (Master::mpPlayer) playerPos = Master::mpPlayer->GetPosition();
+
+    // View range defines how much of the world fits from center to edge of minimap
+    const float viewRange = 6000.0f;
+    float mapCenterX = mapX + mapSize / 2.0f;
+    float mapCenterY = mapY + mapSize / 2.0f;
+    float maxD = mapSize / 2.0f;
+    
+    auto GetMapOffset = [&](VECTOR pos) -> VECTOR {
+        float diffX = pos.x - playerPos.x;
+        float diffZ = pos.z - playerPos.z;
+        float mapRelX = (diffX / viewRange) * maxD;
+        float mapRelY = (-diffZ / viewRange) * maxD; // Z goes forward, 2D Y goes down
+        return VGet(mapRelX, mapRelY, 0.0f);
     };
 
-    // Draw Boss Portal
-    VECTOR portalMapPos = WorldToMinimap(mBossPortalPos);
-    if (portalMapPos.x >= mapX && portalMapPos.x <= mapX + mapSize &&
-        portalMapPos.y >= mapY && portalMapPos.y <= mapY + mapSize)
-    {
-        DrawCircle((int)portalMapPos.x, (int)portalMapPos.y, 6, GetColor(0, 255, 255), TRUE);
+    auto ClampToEdge = [&](VECTOR offset) -> VECTOR {
+        if (abs(offset.x) <= maxD && abs(offset.y) <= maxD) return offset;
+        float scaleX = abs(offset.x) > 0.001f ? maxD / abs(offset.x) : 999.0f;
+        float scaleY = abs(offset.y) > 0.001f ? maxD / abs(offset.y) : 999.0f;
+        float scale = (scaleX < scaleY) ? scaleX : scaleY;
+        return VGet(offset.x * scale, offset.y * scale, 0.0f);
+    };
+
+    // Draw Boss Portal (clamped to edge)
+    VECTOR portalOffset = GetMapOffset(mBossPortalPos);
+    bool portalFar = (abs(portalOffset.x) > maxD || abs(portalOffset.y) > maxD);
+    VECTOR portalClamped = ClampToEdge(portalOffset);
+    DrawCircle((int)(mapCenterX + portalClamped.x), (int)(mapCenterY + portalClamped.y), 6, GetColor(0, 255, 255), TRUE);
+    if (portalFar) {
+        DrawCircle((int)(mapCenterX + portalClamped.x), (int)(mapCenterY + portalClamped.y), 9, GetColor(0, 255, 255), FALSE);
     }
 
-    // Draw Enemies
+    // Draw Shops (clamped to edge)
+    const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+    for (auto obj : shops)
+    {
+        VECTOR shopOffset = GetMapOffset(obj->GetPosition());
+        VECTOR shopClamped = ClampToEdge(shopOffset);
+        DrawCircle((int)(mapCenterX + shopClamped.x), (int)(mapCenterY + shopClamped.y), 5, GetColor(255, 255, 0), TRUE);
+    }
+
+    // Before drawing enemies, clip to minimap rectangle
+    SetDrawArea((int)mapX, (int)mapY, (int)(mapX + mapSize), (int)(mapY + mapSize));
+
+    // Draw Enemies (not clamped, disappear when outside view)
     const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
     for (auto obj : enemies)
     {
-        VECTOR eMapPos = WorldToMinimap(obj->GetPosition());
-        if (eMapPos.x >= mapX && eMapPos.x <= mapX + mapSize &&
-            eMapPos.y >= mapY && eMapPos.y <= mapY + mapSize)
-        {
-            DrawCircle((int)eMapPos.x, (int)eMapPos.y, 4, GetColor(255, 0, 0), TRUE);
-        }
+        VECTOR eOffset = GetMapOffset(obj->GetPosition());
+        DrawCircle((int)(mapCenterX + eOffset.x), (int)(mapCenterY + eOffset.y), 4, GetColor(255, 0, 0), TRUE);
     }
 
     // Draw Player
     if (Master::mpPlayer)
     {
-        VECTOR pMapPos = WorldToMinimap(Master::mpPlayer->GetPosition());
-        if (pMapPos.x >= mapX && pMapPos.x <= mapX + mapSize &&
-            pMapPos.y >= mapY && pMapPos.y <= mapY + mapSize)
-        {
-            // Player dot
-            DrawCircle((int)pMapPos.x, (int)pMapPos.y, 5, GetColor(0, 255, 0), TRUE);
-            
-            // Player direction line
-            float pAngle = Master::mpPlayer->GetAngle();
-            // Note: DXLib's angle 0 is +Z direction.
-            // On minimap, +Z is mapped to -Y (up).
-            // +X is mapped to +X (right).
-            // So sin(angle) -> X, cos(angle) -> Z.
-            // Minimap Z -> -Y, so direction is (sin(angle), -cos(angle)).
-            float dirX = sinf(pAngle) * 15.0f;
-            float dirY = -cosf(pAngle) * 15.0f;
-            
-            DrawLine((int)pMapPos.x, (int)pMapPos.y, (int)(pMapPos.x + dirX), (int)(pMapPos.y + dirY), GetColor(0, 255, 0), 2);
-        }
+        // Player dot
+        DrawCircle((int)mapCenterX, (int)mapCenterY, 5, GetColor(0, 255, 0), TRUE);
+        
+        // Player direction line
+        float pAngle = Master::mpPlayer->GetAngle();
+        float dirX = sinf(pAngle) * 15.0f;
+        float dirY = -cosf(pAngle) * 15.0f;
+        
+        DrawLine((int)mapCenterX, (int)mapCenterY, (int)(mapCenterX + dirX), (int)(mapCenterY + dirY), GetColor(0, 255, 0), 2);
     }
+    
+    // Restore clipping area
+    SetDrawArea(0, 0, 1920, 1080);
 }
+
+
+

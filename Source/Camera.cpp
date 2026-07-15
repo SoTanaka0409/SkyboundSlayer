@@ -15,8 +15,6 @@ Camera::Camera()
 	,position_(VGet(0.0f,0.0f,0.0f))
 	,mvLookAtPosition(VGet(0.0f,0.0f,0.0f))
 	,target_(nullptr)
-	,Camera1(true)
-	,Camera3(false)
 	, mnShakeTime(0)
 	, mnShakeTimeCount(0)
 	, mfShakeAngle(0.0f)
@@ -27,7 +25,6 @@ Camera::Camera()
 	, mfStepTime(0.0f)
 	, mvShakePosition(VGet(0.0f, 0.0f, 0.0f))
 {
-	Camera1 = true;
 }
 
 Camera::~Camera()
@@ -55,111 +52,50 @@ void Camera::Initialize()
 
 void Camera::Update()
 {
-	/*if (mpTitleScene->GetResetCameraPlayer() == true)
+	UpdateThirdPersonCamera();
+}
+
+void Camera::UpdateThirdPersonCamera()
+{
+	VECTOR targetPos = VGet(0,0,0);
+	if (mIsCutsceneMode)
 	{
-		target_ = nullptr;
-		mpTitleScene->ResetCameraPlayer(false);
-	}*/
-	
-	VECTOR temp; //��Ɨp�ϐ�
+		targetPos = mCutsceneTargetPos;
+	} 
+	else if (target_ != nullptr) 
+	{
+		targetPos = target_->GetPosition();
+	}
+
+	VECTOR temp; //汎用変数
 	if (target_ == nullptr)
 	{
 		target_ = Master::mpPlayer;
-
 	}
-	if(Camera1==true)
+
+	UpdateRotation();
+
+	if (mIsCutsceneMode || target_ != nullptr)
 	{
-		// ��New��
-   // ��ʗh�ꏈ��
-		Shake();
-		Camera3 = false;
-		const float distance = 300.0f;
-		temp.x = 250.0f * cosf(mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f)) * sinf(mfHorizontalAngle / 180.0f * DX_PI_F);
-		temp.y = 250.0f * sinf(mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f));
+		mvLookAtPosition = targetPos;
+		mvLookAtPosition.y += 240.0f;
+	}
+	else
+	{
+		//ターゲットがない場合は一定の高さ
+		mvLookAtPosition.y = 160.0f;
+	}
+
+	Shake();
+	{
+		const float distance = 500.0f;
+		temp.x = 400.0f * cosf(mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f)) * sinf(mfHorizontalAngle / 180.0f * DX_PI_F);
+		temp.y = 400.0f * sinf(-mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f));
 		temp.z = -(distance * cosf(mfVerticalAngle / 180.0f * DX_PI_F) * cosf(mfHorizontalAngle / 180.0f * DX_PI_F));
-		dir = VGet(sinf(mfVerticalAngle), 0.0f, cosf(mfVerticalAngle));
-		VECTOR dir2 = VGet(sinf(mfHorizontalAngle), 0.0f, cosf(mfHorizontalAngle));
-		auto mpPlayer = Master::mpPlayer;
-		Player3D* pPlayer = Master::mpPlayer;
-		
-		
-		UpdateRotation();
-		
+		position_ = VAdd(temp, mvLookAtPosition);
 
-		//�^�[�Q�b�g�����Ȃ�������
-		
-		if (target_ != nullptr)
-		{
-			mvLookAtPosition = VAdd(target_->GetPosition(), temp);
-			position_ = VAdd(target_->GetPosition(), dir);
-
-			position_.y += 160.0f + dir.x + dir.z;
-
-
-		}
-		else
-		{
-			//�����_�������ɂ��炷
-			position_.y = 160.0f;
-		}
-
-		// ��New��
-		// ��ʗh��̕�����Z����悤�ɕύX
-		// �J�����ݒ�𔽉f
 		SetCameraPositionAndTarget_UpVecY(VAdd(position_, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
-		//��]�ݒ�
 	}
-	if (Camera3 == true)
-	{
-		Camera1 = false;
-		
-		
-		//��ŋ��߂����W�ɒ����_�̍��W�𑫂�����̂��J�����̍��W�ƂȂ�
-		
-		
-		
-		auto mpPlayer = Master::mpPlayer;
-		Player3D* pPlayer = Master::mpPlayer;
-		
-		UpdateRotation();
-		//�^�[�Q�b�g�����Ȃ�������
-		/*if (target_ == nullptr)
-		{
-			target_ = Master::mpPlayer;
-		}*/
-		if (target_ != nullptr)
-		{
-			mvLookAtPosition = target_->GetPosition();
-			mvLookAtPosition.y += 240.0f;
-			
-		}
-		else
-		{
-			//�����_�������ɂ��炷
-			mvLookAtPosition.y = 160.0f;
-		}
-		// ��New��
-   // ��ʗh�ꏈ��
-		Shake();
-		{
-			VECTOR temp; //��Ɨp�ϐ�
-			const float distance = 500.0f;
-			temp.x = 400.0f * cosf(mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f)) * sinf(mfHorizontalAngle / 180.0f * DX_PI_F);
-			temp.y = 400.0f * sinf(-mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f));
-			temp.z = -(distance * cosf(mfVerticalAngle / 180.0f * DX_PI_F) * cosf(mfHorizontalAngle / 180.0f * DX_PI_F));
-			position_ = VAdd(temp, mvLookAtPosition);
-			/*mvLookAtPosition = VSub(target_->GetPosition(), position_);
-			mvLookAtPosition = VNorm(mvLookAtPosition);*/
-			// ��New��
-		// ��ʗh��̕�����Z����悤�ɕύX
-		 // �J�����ݒ�𔽉f
-			SetCameraPositionAndTarget_UpVecY(VAdd(position_, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
-
-			//��ŋ��߂����W�ɒ����_�̍��W�𑫂�����̂��J�����̍��W�ƂȂ�
-			//�J�����ݒ�𔽉f
-		}
-	}
-	
 }
 
 void Camera::UpdateRotation()
@@ -277,3 +213,6 @@ void Camera::Finalize()
 
 
 }
+
+
+

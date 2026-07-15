@@ -17,7 +17,8 @@ public:
 
 	void Finalize();
 
-	void Update();//更新
+	void Update(); // 更新
+	void UpdateThirdPersonCamera(); // 三人称カメラ更新処理
 
 	void UpdateRotation();//回転処理
 
@@ -29,12 +30,8 @@ public:
 	void SetLookCamera(float hor) { mfVerticalAngle = hor; }
 
 	VECTOR GetLookCamera2() { return dir; }//VECTORバージョン
-	void SetLookCamera2(VECTOR dir2) { dir = dir2; }
-
-	void SetCamera1(bool camera1) { Camera1 = camera1; }
-	bool GetCamera1() { return Camera1; }
-	void SetCamera3(bool camera3) { Camera3 = camera3; }
-	bool GetCamera3() { return Camera3; }
+	void SetLookCamera2(VECTOR dir2) { dir = dir2; }	void SetCutsceneMode(bool isCutscene) { mIsCutsceneMode = isCutscene; }
+	void SetCutsceneTarget(VECTOR pos) { mCutsceneTargetPos = pos; }
 
 	// ★New★
 	// 画面揺れ
@@ -42,6 +39,8 @@ public:
 	void SetupShake(float time, float width, float angleSpeed, float stepTime = 1.0f);
 
 private:
+	bool mIsCutsceneMode = false;
+	VECTOR mCutsceneTargetPos = VGet(0.0f, 0.0f, 0.0f);
 	float mfHorizontalAngle;  //水平方向アングル
 	float mfVerticalAngle;   // 垂直方向アングル
 
@@ -59,9 +58,6 @@ private:
 	float mfTargetAngle;//目標の回転地
 	float mfAngle;//現在の回転地
 
-	bool Camera3;//三人称視点
-	bool Camera1;//一人称視点
-
 	int mnShakeTime;
 	int mnShakeTimeCount;
 
@@ -73,3 +69,6 @@ private:
 	float mfStepTime;
 	VECTOR mvShakePosition;
 };
+
+
+

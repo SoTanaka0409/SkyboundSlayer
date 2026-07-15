@@ -25,7 +25,9 @@ void SceneGame::Initialize()
 
 void SceneGame::Update()
 {
-	Scene::Update();
+	if (!Master::CutscenePlaying) {
+		Scene::Update();
+	}
 	if (mpGameManager)
 	{
 		mpGameManager->Update();
@@ -73,3 +75,4 @@ bool SceneGame::IsBattlePhase() const
 			phase == GameManager::Phase::PHASE_3 ||
 			phase == GameManager::Phase::BOSS);
 }
+
