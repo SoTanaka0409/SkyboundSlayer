@@ -1,4 +1,5 @@
-﻿#include"AttachmentMOdel.h"
+#include"AttachmentMOdel.h"
+#include"Master.h"
 
 AttachmentModel::AttachmentModel(std::string filename, int parentModelHandle, int parentFrameIndex, VECTOR offsetPos, VECTOR offsetRot)
 	:Object3D(VGet(0.0f, 0.0f, 0.0f))//蠎ｧ讓吶・繧｢繧ｿ繝・メ蜈医↓繧医▲縺ｦ螟峨ｏ繧九・縺ｧ蛻晄悄蛹・
@@ -8,7 +9,7 @@ AttachmentModel::AttachmentModel(std::string filename, int parentModelHandle, in
 	, mOffsetRot(offsetRot)
 {
 	//3d繝｢繝・Ν縺ｮ隱ｭ縺ｿ霎ｼ縺ｿ
-	mnHandle = MV1LoadModel(filename.c_str());
+	mnHandle = Master::mpResourceManager->LoadModel(filename.c_str());
 
 }
 

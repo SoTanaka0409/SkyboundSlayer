@@ -74,30 +74,41 @@ int EffekseerManager::PlayEffect(const std::string& name, VECTOR pos)
 
 void EffekseerManager::StopEffect(int playingHandle)
 {
-	StopEffekseer3DEffect(playingHandle);
+	if (playingHandle != -1) {
+		StopEffekseer3DEffect(playingHandle);
+	}
 }
 
 void EffekseerManager::SetEffectPosition(int playingHandle, VECTOR pos)
 {
-	SetPosPlayingEffekseer3DEffect(playingHandle, pos.x, pos.y, pos.z);
+	if (playingHandle != -1) {
+		SetPosPlayingEffekseer3DEffect(playingHandle, pos.x, pos.y, pos.z);
+	}
 }
 
 void EffekseerManager::SetEffectRotation(int playingHandle, float x, float y, float z)
 {
-	SetRotationPlayingEffekseer3DEffect(playingHandle, x, y, z);
+	if (playingHandle != -1) {
+		SetRotationPlayingEffekseer3DEffect(playingHandle, x, y, z);
+	}
 }
 
 void EffekseerManager::SetEffectScale(int playingHandle, float x, float y, float z)
 {
-	SetScalePlayingEffekseer3DEffect(playingHandle, x, y, z);
+	if (playingHandle != -1) {
+		SetScalePlayingEffekseer3DEffect(playingHandle, x, y, z);
+	}
 }
 
 bool EffekseerManager::IsPlaying(int playingHandle)
 {
+	if (playingHandle == -1) return false;
 	return IsEffekseer3DEffectPlaying(playingHandle) != 0;
 }
 
 void EffekseerManager::SetEffectSpeed(int playingHandle, float speed)
 {
-	SetSpeedPlayingEffekseer3DEffect(playingHandle, speed);
+	if (playingHandle != -1) {
+		SetSpeedPlayingEffekseer3DEffect(playingHandle, speed);
+	}
 }

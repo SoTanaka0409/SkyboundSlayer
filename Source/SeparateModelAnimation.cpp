@@ -1,4 +1,4 @@
-﻿#include "DxLib.h"
+#include "DxLib.h"
 #include "SeparateModelAnimation.h"
 
 // 繧ｳ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
@@ -27,9 +27,11 @@ SeparateModelAnimation::~SeparateModelAnimation()
         for (auto itr = mAnimationInfoList.begin(); itr != mAnimationInfoList.end(); )
         {
             auto temp = *itr;
-
             itr = mAnimationInfoList.erase(itr);
-            if (temp->mnAnimationHandle != -1) { MV1DeleteModel(temp->mnAnimationHandle); }
+            if (temp->mnAnimationHandle != -1) { 
+                MV1DeleteModel(temp->mnAnimationHandle); 
+                temp->mnAnimationHandle = -1;
+            }
 
             delete temp;
             temp = nullptr;
@@ -182,7 +184,7 @@ void SeparateModelAnimation::SetAnimationBlend(bool isBlend)
 void SeparateModelAnimation::AddAnimation(AnimationState state, std::string filename)
 {
     // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ繝｢繝・Ν隱ｭ縺ｿ霎ｼ縺ｿ
-    int handle = MV1LoadModel(filename.c_str());
+    int handle = Master::mpResourceManager->LoadModel(filename.c_str());
 
     if (handle == -1)
     {

@@ -1,4 +1,4 @@
-﻿#include "GameManager.h"
+#include "GameManager.h"
 #include "Player3D.h"
 #include "Enemy.h"
 #include "StatShop.h"
@@ -7,6 +7,8 @@
 #include "Stage.h"
 #include "StageObject.h"
 #include "Tree.h"
+#include "InputManager.h"
+#include "EffekseerObject.h"
 
 GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     : mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0), mFadeAlpha(0), mBossPortalPos(VGet(0,0,0))
@@ -26,7 +28,10 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     
     // Portal Base
     float portalSize = 100.0f;
-    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/�]���w/source/portal.mv1", "Resource/3D/�]���w/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
+    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/portal/source/portal.mv1", "Resource/3D/portal/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
+    
+    // Portal Magic Circle Effect (slightly above the portal base to prevent clipping)
+    new EffekseerObject("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efkproj", VAdd(mBossPortalPos, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
 }
 
 GameManager::~GameManager()
@@ -43,6 +48,28 @@ void GameManager::Update()
 			Enemy* e = enemy->CastTo<Enemy>();
             if (e) {
                 e->Damage(e->GetMaxHp()); // Deal max HP damage to trigger death animation
+            }
+        }
+    }
+
+    // DEBUG: Press 'P' to instantly skip the current phase
+    if (InputManager::CheckDownKey(KEY_INPUT_P)) {
+        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+        for (auto enemy : enemies) {
+            Enemy* e = enemy->CastTo<Enemy>();
+            if (e) {
+                e->Delete();
+            }
+            enemy->SetDeleteFlag(true);
+        }
+
+        if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2) {
+            mShopTimer = 1;
+        } else if (mCurrentPhase == Phase::SHOP_3) {
+            mCurrentPhase = Phase::FADE_OUT_TO_BOSS;
+            mFadeAlpha = 0;
+            if (Master::mpSoundManager) {
+                Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
             }
         }
     }

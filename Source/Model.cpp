@@ -1,4 +1,4 @@
-﻿#include"Model.h"
+#include"Model.h"
 #include"AttachmentModel.h"
 #include"Master.h"
 
@@ -50,10 +50,15 @@ Model::~Model()
     }
 
     // 笘・ew笘・
-    // 蛻・牡繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧ｯ繝ｩ繧ｹ縺ｮ遐ｴ譽・
     if (mpSeparateAnimation != nullptr)
     {
         delete mpSeparateAnimation;
+        mpSeparateAnimation = nullptr;
+    }
+    if (mpAnimation != nullptr)
+    {
+        delete mpAnimation;
+        mpAnimation = nullptr;
     }
 
     // 繧｢繧ｿ繝・メ繝｢繝・Ν繧ｯ繝ｩ繧ｹ縺ｮ遐ｴ譽・
@@ -66,11 +71,15 @@ Model::~Model()
     if (mnChangeTextureHandle != -1)
     {
         DeleteGraph(mnChangeTextureHandle);
+        mnChangeTextureHandle = -1;
     }
 
     // 隱ｭ縺ｿ霎ｼ繧薙□繝｢繝・Ν縺ｮ蜑企勁
     // note: 隱ｭ縺ｿ霎ｼ繧薙□繝｢繝・Ν縺ｯ蜍晄焔縺ｫ遐ｴ譽・＠縺ｦ縺上ｌ縺ｪ縺・・縺ｧ縲∝ｿ・ｦ√↑縺上↑縺｣縺溘ｉ謇句虚縺ｧ遐ｴ譽・☆繧・
-    if (mnHandle != -1) { MV1DeleteModel(mnHandle); }
+    if (mnHandle != -1) { 
+        MV1DeleteModel(mnHandle); 
+        mnHandle = -1;
+    }
 }
 
 // 譖ｴ譁ｰ

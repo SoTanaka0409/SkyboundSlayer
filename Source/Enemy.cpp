@@ -1,4 +1,4 @@
-﻿#include"Enemy.h"
+#include"Enemy.h"
 #include"Model.h"
 #include"Master.h"
 #include"Player3D.h"
@@ -73,6 +73,7 @@ Enemy::~Enemy()
 	if (model_ != nullptr)
 	{
 		delete model_;
+		model_ = nullptr;
 	}
 	
 }
