@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include"Dxlib.h"
 #include"Texture.h"
 #include"Scene.h"
@@ -22,6 +22,8 @@ public:
 private:
 	Texture* mpTexture;
 	TitleScene* mpTitle;
+
+	class Model* mpPlayerModel;
 
 	int mnAllTimer;
 	char mNameStr;

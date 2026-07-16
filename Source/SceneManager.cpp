@@ -1,4 +1,5 @@
-﻿#include"SceneManager.h"
+#include"SceneManager.h"
+#include"Fade.h"
 #include"Scene3D.h"
 #include "TestCollisionScene.h"
 #include"TitleScene.h"
@@ -44,14 +45,16 @@ void SceneManager::Initialize()
 
 void SceneManager::Update()
 {
-	//繧ｷ繝ｼ繝ｳ縺ｮ譖ｴ譁ｰ
+	//シーンの更新
 	mpCurrentScene->Update();
+	Fade::GetInstance()->Update();
 }
 
 void SceneManager::Draw()
 {
-	//繧ｷ繝ｼ繝ｳ縺ｮ謠冗判
+	//シーンの描画
 	mpCurrentScene->Draw();
+	Fade::GetInstance()->Draw();
 }
 
 void SceneManager::Finalize()
@@ -61,28 +64,45 @@ void SceneManager::Finalize()
 
 void SceneManager::ChangeSceneIfNeeded()
 {
-	//迴ｾ蝨ｨ縺ｮ繧ｷ繝ｼ繝ｳ縺ｨ谺｡縺ｮ繧ｷ繝ｼ繝ｳ縺御ｸ邱偵〒縺ゅｌ縺ｰ菴輔ｂ縺励↑縺・
 	if (mnSceneType == mnNextSceneType)
 	{
 		return;
 	}
+
+	// フェード処理の介入（初回起動時以外）
+	if (mnSceneType != SCENE_TYPE::SCENE_NONE)
+	{
+		// まだフェードアウトが開始されていなければ開始して待つ
+		if (!Fade::GetInstance()->IsFading())
+		{
+			Fade::GetInstance()->StartFadeOut();
+			return;
+		}
+		
+		// フェードアウト中なら待つ
+		if (Fade::GetInstance()->GetState() == Fade::State::FadeOut && !Fade::GetInstance()->IsFadeOutFinished())
+		{
+			return;
+		}
+	}
+
 	if (mpCurrentScene != nullptr)
 	{
-		//迴ｾ蝨ｨ縺ｮ繧ｷ繝ｼ繝ｳ縺ｮ邨ゆｺ・・逅・ｒ縺吶ｋ
+		//現在のシーンの終了処理をする
 		mpCurrentScene->Finalize();
 
-		//荳譌ｦ繧ｷ繝ｼ繝ｳ閾ｪ菴薙ｂ遐ｴ譽・＠縺ｦ縺翫￥
+		//一旦シーン自体も破棄しておく
 		delete mpCurrentScene;
 		mpCurrentScene = nullptr;
 
-		// 繧ｷ繝ｼ繝ｳ縺悟・繧頑崛繧上ｋ縺ｨ縺阪・縲∽ｻ･蜑阪・繧ｷ繝ｼ繝ｳ縺ｫ謇螻槭＠縺ｦ縺・◆繧ｳ繝ｩ繧､繝繝ｼ繧剃ｸ謗・☆繧・
+		// シーンが切り替わるときは、以前のシーンに所属していたコライダーを一掃する
 		ColliderManager::GetInstance()->DeleteAllCollider();
 	}
 
-	//谺｡縺ｮ繧ｷ繝ｼ繝ｳ縺ｫ縺吶ｋ縺溘ａ繧ｷ繝ｼ繝ｳ繧ｿ繧､繝励ｒ譖ｴ譁ｰ
+	//次のシーンにするためシーンタイプを更新
 	mnSceneType = mnNextSceneType;
 
-	//mnSceneType縺ｫ蠢懊§縺ｦ繧ｷ繝ｼ繝ｳ繧堤函謌舌☆繧・
+	//mnSceneTypeに応じてシーンを生成する
 	switch (mnSceneType)
 	{
 	case SCENE_TYPE::SCENE_TEST_COLLISION:
@@ -121,9 +141,14 @@ void SceneManager::ChangeSceneIfNeeded()
 	//default:
 		
 	}
-	//繧ｷ繝ｼ繝ｳ縺ｮ逕滓・縺後＆繧後※縺・ｋ縺ｯ縺壹↑縺ｮ縺ｧ縲∝・譛溷喧蜃ｦ逅・ｒ隱ｭ繧薙〒縺翫￥
+	//シーンの生成がされているはずなので、初期化処理を読んでおく
 	mpCurrentScene->Initialize();
 
+	// 新しいシーンに切り替わった直後にフェードインを開始する
+	if (mnSceneType != SCENE_TYPE::SCENE_NONE)
+	{
+		Fade::GetInstance()->StartFadeIn();
+	}
 }
 
 SceneGame* SceneManager::GetSceneGame()

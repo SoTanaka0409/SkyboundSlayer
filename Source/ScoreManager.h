@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #pragma once
 #include<string>
 #include<vector>
@@ -39,6 +39,7 @@ public:
 	{
 		mnScore = 0;
 		msName = { 0 };
+		ResetStats();
 	}
 	//////////////////
 	int GetHighScore()
@@ -86,6 +87,29 @@ public:
 
 	void LoadName();
 
+	// RPG Stats Tracking
+	void ResetStats() {
+		mnDefeatedEnemies = 0;
+		mnUsedPotions = 0;
+		mfFinalHp = 0.0f;
+		mfFinalAttack = 0.0f;
+		mfFinalSpeed = 0.0f;
+	}
+
+	void AddDefeatedEnemy() { mnDefeatedEnemies++; }
+	int GetDefeatedEnemies() const { return mnDefeatedEnemies; }
+
+	void AddUsedPotion() { mnUsedPotions++; }
+	int GetUsedPotions() const { return mnUsedPotions; }
+
+	void SetFinalStats(float hp, float atk, float spd) {
+		mfFinalHp = hp;
+		mfFinalAttack = atk;
+		mfFinalSpeed = spd;
+	}
+	float GetFinalHp() const { return mfFinalHp; }
+	float GetFinalAttack() const { return mfFinalAttack; }
+	float GetFinalSpeed() const { return mfFinalSpeed; }
 
 private:
 	int Name;
@@ -100,4 +124,10 @@ private:
 	float mnHighScore3;
 
 	bool mnNflag;//Normalかどうかの判定
+
+	int mnDefeatedEnemies = 0;
+	int mnUsedPotions = 0;
+	float mfFinalHp = 0.0f;
+	float mfFinalAttack = 0.0f;
+	float mfFinalSpeed = 0.0f;
 };

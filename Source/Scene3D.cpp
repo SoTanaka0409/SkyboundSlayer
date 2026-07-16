@@ -153,6 +153,9 @@ void Scene3D::Update()
 
     if (Master::GameClearCount == 2)
     {
+        if (player != nullptr && Master::mpScoreManager != nullptr) {
+            Master::mpScoreManager->SetFinalStats(player->GetHp(), player->GetAttack(), player->GetSpeed());
+        }
         Master::mpSceneManager->SetNextScene(SceneManager::SCENE_RESULTWIN);
     }
    

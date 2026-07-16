@@ -300,6 +300,9 @@ void Enemy::Damage(float damage)
 	hp_ -= damage;
 	if(hp_ <= 0)
 	{
+		if (!isDead && Master::mpScoreManager != nullptr) {
+			Master::mpScoreManager->AddDefeatedEnemy();
+		}
 		hp_ = 0;
 		isDead = true;
 	}

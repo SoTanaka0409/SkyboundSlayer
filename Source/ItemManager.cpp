@@ -1,4 +1,4 @@
-﻿#include"ItemManager.h"
+#include"ItemManager.h"
 #include"Master.h"
 #include"ObjectManager.h"
 #include"Buff.h"
@@ -95,7 +95,12 @@ void ItemManager::UseItem(Item::ItemID id)
 			    return;
 		    }
 
-			if (id == Item::HIGHHEAL || id == Item::HEAL)Master::mpSoundManager->PlaySE(SoundManager::SE_HEAL);
+			if (id == Item::HIGHHEAL || id == Item::HEAL) {
+				Master::mpSoundManager->PlaySE(SoundManager::SE_HEAL);
+				if (Master::mpScoreManager != nullptr) {
+					Master::mpScoreManager->AddUsedPotion();
+				}
+			}
 			if (id == Item::POWER || id == Item::SPEED)Master::mpSoundManager->PlaySE(SoundManager::SE_POWER);
 			(*itr)->Count -= 1;
 			(*itr)->mbUse = true;
