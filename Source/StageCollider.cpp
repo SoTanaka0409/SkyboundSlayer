@@ -20,7 +20,6 @@ StageCollider::StageCollider()
 	mpTexture = new Texture("Resource/2D/BossLogo.png",VGet(400,400,0),true);
 	mpTexture2 = new Texture("Resource/2D/NormalLogo.png", VGet(400, 400, 0), true);
 
-	if(Master::TutorialFlag)mpGoBossCollider->position_= VGet(0, 100, -6000);
 }
 
 StageCollider::~StageCollider()

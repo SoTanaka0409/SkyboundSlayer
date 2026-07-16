@@ -29,7 +29,6 @@ public:     //enum,strucyなどの定義
 		SE_POWER,
 		SE_SELECT,
 		SE_WINDOW,
-		SE_LEVELUP,
 
 	};
 

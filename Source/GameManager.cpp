@@ -9,9 +9,39 @@
 #include "Tree.h"
 #include "InputManager.h"
 #include "EffekseerObject.h"
+namespace
+{
+    struct DebugButton
+    {
+        int x;
+        int y;
+        int w;
+        int h;
+        const char* label;
+    };
+
+    bool IsMouseInButton(const DebugButton& button, int mouseX, int mouseY)
+    {
+        return mouseX >= button.x &&
+            mouseX <= button.x + button.w &&
+            mouseY >= button.y &&
+            mouseY <= button.y + button.h;
+    }
+
+    void DrawDebugButton(const DebugButton& button, bool hover)
+    {
+        const int bg = hover ? GetColor(55, 46, 32) : GetColor(24, 23, 26);
+        const int edge = hover ? GetColor(235, 188, 82) : GetColor(116, 86, 40);
+        const int text = hover ? GetColor(255, 238, 164) : GetColor(230, 216, 184);
+
+        DrawBox(button.x, button.y, button.x + button.w, button.y + button.h, bg, true);
+        DrawBox(button.x, button.y, button.x + button.w, button.y + button.h, edge, false);
+        DrawFormatString(button.x + 14, button.y + 10, text, "%s", button.label);
+    }
+}
 
 GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
-    	: mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0), mFadeAlpha(0), mBossPortalPos(VGet(0,0,0)), mBossCutsceneTimer(0), mCutsceneStartPos(VGet(0,0,0))
+    	: enemy_manager_(enemyManager), difficulty_(diff), current_phase_(Phase::kPhase1), shop_timer_(0), fade_alpha_(0), boss_portal_pos_(VGet(0,0,0)), boss_cutscene_timer_(0), cutscene_start_pos_(VGet(0,0,0))
 {
     // Start the first wave
     SpawnPhaseEnemies();
@@ -23,15 +53,15 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     dir.y = 0.0f;
     if (VSize(dir) < 1.0f) dir = VGet(0.0f, 0.0f, 1.0f);
     else dir = VNorm(dir);
-    mBossPortalPos = VAdd(center, VScale(dir, -5000.0f));
+    boss_portal_pos_ = VAdd(center, VScale(dir, -5000.0f));
     
     
     // Portal Base
     float portalSize = 100.0f;
-    new Stage(VAdd(mBossPortalPos, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/portal/source/portal.mv1", "Resource/3D/portal/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
+    new Stage(VAdd(boss_portal_pos_, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/portal/source/portal.mv1", "Resource/3D/portal/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
     
     // Portal Magic Circle Effect (slightly above the portal base to prevent clipping)
-    new EffekseerObject("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efkproj", VAdd(mBossPortalPos, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
+    new EffekseerObject("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efkproj", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
 }
 
 GameManager::~GameManager()
@@ -40,274 +70,528 @@ GameManager::~GameManager()
 
 void GameManager::Update()
 {
-    if (Master::CutscenePlaying) {
-        mBossCutsceneTimer++;
-        float t = (float)mBossCutsceneTimer / 180.0f; // 3 seconds to move
-        if (t > 1.0f) t = 1.0f;
-        float easeT = t * t * (3.0f - 2.0f * t); // smoothstep
-        VECTOR currentPos = VAdd(VScale(mCutsceneStartPos, 1.0f - easeT), VScale(mBossPortalPos, easeT));
-        Master::mpCamera->SetCutsceneTarget(currentPos);
+    UpdateDebugControls();
 
-        if (mBossCutsceneTimer > 240) { // 3s move + 1s hold
-            Master::CutscenePlaying = false;
-            Master::mpCamera->SetCutsceneMode(false);
-        }
+    if (UpdateBossCutscene())
+    {
         return;
     }
-    // DEBUG: Press '0' to wipe out all enemies in the current phase
-    if (CheckHitKey(KEY_INPUT_0)) {
-        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-        for (auto enemy : enemies)
-		{
-			Enemy* e = enemy->CastTo<Enemy>();
-            if (e) {
-                e->Damage(e->GetMaxHp()); // Deal max HP damage to trigger death animation
-            }
-        }
-    }
 
-    // DEBUG: Press 'P' to instantly skip the current phase
-    if (InputManager::CheckDownKey(KEY_INPUT_P)) {
-        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-        for (auto enemy : enemies) {
-            Enemy* e = enemy->CastTo<Enemy>();
-            if (e) {
-                e->Delete();
-            }
-            enemy->SetDeleteFlag(true);
-        }
-
-        if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2) {
-            mShopTimer = 1;
-        } else if (mCurrentPhase == Phase::SHOP_3) {
-            mCurrentPhase = Phase::FADE_OUT_TO_BOSS;
-            mFadeAlpha = 0;
-            if (Master::mpSoundManager) {
-                Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
-            }
-        }
-    }
-
-    // DEBUG: Press 'B' to instantly skip to BOSS phase
-    if (InputManager::CheckDownKey(KEY_INPUT_B)) {
-        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-        for (auto enemy : enemies) {
-            Enemy* e = enemy->CastTo<Enemy>();
-            if (e) {
-                e->Delete();
-            }
-            enemy->SetDeleteFlag(true);
-        }
-        mCurrentPhase = Phase::FADE_OUT_TO_BOSS;
-        mFadeAlpha = 0;
-        if (Master::mpSoundManager) {
-            Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
-        }
-    }
-
-    if (mCurrentPhase == Phase::FADE_OUT_TO_BOSS) {
-        mFadeAlpha += 5;
-        if (mFadeAlpha >= 255) {
-            mFadeAlpha = 255;
-            mCurrentPhase = Phase::BOSS; // ・ｽ譎ら噪縺ｫBOSS縺ｫ縺励※蜃ｺ迴ｾ縺輔○・ｽ
-            SpawnPhaseEnemies(); // 縺薙％縺ｧ繝懊せ蜃ｺ迴ｾ
-
-            mCurrentPhase = Phase::FADE_IN_BOSS;
-            
-            // 繝懊せ繧ｨ繝ｪ繧｢縺ｸ繝励Ξ繧､繝､繝ｼ繧偵Ρ繝ｼ繝励＆縺帙ｋ
-            Master::mpPlayer->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0.0f, -2000.0f)));
-            if (Master::mpSoundManager) {
-                Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
-            }
-        }
-        return; // 繝輔ぉ繝ｼ繝我ｸｭ縺ｯ莉厄ｿｽ譖ｴ譁ｰ繧偵せ繧ｭ・ｽ・ｽ
-    } else if (mCurrentPhase == Phase::FADE_IN_BOSS) {
-        mFadeAlpha -= 5;
-        if (mFadeAlpha <= 0) {
-            mFadeAlpha = 0;
-            mCurrentPhase = Phase::BOSS;
-        }
-        return; // 繝輔ぉ繝ｼ繝我ｸｭ縺ｯ莉厄ｿｽ譖ｴ譁ｰ繧偵せ繧ｭ・ｽ・ｽ
-    }
-
-    if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)
+    if (UpdateBossFade())
     {
-        if (mCurrentPhase != Phase::SHOP_3) {
-            bool allShopsArrived = true;
-            const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
-            for (auto s : shops) {
-                StatShop* shop = s->CastTo<StatShop>();
-                if (shop && !shop->IsArrived()) {
-                    allShopsArrived = false;
-                    break;
-                }
-            }
+        return;
+    }
 
-            if (allShopsArrived) {
-                mShopTimer--;
-            }
+    if (IsShopPhase())
+    {
+        UpdateShopPhase();
+    }
+    else
+    {
+        UpdateBattlePhase();
+    }
+}
 
-            if (mShopTimer <= 0) {
-                for (auto s : shops) {
-                    StatShop* shop = s->CastTo<StatShop>();
-                    if (shop) shop->StartWalkingOut();
-                }
+bool GameManager::UpdateBossCutscene()
+{
+    if (!Master::CutscenePlaying)
+    {
+        return false;
+    }
 
-                if (mCurrentPhase == Phase::SHOP_1) {
-                    mCurrentPhase = Phase::PHASE_2;
-                } else if (mCurrentPhase == Phase::SHOP_2) {
-                    mCurrentPhase = Phase::PHASE_3;
-                }
-                SpawnPhaseEnemies();
+    boss_cutscene_timer_++;
 
-            }
-        } 
-        else
+    float t = static_cast<float>(boss_cutscene_timer_) / 180.0f;
+    if (t > 1.0f)
+    {
+        t = 1.0f;
+    }
+
+    float easeT = t * t * (3.0f - 2.0f * t);
+    VECTOR currentPos = VAdd(VScale(cutscene_start_pos_, 1.0f - easeT), VScale(boss_portal_pos_, easeT));
+    Master::mpCamera->SetCutsceneTarget(currentPos);
+
+    if (boss_cutscene_timer_ > 240)
+    {
+        Master::CutscenePlaying = false;
+        Master::mpCamera->SetCutsceneMode(false);
+    }
+
+    return true;
+}
+
+bool GameManager::UpdateBossFade()
+{
+    if (current_phase_ == Phase::kFadeOutToBoss)
+    {
+        fade_alpha_ += 5;
+        if (fade_alpha_ >= 255)
         {
-            // SHOP_3: No time limit. Wait for player to enter teleporter.
-            auto p = Master::mpPlayer;
-            if (p) {
-                Player3D* player = p->CastTo<Player3D>();
-                VECTOR playerPos = player->GetPosition();
-                
-                // Placeholder teleporter position (center of stage, offset)
-                VECTOR teleporterPos = mBossPortalPos;
-                
-                float dist = VSize(VSub(playerPos, teleporterPos));
-                if (dist < 150.0f) { // 150 radius to enter
-                    const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
-                    for (auto s : shops) {
-                        StatShop* shop = s->CastTo<StatShop>();
-                        if (shop) shop->StartWalkingOut();
-                    }
-                    mCurrentPhase = Phase::FADE_OUT_TO_BOSS;
-                    mFadeAlpha = 0;
-                }
+            fade_alpha_ = 255;
+            current_phase_ = Phase::kBoss;
+            SpawnPhaseEnemies();
+
+            current_phase_ = Phase::kFadeInBoss;
+            Master::mpPlayer->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0.0f, -2000.0f)));
+
+            if (Master::mpSoundManager)
+            {
+                Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);
             }
         }
-    } else {
-        const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-        if (enemies.empty())
-        {
-            Phase oldPhase = mCurrentPhase;
-            if (mCurrentPhase == Phase::PHASE_1) {
-                mCurrentPhase = Phase::SHOP_1;
-                mShopTimer = 60 * 20; // 20驕假ｿｽ
-            } else if (mCurrentPhase == Phase::PHASE_2) {
-                mCurrentPhase = Phase::SHOP_2;
-                mShopTimer = 60 * 20; // 20驕假ｿｽ
-                        } else if (mCurrentPhase == Phase::PHASE_3) {
-                mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20遘・
-                Master::CutscenePlaying = true;
-                mBossCutsceneTimer = 0;
-                mCutsceneStartPos = Master::mpPlayer->GetPosition();
-                Master::mpCamera->SetCutsceneMode(true);
-            } else if (mCurrentPhase == Phase::BOSS) {
-                mCurrentPhase = Phase::CLEAR;
-            }
 
-            if (oldPhase != mCurrentPhase && (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)) {
-                const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
-                for (auto s : shops) {
-                    StatShop* shop = s->CastTo<StatShop>();
-                    if (shop) shop->StartWalkingIn();
-                }
-            }
+        return true;
+    }
+
+    if (current_phase_ == Phase::kFadeInBoss)
+    {
+        fade_alpha_ -= 5;
+        if (fade_alpha_ <= 0)
+        {
+            fade_alpha_ = 0;
+            current_phase_ = Phase::kBoss;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+void GameManager::UpdateShopPhase()
+{
+    if (current_phase_ == Phase::kShop3)
+    {
+        if (IsBossGateTouched())
+        {
+            SendShopsOut();
+            StartBossTransition();
+        }
+
+        return;
+    }
+
+    if (AreShopsArrived())
+    {
+        shop_timer_--;
+    }
+
+    if (shop_timer_ > 0)
+    {
+        return;
+    }
+
+    SendShopsOut();
+
+    if (current_phase_ == Phase::kShop1)
+    {
+        current_phase_ = Phase::kPhase2;
+    }
+    else if (current_phase_ == Phase::kShop2)
+    {
+        current_phase_ = Phase::kPhase3;
+    }
+
+    SpawnPhaseEnemies();
+}
+
+void GameManager::UpdateBattlePhase()
+{
+    if (GetEnemyCount() > 0)
+    {
+        return;
+    }
+
+    if (current_phase_ == Phase::kPhase1)
+    {
+        StartShopPhase(Phase::kShop1);
+    }
+    else if (current_phase_ == Phase::kPhase2)
+    {
+        StartShopPhase(Phase::kShop2);
+    }
+    else if (current_phase_ == Phase::kPhase3)
+    {
+        StartShopPhase(Phase::kShop3);
+        StartBossGateCutscene();
+    }
+    else if (current_phase_ == Phase::kBoss)
+    {
+        current_phase_ = Phase::kClear;
+    }
+}
+
+void GameManager::StartShopPhase(Phase nextPhase)
+{
+    current_phase_ = nextPhase;
+    shop_timer_ = 60 * 20;
+    SendShopsIn();
+}
+
+void GameManager::StartBossTransition()
+{
+    current_phase_ = Phase::kFadeOutToBoss;
+    fade_alpha_ = 0;
+}
+
+void GameManager::StartBossGateCutscene()
+{
+    Master::CutscenePlaying = true;
+    boss_cutscene_timer_ = 0;
+    cutscene_start_pos_ = Master::mpPlayer->GetPosition();
+    Master::mpCamera->SetCutsceneMode(true);
+}
+
+void GameManager::SendShopsIn()
+{
+    const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+    for (auto s : shops)
+    {
+        StatShop* shop = s->CastTo<StatShop>();
+        if (shop)
+        {
+            shop->StartWalkingIn();
         }
     }
 }
 
-void GameManager::Draw()
+void GameManager::SendShopsOut()
 {
-    int fontSize = GetFontSize();
-    SetFontSize(30);
+    const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+    for (auto s : shops)
+    {
+        StatShop* shop = s->CastTo<StatShop>();
+        if (shop)
+        {
+            shop->StartWalkingOut();
+        }
+    }
+}
 
-    const char* phaseStr = "";
-    switch (mCurrentPhase) {
-    case Phase::PHASE_1: phaseStr = "Phase 1"; break;
-    case Phase::PHASE_2: phaseStr = "Phase 2"; break;
-    case Phase::PHASE_3: phaseStr = "Phase 3"; break;
-    case Phase::BOSS:    phaseStr = "BOSS Phase"; break;
-    case Phase::SHOP_1:  phaseStr = "Shop 1"; break;
-    case Phase::SHOP_2:  phaseStr = "Shop 2"; break;
-    case Phase::SHOP_3:  phaseStr = "Shop 3"; break;
-    case Phase::CLEAR:   phaseStr = "CLEAR!"; break;
+bool GameManager::AreShopsArrived() const
+{
+    const auto& shops = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+    for (auto s : shops)
+    {
+        StatShop* shop = s->CastTo<StatShop>();
+        if (shop && !shop->IsArrived())
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool GameManager::IsShopPhase() const
+{
+    return current_phase_ == Phase::kShop1 || current_phase_ == Phase::kShop2 || current_phase_ == Phase::kShop3;
+}
+
+bool GameManager::IsBossFadePhase() const
+{
+    return current_phase_ == Phase::kFadeOutToBoss || current_phase_ == Phase::kFadeInBoss;
+}
+
+bool GameManager::IsBossGateTouched() const
+{
+    if (!Master::mpPlayer)
+    {
+        return false;
+    }
+
+    Player3D* player = Master::mpPlayer->CastTo<Player3D>();
+    if (!player)
+    {
+        return false;
+    }
+
+    float dist = VSize(VSub(player->GetPosition(), boss_portal_pos_));
+    return dist < 150.0f;
+}
+
+bool GameManager::IsDebugControlsEnabled() const
+{
+    return Master::mpDebug != nullptr && Master::mpDebug->Getdebug();
+}
+
+void GameManager::UpdateDebugControls()
+{
+    if (!IsDebugControlsEnabled())
+    {
+        return;
+    }
+
+    int mouseX = 0;
+    int mouseY = 0;
+    InputManager::GetMousePos(mouseX, mouseY);
+
+    const DebugButton killButton = { 28, 104, 164, 40, "KILL ENEMIES" };
+    const DebugButton bossButton = { 202, 104, 132, 40, "GO BOSS" };
+    const bool clicked = InputManager::CheckMouseClickLeft() != 0;
+
+    if ((clicked && IsMouseInButton(killButton, mouseX, mouseY)) ||
+        InputManager::CheckDownKey(KEY_INPUT_F5) != 0)
+    {
+        DebugKillEnemies();
+    }
+
+    if ((clicked && IsMouseInButton(bossButton, mouseX, mouseY)) ||
+        InputManager::CheckDownKey(KEY_INPUT_F6) != 0)
+    {
+        DebugGoBoss();
+    }
+}
+
+void GameManager::DebugKillEnemies()
+{
+    const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+    for (auto obj : enemies)
+    {
+        Enemy* enemy = obj->CastTo<Enemy>();
+        if (enemy)
+        {
+            enemy->Damage(999999.0f);
+        }
+    }
+}
+
+void GameManager::DebugGoBoss()
+{
+    if (current_phase_ == Phase::kBoss ||
+        current_phase_ == Phase::kFadeOutToBoss ||
+        current_phase_ == Phase::kFadeInBoss)
+    {
+        return;
+    }
+
+    Master::CutscenePlaying = false;
+    if (Master::mpCamera)
+    {
+        Master::mpCamera->SetCutsceneMode(false);
     }
 
     const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-    int enemyCount = (int)enemies.size();
+    for (auto obj : enemies)
+    {
+        obj->SetDeleteFlag(true);
+    }
+    Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
 
-    DrawFormatString(20, 100, GetColor(255, 255, 255), "Current Phase: %s", phaseStr);
-    DrawFormatString(20, 140, GetColor(255, 255, 255), "Enemies Remaining: %d", enemyCount);
-
-    SetFontSize(fontSize);
-
+    SendShopsOut();
+    StartBossTransition();
+}
+void GameManager::Draw()
+{
+    DrawPhaseHud();
     DrawMinimap();
+    DrawShopBanner();
+    DrawBossFade();
+    DrawDebugPanel();
+}
 
-    if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3) {
-        if (mCurrentPhase != Phase::SHOP_3) {
-            int seconds = mShopTimer / 60;
-            DrawFormatString(1920 / 2 - 150, 50, GetColor(255, 255, 0), "SHOP PHASE - Next Wave in %d s", seconds);
-        } else {
-            DrawFormatString(1920 / 2 - 350, 50, GetColor(0, 255, 255), "SHOP PHASE - Enter the blue teleporter to start BOSS BATTLE");
-            
-            // Draw placeholder teleporter
-            VECTOR teleporterPos = mBossPortalPos;
-            // DrawCapsule3D(teleporterPos, VAdd(teleporterPos, VGet(0.0f, 200.0f, 0.0f)), 150.0f, 32, GetColor(0, 150, 255), GetColor(0, 150, 255), FALSE);
-            // DrawSphere3D(VAdd(teleporterPos, VGet(0.0f, 50.0f, 0.0f)), 100.0f, 32, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
-        }
+
+void GameManager::DrawDebugPanel()
+{
+    if (!IsDebugControlsEnabled())
+    {
+        return;
     }
 
-    if (mCurrentPhase == Phase::FADE_OUT_TO_BOSS || mCurrentPhase == Phase::FADE_IN_BOSS) {
-        SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFadeAlpha);
-        DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(0, 0, 0), TRUE);
-        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    int mouseX = 0;
+    int mouseY = 0;
+    InputManager::GetMousePos(mouseX, mouseY);
+
+    const int panelX = 22;
+    const int panelY = 96;
+    const int panelW = 318;
+    const int panelH = 56;
+    const DebugButton killButton = { 28, 104, 164, 40, "KILL ENEMIES" };
+    const DebugButton bossButton = { 202, 104, 132, 40, "GO BOSS" };
+
+    int fontSize = GetFontSize();
+    SetFontSize(18);
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 165);
+    DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(0, 0, 0), true);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(92, 68, 30), false);
+    DrawFormatString(panelX + 8, panelY - 18, GetColor(190, 170, 120), "DEBUG  F5 / F6");
+
+    DrawDebugButton(killButton, IsMouseInButton(killButton, mouseX, mouseY));
+    DrawDebugButton(bossButton, IsMouseInButton(bossButton, mouseX, mouseY));
+
+    SetFontSize(fontSize);
+}
+const char* GameManager::GetPhaseLabel() const
+{
+    switch (current_phase_)
+    {
+    case Phase::kPhase1:
+        return "PHASE 1";
+    case Phase::kPhase2:
+        return "PHASE 2";
+    case Phase::kPhase3:
+        return "PHASE 3";
+    case Phase::kBoss:
+        return "BOSS";
+    case Phase::kShop1:
+    case Phase::kShop2:
+        return "SHOP";
+    case Phase::kShop3:
+        return "BOSS GATE";
+    case Phase::kClear:
+        return "CLEAR";
+    default:
+        return "READY";
     }
 }
 
+const char* GameManager::GetPhaseSubLabel() const
+{
+    switch (current_phase_)
+    {
+    case Phase::kPhase1:
+    case Phase::kPhase2:
+        return "HUNT ALL";
+    case Phase::kPhase3:
+        return "BOSS GATE SOON";
+    case Phase::kBoss:
+        return "FINAL BATTLE";
+    case Phase::kShop1:
+    case Phase::kShop2:
+        return "PREPARE NEXT WAVE";
+    case Phase::kShop3:
+        return "ENTER TELEPORTER";
+    case Phase::kClear:
+        return "QUEST COMPLETE";
+    default:
+        return "";
+    }
+}
+
+int GameManager::GetEnemyCount() const
+{
+    const auto& enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+    return static_cast<int>(enemies.size());
+}
+
+void GameManager::DrawPhaseHud()
+{
+    int fontSize = GetFontSize();
+    SetFontSize(24);
+
+    const int panelX = Config::ScreenWidth - 356;
+    const int panelY = 28;
+    const int panelW = 328;
+    const int panelH = 82;
+    const int panel = GetColor(18, 17, 20);
+    const int panelLight = GetColor(46, 42, 45);
+    const int gold = GetColor(198, 154, 64);
+    const int goldDark = GetColor(98, 73, 32);
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 185);
+    DrawBox(panelX - 6, panelY - 4, panelX + panelW + 6, panelY + panelH + 6, GetColor(0, 0, 0), true);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, panel, true);
+    DrawBox(panelX + 6, panelY + 6, panelX + panelW - 6, panelY + 13, panelLight, true);
+    DrawLine(panelX, panelY, panelX + panelW, panelY, gold, 1);
+    DrawLine(panelX, panelY + panelH, panelX + panelW, panelY + panelH, goldDark, 1);
+    DrawLine(panelX, panelY, panelX, panelY + panelH, goldDark, 1);
+    DrawLine(panelX + panelW, panelY, panelX + panelW, panelY + panelH, gold, 1);
+    DrawFormatString(panelX + 18, panelY + 19, GetColor(245, 226, 174), "%s", GetPhaseLabel());
+    DrawFormatString(panelX + 18, panelY + 48, GetColor(205, 210, 216), "%s", GetPhaseSubLabel());
+    DrawFormatString(panelX + 230, panelY + 48, GetColor(238, 238, 238), "x%02d", GetEnemyCount());
+
+    SetFontSize(fontSize);
+}
+
+void GameManager::DrawShopBanner()
+{
+    if (!IsShopPhase())
+    {
+        return;
+    }
+
+    int fontSize = GetFontSize();
+    SetFontSize(28);
+
+    const int bannerW = 700;
+    const int bannerX = Config::ScreenWidth / 2 - bannerW / 2;
+    const int bannerY = 26;
+    const int gold = GetColor(198, 154, 64);
+    const int goldDark = GetColor(98, 73, 32);
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
+    DrawBox(bannerX, bannerY, bannerX + bannerW, bannerY + 54, GetColor(0, 0, 0), true);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    DrawLine(bannerX, bannerY, bannerX + bannerW, bannerY, gold, 1);
+    DrawLine(bannerX, bannerY + 54, bannerX + bannerW, bannerY + 54, goldDark, 1);
+
+    if (current_phase_ != Phase::kShop3)
+    {
+        int seconds = shop_timer_ / 60;
+        DrawFormatString(bannerX + 210, bannerY + 14, GetColor(255, 238, 156), "NEXT WAVE IN %d", seconds);
+    }
+    else
+    {
+        DrawFormatString(bannerX + 108, bannerY + 14, GetColor(141, 239, 255), "ENTER THE BLUE TELEPORTER TO START BOSS");
+    }
+
+    SetFontSize(fontSize);
+}
+
+void GameManager::DrawBossFade()
+{
+    if (!IsBossFadePhase())
+    {
+        return;
+    }
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, fade_alpha_);
+    DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(0, 0, 0), TRUE);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
 void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 {
     float statMultiplier = 1.0f;
     float countMultiplier = 1.0f;
 
-    switch (mDifficulty) {
-    case Difficulty::EASY:
+    switch (difficulty_)
+{
+    case Difficulty::kEasy:
         statMultiplier = 0.8f;
         countMultiplier = 0.8f;
         break;
-    case Difficulty::NORMAL:
+    case Difficulty::kNormal:
         statMultiplier = 1.0f;
         countMultiplier = 1.0f;
         break;
-    case Difficulty::HARD:
+    case Difficulty::kHard:
         statMultiplier = 1.5f;
         countMultiplier = 1.5f;
         break;
     }
 
-    e.hp = static_cast<int>(e.hp * statMultiplier);
-    e.attack = static_cast<int>(e.attack * statMultiplier);
+    e.hp = e.hp * statMultiplier;
+    e.attack = e.attack * statMultiplier;
     // boss count should remain 1 usually
-    if (e.tag != EnemyManager::boss_stage1) {
+    if (e.tag != EnemyManager::boss_stage1)
+    {
         e.Count = static_cast<int>(std::ceil(e.Count * countMultiplier));
-        if (e.Count < 1) e.Count = 1;
+        if (e.Count < 1)
+        {
+            e.Count = 1;
+        }
     }
 }
 
 void GameManager::SpawnPhaseEnemies()
 {
-auto p = Master::mpPlayer;
-    Player3D* player = p->CastTo<Player3D>();
     // 隰ｨ・ｽ・ｽ邵ｺ蠕後○郢晢ｿｽ繝ｻ郢ｧ・ｽ・ｽ邵ｺ荵晢ｽ芽棔謔ｶ・ｽ・ｽ邵ｺ・ｽ・ｽ髣懶ｽｽ闕ｳ荵晢ｿｽ陜灘玄・ｽ・ｽ・ｽ・ｽ邵ｺ蜉ｱ竊醍ｸｺ繝ｻ・ｽ・ｽ邵ｺ繝ｻ竊鍋ｸｲ・ｽ・ｽonfig邵ｺ・ｽ・ｽ郢ｧ・ｽ・ｽ郢晢ｿｽ繝ｻ郢ｧ・ｽ・ｽ闕ｳ・ｽ・ｽ陟｢繝ｻ・ｽ・ｽ・ｽ・ｽ隶灘生・ｽ・ｽ雋会ｽｧ邵ｺ蝣ｺ・ｽ・ｽ蜥ｲ・ｽ・ｽ・ｽ・ｽ邵ｺ・ｽ・ｽ陜難ｽｺ・ｽ謔ｶ竊堤ｸｺ蜷ｶ・ｽ
     VECTOR centerPos = Config::GetStageCenter();
-    if (player != nullptr)
-    {
-        VECTOR playercenterPos = player->GetPosition();
-    }
-    VECTOR centerbackPos = VAdd(Config::GetStageCenter(), VGet(0, 0, -2000));
-
-    if (mCurrentPhase == Phase::PHASE_1) {
+if (current_phase_ == Phase::kPhase1)
+{
         // Wave 1
         EnemyManager::enemydate e;
         e.filename = "Resource/Model/T.mv1";
@@ -321,15 +605,15 @@ auto p = Master::mpPlayer;
         e.Serch2 = 100.0f;
         e.Serch3 = 100.0f;
         e.isSeparateAnim = true;
-        e.xp = 30.0f;
         e.money = 200;
         e.tag = EnemyManager::night_stage1;
         e.Count = 10;
         
         ApplyDifficultyMultipliers(e);
-        mpEnemyManager->NewEnemyList(e);
+        enemy_manager_->NewEnemyList(e);
     }
-    else if (mCurrentPhase == Phase::PHASE_2) {
+    else if (current_phase_ == Phase::kPhase2)
+{
         // Wave 2: 鬯ｲ逍ｲ・ｽ・ｽ蜍滂ｿｽ陞｢・ｽ・ｽ
         EnemyManager::enemydate e1;
         e1.filename = "Resource/Model/T.mv1";
@@ -344,12 +628,11 @@ auto p = Master::mpPlayer;
         e1.Serch2 = 1000.0f;
         e1.Serch3 = 1000.0f;
         e1.isSeparateAnim = true;
-        e1.xp = 30.0f;
         e1.tag = EnemyManager::archerl_stage1;
         e1.Count = 8;
         
         ApplyDifficultyMultipliers(e1);
-        mpEnemyManager->NewEnemyList(e1);
+        enemy_manager_->NewEnemyList(e1);
 
         // Wave 2: 髴醍ｬｬ逎∬恆・ｽ・ｽ陞｢・ｽ・ｽ
         EnemyManager::enemydate e2;
@@ -364,15 +647,15 @@ auto p = Master::mpPlayer;
         e2.Serch2 = 100.0f;
         e2.Serch3 = 100.0f;
         e2.isSeparateAnim = true;
-        e2.xp = 30.0f;
         e2.money = 200;
         e2.tag = EnemyManager::night_stage1;
         e2.Count = 6;
 
         ApplyDifficultyMultipliers(e2);
-        mpEnemyManager->NewEnemyList(e2);
+        enemy_manager_->NewEnemyList(e2);
     }
-    else if (mCurrentPhase == Phase::PHASE_3) {
+    else if (current_phase_ == Phase::kPhase3)
+{
         // Wave 3: 鬩･蝓ｼ纃ｼ驍丞｣ｻ・ｽ・ｽ・ｽ・ｽ騾包ｽｨ
         EnemyManager::enemydate e_heavy;
         e_heavy.filename = "Resource/Model/monster.mv1";
@@ -386,13 +669,12 @@ auto p = Master::mpPlayer;
         e_heavy.Serch2 = 100.0f;
         e_heavy.Serch3 = 100.0f;
         e_heavy.isSeparateAnim = true;
-        e_heavy.xp = 100.0f;
         e_heavy.money = 500;
         e_heavy.tag = EnemyManager::monster_stage1;
         e_heavy.Count = 5;
 
         ApplyDifficultyMultipliers(e_heavy);
-        mpEnemyManager->NewEnemyList(e_heavy);
+        enemy_manager_->NewEnemyList(e_heavy);
 
         // Wave 3: 鬯ｲ逍ｲ・ｽ・ｽ蜍滂ｿｽ陞｢・ｽ・ｽ
         EnemyManager::enemydate e_magic;
@@ -407,13 +689,12 @@ auto p = Master::mpPlayer;
         e_magic.Serch2 = 1000.0f;
         e_magic.Serch3 = 1000.0f;
         e_magic.isSeparateAnim = true;
-        e_magic.xp = 30.0f;
         e_magic.money = 200;
         e_magic.tag = EnemyManager::archerl_stage1;
         e_magic.Count = 5;
 
         ApplyDifficultyMultipliers(e_magic);
-        mpEnemyManager->NewEnemyList(e_magic);
+        enemy_manager_->NewEnemyList(e_magic);
 
         // Wave 3: 髴醍ｬｬ逎∬怦・ｽ・ｽ陞｢・ｽ・ｽ
         EnemyManager::enemydate e_melee;
@@ -428,15 +709,15 @@ auto p = Master::mpPlayer;
         e_melee.Serch2 = 100.0f;
         e_melee.Serch3 = 100.0f;
         e_melee.isSeparateAnim = true;
-        e_melee.xp = 30.0f;
         e_melee.money = 200;
         e_melee.tag = EnemyManager::night_stage1;
         e_melee.Count = 5;
 
         ApplyDifficultyMultipliers(e_melee);
-        mpEnemyManager->NewEnemyList(e_melee);
+        enemy_manager_->NewEnemyList(e_melee);
     }
-    else if (mCurrentPhase == Phase::BOSS) {
+    else if (current_phase_ == Phase::kBoss)
+{
         EnemyManager::enemydate e2;
         e2.filename = "Resource/Model/Boss1.mv1";
         e2.spawnCenter = Config::GetStageBossCenter();
@@ -450,20 +731,19 @@ auto p = Master::mpPlayer;
         e2.Serch3 = 1000.0f;
         e2.money = 3000;
         e2.isSeparateAnim = true;
-        e2.xp = 300.0f;
         e2.tag = EnemyManager::boss_stage1;
         e2.Count = 1;
 
         ApplyDifficultyMultipliers(e2);
-        mpEnemyManager->NewEnemyList(e2);
+        enemy_manager_->NewEnemyList(e2);
     }
 }
 void GameManager::DrawMinimap()
 {
     // Minimap dimensions and position
-    const float mapSize = 250.0f;
-    const float mapX = 1920.0f - mapSize - 20.0f;
-    const float mapY = 20.0f;
+    const float mapSize = 220.0f;
+    const float mapX = Config::ScreenWidth - mapSize - 28.0f;
+    const float mapY = 198.0f;
     
     // Draw minimap background (semi-transparent black)
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
@@ -498,11 +778,12 @@ void GameManager::DrawMinimap()
     };
 
     // Draw Boss Portal (clamped to edge)
-    VECTOR portalOffset = GetMapOffset(mBossPortalPos);
+    VECTOR portalOffset = GetMapOffset(boss_portal_pos_);
     bool portalFar = (abs(portalOffset.x) > maxD || abs(portalOffset.y) > maxD);
     VECTOR portalClamped = ClampToEdge(portalOffset);
     DrawCircle((int)(mapCenterX + portalClamped.x), (int)(mapCenterY + portalClamped.y), 6, GetColor(0, 255, 255), TRUE);
-    if (portalFar) {
+    if (portalFar)
+{
         DrawCircle((int)(mapCenterX + portalClamped.x), (int)(mapCenterY + portalClamped.y), 9, GetColor(0, 255, 255), FALSE);
     }
 
@@ -543,6 +824,8 @@ void GameManager::DrawMinimap()
     // Restore clipping area
     SetDrawArea(0, 0, 1920, 1080);
 }
+
+
 
 
 

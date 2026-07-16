@@ -1,4 +1,4 @@
-﻿#include"Camera.h"
+#include"Camera.h"
 #include"Config.h"
 #include<cmath>
 #include"Master.h"
@@ -35,16 +35,16 @@ Camera::~Camera()
 void Camera::Initialize()
 {
 	target_ = nullptr;
-	//�J�����̃N���b�s���O�����̐ݒ�
-	SetCameraNearFar(100.0f, Config::CameraFar);//10050000�܂ł̋�����������
+	//?J??????N???b?s???O????????
+	SetCameraNearFar(100.0f, Config::CameraFar);//10050000???????????????
 
-	//�w�i�F��ݒ�i�D�F�j
+	//?w?i?F????i?D?F?j
 	SetBackgroundColor(0, 0, 0);
 
-	//�J�����̐ݒ�𔽉f
+	//?J??????????f
 	SetCameraPositionAndTarget_UpVecY(position_, mvLookAtPosition);
 
-	//�X�V�������x�s���Ă���
+	//?X?V???????x?s???????
 	Update();
 
 	
@@ -67,7 +67,7 @@ void Camera::UpdateThirdPersonCamera()
 		targetPos = target_->GetPosition();
 	}
 
-	VECTOR temp; //汎用変数
+	VECTOR temp; //�ėp�ϐ�
 	if (target_ == nullptr)
 	{
 		target_ = Master::mpPlayer;
@@ -82,7 +82,7 @@ void Camera::UpdateThirdPersonCamera()
 	}
 	else
 	{
-		//ターゲットがない場合は一定の高さ
+		//�^�[�Q�b�g���Ȃ��ꍇ�͈��̍���
 		mvLookAtPosition.y = 160.0f;
 	}
 
@@ -100,7 +100,7 @@ void Camera::UpdateThirdPersonCamera()
 
 void Camera::UpdateRotation()
 {
-	////�����L�[�ŃJ��������
+	////?????L?[??J????????
 		if (mfHorizontalAngle >= 180.0f)
 		{
 			mfHorizontalAngle -= 360.0f;
@@ -121,30 +121,30 @@ void Camera::UpdateRotation()
 		}
 	
 
-	float camAngleY = 0.0f; // ���������i���E�j
-	float camAngleX = 0.0f; // ���������i�㉺�j
+	float camAngleY = 0.0f; // ?????????i???E?j
+	float camAngleX = 0.0f; // ?????????i???j
 
-	// ���x
+	// ???x
 	const float MOUSE_SENSITIVITY = 0.05f;
 
-	// �J�����̋���
+	// ?J?????????
 	float camDistance = 300.0f;
 
 	
 
-	// �J�[�\�����\����
+	// ?J?[?\?????\????
 
-		// �}�E�X�̈ړ��ʂ�擾
+		// ?}?E?X???????��
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
-	// ���S���W
+	// ???S???W
 	if (!CheckHitKey(KEY_INPUT_0))
 	{
 		int centerX = 640;
 		int centerY = 360;
 	}
 	auto sceneType = Master::mpSceneManager->GetCurrentSceneType();
-	if (sceneType == SceneManager::SCENE_GAME || sceneType == SceneManager::SCENE_TUTORIAL || sceneType == SceneManager::SCENE_3D || sceneType == SceneManager::SCENE_3DHARD || sceneType == SceneManager::SCENE_LEVEL || sceneType == SceneManager::SCENE_TEST_COLLISION) {
+	if (sceneType == SceneManager::kScene3D) {
 		SetMousePoint(centerX, centerY);
 
 	
@@ -152,16 +152,16 @@ void Camera::UpdateRotation()
 		int deltaX = mouseX - centerX;
 		int deltaY = mouseY - centerY;
 
-		// ��]�p�x��X�V
+		// ??]?p?x??X?V
 		mfHorizontalAngle -= deltaX * MOUSE_SENSITIVITY;
 		mfVerticalAngle -= deltaY * MOUSE_SENSITIVITY;
 	}
 
-		// �㉺�̉�]�𐧌��i���������Ԃ�Ȃ��悤�Ɂj
+		// ?????]?????i?????????????????j
 		/*if (camAngleX < -DX_PI_F / 2.0f) camAngleX = -DX_PI_F / 2.0f;
 		if (camAngleX > DX_PI_F / 2.0f) camAngleX = DX_PI_F / 2.0f;*/
 
-		//// �J�����̈ʒu�ƒ����_��v�Z
+		//// ?J???????u??????_??v?Z
 		//VECTOR temp = VGet(
 		//	camTarget.x + camDistance * sinf(camAngleY) * cosf(camAngleX),
 		//	camTarget.y + camDistance * sinf(camAngleX),
@@ -171,33 +171,33 @@ void Camera::UpdateRotation()
 
 		
 }
-// ��New��
-// ��ʗh��
+// ??New??
+// ???h??
 void Camera::Shake()
 {
 	if (mfShakeTimeCounter < mfShakeTime)
 	{
-		// sinf �𗘗p���ėh�炵���W��Z�o
-		// note: ��UY���W������h�炵�Ă݂�
+		// sinf ???p????h?????W??Z?o
+		// note: ??UY???W??????h??????
 		mvShakePosition.y = sinf(mfShakeAngle) * (1.0f - (mfShakeTimeCounter / mfShakeTime)) * mfShakeWidth;
 		mvShakePosition.x = 0.0f;
 		mvShakePosition.z = 0.0f;
 
-		// �h�炵�����Ɏg�p���� sinf �ɓn���p�x�̕ύX����
+		// ?h????????g?p???? sinf ??n???p?x???X????
 		mfShakeAngle += mfShakeAngleSpeed * mfStepTime;
 
-		// �h�炷���Ԃ�o�߂�����
+		// ?h???????o???????
 		mfShakeTimeCounter += mfStepTime;
 	}
 	else
 	{
-		// �h�炳��Ă��Ȃ��ꍇ�͗h�炵�����ɂ����Z���W��O�ɂ���
+		// ?h?�z???????????h????????????Z???W??O?????
 		mvShakePosition = VGet(0.0f, 0.0f, 0.0f);
 	}
 }
 
-// ��New��
-// ��ʗh��ݒ�
+// ??New??
+// ???h????
 void Camera::SetupShake(float time, float width, float angleSpeed, float stepTime)
 {
 	mfShakeTimeCounter = 0.0f;
@@ -213,6 +213,7 @@ void Camera::Finalize()
 
 
 }
+
 
 
 

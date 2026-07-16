@@ -14,7 +14,7 @@ class Model;
 class EnemyBoss_1 :public Enemy
 {
 public:
-	EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float xp,int money, bool isSeparateAnim);
+	EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool isSeparateAnim);
 
 	~EnemyBoss_1();
 

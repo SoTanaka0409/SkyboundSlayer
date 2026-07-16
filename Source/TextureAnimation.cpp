@@ -1,6 +1,6 @@
-ï»¿#include "TextureAnimation.h"
+#include "TextureAnimation.h"
 
-// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 TextureAnimation::TextureAnimation(
     VECTOR position,
     std::string filename,
@@ -17,18 +17,18 @@ TextureAnimation::TextureAnimation(
 {
     mnHandleList = new int[allNum];
 
-    // ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
+    // ‰æ‘œƒtƒ@ƒCƒ‹“Ç‚İ‚İ
     int handle = LoadGraph(filename.c_str());
     if (handle == -1)
     {
-        return; // èª­ã¿è¾¼ã¿å¤±æ•—ã—ã¦ã„ãŸã‚‰ä»¥é™ã¯å‡¦ç†ã—ãªã„
+        return; // “Ç‚İ‚İ¸”s‚µ‚Ä‚¢‚½‚çˆÈ~‚Íˆ—‚µ‚È‚¢
     }
 
-    // ã‚µã‚¤ã‚ºå–å¾—
+    // ƒTƒCƒYæ“¾
     int sizeX, sizeY;
     GetGraphSize(handle, &sizeX, &sizeY);
 
-    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®åˆ†å‰²èª­ã¿è¾¼ã¿
+    // ƒeƒNƒXƒ`ƒƒ‚Ì•ªŠ„“Ç‚İ‚İ
     int success = LoadDivGraph(
         filename.c_str(),
         allNum,
@@ -40,27 +40,28 @@ TextureAnimation::TextureAnimation(
     );
 }
 
-// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+// ƒfƒXƒgƒ‰ƒNƒ^
 TextureAnimation::~TextureAnimation()
 {
 }
 
 void TextureAnimation::Update()
 {
-    // ã‚«ã‚¦ãƒ³ã‚¿ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
+    // ƒJƒEƒ“ƒ^‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
     mnCounter++;
     if (mnCounter % mnInterval == 0)
     {
-        mnCounter = 0;  // ã‚«ã‚¦ãƒ³ã‚¿ã‚’æˆ»ã™
-        mnCurrentNum++; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·ã‚’é€²ã‚ã‚‹
-        if (mnCurrentNum >= mnAllNum)   // åˆ†å‰²æ•°ã‚’è¶…ãˆã‚‹ãªã‚‰ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹
+        mnCounter = 0;  // ƒJƒEƒ“ƒ^‚ğ–ß‚·
+        mnCurrentNum++; // ƒeƒNƒXƒ`ƒƒ”Ô†‚ği‚ß‚é
+        if (mnCurrentNum >= mnAllNum)   // •ªŠ„”‚ğ’´‚¦‚é‚È‚çƒ‹[ƒv‚³‚¹‚é
         {
-            mnCurrentNum = 0;   // ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹
+            mnCurrentNum = 0;   // ƒ‹[ƒv‚³‚¹‚é
         }
     }
 }
 
 void TextureAnimation::Draw()
 {
-    DrawGraph(position_.x, position_.y, mnHandleList[mnCurrentNum], true);
+    DrawGraph(static_cast<int>(position_.x), static_cast<int>(position_.y), mnHandleList[mnCurrentNum], true);
 }
+

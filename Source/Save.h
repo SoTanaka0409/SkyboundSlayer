@@ -23,8 +23,6 @@ class Save
 		float MaxHp=0;
 		float attack=0;
 		float speed=0;
-		int Level=0;
-		int xp=0;
 		std::list<Item::ItemInformation*>I_date;
 		std::list<Equipment::EquipmentDate*>E_date;
 		

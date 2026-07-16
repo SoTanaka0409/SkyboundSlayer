@@ -32,7 +32,6 @@ public:
 		float Serch1;//敵をサーチする大きさ
 		float Serch2;//敵に攻撃し始めるサイズ
 		float Serch3;//敵に近ずきすぎたときに立ち止まる
-		float xp;//倒されたときにplayerが獲得するxp
 		bool isSeparateAnim;//セパレートアニメーションをするかどうか
 		int MaxEnemyCount;//stageの最大沸き数
 		int money;

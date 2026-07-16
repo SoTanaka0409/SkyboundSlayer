@@ -1,14 +1,9 @@
 #include "StatShop.h"
-#include <fstream>
-
-#include "ModelUtility.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
-#include "ObjectManager.h"
 #include "SphereCollider.h"
 #include "Player3D.h"
-#include "Chat.h"
 #include "CapsuleCollider.h"
 #include "SceneGame.h"
 #include "GameManager.h"
@@ -16,10 +11,11 @@
 
 namespace
 {
-	bool IsShopPhaseActive() {
-		auto currentScene = Master::mpSceneManager->GetCurrentScene();
+	bool IsShopPhaseActive()
+	{
 		SceneGame* sceneGame = Master::mpSceneManager->GetSceneGame();
-		if (sceneGame) {
+		if (sceneGame)
+		{
 			return sceneGame->IsShopPhase();
 		}
 		return false;
@@ -33,13 +29,12 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	, mnSelect(0)
 	, mnSelectMax(4)
 	, mnSelectMin(0)
-	, mnLevelMaxHp(0)
-	, mnLevelAttack(0)
-	, mnLevelSpeed(0)
-	, mnLevelEvasionSpeed(0)
-	, mnLevelEvasionInvincibility(0)
-	, mFloatAngle(0.0f)
-	, mBaseY(vec.y)
+	, mnUpgradeMaxHpCount(0)
+	, mnUpgradeAttackCount(0)
+	, mnUpgradeSpeedCount(0)
+	, mnUpgradeEvasionSpeedCount(0)
+
+
 	
 {
 	SetTag(Tag3D_Shop);
@@ -77,144 +72,199 @@ StatShop::~StatShop()
 
 void StatShop::Draw()
 {
+	if (mShopState == ShopState::WAIT_PHASE)
+	{
+		return;
+	}
+	if (!IsShopPhaseActive())
+	{
+		return;
+	}
 
-	if (mShopState == ShopState::WAIT_PHASE) return;
-	if (!IsShopPhaseActive()) return;
-
-	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = Master::mpPlayer;
-
-	if (!player) return;
+	if (!player)
+	{
+		return;
+	}
 
 	if (Master::StatShopClassOn)
 	{
-		player->mpHaveMoney->Draw();
-
-		// 髢ｭ譴ｧ蜍ｹ郢ｧﾐ､I
-		
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
-		DrawBox(300, 100, 1620, 800, GetColor(0, 0, 50), TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-		DrawBox(300, 100, 1620, 800, GetColor(255, 255, 255), FALSE);
-		
-		int fontSize = GetFontSize();
-		SetFontSize(40);
-		DrawFormatString(350, 120, GetColor(255, 255, 255), "--- STATUS UPGRADE SHOP ---");
-		SetFontSize(30);
-		DrawFormatString(350, 180, GetColor(255, 255, 0), "Money: %d", player->mpHaveMoney->HaveMoney());
-
-		const char* options[] = {
-			"Max HP UP",
-			"Attack UP",
-			"Speed UP",
-			"Evasion Distance UP",
-			"Healing Potion"
-		};
-		int levels[] = { mnLevelMaxHp, mnLevelAttack, mnLevelSpeed, mnLevelEvasionSpeed, mnLevelEvasionInvincibility };
-		int icons[] = { mnIconMaxHpHandle, mnIconAttackHandle, mnIconSpeedHandle, mnIconEvasionDistHandle, mnIconEvasionInvHandle };
-
-		for (int i = 0; i <= mnSelectMax; i++)
-		{
-			int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
-			if (i == mnSelect) DrawFormatString(330, 250 + i * 60, color, ">");
-			
-			// 繧｢繧､繧ｳ繝ｳ謠冗判 (40x40 繧ｵ繧､繧ｺ縺ｫ邵ｮ蟆上＠縺ｦ陦ｨ遉ｺ)
-			DrawExtendGraph(360, 245 + i * 60, 360 + 40, 245 + i * 60 + 40, icons[i], TRUE);
-
-			if (i == 4) {
-				DrawFormatString(415, 250 + i * 60, color, "%s - Cost: 100", options[i]);
-			} else {
-				DrawFormatString(415, 250 + i * 60, color, "%s (Lv.%d) - Cost: %d", options[i], levels[i], GetCost(levels[i]));
-			}
-		}
-		
-		DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   Escape/Back: Close");
-		SetFontSize(fontSize);
+		DrawShopMenu(player);
 	}
 	else
 	{
-		VECTOR DrawName3D = VAdd(position_, VGet(0.0f, 250.0f, 0.0f));
-		VECTOR DrawNameWorld = ConvWorldPosToScreenPos(DrawName3D);
-		
-		VECTOR playerPos = player->GetPosition();
-		float dx = playerPos.x - position_.x;
-		float dz = playerPos.z - position_.z;
-		float dist = sqrtf(dx * dx + dz * dz);
-		
-		// ショップ名と操作説明
-		DrawFormatString(DrawNameWorld.x - 30, DrawNameWorld.y, GetColor(255, 255, 0), "[ ステータスショップ ]");
-		DrawFormatString(DrawNameWorld.x - 10, DrawNameWorld.y + 20, GetColor(255, 255, 255), "Enterキーで開く");
-
-		// プレイヤーが近づいたらメッセージを表示
-		if (dist < 1000.0f)
-		{
-			DrawFormatString(DrawNameWorld.x - 60, DrawNameWorld.y - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」");
-		}
-
-		model_->Draw();
+		DrawShopNpc(player);
 	}
 }
 
+void StatShop::DrawShopMenu(Player3D* player)
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+	DrawBox(300, 100, 1620, 800, GetColor(0, 0, 50), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox(300, 100, 1620, 800, GetColor(255, 255, 255), FALSE);
+
+	int fontSize = GetFontSize();
+	DrawShopHeader(player);
+	DrawShopOptions();
+	DrawShopFooter();
+	SetFontSize(fontSize);
+}
+
+void StatShop::DrawShopHeader(Player3D* player)
+{
+	SetFontSize(40);
+	DrawFormatString(350, 120, GetColor(255, 255, 255), "--- STATUS UPGRADE SHOP ---");
+	SetFontSize(30);
+	DrawFormatString(350, 180, GetColor(255, 255, 0), "Money: %d", player->have_money_->HaveMoney());
+}
+
+void StatShop::DrawShopOptions()
+{
+	const char* options[] =
+	{
+		"Max HP UP",
+		"Attack UP",
+		"Speed UP",
+		"Evasion Distance UP",
+		"Healing Potion"
+	};
+	int upgradeCounts[] =
+	{
+		mnUpgradeMaxHpCount,
+		mnUpgradeAttackCount,
+		mnUpgradeSpeedCount,
+		mnUpgradeEvasionSpeedCount
+	};
+	int icons[] =
+	{
+		mnIconMaxHpHandle,
+		mnIconAttackHandle,
+		mnIconSpeedHandle,
+		mnIconEvasionDistHandle,
+		mnIconEvasionInvHandle
+	};
+
+	for (int i = 0; i <= mnSelectMax; i++)
+	{
+		int color = (i == mnSelect) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
+		int optionY = 250 + i * 60;
+		if (i == mnSelect)
+		{
+			DrawFormatString(330, optionY, color, ">");
+		}
+
+		DrawExtendGraph(360, 245 + i * 60, 400, 285 + i * 60, icons[i], TRUE);
+		if (i == 4)
+		{
+			DrawFormatString(415, optionY, color, "%s - Cost: 100", options[i]);
+		}
+		else
+		{
+			DrawFormatString(415, optionY, color, "%s (UP %d) - Cost: %d", options[i], upgradeCounts[i], GetCost(upgradeCounts[i]));
+		}
+	}
+}
+
+void StatShop::DrawShopFooter()
+{
+	DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   Escape/Back: Close");
+}
+
+void StatShop::DrawShopNpc(Player3D* player)
+{
+	VECTOR drawName3D = VAdd(position_, VGet(0.0f, 250.0f, 0.0f));
+	VECTOR drawNameWorld = ConvWorldPosToScreenPos(drawName3D);
+
+	VECTOR playerPos = player->GetPosition();
+	float dx = playerPos.x - position_.x;
+	float dz = playerPos.z - position_.z;
+	float dist = sqrtf(dx * dx + dz * dz);
+
+	int drawX = static_cast<int>(drawNameWorld.x);
+	int drawY = static_cast<int>(drawNameWorld.y);
+
+	DrawFormatString(drawX - 30, drawY, GetColor(255, 255, 0), "[ ステータスショップ ]");
+	DrawFormatString(drawX - 10, drawY + 20, GetColor(255, 255, 255), "Enterキーで開く");
+
+	if (dist < 1000.0f)
+	{
+		DrawFormatString(drawX - 60, drawY - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」");
+	}
+
+	model_->Draw();
+}
 void StatShop::Update()
 {
-	static bool isChecked = false;
-	if (!isChecked) {
-		std::ofstream ofs("shop_anim_debug.txt");
-		int tempHandle = MV1LoadModel("Resource/Model/shop.mv1");
-		if (tempHandle != -1) {
-			int animNum = MV1GetAnimNum(tempHandle);
-			ofs << "Total Animations: " << animNum << "\n";
-			for(int i=0; i<animNum; ++i) {
-				ofs << "Anim " << i << ": " << MV1GetAnimName(tempHandle, i) << "\n";
-			}
-			MV1DeleteModel(tempHandle);
-		} else {
-			ofs << "Failed to load shop.mv1\n";
-		}
-		ofs.close();
-		isChecked = true;
+	if (!CanUpdateShop())
+	{
+		return;
 	}
 
-
-	
-	if (mShopState == ShopState::WAIT_PHASE) return;
-	
-	// WALKING_OUT邵ｺｽｮ隴弱ｅ繝ｻ邵ｲ竏壹Ψ郢ｧｽｧ郢晢ｽｼ郢ｧｽｺ邵ｺ讙趣ｽｵ繧ｽｺ繝ｻｼ邵ｺｽｦ邵ｺ繝ｻ窶ｻ郢ｧ繧会ｽｧｽｻ陷榊供繝ｻ騾繝ｻｽ帝け螢ｹｿ郢ｧ蜿･ｽｿ繝ｻｽｦ竏壺ｲ邵ｺ繧ｽ狗ｸｺ貅假ｽ∫ｸｲ竏夲ｼ邵ｺ阮吶定崕繝ｻｽｲ闊鯉ｼ邵ｺｽｾ邵ｺ蜷ｶﾂ繝ｻ
-	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT) return;
-
-	auto currentScene = Master::mpSceneManager->GetCurrentScene();
-	SceneGame* sceneGame = Master::mpSceneManager->GetSceneGame();
-	if (sceneGame && sceneGame->mpGameManager) {
-		if (sceneGame->mpGameManager->GetShopTimer() <= 60 && sceneGame->mpGameManager->GetCurrentPhase() != GameManager::Phase::SHOP_3) {
-			if (Master::StatShopClassOn) {
-				Master::StatShopClassOn = false;
-				Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
-			}
-		}
-	}
+	CloseShopIfPhaseEnding();
 
 	if (Master::StatShopClassOn)
 	{
-		SelectClass();
-		BuyClass();
-
-		static int oldEsc = 0;
-		static int oldBack = 0;
-		int currentEsc = CheckHitKey(KEY_INPUT_ESCAPE);
-		int currentBack = CheckHitKey(KEY_INPUT_BACK);
-		
-		if ((currentEsc && !oldEsc) || (currentBack && !oldBack))
-		{
-			Master::StatShopClassOn = false;
-			Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
-		}
-		oldEsc = currentEsc;
-		oldBack = currentBack;
+		UpdateShopMenu();
 	}
 
 	movePosition();
 }
 
+bool StatShop::CanUpdateShop() const
+{
+	if (mShopState == ShopState::WAIT_PHASE)
+	{
+		return false;
+	}
+
+	if (!IsShopPhaseActive() && mShopState != ShopState::WALKING_OUT)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void StatShop::CloseShopIfPhaseEnding()
+{
+	SceneGame* sceneGame = Master::mpSceneManager->GetSceneGame();
+	if (!sceneGame || !sceneGame->game_manager_)
+	{
+		return;
+	}
+
+	bool isClosingSoon = sceneGame->game_manager_->GetShopTimer() <= 60;
+	bool isFinalShop = sceneGame->game_manager_->GetCurrentPhase() == GameManager::Phase::kShop3;
+	if (isClosingSoon && !isFinalShop && Master::StatShopClassOn)
+	{
+		Master::StatShopClassOn = false;
+		Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
+	}
+}
+
+void StatShop::UpdateShopMenu()
+{
+	SelectClass();
+	BuyClass();
+	HandleShopCloseInput();
+}
+
+void StatShop::HandleShopCloseInput()
+{
+	static int oldEsc = 0;
+	static int oldBack = 0;
+	int currentEsc = CheckHitKey(KEY_INPUT_ESCAPE);
+	int currentBack = CheckHitKey(KEY_INPUT_BACK);
+
+	if ((currentEsc && !oldEsc) || (currentBack && !oldBack))
+	{
+		Master::StatShopClassOn = false;
+		Master::mpSoundManager->PlaySE(SoundManager::SE_WINDOW);
+	}
+	oldEsc = currentEsc;
+	oldBack = currentBack;
+}
 void StatShop::movePosition()
 {
 	if (mShopState == ShopState::WALKING_IN)
@@ -227,7 +277,6 @@ void StatShop::movePosition()
 			position_.x = mTargetPosition.x;
 			position_.z = mTargetPosition.z;
 			mShopState = ShopState::ARRIVED;
-			mBaseY = position_.y;
 			model_->ChangeAnimation(ANIMATION_NEUTRAL);
 		}
 		else
@@ -300,9 +349,9 @@ void StatShop::StartWalkingOut()
 	}
 }
 
-int StatShop::GetCost(int level)
+int StatShop::GetCost(int upgradeCount)
 {
-	return 100 + (level * 50); // Level 0 -> 100, Level 1 -> 150, etc.
+	return 100 + (upgradeCount * 50);
 }
 
 void StatShop::SelectClass()
@@ -332,7 +381,6 @@ void StatShop::SelectClass()
 
 void StatShop::BuyClass()
 {
-	auto mpPlayer = Master::mpPlayer;
 	Player3D* player = Master::mpPlayer;
 
 	if (!player) return;
@@ -346,13 +394,15 @@ void StatShop::BuyClass()
 	GetMousePoint(&mx, &my);
 	
 	static int oldMx = 0, oldMy = 0;
-	if (mx != oldMx || my != oldMy) {
+	if (mx != oldMx || my != oldMy)
+			{
 		for (int i = 0; i <= mnSelectMax; i++)
 		{
 			int optY = 250 + i * 60;
 			if (mx >= 350 && mx <= 1500 && my >= optY && my <= optY + 50)
 			{
-				if (mnSelect != i) {
+				if (mnSelect != i)
+			{
 					mnSelect = i;
 					Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);
 				}
@@ -392,9 +442,9 @@ void StatShop::BuyClass()
 		if (mnSelect == 4)
 		{
 			int cost = 100;
-			if (player->mpHaveMoney->HaveMoney() >= cost)
+			if (player->have_money_->HaveMoney() >= cost)
 			{
-				player->mpHaveMoney->PullMoney(cost);
+				player->have_money_->PullMoney(cost);
 				
 				Item::ItemInformation* info = new Item::ItemInformation();
 				info->ID = Item::ItemID::HEAL;
@@ -411,19 +461,19 @@ void StatShop::BuyClass()
 		}
 		else
 		{
-			int* targetLevel = nullptr;
-			if (mnSelect == 0) targetLevel = &mnLevelMaxHp;
-			else if (mnSelect == 1) targetLevel = &mnLevelAttack;
-			else if (mnSelect == 2) targetLevel = &mnLevelSpeed;
-			else if (mnSelect == 3) targetLevel = &mnLevelEvasionSpeed;
+			int* targetUpgradeCount = nullptr;
+			if (mnSelect == 0) targetUpgradeCount = &mnUpgradeMaxHpCount;
+			else if (mnSelect == 1) targetUpgradeCount = &mnUpgradeAttackCount;
+			else if (mnSelect == 2) targetUpgradeCount = &mnUpgradeSpeedCount;
+			else if (mnSelect == 3) targetUpgradeCount = &mnUpgradeEvasionSpeedCount;
 
-			if (targetLevel)
+			if (targetUpgradeCount)
 			{
-				int cost = GetCost(*targetLevel);
-				if (player->mpHaveMoney->HaveMoney() >= cost)
+				int cost = GetCost(*targetUpgradeCount);
+				if (player->have_money_->HaveMoney() >= cost)
 				{
-					player->mpHaveMoney->PullMoney(cost);
-					(*targetLevel)++;
+					player->have_money_->PullMoney(cost);
+					(*targetUpgradeCount)++;
 
 					// Apply stat bonuses
 					if (mnSelect == 0) player->AddUpgradeMaxHp(10.0f); // HP +10
@@ -470,3 +520,9 @@ void StatShop::OnTrigger(Collider* collider, Collider* check)
 void StatShop::OnExit(Collider* collider, Collider* check)
 {
 }
+
+
+
+
+
+

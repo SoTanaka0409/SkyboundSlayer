@@ -20,8 +20,8 @@
 #include"CapsuleCollider.h"
 
 
-Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float speed,float HitSize, float Serch1, float Serch2,float Serch3,float Attack,float xp,int money,bool isSeparateAnim )
-	:Enemy(filename,initPos,hp,speed,Attack,HitSize,Serch1,Serch2,Serch3,xp,money, isSeparateAnim)
+Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float speed,float HitSize, float Serch1, float Serch2,float Serch3,float Attack,int money,bool isSeparateAnim )
+	:Enemy(filename,initPos,hp,speed,Attack,HitSize,Serch1,Serch2,Serch3,money, isSeparateAnim)
 	
 	//,Animation(false)
 {
@@ -92,23 +92,13 @@ void Enemy3D_AT::Draw()
 		model_->Draw();
 		
 	}
-	if (Master::mpDebug->Getdebug() == true && Master::mpEnemySerch->getSerch() == false)
+	if (Master::mpDebug->Getdebug() == true)
 	{
 		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize,
 			8,
 			GetColor(255, 255, 255),
 			GetColor(255, 255, 255),
-			false
-		);
-	}
-	if (Master::mpEnemySerch->getSerch() == true)
-	{
-		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
-			mfSize * 5,
-			8,
-			GetColor(255, 0, 0),
-			GetColor(255, 0, 0),
 			false
 		);
 	}

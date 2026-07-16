@@ -34,7 +34,6 @@ void SoundManager::Initialize()
 	LoadSE(SOUND_SE::SE_SHOP, "Resource/SE/レジスターで精算.mp3");
 	LoadSE(SOUND_SE::SE_SELECT, "Resource/SE/決定ボタンを押す7.mp3");
 	LoadSE(SOUND_SE::SE_WINDOW, "Resource/SE/メニューを開く4.mp3");
-	LoadSE(SOUND_SE::SE_LEVELUP, "Resource/SE/levelUp.mp3");
 }
 
 

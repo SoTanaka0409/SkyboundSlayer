@@ -31,7 +31,7 @@ private:
 	bool mbNewEnemyflag;//隰ｨ・ｵ郢ｧ蝨ｰew邵ｺ蜷ｶ・狗ｸｺ貅假ｽ∫ｸｺ・ｮ郢晁ｼ釆帷ｹｧ・ｰ繝ｻ貊会ｽｽ・ｿ邵ｺ繝ｻ蟀ｿ邵ｺ・ｯ郢ｧ蛹ｻ・･郢ｧ荳環ｰ郢ｧ蟲ｨ竊醍ｸｺ繝ｻ
 
 public:
-	Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2,float Serch3, float xp,int money,bool isSeparateAnim);
+	Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2,float Serch3,int money,bool isSeparateAnim);
 
 	~Enemy();
 
@@ -149,7 +149,6 @@ protected:
 	bool AttackHitJudgmentflag;//隰ｾ・ｻ隰ｦ繝ｻ窶ｲ闕ｳﾂ陜玲ｧｫ・ｽ阮吮螺邵ｺ・｣邵ｺ貅假ｽ臥ｸｺ譏ｴ繝ｻ隰ｨ・ｵ邵ｺ・ｫ陝・ｽｾ邵ｺ蜉ｱ窶ｻ隰ｾ・ｻ隰ｦ繝ｻ窶ｲ鬩･蟠趣ｽ､繝ｻ・邵ｺ・ｪ邵ｺ繝ｻ・育ｸｺ繝ｻ竊鍋ｸｺ蜷ｶ・・
 
 	bool HitJudgmentflag_Player;
-	float mfHaveXp;
 	int mfHaveMoney;
 	/// <summary>
 	/// ///////////郢昶・ﾎ礼ｹ晢ｽｼ郢晏現ﾎ懃ｹｧ・｢郢晢ｽｫ

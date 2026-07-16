@@ -1,4 +1,4 @@
-#include <fstream>
+﻿#include <fstream>
 #include <sstream>
 #include"Scene3D.h"
 #include"Config.h"
@@ -35,43 +35,34 @@ void Scene3D::Initialize()
 {
     SceneGame::Initialize();
 
-    // 髴ｧ縺ｮ險ｭ螳
-    // 霧の設定（深く、暗く）
     SetFogEnable(TRUE);
-    SetFogColor(20, 30, 50); // 暗いネイビーブルー
-    SetFogStartEnd(500.0f, 10000.0f); // 霧が手前から濃くかかるように
+    SetFogColor(20, 30, 50);
+    SetFogStartEnd(500.0f, 10000.0f);
 
-    // 環境光（影の明るさ）の設定
     SetGlobalAmbientLight(GetColorF(0.15f, 0.15f, 0.2f, 1.0f));
 
-    // メインの平行光源（月光のような冷たく弱い光）
     SetLightDifColor(GetColorF(0.6f, 0.6f, 0.8f, 1.0f));
     SetLightSpcColor(GetColorF(0.4f, 0.4f, 0.5f, 1.0f));
     SetLightDirection(VNorm(VGet(-0.5f, -0.8f, 0.3f)));
 
-    //const float wallWidth = Config::StageWallWidth;//stage縺ｮ繧ｵ繧､繧ｺ
-    //const float wallDistance = Config::StageWallDistance;//stage縺ｮ繧ｵ繧､繧ｺ main
     const float Spawnpos = 12000.0f;
     VECTOR initPOS = VGet(Spawnpos, 100, Spawnpos);
 
-    new Player3D("Resource/Model/T.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);//ジャンプアタク、スピド㽈
-    new StatShop("Resource/Model/shop.mv1", VGet(-1500,100,1500)); // スージの真ん中に配置
-    new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3D/low-poly-campfire/source/campfire.mv1", VGet(10.0f, 10.0f, 10.0f)); // キャンプファイアをショプが開く位置の近くに配置
+    new Player3D("Resource/Model/T.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
+    new StatShop("Resource/Model/shop.mv1", VGet(-1500,100,1500));
+    new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3D/low-poly-campfire/source/campfire.mv1", VGet(10.0f, 10.0f, 10.0f));
     
-    //  new DinoTori("Resource/3D/tori/uploads_files_4895089_Sauros.mv1", VGet(-1800.0f, 800.0f, -240.0f), 15, 0.0f, 400.0f, 1.2f);//トリケラトス,hp,speed,Hitsize,size
-       //new Dino2("Resource/3D/T_REX.mv1", VGet(400.0f, 300.0f, 800.0f), 10, 0.0f, 0.0f, 400.0f, 1.0f);//スピ hp,speed,attack,Hitsize,size
     new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1",
         VGet(200.0f, 100.0f, 200.0f));
     new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",VGet(3.0f,0.3f,3.0f));
    
 
     
-    // データ駆動設計: CSVからステージオブジェクトを読み込んで配置
     std::ifstream file("Resource/CSV/stage_objects.csv");
     if (file.is_open())
     {
         std::string line;
-        std::getline(file, line); // ヘッダースキップ
+        std::getline(file, line);
         while (std::getline(file, line))
         {
             if (line.empty()) continue;
@@ -127,16 +118,6 @@ void Scene3D::Initialize()
 
 
    
-  // 
-  //  
-  //  new Wall("Resource/2D/mori.png",
-  //  new Wall("Resource/2D/mori.png",//蜿ｳ
-  //  new Wall("Resource/2D/mori.png",//荳
-  //  new Wall("Resource/2D/mori.png",//荳
-  //  pSkyBox2->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");*/
-  // 
-  // 
-  // 
 }
 
 void Scene3D::Update()
@@ -146,7 +127,7 @@ void Scene3D::Update()
     auto mpPlayer = Master::mpPlayer;
     Player3D* player = Master::mpPlayer;
 
-    if (mpGameManager->GetCurrentPhase() == GameManager::Phase::CLEAR) 
+    if (game_manager_->GetCurrentPhase() == GameManager::Phase::kClear) 
     {
         Master::GameClearCount = 2;
     }
@@ -156,11 +137,11 @@ void Scene3D::Update()
         if (player != nullptr && Master::mpScoreManager != nullptr) {
             Master::mpScoreManager->SetFinalStats(player->GetHp(), player->GetAttack(), player->GetSpeed());
         }
-        Master::mpSceneManager->SetNextScene(SceneManager::SCENE_RESULTWIN);
+        Master::mpSceneManager->SetNextScene(SceneManager::kSceneResultWin);
     }
    
 
-    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();//縺ｲ縺ｨ縺､蜑阪ｮ蝣ｴ謇縺ｫ謌ｻ繧
+    if (player->GetStageOutFlag() == false)player->GetPosition() = player->GetOldPosition();
 
    
 }
@@ -171,7 +152,6 @@ void Scene3D::Draw()
     SceneGame::Draw();
     Master::mpSave->Draw();
 
-    // 蝨ｰ髱｢縺ｮ繧ｰ繝ｪ繝繝会ｼ医せ繝繝ｼ繧ｸｼ峨ｒ謠冗判
     const int count = 51;
     const float distance = 500.0f;
     for (int i = 0; i < count; i++)

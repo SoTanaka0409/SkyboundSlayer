@@ -1,4 +1,4 @@
-﻿#include "Coin.h"
+#include "Coin.h"
 #include "Master.h"
 #include "SceneManager.h"
 #include "ObjectManager.h"
@@ -88,7 +88,7 @@ void Coin::Update()
     }
 
     if (dist < 80.0f && !mCollected) {
-        player->mpHaveMoney->AddMoney(mValue);
+        player->have_money_->AddMoney(mValue);
         mCollected = true;
         SetDeleteFlag(true);
     }

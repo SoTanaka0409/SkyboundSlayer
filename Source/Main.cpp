@@ -1,9 +1,8 @@
-﻿
+
 #include "DxLib.h"
 #include "Config.h"
 #include"Texture.h"
 //#include"Texture Animation.h"
-#include"Player.h"
 #include"Collision.h"
 #include"SceneManager.h"
 #include"Master.h"
@@ -11,12 +10,9 @@
 #include"Scene3D.h"
 #include"Player3D.h"
 #include"camera.h"
-#include"Camera1.h"
-#include"ScreenSize.h"
 #include"ScoreManager.h"
 #include"ResourceManager.h"
 #include"Debug.h"
-#include"EnemySearch.h"
 #include"DrawHp.h"
 #include"EffekseerManager.h"
 
@@ -31,10 +27,10 @@
 #include"Chat.h"
 #include"Save.h"
 /**
-* @note 繝ｪ繝輔ぃ繝ｬ繝ｳ繧�E�E�E� https://dxlib.xsrv.jp/dxfunc.html
+* @note リファレン�?E?E?E? https://dxlib.xsrv.jp/dxfunc.html
 */
 
-//繧�E�E�E�繝ｼ繝�縺�E�E�E�・泥繝｢繝�E΁E  metaseq316
+//�?E?E?E?ー�?�?E?E?E?�E�Dモ�?E?E  metaseq316
 //https://www.d5render.com/ja/workflow/blender?utm_campaign=bingsearchILJPblender&utm_source=bing&utm_medium=cpc&msclkid=929170cec1521e953f1c187910ba1cae
 
 
@@ -42,23 +38,21 @@
 /**
 /**
 * @fn WinMain
-* @brief Main髢�E�E�E�謨�E�E�E�
+* @brief Main�?E?E?E?�?E?E?E?
 * @param[in] HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
-* @return int 0 豁E�E��E�蟶�E�E�E�邨めE�E��E�・�E�E�E�・1 繧�E�E�E�繝ｩ繝ｼ
-* @details Main髢�E�E�E�謨�E�E�E�
+* @return int 0 �E?E??E?�?E?E?E?終�E?E??E?�E?E?E?E?�E1 �?E?E?E?ラー
+* @details Main�?E?E?E?�?E?E?E?
 */
 
-//Master繧�E�E�E�繝ｩ繧�E�E�E�縺�E�E�E�髱咏噪繝｡繝ｳ繝仙､画焚螳夂ｾ�E�E�E�
+//Master�?E?E?E?ラ�?E?E?E?�?E?E?E?静的メンバ変数定�?E?E?E?
 Player3D* Master::mpPlayer = nullptr;
-SceneManager* Master::mpSceneManager = new SceneManager();//蜻�E�E�E�縺�E�E�E�蜁E�E��E�縺・
+SceneManager* Master::mpSceneManager = new SceneManager();//�?E?E?E?�?E?E?E??E?E??E?ぁE
 SoundManager* Master::mpSoundManager = new SoundManager();
 ResourceManager* Master::mpResourceManager = new ResourceManager();
 Debug* Master::mpDebug = new Debug();
-EnemySerch* Master::mpEnemySerch = new EnemySerch();
 DrawHp* Master::mpDrawHp = new DrawHp();
 Camera* Master::mpCamera = new Camera();
 ScoreManager* Master::mpScoreManager = new ScoreManager(0);
-LevelUp* Master::mpLevelUp = new LevelUp();
 EnemyManager* Master::mpEnemyManager = new EnemyManager();
 ItemManager* Master::mpItemManager = new ItemManager();
 InfClassManager* Master::mpInfClassManager = new InfClassManager();
@@ -66,10 +60,6 @@ BuffManager* Master::mpBuffManager = new BuffManager();
 Chat* Master::mpChat = new Chat();
 Save* Master::mpSave = new Save();
 
-char Master::NameTest[256];
-int Master::TutorialCount;
-int Master::TutorialClearCount;
-bool Master::TutorialFlag=false;
 /// <summary>
 /// ///////////////////////Enemy//////////////////
 /// </summary>
@@ -90,14 +80,14 @@ int Master::GameClearCount = 0;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	// 繧�E�E�E�繧�E�E�E�繝ｳ繝峨え繝｢繝ｼ繝峨〒襍ｷ蜍�E
+	// �?E?E?E?�?E?E?E?ンドウモードで起�?E
 	ChangeWindowMode(true);
 
 	SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32);
 	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	
-	// DX繝ｩ繧�E�E�E�繝悶Λ繝ｪ蛻晁E�E��E�蛹・
+	// DXラ�?E?E?E?ブラリ初�E?E??E?匁E
 	SetDoubleStartValidFlag(TRUE);
 	if (DxLib_Init() == -1)
 	{
@@ -105,39 +95,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 	EffekseerManager::GetInstance()->Init();
 
-	// --- 蜈ｨ菴薙�E繝ｩ繧�E�E�E�繝�EぁE�E��E��E�繧�E�E�E�・育腸蠁E�E�E・繝ｻ螟ｪ髯�E�E�E�蜈会ｼ芽�E�E�E��E�E�E�螳・---
+	// --- 全体�?Eラ�?E?E?E?�?E��E?E??E??E?�?E?E?E?�E�環?E?E?E�E・太�?E?E?E?光）�?E?E?E??E?E?E?宁E---
 	SetLightEnable(TRUE);
-	// 迺�E�E�E�蠁E�E�E・・・mbColor・峨�E�E�E�蟁E���E�E鬮倥�E�E�E�縺�E�E�E�險�E�E�E�螳壹�E�E縲∝ｽ�E�E�E�縺�E�E�E�縺�E�E�E�繧翫�E�E�E�E�E��E�吶�E�E�E�驛ｨ蛻・�E�E�E�亥�E�E�E�暮擁E�E��E�・・髱�E�E�E�・峨′逵溘▲鮟�E↓豐医∪縺�E�E�E�縺・�E�E�E�縺・↓縺吶�E�E�E�E
+	// �?E?E?E??E?E?E�E�E�EmbColor�E��?E?E?E??E???E?E高�?E?E?E?�?E?E?E?�?E?E?E?定�?E?E、�?E?E?E?�?E?E?E?�?E?E?E?り�?E?E?E?E?E??E?��?E?E?E?部刁E?E?E?E?��?E?E?E?��iE?E??E?�E�E�?E?E?E?�E�が真っ�?E��沈ま�?E?E?E?ぁE?E?E?E?ぁE��す�?E?E?E?E
 	SetLightAmbColor(GetColorF(0.6f, 0.6f, 0.6f, 1.0f));
-	// 螟ｪ髯�E�E�E�蜈会ｼ医ョ繧�E�E�E�繝ｬ繧�E�E�E�繧�E�E�E�繝ｧ繝翫Ν繝ｩ繧�E�E�E�繝茨�E�E�E�峨・蜷代″繧呈丁E�E��E�∽�E�E�E�九�E蜷代�E�E繧・
+	// 太�?E?E?E?光（デ�?E?E?E?レ�?E?E?E?�?E?E?E?ョナルラ�?E?E?E?ト�?E?E?E?��E向きを撚E?E??E?��?E?E?E?��?E向�?E?EめE
 	SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
-	// 螟ｪ髯�E�E�E�蜈峨・濶�E�E�E�・亥�E�E�E�代�E�E逋ｽ縺�E�E�E�縺後°縺�E�E�E�縺滓�E繧九＞濶�E�E�E�・・
+	// 太�?E?E?E?光�E�?E?E?E?�E��?E?E?E?��?E?E白�?E?E?E?がか�?E?E?E?た�?Eるい�?E?E?E?�E�E
 	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
 	// ------------------------------------------------
 
 
-	//BGM縺�E�E�E�隱�E�E�E�縺�E�E�E�霎ｼ縺�E�E�E�
+	//BGM�?E?E?E?�?E?E?E?�?E?E?E?込�?E?E?E?
 
-	//繧�E�E�E�繧�E�E�E�繝ｳ繝峨・繝阪・繧�E�E�E�繝｣繝ｼ縺�E�E�E�蛻晁E�E��E�蛹・
+	//�?E?E?E?�?E?E?E?ンド�Eネ�E�?E?E?E?ャー�?E?E?E?初�E?E??E?匁E
 	SetUseASyncLoadFlag(TRUE);
-	Master::mpSoundManager->Initialize();//縺吶∋縺�E�E�E�縺�E�E�E�繧�E�E�E�繧�E�E�E�繝ｳ繝峨′隱�E�E�E�縺�E�E�E�霎ｼ縺�E�E�E�繧罫u----
+	Master::mpSoundManager->Initialize();//すべ�?E?E?E?�?E?E?E?�?E?E?E?�?E?E?E?ンドが�?E?E?E?�?E?E?E?込�?E?E?E?れru----
 
-	//繧�E�E�E�繝ｼ繝ｳ繝槭ロ繝ｼ繧�E�E�E�繝｣繝ｼ縺�E�E�E�逕滓�E縺�E�E�E�蛻晁E�E��E�蛹・
+	//�?E?E?E?ーンマネー�?E?E?E?ャー�?E?E?E?生�?E�?E?E?E?初�E?E??E?匁E
 	Master::mpSceneManager->Initialize();
 
 	Master::mpScoreManager->Initialize();
 
-	//繧�E�E�E�繝｡繝ｩ縺�E�E�E�譖ｴ譁E�E��E�
+	//�?E?E?E?メラ�?E?E?E?更�E?E??E?
 	Master::mpCamera->Initialize();
 
 	
 
 
 
-	//�E�冗判蜈郁�E�E�E��E�E�E�螳壹�E�E�E�陬冗判髱�E�E�E�縺�E�E�E�險�E�E�E�螳壹☁E�E��E�・
+	//?E?�画先�?E?E?E??E?E?E?定�?E?E?E?裏画�?E?E?E?�?E?E?E?�?E?E?E?定�?E?E??E?�E
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//Z繝�Eャ繝輔ぃ縺�E�E�E�譖ｸ縺崎ｾ�E�E�E�繧�E�貁E�E��E��E�E�E�E
+	//Z�?E��ファ�?E?E?E?書き�?E?E?E?�?E??E?E??E??E?E?E?E
 	SetUseZBufferFlag(true);
 	SetWriteZBufferFlag(true);
 
@@ -145,11 +135,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	int animationCounter = 0;
 	int textureCurrentNum = 0;
 
-	//繧�E�E�E�繝ｼ繝�縺�E�E�E�繝｡繧�E�E�E�繝ｳ繝ｫ繝ｼ繝�E
+	//�?E?E?E?ー�?�?E?E?E?メ�?E?E?E?ンルー�?E
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 
-		//逕ｻ髱�E�E�E�繧貞�E譛溷喧縺吶�E�E�E�E
+		//画�?E?E?E?を�?E期化す�?E?E?E?E
 		ClearDrawScreen();
 		int time = GetNowCount();
 
@@ -178,39 +168,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 
 
-		//陬冗判髱�E�E�E�縺�E�E�E��E�・�E�E�E��E�E�E�繧定｡�E�E�E�逕ｻ髱�E�E�E�縺�E�E�E�譏�縺・
+		//裏画�?E?E?E?�?E?E?E??E?�E?E?E?E??E?E?E?を�?E?E?E?画�?E?E?E?�?E?E?E?�?ぁE
 		if (GetASyncLoadNum() > 0)
 		{
 			DrawFormatString(600, 360, GetColor(255, 255, 255), "NOW LOADING... %d", GetASyncLoadNum());
 		}
 		ScreenFlip();
 
-		//・托ｼ励Α繝ｪ遘抵�E�E�E�育�E�E�E�呈�E髢楢�E�E�E��E�E�E�・厁E�E��E�舌ヵ繝ｬ繝ｼ繝�縺�E�E�E�縺�E�E�E�縺溘▲蝣�E�E�E�蜷茨�E�E�E�代ヵ繝ｬ繝ｼ繝�蠖薙◁E�E��E�翫・邨碁℃譎る俣
-		//・托ｼ励Α繝ｪ遘抵�E�E�E�育�E�E�E�呈�E髢楢�E�E�E��E�E�E�・厁E�E��E�舌ヵ繝ｬ繝ｼ繝縺縺�E�E�E�縺溘▲蝣�E�E�E�蜷茨�E�E�E�代ヵ繝ｬ繝ｼ繝�薙◁E�E��E�翫・邨碁℃譎る俣
-		//・托ｼ励Α繝ｪ遘抵E育E呁E髢楢EE・厁E舌ヵ繝ｬ繝ｼ繝縺E縺E縺溘▲蝣E蜷茨E代ヵ繝ｬ繝ｼ繝蠖薙◁E翫・邨碁℃譎る俣
-		//・托ｼ励Α繝ｪ遘抵E育E呁E髢楢EE・厁E舌ヵ繝ｬ繝ｼ繝縺縺E縺溘▲蝣E蜷茨E代ヵ繝ｬ繝ｼ繝薙◁E翫・邨碁℃譎る俣
-		//邨碁℃縺吶E縺E縺E縺薙！EE蠕E▽
+		//�E�７ミリ秒�?E?E?E?��?E?E?E?��?E間�?E?E?E??E?E?E?�E?E?E??E?�フレー�?�?E?E?E?�?E?E?E?たっ�?E?E?E?合�?E?E?E?�フレー�?当�?E?E??E?��E経過時間
+		//�E�７ミリ秒�?E?E?E?��?E?E?E?��?E間�?E?E?E??E?E?E?�E?E?E??E?�フレー���?E?E?E?たっ�?E?E?E?合�?E?E?E?�フレー�?��?E?E??E?��E経過時間
+		//�E�７ミリ秒�E��E?E間�EE�E?E�フレー��E�Eたっ�E合�E�フレー�当�?E��E経過時間
+		//�E�７ミリ秒�E��E?E間�EE�E?E�フレー���Eたっ�E合�E�フレービ�?E��E経過時間
+		//経過す�E�E�Eこ�IEE�E��
 		while (GetNowCount() - time < 17)
 		{
-			//蠕E▽縺縺代↑縺E縺E縺薙！EE縺E菴輔ｂ譖ｸ縺九E縺・
+			//�E���けな�E�Eこ�IEE�E何も書か�EぁE
 		}
 
-		//蜑企勁縺吶E・E√E縺めE繧
+		//削除す�E�EE��Eあ�E�
 		if (GetASyncLoadNum() == 0)
 		{
-			//削除するフラグがあるオブジェクトがあれば削除する
+			//�폜����t���O������I�u�W�F�N�g������΍폜����
 			Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
 			Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
 			ColliderManager::GetInstance()->DeleteAllColliderIfNeeded();
 
-			//ループ�E直前にシーン遷移をいれておく
+			//���[�v?E���O�ɃV�[���J�ڂ�����Ă���
 			Master::mpSceneManager->ChangeSceneIfNeeded();
 		}
 		
 
 		
 	}
-	//邨めE・・送EE
+	//終�E�E�E��EE
 	Master::mpSceneManager->Finalize();
 	delete Master::mpSceneManager;
 	Master::mpSoundManager->Finalize();
@@ -225,11 +215,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-	// DX繝ｩ繧�E�E�E�繝悶Λ繝ｪ菴�E�E�E�逕ｨ縺�E�E�E�邨めE�E��E�・
+	// DXラ�?E?E?E?ブラリ�?E?E?E?用�?E?E?E?終�E?E??E?�E
 	EffekseerManager::GetInstance()->End();
 	DxLib_End();
 
-	// 繧�E�E�E�繝輔ヨ縺�E�E�E�邨めE�E��E�・
+	// �?E?E?E?フト�?E?E?E?終�E?E??E?�E
 	return 0;
 }
 

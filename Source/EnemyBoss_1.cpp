@@ -1,10 +1,9 @@
-#include"EnemyBoss_1.h"
+ï»¿#include"EnemyBoss_1.h"
 #include"Model.h"
 #include"Master.h"
 #include"Player3D.h"
 #include"Object3D.h"
 #include"ObjectManager.h"
-//
 #include"Scene3D.h"
 #include"SceneManager.h"
 #include"Stage.h"
@@ -20,12 +19,11 @@
 #include"CapsuleCollider.h"
 #include"Magic_Ene.h"
 
-EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float xp,int money, bool isSeparateAnim)
-	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, xp,money, isSeparateAnim)
+EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool isSeparateAnim)
+	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3,money, isSeparateAnim)
 
 
 
-	//,Animation(false)
 {
 	mbMagic = true;
 	mfjumpPower = 150.0f;
@@ -35,12 +33,11 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 	OnJumpCollider = false;
 	mAttackType = 0;
 	mAttack1ComboCount = 0;
-	mnChance = 30;//é¬©å¹¢E½E¢ç¹ï½»ãƒ»E§éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¢é¬©å¹¢E½E¢ç¹ï½»ãƒ»E§éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¤é¬©å¹¢E½E¢éš´æ“¾E½E´éƒ¢æ™¢E½E»ç¹ï½»è³E»ãƒ»E½ãƒ»E¤ç¹ï½»ãƒ»E¸ç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E®é¬©å¹¢E½E¢éš´å–å¾—ãEE½ãƒ»E³ç¹ï½»ãƒ»E¨ç¹ï½»èœ¿åE½½Eºãƒ»E½ç¹ï½»ãƒ»E¹éš´æ“¾E½E´éƒ¢æ™¢E½E»é©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»é¬¯E©è Eºãƒ»ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»Eºé¬¯E©é«¦Eªç¹ï½»éƒ¢æ™¢E½E»
+	mnChance = 30;
 	AttackInterval = 60;
 	AttackCount = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
 	
-	//é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E¢é¬©å¹¢E½E¢éš´æ“¾E½E´éƒ¢æ™¢E½E»ç¹ï½»èœ¿é–€æ—­ç¹ï½»ãƒ»E¸ç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E®é¬¯E¨ãƒ»E¾é™ŸãEå±®ãƒ»E½ãƒ»E»é«¦E®èœ·E¶ç¹ï½»
 	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	model_->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
@@ -64,10 +61,10 @@ EnemyBoss_1::~EnemyBoss_1()
 void EnemyBoss_1::Update()
 {
 	SceneGame* game = Master::mpSceneManager->GetSceneGame();
-	if (game && game->mpGameManager) {
-		auto phase = game->mpGameManager->GetCurrentPhase();
-		if (phase == GameManager::Phase::FADE_OUT_TO_BOSS || phase == GameManager::Phase::FADE_IN_BOSS) {
-			return; // ãƒ•ã‚§ãƒ¼ãƒ‰ä¸­ã¯ãƒœã‚¹ã®æ“ä½œã‚„æ›´æ–°ã‚’ç„¡åŠ¹åŒE
+	if (game && game->game_manager_) {
+		auto phase = game->game_manager_->GetCurrentPhase();
+		if (phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss) {
+			return;
 		}
 	}
 
@@ -80,7 +77,6 @@ void EnemyBoss_1::Update()
 		if (model_ != nullptr)
 		{
 		
-			//else
 			Attack();
 			if (!(model_->GetNowState() == ANIMATION_ATTACK) || !(model_->GetNowState() == ANIMATION_ATTACKJUMP))
 			{
@@ -119,11 +115,9 @@ void EnemyBoss_1::Update()
 			}
 
 			model_->Update();
-			//mpDH->Update();//drawHpé¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E®é¬©å¹¢E½E¢ç¹ï½»ãƒ»E§éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¢é¬©å¹¢E½E¢éš´æ“¾E½E´éƒ¢æ™¢E½E»é©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»é¬©å¹¢E½E¢éš´æ“¾E½E´éƒ¢æ™¢E½E»é©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»é¬©å¹¢E½E¢éš´ä¸»ãƒ»è®“æº½E¹æ™¢E½E»é™ï½³è¢E½Eï½¤éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¼é¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¶
 			CollPositionUpdate();
 			mpJumpAttackCoiider->position_ = position_;
 			
-			// ãƒœã‚¹ãŒãEã‚¹ã‚¨ãƒªã‚¢ã‚ˆã‚Šä½ããªã£ãŸå ´åˆï¼ˆè½ã¡ãŸå ´åˆï¼‰ãEãƒœã‚¹ã‚¹ãƒEEã‚¸ã®é«˜ã•ã«æˆ»ãE
 			if (position_.y < VinitPos.y)
 			{
 				position_.y = VinitPos.y;
@@ -139,23 +133,13 @@ void EnemyBoss_1::Draw()
 	{
 		model_->Draw();
 	}
-	if (Master::mpDebug->Getdebug() == true && Master::mpEnemySerch->getSerch() == false)
+	if (Master::mpDebug->Getdebug() == true)
 	{
 		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
 			mfSize,
 			8,
 			GetColor(255, 255, 255),
 			GetColor(255, 255, 255),
-			false
-		);
-	}
-	if (Master::mpEnemySerch->getSerch() == true)
-	{
-		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
-			mfSize * 5,
-			8,
-			GetColor(255, 0, 0),
-			GetColor(255, 0, 0),
 			false
 		);
 	}
@@ -172,7 +156,6 @@ void EnemyBoss_1::Attack()
 		AttackCount = 0;
 		isHitAttackSearch = false;
 		
-		// Decide random attack type (0: 3x Magic, 1: Single Magic, 2: Jump Attack)
 		mAttackType = GetRand(2);
 		
 		if (mAttackType == 0)
@@ -185,12 +168,9 @@ void EnemyBoss_1::Attack()
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			
-			// Center
 			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
-			// Left 30 degrees
 			VECTOR leftGo = VTransform(GoPosition, MGetRotY(-30.0f * DX_PI_F / 180.0f));
 			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, leftGo, 0, 150);
-			// Right 30 degrees
 			VECTOR rightGo = VTransform(GoPosition, MGetRotY(30.0f * DX_PI_F / 180.0f));
 			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, rightGo, 0, 150);
 		}
@@ -215,7 +195,6 @@ void EnemyBoss_1::Attack()
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			
-			// Single magic attack for the 3-hit combo
 			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
 			
 			mAttack1ComboCount--;
@@ -232,13 +211,13 @@ void EnemyBoss_1::Attack()
 	}
 }
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
-{//é¬®E¯è²E½·ç¹ï½»é—œé›£E½E­é««E¨ãƒ»E³éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¸ç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E£é¬©æ¾E½Eµç¹ï½»ãƒ»Eºé«®ä¹ãEãƒ»E½ãƒ»E½é««E¶E‚Â€ç¹ï½»ãƒ»Eªé¬¯E¯ãƒ»E®ç¹ï½»ãƒ»E¢é¬®E¦ãƒ»E®é™·E·ãƒ»E¶éƒ¢æ™¢E½E»é¬®E¯ãƒ»E·éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E¦é¬¯E¨ãƒ»E¾éƒ¢æ™¢E½E»éƒ¢æ™¢E½E»
+{
 	if (hp_ <= 0)return; auto mpPlayer = Master::mpPlayer;
 	AnimationState now = model_->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
 		if (collider == mpJumpAttackCoiider && check->parent_object_->GetTag() == Tag3D_Player3D)
-		{//mpModelé¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E®é¬¯E¨ãƒ»E¾ç¹ï½»ãƒ»E¡éƒ¢æ™¢E½E»ç¹ï½»ãƒ»Eªé¬®E¯ãƒ»E·ç¹ï½»ãƒ»E¿éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E·é¬©å¹¢E½E¢ç¹ï½»ãƒ»E§é©›ï½¢ãƒ»E§éƒ¢æ™¢E½E»éš´é¯‰ï½½Eºé¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E£é¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¦é¬©æ¾E½Eµç¹ï½»ãƒ»Eºé©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»éƒ¢æ™¢E½E»éœ‘ï½¢è­‰ï½¦ãƒ»E½ãƒ»E¸ç¹ï½»ãƒ»E²é©•ï½¶è³æ©¸E½E¤ãƒ»E²ç¹ï½»ãƒ»E¿ç¹ï½»ãƒ»E½é¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E©é¬©æ¾E½Eµç¹ï½»ãƒ»Eºé¬®E¦ãƒ»E®é™·E·ãƒ»E¶éƒ¢æ™¢E½E»ifé¬®E«ãƒ»E´é¶ä¸ï½£E¹ç¹ï½»é©•ï½¶é¬E‰˜E½E¥ãƒ»E¢éš²E¤ãƒ»E¦éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¥é¬©å¹¢E½E¢ç¹ï½»ãƒ»E§é«¯æ™¢E½E²ç¹ï½»ãƒ»E¨é©•ï½¶è¨âˆšãEç¹ï½»ãƒ»E¸ç¹ï½»ãƒ»Eºé©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»
+		{
 			Player3D* pPlayer = Master::mpPlayer;
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
@@ -247,7 +226,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 				{
 
 					pPlayer->Damage(attack_);
-					AttackHitJudgmentflag = true;//é¬®E¯è²E½·ç¹ï½»é—œé›£E½E­é««E¨ãƒ»E³éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E¸ç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E£é¬©æ¾E½Eµç¹ï½»ãƒ»Eºé«®ä¹ãEç«æ§­ãƒ»ãƒ»E½é«¢E§ãƒ»E²ç¹ï½»ãƒ»E¹éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E¼
+					AttackHitJudgmentflag = true;
 				}
 			}
 
@@ -259,9 +238,7 @@ void EnemyBoss_1::DeathEnemy()
 {
 	isDead = true;
 	model_->ChangeAnimation(ANIMATION_DYING);
-	//é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E«é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E¼é¬©å¹¢E½E¢éš´æƒ¹E¸æ©¸E½E¹ãƒ»E²é©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»é¬©æ¾E½Eµç¹ï½»ãƒ»Eºé¬®E´è“æº·ç¹­é¬®E®ãƒ»E·é¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»Eªé¬©æ¾E½Eµç¹ï½»ãƒ»Eºé©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»
 	model_->SetLoop(false);
-	//é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E¢é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E¼é¬©å¹¢E½E¢ç¹ï½»ãƒ»E§éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E·é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E§é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E³é¬®E¯è²E½·è“å¸™ãEãƒ»E¾é™Ÿå‹ŸE¾å¾ŒãEé¬®E¯è²E½¯ãƒ»E¼è­èEãƒ»éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E©é«®ä¹ãEãƒ»E½ãƒ»E©é¨¾E§ãƒ»E®ç¹ï½»ãƒ»E¹éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E¼é¬©å¹¢E½E¢ç¹ï½»ãƒ»E§éƒ¢æ™¢E½E»ç¹ï½»ãƒ»E·é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E§é¬©å¹¢E½E¢éš´è¶£E½E¢ç¹ï½»ãƒ»E½ç¹ï½»ãƒ»E³é¬©æ¾E½Eµç¹ï½»ãƒ»Eºéƒ¢æ™¢E½E»ç¹ï½»ãƒ»E«é¬®E«ãƒ»E°é¬²ãƒ»E¼å¤²E½E½ãƒ»E½ç¹ï½»ãƒ»E»é¬©æ¾E½Eµç¹ï½»ãƒ»Eºé©›ï½¢è­ï½¢ãƒ»E½ãƒ»E»
 	model_->SetLoopFinishState(ANIMATION_MAX);
 	DeathColliderPosition();
 

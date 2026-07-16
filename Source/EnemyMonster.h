@@ -14,7 +14,7 @@ public:
 		Landing
 	};
 
-	EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float xp, int money, bool isSeparateAnim);
+	EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool isSeparateAnim);
 	~EnemyMonster();
 
 	void Update() override;

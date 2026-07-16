@@ -1,4 +1,4 @@
-Ôªø
+
 #include"DrawHp.h"
 #include"Enemy3D.h"
 #include"Master.h"
@@ -25,12 +25,12 @@ DrawHp::~DrawHp()
 }
 
 
-//Êõ¥Êñ∞
+//çXêV
 void DrawHp::Update()
 {
-	//ÊòéÊó•„ÅØ„Éê„Éº„Çí‰Ωú„Å£„Å¶Âè≥‰∏ã„Å®Âè≥‰∏ä„ÇíÂâä„Çã„Çà„ÅÜ„Å´„Éó„É≠„Ç∞„É©„É†„Çí‰Ωú„Çã
-	//Êïµ„ÅÆË¶ã„Å¶„ÅÑ„ÇãÊñπËßí„Å´Âêà„Çè„Åõ„ÄÅÔΩöÂ∫ßÊ®ô„ÇÇÔΩòÂ∫ßÊ®ô„ÇÇÂêà„Çè„Åõ„Çã
-	//mpmodel->update()„Åø„Åü„ÅÑ„Å´Ôº§ÔΩíÔΩÅÔΩóÔº®Ôº∞„ÇÇ„Ç®„Éç„Éü„Éº„ÅÆ„Ç¢„ÉÉ„Éó„Éá„Éº„ÉàÂá¶ÁêÜ„Å´ÂÖ•„Çå„Çã
+	//ñæì˙ÇÕÉoÅ[ÇçÏÇ¡ÇƒâEâ∫Ç∆âEè„ÇçÌÇÈÇÊÇ§Ç…ÉvÉçÉOÉâÉÄÇçÏÇÈ
+	//ìGÇÃå©ÇƒÇ¢ÇÈï˚äpÇ…çáÇÌÇπÅAÇöç¿ïWÇ‡Çòç¿ïWÇ‡çáÇÌÇπÇÈ
+	//mpmodel->update()Ç›ÇΩÇ¢Ç…ÇcÇíÇÅÇóÇgÇoÇ‡ÉGÉlÉ~Å[ÇÃÉAÉbÉvÉfÅ[ÉgèàóùÇ…ì¸ÇÍÇÈ
 	const auto& pObjList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	for (int i = 0; i < pObjList.size(); i++)
 	{
@@ -50,8 +50,8 @@ void DrawHp::Update()
 
 			float HpBar = pEne->GetHp() / pEne->GetMaxHp();
 
-			int HpBarX = DrawHpBarWorld.x - BarWidth / 2;
-			int HpBarY = DrawHpBarWorld.y - BarHeight / 2;
+			int HpBarX = static_cast<int>(DrawHpBarWorld.x) - BarWidth / 2;
+			int HpBarY = static_cast<int>(DrawHpBarWorld.y) - BarHeight / 2;
 
 			bool isHitSearch = pEne->GetIsHitSearch();
 			if (isHitSearch&&pEne->GetHp()>0)
@@ -66,7 +66,7 @@ void DrawHp::Update()
 
 
 }
-//ÊèèÁîª
+//ï`âÊ
 void DrawHp::Draw()
 {
 	

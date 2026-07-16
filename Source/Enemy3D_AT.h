@@ -13,7 +13,7 @@ class Model;
 class Enemy3D_AT :public Enemy
 {
 public:
-	Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float speed,float HitSize, float Serch1, float Serch2,float Serch3,float Attack,float xp,int money,bool isSeparateAnim);
+	Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float speed,float HitSize, float Serch1, float Serch2,float Serch3,float Attack,int money,bool isSeparateAnim);
 
 	~Enemy3D_AT();
 

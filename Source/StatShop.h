@@ -3,12 +3,20 @@
 #include "Object3D.h"
 #include "Model.h"
 
+class Player3D;
 class SphereCollider;
 
 class StatShop : public Object3D
 {
 public:
-	enum class ShopState { WAIT_PHASE, WALKING_IN, ARRIVED, WALKING_OUT };
+	enum class ShopState
+	{
+		WAIT_PHASE,
+		WALKING_IN,
+		ARRIVED,
+		WALKING_OUT
+	};
+
 	StatShop(std::string filename, VECTOR vec);
 	~StatShop();
 
@@ -25,14 +33,23 @@ public:
 	virtual void OnExit(Collider* collider, Collider* check) override;
 
 private:
+	bool CanUpdateShop() const;
+	void CloseShopIfPhaseEnding();
+	void UpdateShopMenu();
+	void HandleShopCloseInput();
+	void DrawShopMenu(Player3D* player);
+	void DrawShopHeader(Player3D* player);
+	void DrawShopOptions();
+	void DrawShopFooter();
+	void DrawShopNpc(Player3D* player);
 	void SelectClass();
 	void BuyClass();
-	int GetCost(int level);
+	int GetCost(int upgradeCount);
 
 	Model* model_;
 	SphereCollider* mpShopIn;
 	SphereCollider* mpSafeZoon;
-	
+
 	VECTOR mTargetPosition;
 	VECTOR mvStartPosition;
 	ShopState mShopState;
@@ -42,19 +59,15 @@ private:
 	int mnSelectMin;
 	bool mbOldMouseDown;
 
-	// Upgrade Levels
-	int mnLevelMaxHp;
-	int mnLevelAttack;
-	int mnLevelSpeed;
-	int mnLevelEvasionSpeed;
-	int mnLevelEvasionInvincibility;
+	int mnUpgradeMaxHpCount;
+	int mnUpgradeAttackCount;
+	int mnUpgradeSpeedCount;
+	int mnUpgradeEvasionSpeedCount;
 
-	// Icons
 	int mnIconMaxHpHandle;
 	int mnIconAttackHandle;
 	int mnIconSpeedHandle;
 	int mnIconEvasionDistHandle;
 	int mnIconEvasionInvHandle;
-	float mFloatAngle;
-	float mBaseY;
 };
+

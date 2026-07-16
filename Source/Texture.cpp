@@ -1,4 +1,4 @@
-ï»¿#include "Texture.h"
+#include "Texture.h"
 #include "DxLib.h"
 
 
@@ -9,23 +9,23 @@ Texture::Texture(std::string filename, VECTOR centerPosition, int transFlag)
     , mnSizeY(0)
     , mnTransFlag(transFlag)
 {
-    // ç”»åƒã®èª­ã¿è¾¼ã¿
+    // ‰æ‘œ‚Ì“Ç‚İ‚İ
     mnHandle = LoadGraph(filename.c_str());
 
-    // ç”»åƒã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
+    // ‰æ‘œ‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
     GetGraphSize(mnHandle, &mnSizeX, &mnSizeY);
 }
 
 Texture::~Texture()
 {
-    // èª­ã¿ã“ã‚“ã ç”»åƒã®ç ´æ£„
+    // “Ç‚İ‚±‚ñ‚¾‰æ‘œ‚Ì”jŠü
     DeleteGraph(mnHandle);
 }
 
 void Texture::Draw()
 {
-    // ç”»åƒã®è¡¨ç¤º
-    DrawGraph(position_.x - (mnSizeX / 2), position_.y - (mnSizeY / 2), mnHandle, mnTransFlag);
+    // ‰æ‘œ‚Ì•\¦
+    DrawGraph(static_cast<int>(position_.x) - (mnSizeX / 2), static_cast<int>(position_.y) - (mnSizeY / 2), mnHandle, mnTransFlag);
 }
 
 void Texture::Update()

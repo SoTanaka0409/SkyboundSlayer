@@ -1,71 +1,76 @@
-﻿#include"EquipmentManager.h"
-#include"Master.h"
-#include"InfClass.h"
-#include"SceneManager.h"
-#include"ObjectManager.h"
+#include "EquipmentManager.h"
+#include "Master.h"
+#include "InfClass.h"
 
 EquipmentManager::EquipmentManager()
 {
-
-
 }
+
 EquipmentManager::~EquipmentManager()
 {
-
 }
 
 void EquipmentManager::Draw()
 {
-	//	
-	//	
-	
-	
 }
 
 void EquipmentManager::Update()
 {
-
 }
 
 void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 {
-	for (auto itr=mDateList.begin();itr!=mDateList.end();itr++)
+	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
-		if((*itr)->id==date->id)
+		if ((*itr)->id == date->id)
 		{
-			if ((*itr)->damage < date->damage)//もし今現在獲得したおなじIDの武器の攻撃力が基のより高かったら攻撃力を更新する
+			if ((*itr)->damage < date->damage)
 			{
 				(*itr)->damage = date->damage;
-				if(date->isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
+				if (date->isLog)
+				{
+					Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
+				}
 			}
 			return;
 		}
-		
 	}
+
 	switch (date->id)
-	{		date->price = 1000;
-		date->name= "ただの装備";
-		break;		date->price = 200;
-		date->name = "普通の装備";
-		break;		date->price = 3200;
-		date->name = "強い装備";
-		break;		date->price = 4600;
-		date->name = "つおーい装備";
-		break;		date->price = 5000;
-		date->name = "最強の装備";
+	{
+	case Equipment::Tag_Equipment1:
+		date->price = 1000;
+		date->name = "�����̑���";
+		break;
+	case Equipment::Tag_Equipment2:
+		date->price = 200;
+		date->name = "���ʂ̑���";
+		break;
+	case Equipment::Tag_Equipment3:
+		date->price = 3200;
+		date->name = "��������";
+		break;
+	case Equipment::Tag_Equipment4:
+		date->price = 4600;
+		date->name = "���[������";
+		break;
+	case Equipment::Tag_Equipment5:
+		date->price = 5000;
+		date->name = "�ŋ��̑���";
 		break;
 	default:
 		break;
 	}
-	if (date->isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
-	mDateList.push_back(date);
 
+	if (date->isLog)
+	{
+		Master::mpInfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
+	}
+	mDateList.push_back(date);
 }
 
 void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 {
-	auto mpPlayer = Master::mpPlayer;
-	Player3D* player = Master::mpPlayer;
 	for (auto itr = mDateList.begin(); itr != mDateList.end(); itr++)
 	{
 		(*itr)->mbGet = false;
@@ -77,7 +82,7 @@ void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 			(*itr)->mbGet = true;
 		}
 	}
-	GetDamage();//装備したときに更新する
+	GetDamage();
 }
 
 float EquipmentManager::GetDamage()
@@ -86,7 +91,7 @@ float EquipmentManager::GetDamage()
 	{
 		if ((*itr)->mbGet)
 		{
-			return (*itr)->damage;
+			return static_cast<float>((*itr)->damage);
 		}
 	}
 	return 0.0f;

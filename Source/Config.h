@@ -19,14 +19,9 @@ public:
 	
 	static constexpr float StageBossWallDistance = 4000.0f;
 
-	// Tutorial Stage Sizes
-	static constexpr float TutorialWallWidth = 8000.0f;
-	static constexpr float TutorialWallDistance = 2000.0f;
-	static constexpr float TutorialBossWallWidth = 2500.0f;
-	static constexpr float TutorialBossWallDistance = 5000.0f;
-
 	// Stage Center Position
-	static VECTOR GetStageCenter() {
+	static VECTOR GetStageCenter()
+	{
 		return VGet(-1500.0f, 0.0f, -5000.0f);
 	}
 	static VECTOR GetStageBossCenter()

@@ -1,13 +1,13 @@
-
+﻿
 #define _CRT_SECURE_NO_WARNINGS
 #include"ScoreManager.h"
 #include"DxLib.h"
 
 ScoreManager::ScoreManager(float score)
-	:mnScore(score)//取得スコア
-	, mnHighScore(score)//ハイスコあ
-	, mnHighScore2(score)//２番目
-	, mnHighScore3(score)//三番目
+	:mnScore(score)
+	, mnHighScore(score)
+	, mnHighScore2(score)
+	, mnHighScore3(score)
 {
 
 }
@@ -29,18 +29,12 @@ void ScoreManager::Draw()
 
 
 
-	////１行ずつ読み込む
-	//char strBuffer[256] = "";//1行読み込むためのバッファ
 
 
-	////ファイルを閉じる
-
-	////バイナリファイルの書き込み
 
 
-	////書き込み
 
-	////ファイルくろーズ
+
 }
 
 void ScoreManager::PrintSaveDate(SaveDate date)
@@ -56,17 +50,16 @@ void ScoreManager::SaveHighScore()
 
 
 	FILE* fp = NULL;
-	//fopen(レクトリ/ファイル名。拡張子、オープンフィールド
-	fp = fopen("savedate.txt", "w");  //書き込み専用でファイルを開く
+	fp = fopen("savedate.txt", "w");
 
 	if (fp == NULL)
 	{
 		return;
 	}
 
-	if (mnScore > mnHighScore)//現在のスコアが１番高かったら
+	if (mnScore > mnHighScore)
 	{
-		fprintf(fp, "SCORE;%d\n",(int) mnScore);//一番上に持ってくる
+		fprintf(fp, "SCORE;%d\n",(int) mnScore);
 
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
@@ -74,7 +67,7 @@ void ScoreManager::SaveHighScore()
 		fprintf(fp, "NAME ;%s\n", msName1.c_str());
 		fprintf(fp, "NAME ;%s\n", msName2.c_str());
 	}
-	if (mnScore > mnHighScore2 && mnScore < mnHighScore)//現在のスコアが二番目に高かったら
+	if (mnScore > mnHighScore2 && mnScore < mnHighScore)
 	{
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
 
@@ -85,13 +78,13 @@ void ScoreManager::SaveHighScore()
 		fprintf(fp, "NAME ;%s\n", msName2.c_str());
 
 	}
-	if (mnScore > mnHighScore3 && mnScore < mnHighScore2)//現在のスコアが三番目だったら
+	if (mnScore > mnHighScore3 && mnScore < mnHighScore2)
 	{
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
 
 		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
 		fprintf(fp, "SCORE;%d\n", (int)mnScore);
-		fprintf(fp, "NAME ;%s\n", msName1.c_str()); //c_str...string=charにする
+		fprintf(fp, "NAME ;%s\n", msName1.c_str());
 		fprintf(fp, "NAME ;%s\n", msName2.c_str());
 		fprintf(fp, "NAME ;%s\n", msName.c_str());
 	}
@@ -102,8 +95,7 @@ void ScoreManager::LoadHighScore()
 {
 	FILE* fp = NULL;
 
-	//fopen(レクトリ/ファイル名。拡張子、オープンフィールド
-	fp = fopen("savedate.txt", "r");  //読み込み専用でファイルを開く
+	fp = fopen("savedate.txt", "r");
 	if (fp == NULL)
 	{
 		return;

@@ -1,48 +1,30 @@
 #pragma once
-#include"Dxlib.h"
-#include"Scene.h"
-#include"Texture.h"
-#include"Camera.h"
+#include "Dxlib.h"
+#include "Scene.h"
 
-class TitleScene :public Scene
+class TitleScene : public Scene
 {
 public:
 	TitleScene();
-
 	~TitleScene();
 
 	void Initialize();
-
-	void Draw();
-
 	void Update();
-
+	void Draw();
 	void Finalize();
 
-	void ResetCameraPlayer(bool resetCamera) { mnResetCamera = resetCamera; }
-	bool GetResetCameraPlayer() { return mnResetCamera; }
-
-
-	//////resultに持っていく為//////
-	char String[256];
-	int InputHandle;
-	int Name;
 private:
+	void UpdateTitleCamera();
+	void HandleMenuInput();
+	void UpdatePromptBlink();
+	void DrawSceneBackground();
+	void DrawTitlePanel();
+	void DrawMenuPanel();
+	void DrawPrompt();
+	bool IsHoverStart(int mx, int my) const;
+	bool IsHoverRule(int mx, int my) const;
+
 	float mCameraAngle;
-
-
-	Texture* mpTexture;
-	Scene* mpScene;
-	
-	
-
-
-
-	bool mnResetCamera;
-
-	int mnColorFade;//カラー変更
-	int mnColorCount;
+	int mnColorFade;
 	bool mbColorFlag;
-	
-	
 };

@@ -66,7 +66,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			mpEneList.push_back( new Enemy3D_AT(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.attack, date.xp,date.money, date.isSeparateAnim));
+			mpEneList.push_back( new Enemy3D_AT(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.attack,date.money, date.isSeparateAnim));
 		}
 	}
 	if (date.tag == archerl_stage1)
@@ -74,24 +74,24 @@ void EnemyManager::NewEnemyList(enemydate date)
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			mpEneList.push_back(new Enemy3D(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.xp,date.money, date.isSeparateAnim));
+			mpEneList.push_back(new Enemy3D(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3,date.money, date.isSeparateAnim));
 		}
 	}
 	if (date.tag == boss_stage1)
 	{
-		mpEneList.push_back(new EnemyBoss_1(date.filename, date.initPos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.xp,date.money, date.isSeparateAnim));
+		mpEneList.push_back(new EnemyBoss_1(date.filename, date.initPos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3,date.money, date.isSeparateAnim));
 
 	}
 	if (date.tag == night_Defo)
 	{
-		mpEneList.push_back(new Enemy3D_AT("Resource/Model/T.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, 100, date.money, true));
+		mpEneList.push_back(new Enemy3D_AT("Resource/Model/T.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, date.money, true));
 	}
 	if (date.tag == monster_stage1)
 	{
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			mpEneList.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.xp, date.money, date.isSeparateAnim));
+			mpEneList.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.isSeparateAnim));
 		}
 	}
 	//窶假ｿｽ窶堙｢窶堋ｵ窶堙・堋｢窶堋ｭ

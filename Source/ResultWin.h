@@ -1,31 +1,24 @@
 #pragma once
-#include"Dxlib.h"
-#include"Texture.h"
-#include"Scene.h"
-#include"TitleScene.h"
-class ResultWin:public Scene
+#include "Dxlib.h"
+#include "Scene.h"
+
+class ResultWin : public Scene
 {
 public:
 	ResultWin();
-
 	~ResultWin();
 
 	void Initialize();
-
 	void Update();
-
 	void Draw();
-
 	void Finalize();
 
-	void SetName(char name) { mNameStr = name; }
 private:
-	Texture* mpTexture;
-	TitleScene* mpTitle;
-
-	class Model* mpPlayerModel;
+	void HandleReturnInput();
+	void DrawResultPanel();
+	void DrawResultHeader();
+	void DrawResultStats();
+	void DrawResultFooter();
 
 	int mnAllTimer;
-	char mNameStr;
-	
 };

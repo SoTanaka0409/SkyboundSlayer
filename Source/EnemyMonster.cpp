@@ -8,8 +8,8 @@
 #include "Magic_Ene.h"
 #include "CapsuleCollider.h"
 
-EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float xp, int money, bool isSeparateAnim)
-	: Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, xp, money, isSeparateAnim)
+EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool isSeparateAnim)
+	: Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, isSeparateAnim)
 	, mAttackState(AttackState::None)
 	, mChargeTimer(0)
 	, mJumpTimer(0)
