@@ -29,8 +29,7 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	attack_interval_ = 120; // 2 seconds between jump attacks
 	attack_count_ = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//"C:\Users\student\Desktop\LevelMonster\Resource\Model\monster.mv1"
-	// Setup model and animations if needed (assuming "T.mv1" or passed filename)
+	
 	// モデルが対応していればアニメーションを追加
 	if (model_) {
 		model_->SetScale(VGet(3.0f, 3.0f, 3.0f)); // Make it a bit large

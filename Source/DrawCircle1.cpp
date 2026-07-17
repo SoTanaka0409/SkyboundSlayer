@@ -64,25 +64,4 @@ void DrawCircle1::Draw()
 {
     
 
-
-
-
-    //    // S_
-    //    v0.dif = GetColorU8(255, 0, 0, 100); // 
-
-    //    // O@
-    //    v1.pos = VGet(
-    //        center.x + sinf(a1) * radius,
-    //        center.y + 0.5f,
-    //        center.z + cosf(a1) * radius
-
-    //    // OA
-    //    v2.pos = VGet(
-    //        center.x + sinf(a2) * radius,
-    //        center.y + 0.5f,
-    //        center.z + cosf(a2) * radius
-
-    //// ON
-
-
 }
