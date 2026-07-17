@@ -1,6 +1,12 @@
 ﻿#include "SkyBox.h"
 #include "Model.h"
 
+/*
+ * 目的（SkyBoxのSkyBox処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 // コンストラクタ
 SkyBox::SkyBox(std::string filename,VECTOR pos)
 	: Object3D(VGet(0.0f, 0.0f, 0.0f))
@@ -22,6 +28,13 @@ SkyBox::~SkyBox()
 }
 
 // 更新処理
+
+/*
+ * 目的（SkyBoxのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void SkyBox::Update()
 {
 	if (model_ != nullptr)
@@ -33,6 +46,13 @@ void SkyBox::Update()
 }
 
 // 描画処理
+
+/*
+ * 目的（SkyBoxのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void SkyBox::Draw()
 {
 	if (model_ != nullptr)
@@ -53,6 +73,13 @@ void SkyBox::Draw()
 }
 
 // 拡大値（スケール値）の設定（Modelクラスへの橋渡し）
+
+/*
+ * 目的（SkyBoxのSetScale処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void SkyBox::SetScale(VECTOR scale)
 {
 	if (model_ != nullptr)
@@ -62,6 +89,13 @@ void SkyBox::SetScale(VECTOR scale)
 }
 
 // モデルのテクスチャ変更（Modelクラスへの橋渡し）
+
+/*
+ * 目的（SkyBoxのSetModelTexture処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void SkyBox::SetModelTexture(std::string filename, int index)
 {
 	if (model_ != nullptr)

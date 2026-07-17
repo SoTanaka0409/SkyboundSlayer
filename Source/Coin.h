@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "Object3D.h"
 #include "Model.h"
 #include <string>
@@ -6,17 +6,35 @@
 class Coin : public Object3D
 {
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Coin(std::string filename, VECTOR pos, int value);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	~Coin();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Draw();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Update();
 
 private:
+	// oŒ»’¼Œã‚Ìã‚É’µ‚Ë‚éˆ—
+	void UpdatePopPhysics();
+	// ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚ğŒvZ‚µA‹z‚¢Šñ‚¹‚Æ‰ñû”»’è‚ğs‚¤ˆ—
+	void UpdateSuckToPlayer();
+
+	// === ’è” ===
+	static constexpr float kSpawnOffsetY = 30.0f;
+	static constexpr float kScale = 150.0f;
+	static constexpr int kPopDuration = 20;
+	static constexpr float kPopSpeedY = 2.0f;
+	static constexpr float kSuckRadius = 600.0f;
+	static constexpr float kSuckSpeed = 30.0f;
+	static constexpr float kCollectRadius = 80.0f;
+
 	Model* model_;
-	int mValue;
-	bool mIsSucking;
-	bool mCollected;
-	int mAge;
+	int value_;
+	bool is_sucking_;
+	bool collected_;
+	int age_;
 	float speed_;
 };

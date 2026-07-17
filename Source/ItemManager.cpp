@@ -4,6 +4,13 @@
 #include"Buff.h"
 #include"BuffManager.h"
 
+
+/*
+ * 目的（ItemManagerのItemManager処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 ItemManager::ItemManager()
 {
 }
@@ -11,16 +18,30 @@ ItemManager::~ItemManager()
 {
 }
 
+
+/*
+ * 目的（ItemManagerのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ItemManager::Update()
 {
 }
 
+
+/*
+ * 目的（ItemManagerのAddItem処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ItemManager::AddItem(Item::ItemInformation* mItem)
 {
     if (mItem == nullptr) return;
-    if (Master::mpInfClassManager == nullptr) return;
-	mbGetItemflag = true;
-	for (auto itr = mItemList.begin(); itr != mItemList.end(); itr++)
+    if (Master::inf_class_manager_ == nullptr) return;
+	get_itemflag_ = true;
+	for (auto itr = item_list_.begin(); itr != item_list_.end(); itr++)
 	{
 		switch (mItem->ID)
 		{
@@ -48,7 +69,7 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 		{
 			(*itr)->Count += mItem->Count;
 			
-			if((*mItem).isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
+			if((*mItem).is_log_)Master::inf_class_manager_->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
             delete mItem; // Prevent memory leak when the item is already in the inventory.
 			return;
 		}
@@ -77,42 +98,56 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 		break;
 	}
 
-	if ((*mItem).isLog)Master::mpInfClassManager->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
-	mItemList.push_back(mItem);
+	if ((*mItem).is_log_)Master::inf_class_manager_->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
+	item_list_.push_back(mItem);
 }
 
+
+/*
+ * 目的（ItemManagerのUseItem処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ItemManager::UseItem(Item::ItemID id)
 {
-	auto mpplayer = Master::mpPlayer;
-    Player3D* player = Master::mpPlayer;
+	auto mpplayer = Master::player_;
+    Player3D* player = Master::player_;
     if (player == nullptr) return;
-	for (auto itr = mItemList.begin(); itr != mItemList.end(); itr++)
+	for (auto itr = item_list_.begin(); itr != item_list_.end(); itr++)
 	{
 		if ((*itr)->ID == id)
 		{
 			if ((*itr)->Count <= 0) { 
-                Master::mpInfClassManager->LogList.push_back(new InfClass(400, (*itr)->Name.c_str(), 4));
+                Master::inf_class_manager_->LogList.push_back(new InfClass(400, (*itr)->Name.c_str(), 4));
 			    return;
 		    }
 
 			if (id == Item::HIGHHEAL || id == Item::HEAL) {
-				Master::mpSoundManager->PlaySE(SoundManager::SE_HEAL);
-				if (Master::mpScoreManager != nullptr) {
-					Master::mpScoreManager->AddUsedPotion();
+				Master::sound_manager_->PlaySE(SoundManager::SE_HEAL);
+				if (Master::score_manager_ != nullptr) {
+					Master::score_manager_->AddUsedPotion();
 				}
 			}
-			if (id == Item::POWER || id == Item::SPEED)Master::mpSoundManager->PlaySE(SoundManager::SE_POWER);
+			if (id == Item::POWER || id == Item::SPEED)Master::sound_manager_->PlaySE(SoundManager::SE_POWER);
 			(*itr)->Count -= 1;
-			(*itr)->mbUse = true;
+			(*itr)->use_ = true;
             Effect(id);
         }
     }
 }
 
+
+/*
+ * 目的（ItemManagerのEffect処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ItemManager::Effect(Item::ItemID id)
 {
-    auto mpplayer = Master::mpPlayer;
-    Player3D* player = Master::mpPlayer;
+    auto mpplayer = Master::player_;
+    Player3D* player = Master::player_;
     if (player == nullptr) return;
 
 	if (id == Item::HEAL)
@@ -121,7 +156,7 @@ void ItemManager::Effect(Item::ItemID id)
 	}
 	if (id == Item::POWER)
 	{
-		Master::mpBuffManager->AddBuff(new Buff(600, 1.5f,Object3D::StatusState::Status_Attack));
+		Master::buff_manager_->AddBuff(new Buff(600, 1.5f,Object3D::StatusState::Status_Attack));
 	}
 	if (id == Item::HIGHHEAL)
 	{
@@ -129,6 +164,6 @@ void ItemManager::Effect(Item::ItemID id)
 	}
 	if (id == Item::SPEED)
 	{
-		Master::mpBuffManager->AddBuff(new Buff(600,2.0f,Object3D::StatusState::Status_Speed));
+		Master::buff_manager_->AddBuff(new Buff(600,2.0f,Object3D::StatusState::Status_Speed));
 	}
 }

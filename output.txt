@@ -1,0 +1,184 @@
+#pragma once
+#include"DxLib.h"
+#include<string>
+#include"Object3D.h"
+#include"Model.h"
+
+#include"camera.h"
+#include"Debug.h"
+#include"EnemyManager.h"
+#include"Collision.h"
+#include"ItemManager.h"
+#include"ShortInventory.h"
+#include"InfClassManager.h"
+#include"BuffManager.h"
+#include"HaveMoneyClass.h"
+#include"EquipmentManager.h"
+
+class SphereCollider;
+class CapsuleCollider;
+
+class Player3D :public Object3D
+{
+public:
+	enum AttackStateInfo {
+		kAttackNormal,
+		kAttackJump,
+		kAttackSlide,
+	}attack_state_;
+	
+public:
+	// 分割アニメーションを使用するかの設定を追加（デフォルトはfalse（使用しない））
+	Player3D(std::string filename, VECTOR initPos, float junppower, float speed, float hp, bool isSeparateAnim = false);
+
+	~Player3D();
+
+	void Draw()override;
+
+	void Update()override;
+	void ManagerUpdate();
+
+	void CheckStageOut();
+	void MoveEx();
+
+	void SelectAttack();
+	void Attack();
+	void AttackSlide();
+	void AttackJump();
+	void Damage(float damage);
+	void ResetNUETRAL();
+
+	void SetInvisible(bool flag) { is_invisible_ = flag; }
+	bool GetInvisible() { return is_invisible_; }
+	void Shot();
+	void Jump();
+	void UpdateViewMode();
+	void SearchEnemy();
+	void CollPositionUpdate();
+	void UpdateAttackCooldowns();
+	void Evasion();
+	void CollDelete();
+	void UpdateTargetLock();//targetがいる状態か.これがないとtargetがいなくなった瞬間にnullになる
+
+
+	float GetAngle() { return angle_; }
+
+	void RotationByMove();//移動による回転処理
+
+	float GetHp() { return hp_; }
+	void SetHp(float hp) { hp_ = hp; }
+	float GetAttack() { return attack_; }
+	void SetAttack(float attack) { attack_ = attack; }
+	float GetAllStatusState(Object3D::StatusState state);
+	float GetSpeed() { return speed_; }
+	void SetSpeed(float speed) { speed_ = speed_ + speed; }
+	float GetSize() { return size_; }
+	
+	// --- Upgrade Setters ---
+	void AddUpgradeMaxHp(float add) { upgrade_max_hp_ += add; }
+	void AddUpgradeAttack(float add) { upgrade_attack_ += add; }
+	void AddUpgradeSpeed(float add) { upgrade_speed_ += add; }
+	void AddUpgradeEvasionSpeed(float add) { upgrade_evasion_speed_ += add; }
+	void AddUpgradeEvasionInvincibility(int add) { upgrade_evasion_invincibility_ += add; }
+	// -----------------------
+	VECTOR GetFirstPos() { return first_position_; };
+	bool GetStageOutFlag() { return is_stage_out_; }
+
+	void DrawStatusBars();
+
+
+	// アニメーション追加
+   // Modelクラスへの橋渡し関数
+	void AddAnimation(AnimationState state, std::string filename);
+
+
+	virtual void OnEnter(Collider* collider, Collider* check) override;
+	virtual void OnTrigger(Collider* collider, Collider* check) override;
+	virtual void OnExit(Collider* collider, Collider* check) override;
+
+	CapsuleCollider* GetCollisionCollider() { return capsule_collider_; }
+	SphereCollider* Get500Collider() { return search_enemy_collider_; }
+
+	Model* model_;//モデルクラスのポインタ
+	ShortInventory* short_inventory_;
+	BuffManager* buff_manager_;
+	ItemManager* item_manager_;
+	HaveMoneyClass* have_money_;
+	EquipmentManager* equipment_manager_;
+private:
+	void UpdateInvincibilityTimer();
+	void UpdatePlayerSystems();
+	bool ShouldSkipGameplayUpdate() const;
+	bool IsBossFadeActive() const;
+	void ValidateTarget();
+	void UpdateGameplayActions();
+	Object3D* target_;
+	float target_angle_;//目標の回転地
+	float angle_;//現在の回転地
+	VECTOR first_position_;
+
+	const float kRotateSpeed = 0.2f;//回転速度
+	const float kJumpPower = 30.0f;//ジャンプ力
+
+	bool is_jumping_;//ジャンプモーションをするか否か
+	bool is_jump_falling_;//落下する座標にいったら下降をするフラグ
+	bool has_reached_jump_peak_;//目標座標に行ったときにtrue
+	bool is_jump_collider_active_;
+	bool is_attack_slide_target_found_;
+
+	float jump_power_;//ジャンプ力
+	float speed_;
+	float evasion_speed_;
+	float normal_speed_;
+	float attack_slide_speed_;
+	float hp_;
+	float max_hp_;
+	float ride_old_hp_;
+	float size_;
+	
+	// --- Upgrade Stats from StatShop ---
+	float upgrade_max_hp_ = 0.0f;
+	float upgrade_attack_ = 0.0f;
+	float upgrade_speed_ = 0.0f;
+	float upgrade_evasion_speed_ = 0.0f;
+	int upgrade_evasion_invincibility_ = 0; // 追加無敵フレーム
+	int invincible_timer_ = 0; // 現在の無敵タイマー
+	// -----------------------------------
+
+	int attack_slide_count_;//攻撃間隔をカウントする
+	int attack_jump_count_;
+	int attack_count_;
+
+	int attack_slide_cooldown_ = 200;//攻撃可能時のクールタイム
+	int attack_cooldown_ = 30;
+	int attack_jump_cooldown_=200;
+	////////////////	攻撃力	
+
+	float attack_;//ダメージを計算するときに使われる基本的な値
+	float normal_attack_;//何らかの要因でmfAttackの値を変えた時に戻すための値
+	float jump_attack_;
+	float slide_attack_;
+	float bullet_attack_;
+	VECTOR move_vec_ = VGet(0.0f, 0.0f, 0.0f);//移動方向
+	VECTOR previous_move_vec_;
+	VECTOR attack_slide_direction_;//移動方向
+	VECTOR attack_slide_step_;//目標とする座標
+
+	//ステージとの当たり判定をする
+	bool is_invisible_;
+
+	int target_search_count_;//一番近い敵
+	float nearest_target_distance_;
+
+	SphereCollider* attach_collider_;
+	SphereCollider* search_enemy_collider_;
+	SphereCollider* attack_slide_collider_;
+	SphereCollider* attack_jump_collider_;
+	CapsuleCollider* capsule_collider_;
+
+
+	int attack_selection_index_;
+
+	int mouseInput = GetMouseInput(); // マウスの状態を取得
+	bool is_stage_out_;//trueだったらoldPositionに戻るようにする
+};

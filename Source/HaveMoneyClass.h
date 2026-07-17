@@ -6,22 +6,29 @@
 class HaveMoneyClass
 {
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	HaveMoneyClass(int money);
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~HaveMoneyClass();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void AddMoney(int money);
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void PullMoney(int money);
 
-	int HaveMoney() { return mnMoney; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	int HaveMoney() { return money_; }
 
 private:
-	int mnMoney;
-	Object3D* mpParent;
+	int money_;
+	Object3D* parent_;
 
 };

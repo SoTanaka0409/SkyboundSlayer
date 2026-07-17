@@ -6,6 +6,7 @@
 #include "StageObject.h"
 #include "SkyBox.h"
 #include "Config.h"
+#include "Player3D.h"
 #include <fstream>
 #include <sstream>
 
@@ -96,8 +97,16 @@ namespace
 	}
 }
 
+
+
+/*
+ * 目的（ResultWinのResultWin処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 ResultWin::ResultWin()
-	: mnAllTimer(0)
+	: all_timer_(0)
 {
 }
 
@@ -105,10 +114,18 @@ ResultWin::~ResultWin()
 {
 }
 
+
+
+/*
+ * 目的（ResultWinのInitialize処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::Initialize()
 {
-	Master::mpSoundManager->PlayBGM(SoundManager::BGM_RESULT);
-	Master::mpScoreManager->SaveHighScore();
+	Master::sound_manager_->PlayBGM(SoundManager::BGM_RESULT);
+	Master::score_manager_->SaveHighScore();
 
 	LoadResultStage();
 	SetLightEnable(TRUE);
@@ -118,31 +135,55 @@ void ResultWin::Initialize()
 	SetCameraNearFar(100.0f, Config::CameraFar);
 }
 
+
+
+/*
+ * 目的（ResultWinのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::Update()
 {
-	mnAllTimer++;
+	all_timer_++;
 	SetResultCamera();
 	Scene::Update();
 	HandleReturnInput();
 }
 
+
+
+/*
+ * 目的（ResultWinのHandleReturnInput処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::HandleReturnInput()
 {
-	if (mnAllTimer < 100)
+	if (all_timer_ < 100)
 	{
 		return;
 	}
 
 	if (InputManager::CheckMouseClickLeft() || InputManager::CheckDownKey(KEY_INPUT_BACK))
 	{
-		Master::mpSceneManager->SetNextScene(SceneManager::kSceneTitle);
+		Master::scene_manager_->SetNextScene(SceneManager::kSceneTitle);
 	}
 }
 
+
+
+/*
+ * 目的（ResultWinのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::Draw()
 {
 	SetWriteZBufferFlag(FALSE);
-	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(20, 22, 30), TRUE);
+	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(15, 18, 25), TRUE); // Base 60%
 	SetWriteZBufferFlag(TRUE);
 
 	Scene::Draw();
@@ -155,28 +196,44 @@ void ResultWin::Draw()
 	SetFontSize(size);
 }
 
+
+
+/*
+ * 目的（ResultWinのDrawResultPanel処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::DrawResultPanel()
 {
-	const int gold = GetColor(218, 178, 86);
-	const int goldDark = GetColor(98, 73, 32);
-	const int panel = GetColor(13, 15, 20);
-	const int panelLight = GetColor(47, 45, 48);
+	const int accentGold = GetColor(218, 178, 86); // Accent 10%
+	const int accentGoldDark = GetColor(98, 73, 32);
+	const int mainPanel = GetColor(30, 35, 45); // Main 30%
+	const int panelLight = GetColor(47, 52, 65);
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 188);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawBox(PanelX - 18, PanelY - 18, PanelX + PanelW + 18, PanelY + PanelH + 18, GetColor(0, 0, 0), TRUE);
-	DrawBox(PanelX, PanelY, PanelX + PanelW, PanelY + PanelH, panel, TRUE);
+	DrawBox(PanelX, PanelY, PanelX + PanelW, PanelY + PanelH, mainPanel, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawBox(PanelX + 16, PanelY + 16, PanelX + PanelW - 16, PanelY + 28, panelLight, TRUE);
-	DrawLine(PanelX, PanelY, PanelX + PanelW, PanelY, gold, 2);
-	DrawLine(PanelX, PanelY + PanelH, PanelX + PanelW, PanelY + PanelH, goldDark, 2);
-	DrawLine(PanelX, PanelY, PanelX, PanelY + PanelH, goldDark, 2);
-	DrawLine(PanelX + PanelW, PanelY, PanelX + PanelW, PanelY + PanelH, gold, 2);
+	DrawLine(PanelX, PanelY, PanelX + PanelW, PanelY, accentGold, 2);
+	DrawLine(PanelX, PanelY + PanelH, PanelX + PanelW, PanelY + PanelH, accentGoldDark, 2);
+	DrawLine(PanelX, PanelY, PanelX, PanelY + PanelH, accentGoldDark, 2);
+	DrawLine(PanelX + PanelW, PanelY, PanelX + PanelW, PanelY + PanelH, accentGold, 2);
 }
 
+
+
+/*
+ * 目的（ResultWinのDrawResultHeader処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::DrawResultHeader()
 {
-	float ease1 = EaseOutCubic(mnAllTimer / 30.0f);
+	float ease1 = EaseOutCubic(all_timer_ / 30.0f);
 	int titleX = (int)(PanelX - 620 + (620 * ease1));
 
 	SetFontSize(62);
@@ -186,45 +243,61 @@ void ResultWin::DrawResultHeader()
 	DrawFormatString(PanelX + 34, PanelY + 142, GetColor(190, 210, 230), "FLOATING STAGE SECURED");
 }
 
+
+
+/*
+ * 目的（ResultWinのDrawResultStats処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::DrawResultStats()
 {
-	if (mnAllTimer < 30)
+	if (all_timer_ < 30)
 	{
 		return;
 	}
 
-	float ease2 = EaseOutCubic((mnAllTimer - 30) / 28.0f);
+	float ease2 = EaseOutCubic((all_timer_ - 30) / 28.0f);
 	int contentX = (int)(PanelX - 620 + (620 * ease2));
 
 	SetFontSize(28);
 	DrawFormatString(contentX + 34, PanelY + 218, GetColor(255, 225, 160), "BATTLE RESULT");
 	SetFontSize(30);
 	DrawFormatString(contentX + 54, PanelY + 270, GetColor(236, 239, 242), "Defeated Enemies");
-	DrawFormatString(contentX + 390, PanelY + 270, GetColor(255, 255, 255), "%3d", Master::mpScoreManager->GetDefeatedEnemies());
+	DrawFormatString(contentX + 390, PanelY + 270, GetColor(255, 255, 255), "%3d", Master::score_manager_->GetDefeatedEnemies());
 	DrawFormatString(contentX + 54, PanelY + 326, GetColor(236, 239, 242), "Potions Used");
-	DrawFormatString(contentX + 390, PanelY + 326, GetColor(255, 255, 255), "%3d", Master::mpScoreManager->GetUsedPotions());
+	DrawFormatString(contentX + 390, PanelY + 326, GetColor(255, 255, 255), "%3d", Master::score_manager_->GetUsedPotions());
 
 	DrawLine(PanelX + 34, PanelY + 410, PanelX + PanelW - 34, PanelY + 410, GetColor(86, 72, 45), 1);
 	SetFontSize(28);
 	DrawFormatString(contentX + 34, PanelY + 458, GetColor(255, 190, 190), "FINAL STATUS");
 	SetFontSize(30);
 	DrawFormatString(contentX + 54, PanelY + 512, GetColor(180, 255, 178), "Max HP");
-	DrawFormatString(contentX + 390, PanelY + 512, GetColor(255, 255, 255), "%3.0f", Master::mpScoreManager->GetFinalHp());
+	DrawFormatString(contentX + 390, PanelY + 512, GetColor(255, 255, 255), "%3.0f", Master::score_manager_->GetFinalHp());
 	DrawFormatString(contentX + 54, PanelY + 568, GetColor(255, 150, 150), "Attack");
-	DrawFormatString(contentX + 390, PanelY + 568, GetColor(255, 255, 255), "%3.0f", Master::mpScoreManager->GetFinalAttack());
+	DrawFormatString(contentX + 390, PanelY + 568, GetColor(255, 255, 255), "%3.0f", Master::score_manager_->GetFinalAttack());
 	DrawFormatString(contentX + 54, PanelY + 624, GetColor(158, 214, 255), "Speed");
-	DrawFormatString(contentX + 390, PanelY + 624, GetColor(255, 255, 255), "%3.0f", Master::mpScoreManager->GetFinalSpeed());
+	DrawFormatString(contentX + 390, PanelY + 624, GetColor(255, 255, 255), "%3.0f", Master::score_manager_->GetFinalSpeed());
 }
 
+
+
+/*
+ * 目的（ResultWinのDrawResultFooter処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::DrawResultFooter()
 {
-	if (mnAllTimer < 100)
+	if (all_timer_ < 100)
 	{
 		return;
 	}
 
 	const int gold = GetColor(218, 178, 86);
-	int alpha = (mnAllTimer % 60 < 30) ? 255 : 105;
+	int alpha = (all_timer_ % 60 < 30) ? 255 : 105;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	SetFontSize(30);
 	DrawBox(PanelX + 74, PanelY + 744, PanelX + PanelW - 74, PanelY + 806, GetColor(38, 34, 26), TRUE);
@@ -233,6 +306,14 @@ void ResultWin::DrawResultFooter()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
+
+
+/*
+ * 目的（ResultWinのFinalize処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ResultWin::Finalize()
 {
 }

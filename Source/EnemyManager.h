@@ -32,29 +32,35 @@ public:
 		float Serch1;//敵をサーチする大きさ
 		float Serch2;//敵に攻撃し始めるサイズ
 		float Serch3;//敵に近ずきすぎたときに立ち止まる
-		bool isSeparateAnim;//セパレートアニメーションをするかどうか
+		bool is_separate_anim_;//セパレートアニメーションをするかどうか
 		int MaxEnemyCount;//stageの最大沸き数
 		int money;
 		int Count;//敵の数
 	};
 
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	EnemyManager();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~EnemyManager();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void NewEnemyList(enemydate date);
 	
 	
 
-	std::list<Enemy*>mpEneList;
+	std::list<Enemy*>ene_list_;
 private:
-	enemydate mpDate;
+	enemydate date_;
 	enemy_tag tag_;
 	
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	/*std::vector<Enemy*> GetEnemyVec() { return enemyVec; }
 	std::vector<Enemy*> enemyVec;*/
 	

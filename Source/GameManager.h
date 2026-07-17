@@ -1,5 +1,6 @@
-ï»¿#pragma once
+#pragma once
 #include "DxLib.h"
+#include <string>
 #include "EnemyManager.h"
 #include "ObjectManager.h"
 #include "Master.h"
@@ -8,14 +9,14 @@
 
 class GameManager {
 public:
-    // Difficulty controls enemy stat multipliers.
+    // ƒQ[ƒ€“ïˆÕ“xi“G‚ÌƒXƒe[ƒ^ƒX”{—¦‚É‰e‹¿j
     enum class Difficulty {
         kEasy,
         kNormal,
         kHard
     };
 
-    // Main game flow state, including shops and boss transition.
+    // ƒQ[ƒ€‚ÌisƒtƒF[ƒYó‘Ô
     enum class Phase {
         kPhase1,
         kShop1,
@@ -39,55 +40,136 @@ private:
     EnemyManager* enemy_manager_;
     VECTOR boss_portal_pos_;
 
+// ƒ{ƒXoŒ»ƒJƒbƒgƒV[ƒ“‚ÌXV
+// [“ü—Í] ‚È‚µ [o—Í] bool: ƒJƒbƒgƒV[ƒ“Š®—¹ƒtƒ‰ƒO [•›ì—p] ƒJƒƒ‰À•W‚ÆƒQ[ƒ€ó‘Ô‚ÌXV
     bool UpdateBossCutscene();
+// ƒ{ƒX‘JˆÚ‚ÌƒtƒF[ƒhXV
+// [“ü—Í] ‚È‚µ [o—Í] bool: ƒtƒF[ƒhŠ®—¹ƒtƒ‰ƒO [•›ì—p] ƒtƒF[ƒhƒAƒ‹ƒtƒ@’l‚ÌXV
     bool UpdateBossFade();
+// ƒVƒ‡ƒbƒvƒtƒF[ƒY‚ÌXV
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒVƒ‡ƒbƒvƒ^ƒCƒ}[‚ÌXV‚ÆƒtƒF[ƒYˆÚs
     void UpdateShopPhase();
+// ƒoƒgƒ‹ƒtƒF[ƒY‚ÌXV
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] “G‚ÌoŒ»ŠÇ—‚ÆƒtƒF[ƒYˆÚs
     void UpdateBattlePhase();
+// ƒVƒ‡ƒbƒvƒtƒF[ƒY‚Ö‚ÌˆÚsˆ—
+// [“ü—Í] Phase nextPhase: Ÿ‚ÌƒtƒF[ƒY [o—Í] ‚È‚µ [•›ì—p] ƒtƒF[ƒY•ÏXAƒVƒ‡ƒbƒvƒ^ƒCƒ}[‚ÌƒŠƒZƒbƒg
     void StartShopPhase(Phase nextPhase);
+// ƒ{ƒXƒtƒF[ƒY‚Ö‚Ì‘JˆÚŠJn
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒtƒF[ƒY‚Ì•ÏX‚ÆƒtƒF[ƒhó‘Ô‚Ì‰Šú‰»
     void StartBossTransition();
+// ƒ{ƒXƒQ[ƒgoŒ»‚ÌƒJƒbƒgƒV[ƒ“ŠJn
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒJƒƒ‰ƒtƒ‰ƒO‚ÌØ‚è‘Ö‚¦
     void StartBossGateCutscene();
+// ƒVƒ‡ƒbƒvNPC‚ğƒtƒB[ƒ‹ƒh‚ÉoŒ»‚³‚¹‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] StatShopƒIƒuƒWƒFƒNƒg‚Ì¶¬‚ÆˆÚ“®
     void SendShopsIn();
+// ƒVƒ‡ƒbƒvNPC‚ğ‘Şê‚³‚¹‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] StatShopƒIƒuƒWƒFƒNƒg‚Ì‘Şêƒtƒ‰ƒOİ’è
     void SendShopsOut();
+// ƒVƒ‡ƒbƒvNPC‚ª“’…‚µ‚½‚©”»’è‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] bool: “’…”»’è [•›ì—p] ‚È‚µ
     bool AreShopsArrived() const;
+// Œ»İƒVƒ‡ƒbƒvƒtƒF[ƒY‚©”»’è‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] bool: ƒVƒ‡ƒbƒvƒtƒF[ƒY‚È‚çtrue [•›ì—p] ‚È‚µ
     bool IsShopPhase() const;
+// Œ»İƒ{ƒX‚Ö‚ÌƒtƒF[ƒh‘JˆÚ’†‚©”»’è‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] bool: ‘JˆÚ’†‚È‚çtrue [•›ì—p] ‚È‚µ
     bool IsBossFadePhase() const;
+// ƒvƒŒƒCƒ„[‚ªƒ{ƒXƒ|[ƒ^ƒ‹‚ÉG‚ê‚½‚©”»’è‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] bool: G‚ê‚Ä‚¢‚ê‚Îtrue [•›ì—p] ‚È‚µ
     bool IsBossGateTouched() const;
+// Œ»İ‚ÌƒtƒF[ƒY–¼‚ğæ“¾‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] const char*: ƒtƒF[ƒY‚Ì•¶š—ñ [•›ì—p] ‚È‚µ
     const char* GetPhaseLabel() const;
+// Œ»İ‚ÌƒtƒF[ƒY‚ÌƒTƒuƒ‰ƒxƒ‹iisó‹µ‚È‚Çj‚ğæ“¾‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] const char*: ƒTƒuƒ‰ƒxƒ‹‚Ì•¶š—ñ [•›ì—p] ‚È‚µ
     const char* GetPhaseSubLabel() const;
+// Œ»İ‚Ì“G‚Ì¶‘¶”‚ğæ“¾‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] int: “G‚Ì” [•›ì—p] ‚È‚µ
     int GetEnemyCount() const;
+// ƒtƒF[ƒYî•ñ‚ÌHUD‚ğ•`‰æ‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
     void DrawPhaseHud();
+// ƒVƒ‡ƒbƒvƒtƒF[ƒY‚Ìc‚èŠÔƒoƒi[‚ğ•`‰æ‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
     void DrawShopBanner();
+// ƒ{ƒX‘JˆÚ‚ÌƒtƒF[ƒh‚ğ•`‰æ‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
     void DrawBossFade();
+// ƒfƒoƒbƒO‹@”\‚ÌƒL[“ü—ÍXV
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒtƒF[ƒY‚Ì‹­§•ÏX‚È‚Ç
     void UpdateDebugControls();
+// ƒfƒoƒbƒO—pUI‚ğ•`‰æ‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
     void DrawDebugPanel();
+// ƒfƒoƒbƒO‹@”\FŒ»İ‚Ì“G‚ğ‘S–Å‚³‚¹‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] “GHP‚ğƒ[ƒ‚É‚·‚é
     void DebugKillEnemies();
+// ƒfƒoƒbƒO‹@”\Fƒ{ƒXí‚Ö’¼s‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒ{ƒXƒtƒF[ƒY‚Ö‚Ì‹­§•ÏX
     void DebugGoBoss();
+// ƒfƒoƒbƒOƒRƒ“ƒgƒ[ƒ‹‚ª—LŒø‚©”»’è‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] bool: —LŒøƒtƒ‰ƒO [•›ì—p] ‚È‚µ
     bool IsDebugControlsEnabled() const;
+// Œ»İ‚ÌƒtƒF[ƒY‚É‰‚¶‚½“G‚ğƒXƒ|[ƒ“‚³‚¹‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] EnemyƒIƒuƒWƒFƒNƒg‚Ì¶¬
     void SpawnPhaseEnemies();
+    void SpawnPhase1Enemies(const VECTOR& centerPos);
+    void SpawnPhase2Enemies(const VECTOR& centerPos);
+    void SpawnPhase3Enemies(const VECTOR& centerPos);
+    void SpawnBossEnemy();
+    EnemyManager::enemydate MakeEnemyData(
+        EnemyManager::enemy_tag tag,
+        const std::string& filename,
+        const VECTOR& spawnCenter,
+        const VECTOR& initPos,
+        float hp,
+        float speed,
+        float attack,
+        float hitSize,
+        float search1,
+        float search2,
+        float search3,
+        bool isSeparateAnim,
+        int money,
+        int count) const;
+    void AddEnemy(EnemyManager::enemydate enemyData);
+    void DrawMinimapFrame(float mapX, float mapY, float mapSize) const;
+    VECTOR GetMinimapOffset(VECTOR pos, VECTOR playerPos, float viewRange, float maxDistance) const;
+    VECTOR ClampMinimapOffset(VECTOR offset, float maxDistance) const;
+    void DrawMinimapPortal(float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const;
+    void DrawMinimapShops(float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const;
+    void DrawMinimapEnemies(float mapX, float mapY, float mapSize, float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const;
+    void DrawMinimapPlayer(float mapCenterX, float mapCenterY) const;
+// “ïˆÕ“x‚É‰‚¶‚Ä“G‚ÌƒXƒe[ƒ^ƒX‚É”{—¦‚ğ‚©‚¯‚é
+// [“ü—Í] EnemyManager::enemydate& e: “Gƒf[ƒ^ [o—Í] ‚È‚µ [•›ì—p] e“à‚Ìƒpƒ‰ƒ[ƒ^•ÏX
     void ApplyDifficultyMultipliers(EnemyManager::enemydate& e);
 
 public:
+// GameManager‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] EnemyManager* enemyManager, Difficulty diff [o—Í] ‚È‚µ [•›ì—p] •Ï”‚Ì‰Šú‰»
     GameManager(EnemyManager* enemyManager, Difficulty diff = Difficulty::kNormal);
+// GameManager‚ÌƒfƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
     ~GameManager();
 
+// ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[‚ÌXVˆ—
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ó‘ÔXVAƒtƒF[ƒY‘JˆÚˆ—
     void Update();
+// ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[‚Ì•`‰æˆ—iHUD‚È‚Çj
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
     void Draw();
+// ƒ~ƒjƒ}ƒbƒv‚ğ•`‰æ‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
     void DrawMinimap();
 
-    /*
-     * Returns the current game phase.
-     * [Input] none
-     * [Output] Current Phase
-     * [Side effects] none
-     */
+    // Œ»İ‚ÌƒQ[ƒ€ƒtƒF[ƒY‚ğæ“¾‚·‚é
+    // [“ü—Í] ‚È‚µ [o—Í] Phase: Œ»İ‚ÌƒtƒF[ƒY [•›ì—p] ‚È‚µ
     Phase GetCurrentPhase() const { return current_phase_; }
 
-    /*
-     * Returns remaining shop phase frames.
-     * [Input] none
-     * [Output] Remaining frame count
-     * [Side effects] none
-     */
+    // ƒVƒ‡ƒbƒvƒtƒF[ƒY‚Ìc‚èƒtƒŒ[ƒ€”‚ğæ“¾‚·‚é
+    // [“ü—Í] ‚È‚µ [o—Í] int: c‚èƒ^ƒCƒ}[ [•›ì—p] ‚È‚µ
     int GetShopTimer() const { return shop_timer_; }
 };
 

@@ -1,6 +1,13 @@
-ï»¿#include "SphereCollider.h"
+#include "SphereCollider.h"
 #include"CapsuleCollider.h"
 
+
+/*
+ * –Ú“IiSphereCollider‚ÌSphereColliderˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 SphereCollider::SphereCollider(Object3D* parent, VECTOR center, float radius)
 	: Collider(parent)
 {
@@ -13,11 +20,18 @@ SphereCollider::~SphereCollider()
 
 }
 
+
+/*
+ * –Ú“IiSphereCollider‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void SphereCollider::Update(Collider* check)
 {
 	if (check != nullptr)
 	{
-		// ç›¸æ‰‹ãŒã‚«ãƒ—ã‚»ãƒ«ã®å ´åˆ
+		// ‘Šè‚ªƒJƒvƒZƒ‹‚Ìê‡
 		CapsuleCollider* capsule = dynamic_cast<CapsuleCollider*>(check);
 		if (capsule != nullptr)
 		{
@@ -32,7 +46,7 @@ void SphereCollider::Update(Collider* check)
 			HitCheck(check, isHit);
 		}
 
-		// ç›¸æ‰‹ãŒã‚¹ãƒ•ã‚£ã‚¢ã®å ´åˆ
+		// ‘Šè‚ªƒXƒtƒBƒA‚Ìê‡
 		SphereCollider* sphere = dynamic_cast<SphereCollider*>(check);
 		if (sphere != nullptr)
 		{
@@ -49,6 +63,13 @@ void SphereCollider::Update(Collider* check)
 	}
 }
 
+
+/*
+ * –Ú“IiSphereCollider‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void SphereCollider::Draw()
 {
 	DrawSphere3D(
@@ -61,16 +82,37 @@ void SphereCollider::Draw()
 	);
 }
 
+
+/*
+ * –Ú“IiSphereCollider‚ÌOnEnterˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void SphereCollider::OnEnter()
 {
 
 }
 
+
+/*
+ * –Ú“IiSphereCollider‚ÌOnTriggerˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void SphereCollider::OnTrigger()
 {
 
 }
 
+
+/*
+ * –Ú“IiSphereCollider‚ÌOnExitˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void SphereCollider::OnExit()
 {
 

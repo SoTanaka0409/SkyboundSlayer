@@ -1,11 +1,25 @@
 ﻿#include "DxLib.h"
 #include "ResourceManager.h"
 
+
+/*
+ * 目的（ResourceManagerのコンストラクタ）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] なし
+ */
 ResourceManager::ResourceManager()
 {
 
 }
 
+
+/*
+ * 目的（ResourceManagerのデストラクタ）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] リソースハンドルの削除
+ */
 ResourceManager::~ResourceManager()
 {
     // 3D繝｢繝・Ν縺ｮ繧ｪ繝ｪ繧ｸ繝翫Ν繝上Φ繝峨Ν繧貞炎髯､縺吶ｋ
@@ -41,6 +55,13 @@ ResourceManager::~ResourceManager()
 }
 
 // 繝｢繝・Ν繝ｪ繧ｽ繝ｼ繧ｹ逕滓・
+
+/*
+ * 目的（3Dモデルデータを読み込みキャッシュするため）
+ * [入力] std::string pathName
+ * [出力] int: モデルハンドル
+ * [副作用] DxLibのモデル読み込み処理
+ */
 int ResourceManager::LoadModel(std::string pathName)
 {
     // 譌｢縺ｫ隱ｭ縺ｿ霎ｼ縺ｾ繧後◆繝｢繝・Ν縺九←縺・°縺ｮ遒ｺ隱・
@@ -73,6 +94,13 @@ int ResourceManager::LoadModel(std::string pathName)
 }
 
 // 繧ｰ繝ｩ繝輔ぅ繝・け繝ｪ繧ｽ繝ｼ繧ｹ逕滓・
+
+/*
+ * 目的（2D画像データを読み込みキャッシュするため）
+ * [入力] std::string pathName
+ * [出力] int: 画像ハンドル
+ * [副作用] DxLibの画像読み込み処理
+ */
 int ResourceManager::LoadGraphics(std::string pathName)
 {
     for (int i = 0; i < graphicResourceMapList.size(); i++)
@@ -94,7 +122,14 @@ int ResourceManager::LoadGraphics(std::string pathName)
 }
 
 // 蛻・牡縺輔ｌ縺溘げ繝ｩ繝輔ぅ繝・け繝ｪ繧ｽ繝ｼ繧ｹ逕滓・
-DivGraphData* ResourceManager::LoadDivGraphics(std::string pathName, int allNum, int numX, int numY)
+DivGraphData* 
+/*
+ * 目的（分割画像データを読み込みキャッシュするため）
+ * [入力] std::string pathName, int allNum, int numX, int numY
+ * [出力] DivGraphData*
+ * [副作用] DxLibの分割画像読み込み処理
+ */
+ResourceManager::LoadDivGraphics(std::string pathName, int allNum, int numX, int numY)
 {
     for (int i = 0; i < divGraphicResourceMapList.size(); i++)
     {

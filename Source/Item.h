@@ -22,24 +22,33 @@ public:
 		std::string Name;
 		ItemID ID;
 		std::string effect;
-		bool mbUse = false;
+		bool use_ = false;
 		int price=100;
-		bool isLog = true;//trueだったらログに残す
+		bool is_log_ = true;//trueだったらログに残す
 
 	}Information;
 
 
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Item();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Item();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void SetItemCount(int count) { Inf.Count = count; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	int GetItemCount() { return Inf.Count; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	std::string GetItemName() { return Inf.Name; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void SetItem(ItemID  num) { Num = num; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	ItemID GetItem() { return Num; }
 
 private:

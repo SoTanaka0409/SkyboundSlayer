@@ -1,23 +1,29 @@
-ï»¿#pragma once
+#pragma once
 #include"Model.h"
 #include"Object3D.h"
 class StageObject:public Object3D
 {
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	StageObject(VECTOR initPos, std::string filename, VECTOR scale, std::string textureFilename = "", float hitRadius = 0.0f, float yOffset = 0.0f);
 
-	float GetHitRadius() const { return mfHitRadius; }
-	bool IsHitEnabled() const { return mfHitRadius > 0.0f; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	float GetHitRadius() const { return hit_radius_; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	bool IsHitEnabled() const { return hit_radius_ > 0.0f; }
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	~StageObject();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Update();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Draw();
 
 private:
 	Model* model_;
-	float mfScale;
-	float mfHitRadius;
-	bool mbHasFollowedTerrain;
-	float mYOffset;
+	float scale_;
+	float hit_radius_;
+	bool has_followed_terrain_;
+	float y_offset_;
 };

@@ -1,11 +1,18 @@
-#include "ShortInventory.h"
+﻿#include "ShortInventory.h"
 #include "Master.h"
 #include "InputManager.h"
 #include "Config.h"
 #include <iterator>
 
+
+/*
+ * 目的（ShortInventoryのShortInventory処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 ShortInventory::ShortInventory()
-	: mSelectedIndex(0)
+	: selected_index_(0)
 {
 }
 
@@ -13,6 +20,13 @@ ShortInventory::~ShortInventory()
 {
 }
 
+
+/*
+ * 目的（ShortInventoryのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ShortInventory::Update()
 {
 	int itemCount = GetItemCount();
@@ -30,68 +44,103 @@ void ShortInventory::Update()
 	}
 }
 
+
+/*
+ * 目的（ShortInventoryのGetItemCount処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 int ShortInventory::GetItemCount() const
 {
-	if (!Master::mpItemManager)
+	if (!Master::item_manager_)
 	{
 		return 0;
 	}
 
-	return (int)Master::mpItemManager->mItemList.size();
+	return (int)Master::item_manager_->item_list_.size();
 }
 
+
+/*
+ * 目的（ShortInventoryのClampSelectedIndex処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ShortInventory::ClampSelectedIndex(int itemCount)
 {
 	if (itemCount <= 0)
 	{
-		mSelectedIndex = 0;
+		selected_index_ = 0;
 		return;
 	}
 
-	if (mSelectedIndex >= itemCount)
+	if (selected_index_ >= itemCount)
 	{
-		mSelectedIndex = 0;
+		selected_index_ = 0;
 	}
-	else if (mSelectedIndex < 0)
+	else if (selected_index_ < 0)
 	{
-		mSelectedIndex = itemCount - 1;
+		selected_index_ = itemCount - 1;
 	}
 }
 
+
+/*
+ * 目的（ShortInventoryのHandleSelectionInput処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ShortInventory::HandleSelectionInput(int itemCount)
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_RIGHT))
 	{
-		mSelectedIndex++;
+		selected_index_++;
 		ClampSelectedIndex(itemCount);
 	}
 
 	if (InputManager::CheckDownKey(KEY_INPUT_LEFT))
 	{
-		mSelectedIndex--;
+		selected_index_--;
 		ClampSelectedIndex(itemCount);
 	}
 }
 
+
+/*
+ * 目的（ShortInventoryのUseSelectedItem処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ShortInventory::UseSelectedItem()
 {
 	Item::Information* info = GetSelectedItem();
 	if (info && info->Count > 0)
 	{
-		Master::mpItemManager->UseItem(info->ID);
+		Master::item_manager_->UseItem(info->ID);
 	}
 }
 
-Item::Information* ShortInventory::GetSelectedItem() const
+Item::Information* 
+/*
+ * 目的（ShortInventoryのGetSelectedItem処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
+ShortInventory::GetSelectedItem() const
 {
-	if (!Master::mpItemManager)
+	if (!Master::item_manager_)
 	{
 		return nullptr;
 	}
 
-	auto it = Master::mpItemManager->mItemList.begin();
-	std::advance(it, mSelectedIndex);
-	if (it == Master::mpItemManager->mItemList.end())
+	auto it = Master::item_manager_->item_list_.begin();
+	std::advance(it, selected_index_);
+	if (it == Master::item_manager_->item_list_.end())
 	{
 		return nullptr;
 	}
@@ -99,6 +148,13 @@ Item::Information* ShortInventory::GetSelectedItem() const
 	return *it;
 }
 
+
+/*
+ * 目的（ShortInventoryのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ShortInventory::Draw()
 {
 	int itemCount = GetItemCount();
@@ -117,6 +173,13 @@ void ShortInventory::Draw()
 	DrawItemPanel(info);
 }
 
+
+/*
+ * 目的（ShortInventoryのDrawItemPanel処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void ShortInventory::DrawItemPanel(const Item::Information* info)
 {
 	const int boxW = 300;

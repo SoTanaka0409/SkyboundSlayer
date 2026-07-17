@@ -1,45 +1,87 @@
-ï»¿#include"Rock.h"
+#include"Rock.h"
 #include"CapsuleCollider.h"
 #include"Model.h"
+
+/*
+ * –Ú“IiRock‚ÌRockˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 Rock::Rock(std::string filename,VECTOR pos, float r,float High,float size)
 	:Object3D(VGet(0,0,0))
-	, mfHigh(High)
+	, high_(High)
 {
 	SetTag(Object3D::Tag3D_Obj);
-	mpCapsuleCollider = new CapsuleCollider(this, position_, VAdd(position_, VGet(0,High,0)),r);
+	capsule_collider_ = new CapsuleCollider(this, position_, VAdd(position_, VGet(0,High,0)),r);
 	model_ = new Model(filename, pos, false);
 	model_->SetScale(VGet(size, size, size));
 }
 
 Rock::~Rock()
 {
-	mpCapsuleCollider->SetDeleteFlag(true);
+	capsule_collider_->SetDeleteFlag(true);
 	
 }
 
 
+
+/*
+ * –Ú“IiRock‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Rock::Draw()
 {
 	model_->Draw();
 }
 
+
+/*
+ * –Ú“IiRock‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Rock::Update()
 {
-	mpCapsuleCollider->position_ = position_;
-	mpCapsuleCollider->position2_ = position_, VAdd(position_, VGet(0, mfHigh, 0));
+	capsule_collider_->position_ = position_;
+	capsule_collider_->position2_ = position_, VAdd(position_, VGet(0, high_, 0));
 	position_.y = -100.0f;
 }
 
+
+/*
+ * –Ú“IiRock‚ÌOnEnterˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Rock::OnEnter(Collider* collider, Collider* check)
 {
 
 }
 
+
+/*
+ * –Ú“IiRock‚ÌOnTriggerˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Rock::OnTrigger(Collider* collider, Collider* check)
 {
 
 }
 
+
+/*
+ * –Ú“IiRock‚ÌOnExitˆ—‚ğs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”QÆ
+ * [o—Í] –ß‚è’lQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Rock::OnExit(Collider* collider, Collider* check)
 {
 

@@ -1,74 +1,108 @@
-ï»¿#pragma once
+#pragma once
 #include"DxLib.h"
 #include"Model.h"
 #include"TitleScene.h"
-//ã‚¯ãƒ©ã‚¹ã®å‰æ–¹å®£è¨€
+//ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
 class Object3D;
 
 class Camera
 {
 public:
-	Camera();//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+	Camera();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 
-	~Camera();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+    // ƒfƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	~Camera();//ƒfƒXƒgƒ‰ƒNƒ^
 
 
-	void Initialize();//åˆæœŸåŒ–
+    // ƒJƒƒ‰‚Ì‰Šúİ’è‚ğs‚¤
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒJƒƒ‰À•W‚Æ‰ñ“]‚Ì‰Šú‰»
+	void Initialize();//‰Šú‰»
 
+    // ƒJƒƒ‰‚ÌI—¹ˆ—‚ğs‚¤
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
 	void Finalize();
 
-	void Update(); // æ›´æ–°
-	void UpdateThirdPersonCamera(); // ä¸‰äººç§°ã‚«ãƒ¡ãƒ©æ›´æ–°å‡¦ç†
+    // ƒJƒƒ‰‚ÌXVˆ—‚ğs‚¤
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] —h‚ê‚â’Ç]‚ÌŒvZ
+	void Update(); // XV
+    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+    // 3lÌ‹“_ƒJƒƒ‰‚ÌXV‚ğs‚¤
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒvƒŒƒCƒ„[À•W‚ÉŠî‚Ã‚­’Ç]ˆ—
+	void UpdateThirdPersonCamera(); // OlÌƒJƒƒ‰XVˆ—
 
-	void UpdateRotation();//å›è»¢å‡¦ç†
+    // ƒ}ƒEƒX“ü—Í‚É‚æ‚éƒJƒƒ‰‰ñ“]‚ğXV‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] target_rot_ ‚ÌXV
+	void UpdateRotation();//‰ñ“]ˆ—
 
-	VECTOR GetPosition() { return position_; }//åº§æ¨™å–å¾—
-	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//æ³¨è¦–ç‚¹å–å¾—
+    // ƒJƒƒ‰‚ÌŒ»İÀ•W‚ğæ“¾‚·‚é
+// [“ü—Í] ‚È‚µ [o—Í] VECTOR [•›ì—p] ‚È‚µ
+	VECTOR GetPosition() { return position_; }//À•Wæ“¾
+	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//’‹“_æ“¾
 
-	float GetLookCamera() { return mfVerticalAngle; }
-	void AddHorizontalAngle(float angle) { mfHorizontalAngle += angle; }
-	void SetLookCamera(float hor) { mfVerticalAngle = hor; }
+    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+	float GetLookCamera() { return vertical_angle_; }
+	void AddHorizontalAngle(float angle) { horizontal_angle_ += angle; }
+    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+	void SetLookCamera(float hor) { vertical_angle_ = hor; }
 
-	VECTOR GetLookCamera2() { return dir; }//VECTORãƒãƒ¼ã‚¸ãƒ§ãƒ³
-	void SetLookCamera2(VECTOR dir2) { dir = dir2; }	void SetCutsceneMode(bool isCutscene) { mIsCutsceneMode = isCutscene; }
+	VECTOR GetLookCamera2() { return dir; }//VECTORƒo[ƒWƒ‡ƒ“
+	void SetLookCamera2(VECTOR dir2) { dir = dir2; }	void SetCutsceneMode(bool isCutscene) { is_cutscene_mode_ = isCutscene; }
 	void SetCutsceneTarget(VECTOR pos) { mCutsceneTargetPos = pos; }
 
-	// â˜…Newâ˜…
-	// ç”»é¢æºã‚Œ
+	// šNewš
+	// ‰æ–Ê—h‚ê
+    // ƒJƒƒ‰‚Ì—h‚êiƒVƒFƒCƒNjŒvZ‚ğs‚¤
+// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] draw_pos_ ‚Æ draw_target_ ‚Ìˆê“I‚ÈƒIƒtƒZƒbƒg
 	void Shake();
+    // ƒJƒƒ‰‚Ì—h‚êƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚é
+// [“ü—Í] float time, float width, float angleSpeed, float stepTime [o—Í] ‚È‚µ [•›ì—p] ƒVƒFƒCƒN•Ï”‚Ì‰Šú‰»
 	void SetupShake(float time, float width, float angleSpeed, float stepTime = 1.0f);
 
 private:
-	bool mIsCutsceneMode = false;
-	VECTOR mCutsceneTargetPos = VGet(0.0f, 0.0f, 0.0f);
-	float mfHorizontalAngle;  //æ°´å¹³æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
-	float mfVerticalAngle;   // å‚ç›´æ–¹å‘ã‚¢ãƒ³ã‚°ãƒ«
+	// ’‹“_‚ÌŒvZˆ—
+	void UpdateLookAtPosition(VECTOR targetPos);
+	// ƒJƒƒ‰À•W‚ÌŒvZEİ’èˆ—
+	void UpdateCameraPosition();
 
-	VECTOR position_; //ã‚«ãƒ¡ãƒ©åº§æ¨™
-	VECTOR mvLookAtPosition;   //ã‚«ãƒ¡ãƒ©ã®æ³¨ç§»è»¢åº§æ¨™   åº§æ¨™å›ºå®š (ä»Šå›ã¯)
+	// === ’è” ===
+	static constexpr float kTargetOffsetY = 240.0f;
+	static constexpr float kDefaultOffsetY = 160.0f;
+	static constexpr float kCameraDistance = 500.0f;
+	static constexpr float kCameraCalcRadius = 400.0f;
+	static constexpr float kMouseSensitivity = 0.05f;
+
+	bool is_cutscene_mode_ = false;
+	VECTOR mCutsceneTargetPos = VGet(0.0f, 0.0f, 0.0f);
+	float horizontal_angle_;  //…•½•ûŒüƒAƒ“ƒOƒ‹
+	float vertical_angle_;   // ‚’¼•ûŒüƒAƒ“ƒOƒ‹
+
+	VECTOR position_; //ƒJƒƒ‰À•W
+	VECTOR mvLookAtPosition;   //ƒJƒƒ‰‚Ì’ˆÚ“]À•W   À•WŒÅ’è (¡‰ñ‚Í)
 	VECTOR dir;
 
-	Object3D* target_;    //ã‚«ãƒ¡ãƒ©ã‚’å‘ã‘ã‚‹å¯¾è±¡
+	Object3D* target_;    //ƒJƒƒ‰‚ğŒü‚¯‚é‘ÎÛ
 	Model* model_;
 
 
 	int centerX = 640;
 	int centerY = 360;
-	const float ROTATE_SPEED = 0.2f;//å›è»¢é€Ÿåº¦
-	float mfTargetAngle;//ç›®æ¨™ã®å›è»¢åœ°
-	float mfAngle;//ç¾åœ¨ã®å›è»¢åœ°
+	const float ROTATE_SPEED = 0.2f;//‰ñ“]‘¬“x
+	float target_angle_;//–Ú•W‚Ì‰ñ“]’n
+	float angle_;//Œ»İ‚Ì‰ñ“]’n
 
-	int mnShakeTime;
-	int mnShakeTimeCount;
-
-	float mfShakeAngle;
-	float mfShakeTimeCounter;
-	float mfShakeTime;
-	float mfShakeWidth;
-	float mfShakeAngleSpeed;
-	float mfStepTime;
+	float shake_angle_;
+	float shake_time_counter_;
+	float shake_time_;
+	float shake_width_;
+	float shake_angle_speed_;
+	float step_time_;
 	VECTOR mvShakePosition;
 };
-
-
-

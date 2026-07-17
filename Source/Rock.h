@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include"dxlib.h"
 #include"Object3D.h"
 #include"string"
@@ -11,18 +11,25 @@ class CapsuleCollider;
 class Rock:public Object3D
 {
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Rock(std::string filename,VECTOR pos,float r,float High,float size);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	~Rock();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Draw();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Update();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnEnter(Collider* collider, Collider* check);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnTrigger(Collider* collider, Collider* check);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnExit(Collider* collider, Collider* check);
 private:
 	Model* model_;
-	CapsuleCollider* mpCapsuleCollider;
-	float mfHigh;
+	CapsuleCollider* capsule_collider_;
+	float high_;
 };

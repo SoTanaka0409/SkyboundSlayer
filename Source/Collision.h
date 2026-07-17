@@ -22,20 +22,28 @@ public:
 	//キャラクターの当たり判定を書いていく
 public:
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Collision();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Collision();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	/*void SphireColl();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void CapsuleColl();*/
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Tag_Coll GetTag() { return CollTag; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void SetTag(Tag_Coll tag) { CollTag = tag; }
 	
-	std::list<float>mSizeList;
+	std::list<float>size_list_;
 private:
 	Tag_Coll CollTag;
   /*  Player3D* Coll_P;
@@ -52,5 +60,5 @@ public:
 private:
 	VECTOR mvPOsition;
 	float radius_;
-	Object3D* mpObject;
+	Object3D* object_;
 };

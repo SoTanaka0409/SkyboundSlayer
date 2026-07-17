@@ -9,16 +9,23 @@
 
 
 
+
+/*
+ * 目的（ShieldのShield処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 Shield::Shield(std::string filename, VECTOR initPos,int hp)
 	:Object3D(initPos)
 	,NewShield(true)
-	,mnHp(hp)
-	,mnSizeS(200.0f)
+	,hp_(hp)
+	,size_s_(200.0f)
 {
 	SetTag(Object3D::Tag_3D_Shield);
 	model_=new Model(filename, initPos, 1.0f);
-	auto mpPlayer = Master::mpPlayer;
-	auto pPlayer = Master::mpPlayer;
+	auto player_ = Master::player_;
+	auto pPlayer = Master::player_;
 
 	position_ = pPlayer->GetPosition();
 }
@@ -31,17 +38,31 @@ Shield::~Shield()
 	}
 }
 
+
+/*
+ * 目的（ShieldのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Shield::Update()
 {
-	auto mpPlayer = Master::mpPlayer;
-	auto pPlayer = Master::mpPlayer;
+	auto player_ = Master::player_;
+	auto pPlayer = Master::player_;
 	position_ = pPlayer->GetPosition();
 }
 
+
+/*
+ * 目的（ShieldのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Shield::Draw()
 {
 	DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 80.0f, 0.0f)),
-		mnSizeS,
+		size_s_,
 		8,
 		GetColor(0, 255, 255),
 		GetColor(0, 255, 255),

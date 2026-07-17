@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include"Dxlib.h"
 #include"Object3D.h"
@@ -14,35 +14,45 @@ class Model;
 class EnemyBoss_1 :public Enemy
 {
 public:
-	EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool isSeparateAnim);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool is_separate_anim_);
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	~EnemyBoss_1();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Draw()override;
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Update()override;
 
 	
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Attack()override;
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void OnTrigger(Collider* collider, Collider* check)override;
 	
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void DeathEnemy()override;
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Delete()override;
 
 private:
-	bool mbMagic;
-	SphereCollider* mpJumpAttackCoiider;
+	// ƒWƒƒƒ“ƒv’†‚Ì•¨—ŒvZˆ—
+	void UpdateJumpPhysics();
 
-	int mAttackType;
-	int mAttack1ComboCount;
+	// === ’è” ===
+	static constexpr float kJumpAscendSpeed = 15.0f;
+	static constexpr float kJumpDescendSpeed = -25.0f;
+	SphereCollider* jump_attack_coiider_;
+
+	int attack_type_;
+	int attack1_combo_count_;
 	
 	float mfjumpPower;
 	bool HighPositionFlag;
-	bool mbjumpDown;
-	bool mbjump;
-	bool OnJumpCollider;
 
 
 };

@@ -1,4 +1,4 @@
-ï»¿#include"Object3D.h"
+#include"Object3D.h"
 #include"Master.h"
 #include"ObjectManager.h"
 #include"Scene3D.h"
@@ -10,6 +10,13 @@
 
 
 
+
+/*
+ * –Ú“IiObject3D‚ÌObject3Dˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 Object3D::Object3D(VECTOR initPos)
 	:position_(initPos)
 	, rotation_(VGet(0.0f, 0.0f, 0.0f))
@@ -17,49 +24,91 @@ Object3D::Object3D(VECTOR initPos)
 	, tag_(Tag3D::None3D)
 	,draw_flag_(true)
 {
-	//è¿´ï½¾è¨ï½¨ç¸ºï½®ç¹§ï½·ç¹ï½¼ç¹ï½³ç¸ºï½®objectManagerç¸ºï½«é–¾ï½ªè«ï½¡ï½¼this)ç¹§å®šï½¿ï½½èœ‰ç¸ºå¶ï½‹
-	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
+	//ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®objectManagerã«è‡ªä¿¡¼this)ã‚’è¿½åŠã™ã‚‹
+	Master::scene_manager_->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
-//ç¹ç¹§ï½¹ç¹åŒ»Î›ç¹§ï½¯ç¹§ï½¿
+//ãƒã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Object3D::~Object3D()
 {
 
 }
-//è¬ å†—åˆ¤
+//æç”»
+
+/*
+ * –Ú“IiObject3D‚ÌDrawˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object3D::Draw()
 {
 
 }
 
-//è­–ï½´è­ï½°
+//æ›´æ–°
+
+/*
+ * –Ú“IiObject3D‚ÌUpdateˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object3D::Update()
 {
 
 }
 
+
+/*
+ * –Ú“IiObject3D‚ÌOnEnterˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object3D::OnEnter(Collider* collider, Collider* check)
 {
 
 }
 
+
+/*
+ * –Ú“IiObject3D‚ÌOnTriggerˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object3D::OnTrigger(Collider* collider, Collider* check)
 {
 
 }
 
+
+/*
+ * –Ú“IiObject3D‚ÌOnExitˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object3D::OnExit(Collider* collider, Collider* check)
 {
 
 }
 
 
+
+/*
+ * –Ú“IiObject3D‚ÌTerrainFollowˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float capsuleRadius, float lineTopY, float lineBottomY, float gravity)
 {
-	VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
+	VECTOR hit_pos_ = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
 	
-	const auto& objList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
+	const auto& objList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
 	for (int i = 0; i < objList.size(); i++)
 	{
 		Stage* pStage = objList.at(i)->CastTo<Stage>();
@@ -67,7 +116,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 		{
 			if (pStage->CheckHit_Capsule(VAdd(position_, VGet(0.0f, capsuleBottomY, 0.0f)), VAdd(position_, VGet(0.0f, capsuleTopY, 0.0f)), capsuleRadius))
 			{
-				hitPos = pStage->CheckHit_Line(
+				hit_pos_ = pStage->CheckHit_Line(
 					VAdd(position_, VGet(0.0f, lineTopY, 0.0f)),
 					VAdd(position_, VGet(0.0f, lineBottomY, 0.0f))
 				);
@@ -78,23 +127,23 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 
 	if (isHit)
 	{
-		position_.y = hitPos.y;
+		position_.y = hit_pos_.y;
 	}
 	else
 	{
 		position_.y -= gravity;
-		if (position_.y <= 0.0f || position_.y <= hitPos.y)
+		if (position_.y <= 0.0f || position_.y <= hit_pos_.y)
 		{
-			// Player uses hitPos.y even if not hit (it's 0.0f).
-			position_.y = (hitPos.y > 0.0f) ? hitPos.y : position_.y;
+			// Player uses hit_pos_.y even if not hit (it's 0.0f).
+			position_.y = (hit_pos_.y > 0.0f) ? hit_pos_.y : position_.y;
 			if(position_.y < 0.0f) position_.y = 0.0f;
 		}
 	}
 
-	// StageObjectï½¼åŸŸæƒ ç¹§èŸ¯ï½©ç¸ºï½ªç¸ºï½©ï½¼å³¨â†’ç¸ºï½®ç¹§ï½¹ç¹ï½©ç¹§ï½¤ç¹ç‰™æ„›èž³
+	// StageObject¼ˆæœ¨ã‚å²©ãªã©¼‰ã¨ã®ã‚¹ãƒ©ã‚¤ãƒ‰åˆ¤å®
 	if (tag_ != Object3D::Tag3D_Object && tag_ != Object3D::Tag3D_Stage)
 	{
-		const auto& objs = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
+		const auto& objs = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
 		for (int i = 0; i < objs.size(); i++)
 		{
 			StageObject* stObj = objs.at(i)->CastTo<StageObject>();

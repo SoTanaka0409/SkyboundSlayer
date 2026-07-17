@@ -1,33 +1,33 @@
-ï»¿#pragma once
 #pragma once
 #include"DxLib.h"
 #include"Object3D.h"
 #include<vector>
 #include"Enemy3D.h"
 
+class Enemy; // ‘O•ûéŒ¾
 
 class DrawHp 
 {
 public:
-	//centerPos,,,ä¸­å¿ƒåº§æ¨™
-	//topLeft... å·¦ä¸Šåº§æ¨™
-	//bottomRight...å³ä¸‹åº§æ¨™
-	DrawHp();//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//centerPos,,,’†SÀ•W
+	//topLeft... ¶ãÀ•W
+	//bottomRight...‰E‰ºÀ•W
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	DrawHp();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 
-	~DrawHp();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	~DrawHp();//ƒfƒXƒgƒ‰ƒNƒ^
 
-	void Update();//æ›´æ–°
-	void Draw();//æç”»
-
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	void Update();//XV
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	void Draw();//•`‰æ
 
 private:
-	
+	void UpdateHpBars();
+	void DrawSingleHpBar(Enemy* pEne);
 
-	
-
-
-
-
-
-
+	static constexpr float kHpBarOffsetY = 250.0f;
+	static constexpr int kHpBarWidth = 60;
+	static constexpr int kHpBarHeight = 10;
 };

@@ -8,6 +8,13 @@
 #include"Scene.h"
 #include"ObjectManager.h"
 
+
+/*
+ * 目的（EnemyManagerのEnemyManager処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 EnemyManager::EnemyManager()
 
 {
@@ -20,21 +27,42 @@ EnemyManager::~EnemyManager()
 
 }
 
+
+/*
+ * 目的（EnemyManagerのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void EnemyManager::Draw()
 {
 	
 
 }
 
+
+/*
+ * 目的（EnemyManagerのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void EnemyManager::Update()
 {
 }
 
 
 
+
+/*
+ * 目的（EnemyManagerのNewEnemyList処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void EnemyManager::NewEnemyList(enemydate date)
 {
-	auto pObjList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
+	auto pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
 	auto GetSafeSpawnPos = [&](VECTOR center, VECTOR range) -> VECTOR {
 		VECTOR bestPos = center;
 		if (range.x <= 0 || range.y <= 0 || range.z <= 0) return center;
@@ -66,7 +94,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			mpEneList.push_back( new Enemy3D_AT(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.attack,date.money, date.isSeparateAnim));
+			ene_list_.push_back( new Enemy3D_AT(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.attack,date.money, date.is_separate_anim_));
 		}
 	}
 	if (date.tag == archerl_stage1)
@@ -74,24 +102,24 @@ void EnemyManager::NewEnemyList(enemydate date)
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			mpEneList.push_back(new Enemy3D(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3,date.money, date.isSeparateAnim));
+			ene_list_.push_back(new Enemy3D(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3,date.money, date.is_separate_anim_));
 		}
 	}
 	if (date.tag == boss_stage1)
 	{
-		mpEneList.push_back(new EnemyBoss_1(date.filename, date.initPos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3,date.money, date.isSeparateAnim));
+		ene_list_.push_back(new EnemyBoss_1(date.filename, date.initPos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3,date.money, date.is_separate_anim_));
 
 	}
 	if (date.tag == night_Defo)
 	{
-		mpEneList.push_back(new Enemy3D_AT("Resource/Model/T.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, date.money, true));
+		ene_list_.push_back(new Enemy3D_AT("Resource/Model/T.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, date.money, true));
 	}
 	if (date.tag == monster_stage1)
 	{
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			mpEneList.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.isSeparateAnim));
+			ene_list_.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.is_separate_anim_));
 		}
 	}
 	//窶假ｿｽ窶堙｢窶堋ｵ窶堙・堋｢窶堋ｭ

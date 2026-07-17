@@ -6,20 +6,25 @@
 class SeparateModelAnimation
 {
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     SeparateModelAnimation(int modelHandle);   // コンストラクタ
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     ~SeparateModelAnimation();  // デストラクタ
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void Update();  // 更新
 
     // ★New★
     // note: mixamo でモーションをダウンロードすると、
     //       0番目のモーションデータはダミーが入っているらしいので、
     //       デフォルトで適用するインデックスを 1 にしておく
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void ChangeAnimation(AnimationState state, int index = 0); // モーション切り替え処理
 
     // ★New★
     // モーションデータの追加
     // note: 分割されているモーションをデータとして登録する。
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void AddAnimation(AnimationState state, std::string filename);
 
     // ★New★
@@ -27,42 +32,49 @@ public:
     // note: vector配列にデータが格納されているため、
     //       毎回ハンドルを検索する手間が出てきてしまうので、
     //       それを行うための関数。
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     int GetAnimationHandle(AnimationState state);
 
 
     // ループ設定
-    void SetLoop(bool isLoop) { mbLoop = isLoop; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    void SetLoop(bool isLoop) { loop_ = isLoop; }
     // ループ終了時に再生するモーション
-    void SetLoopFinishState(AnimationState state) { mnLoopFinishState = state; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    void SetLoopFinishState(AnimationState state) { loop_finish_state_ = state; }
     // モーションのブレンド設定
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void SetAnimationBlend(bool isBlend);
 
     // 現在再生されているモーションの取得
-    AnimationState GetNowState() { return mnState; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    AnimationState GetNowState() { return state_; }
     // モーションのループが終了しているかどうか
-    bool IsLoopFinish() { return mbLoopFinish; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    bool IsLoopFinish() { return loop_finish_; }
 
-    void SetAnimationCount(float count) { mfAnimationCount = count; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    void SetAnimationCount(float count) { animation_count_ = count; }
 
 private:
-    int mnModelHandle;  // モデルのハンドル
+    int model_handle_;  // モデルのハンドル
 
-    float mfAnimationTime;  // 再生しているモーションの現在の再生時間
-    float mfAnimationCount;
-    int mnAnimationIndex;   // 再生しているモーションのインデックス
+    float animation_time_;  // 再生しているモーションの現在の再生時間
+    float animation_count_;
+    int animation_index_;   // 再生しているモーションのインデックス
 
-    float mfOldAnimationTime;   // 1つ前のモーション再生時間
-    int mnOldAnimationIndex;    // １つ前のモーションのインデックス
+    float old_animation_time_;   // 1つ前のモーション再生時間
+    int old_animation_index_;    // １つ前のモーションのインデックス
 
-    float mfAnimBlendRate;      // モーションの切り替わり度合
+    float anim_blend_rate_;      // モーションの切り替わり度合
 
-    AnimationState mnState; // 現在再生しているモーションの番号
+    AnimationState state_; // 現在再生しているモーションの番号
 
-    bool mbLoop;            // モーションをループさせるかどうか
-    AnimationState mnLoopFinishState;   // ループが終わった時に再生したいモーション番号
-    bool mbLoopFinish;      // モーションループが終わったかどうか
+    bool loop_;            // モーションをループさせるかどうか
+    AnimationState loop_finish_state_;   // ループが終わった時に再生したいモーション番号
+    bool loop_finish_;      // モーションループが終わったかどうか
 
     // ★New★
     // モーションデータのリスト
-    std::vector<AnimationInfo*> mAnimationInfoList;
+    std::vector<AnimationInfo*> animation_info_list_;
 };

@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include"DxLib.h"
 #include<string>
 
@@ -9,20 +9,17 @@ class Object3D
 public:
 	enum Tag3D
 	{
-		None3D = 0,//éšªï½­è³å£¹â†‘ç¸ºãƒ»
+		None3D = 0,//è¨­å®šãªãE
 		Tag3D_Player3D = 2000,
 		Tag3D_Wall3D = 2100,
 		Tag3D_Enemy3D = 2200,
 		Tag3D_Stage = 2300,
 		Tag3D_Bullet = 2400,
 		Tag3D_Weapon = 2500,
-		Tag3D_Dino = 2600,
 		Tag_3D_Camera=2700,
 		Tag_3D_Shield=2800,
 		Tag3D_Obj=2900,
-		Tag3D_DinoFriend=3000,
 		Tag3D_Object = 3050,
-		Tag3D_RideDino=3500,
 		Tag3D_Shop=4000,
 	};
 	enum StatusState
@@ -33,15 +30,17 @@ public:
 		Status_Hp,
 		
 	}state;
-	// ç¬˜ãƒ»ew!! Zç¹§ï½½ç¹ï½¼ç¹è‚²ç•‘ç¬˜ãƒ»
-public: // ç¹§ï½½ç¹ï½¼ç¹ç£¯æœªè¬¨ï½°è³å¤‚ï½¾ï½©
+	// â˜Eew!! Zã‚½ãƒ¼ãƒˆç”¨â˜E
+public: // ã‚½ãƒ¼ãƒˆé–¢æ•°å®šç¾©
 
-	// Zç¹§ï½½ç¹ï½¼ç¹è‚²ç•‘ç¸ºï½®éšªï½­è³ãƒ»
+	// Zã‚½ãƒ¼ãƒˆç”¨ã®è¨­å®E
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetCameraDistance(float distance) { current_camera_distance_ = distance; }
 
-	// ç¹§ï½«ç¹ï½¡ç¹ï½©éœæ™å±¬ç¹§è²æ¸•è²…æ‚¶â†“ç¹§ï½½ç¹ï½¼ç¹åŒ»â˜†ç¹§ä¹â—†ç¹§âˆšãƒ»ç¹§ï½ªç¹å£¹Îç¹ï½¼ç¹§ï½¿ç¹ï½¼
-	// note: ç¹§ï½«ç¹ï½¡ç¹ï½©ç¸ºï½¨ç¸ºï½®éœæ™å±¬ç¸ºç¢å±¬ç¹§å¾Œï½‹ç¸ºï½»ç¸ºï½©ç¹ï½ªç¹§ï½¹ç¹åŒ»ãƒ»è¬‡å¥ç‡•ç¸ºï½«è­šï½¥ç¹§ä¹ï½ˆç¸ºãƒ»â†“ç¸ºå¶ï½‹ãƒ»äº¥ãƒ»ç¸ºï½«è¬ å†—åˆ¤ç¸ºåŠ±â—†ç¸ºãƒ»ï½¼ãƒ»
+	// ã‚«ãƒ¡ãƒ©è·é›¢ã‚’åŸºæº–ã«ã‚½ãƒ¼ãƒˆã™ã‚‹ãŸã‚ãEã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼
+	// note: ã‚«ãƒ¡ãƒ©ã¨ã®è·é›¢ãŒé›¢ã‚Œã‚‹ã»ã©ãƒªã‚¹ãƒˆãEæ‰‹å‰ã«æ¥ã‚‹ã‚ˆãE«ã™ã‚‹EˆåEã«æç”»ã—ãŸãE¼E
 	struct CompareZOrder {
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 		bool operator()(Object3D* a, Object3D* b) const {
 			return a->current_camera_distance_ > b->current_camera_distance_;
 		}
@@ -50,55 +49,77 @@ public: // ç¹§ï½½ç¹ï½¼ç¹ç£¯æœªè¬¨ï½°è³å¤‚ï½¾ï½©
 
 
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Object3D(VECTOR initPos);
 
 	template <typename T>
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	T* CastTo() {
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 		return dynamic_cast<T*>(this);
 	}
 
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual ~Object3D();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void Update();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void Draw();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnEnter(Collider* collider, Collider* check);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnTrigger(Collider* collider, Collider* check);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnExit(Collider* collider, Collider* check);
 
-	// è¨ï½°è –ï½¢ãƒ»ãƒ»tageãƒ»å³¨â†“é¬®å€¥ï¼†ç¹§è²ç²‹ç¹§ä¸Šâ—‹ç¹§å¥ãƒ»é€…ãƒ»
+	// åœ°å½¢EEtageE‰ã«é«˜ã•ã‚’åˆã‚ã›ã‚‹åEçE
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void TerrainFollow(float capsuleBottomY = -150.0f, float capsuleTopY = 150.0f, float capsuleRadius = 40.0f, float lineTopY = 1000.0f, float lineBottomY = -1000.0f, float gravity = 8.0f);
 
-public://ç¹§ï½²ç¹ãƒ»ã¡ç¹ï½¼ç¸²âˆšãç¹ãƒ»ã¡ç¹ï½¼w
+public://ã‚²ãƒE‚¿ãƒ¼ã€ã‚»ãƒE‚¿ãƒ¼w
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetPosition(VECTOR pos) { position_ = pos; };
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	VECTOR GetPosition() { return position_; }
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetOldPosition(VECTOR pos) { old_position_ = pos; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	VECTOR GetOldPosition() { return old_position_; }
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetRotation(VECTOR rot) { rotation_ = rot; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	VECTOR GETRotation() { return rotation_; }
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	bool IsDeleteFlag() { return delete_flag_; }
 
-	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //è¬¨ï½µç¸ºï½®èœ‘ä¼å‹ç¹è¼”Î›ç¹§ï½°éšªï½­è³å£¹
-	bool IsDrawFlag() { return draw_flag_; }          //è¬¨ï½µç¸ºï½®èœ‘ä¼å‹ç¹è¼”Î›ç¹§ï½°ç¸ºï½®è´æ‡ˆãƒ»
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°è¨­å®šã
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	bool IsDrawFlag() { return draw_flag_; }          //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°ã®ä½œæE
 
-	//ç¹§ï½¿ç¹§ï½°
+	//ã‚¿ã‚°
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetTag(Tag3D tag) { tag_ = tag; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Tag3D GetTag() { return tag_; }
 
 protected:
-	VECTOR position_;  //è ï½§è®“ãƒ»
-	VECTOR rotation_;   //è—æ«ï½»ï½¢
+	VECTOR position_;  //åº§æ¨E
+	VECTOR rotation_;   //å›è»¢
 	VECTOR old_position_;
 private:
-	bool delete_flag_;  //èœ‘ä¼å‹ç¹è¼”Î›ç¹§ï½°
-	Tag3D tag_;   //ç¹§ï½¿ç¹§ï½°
-	bool draw_flag_;//è¬ å†—åˆ¤ç¹è¼”Î›ç¹§ï½°
-	float current_camera_distance_;     // è¿´ï½¾è¨ï½¨ç¸ºï½®ç¹§ï½«ç¹ï½¡ç¹ï½©ç¸ºï½¨ç¸ºï½®éœæ™å±¬
+	bool delete_flag_;  //å‰Šé™¤ãƒ•ãƒ©ã‚°
+	Tag3D tag_;   //ã‚¿ã‚°
+	bool draw_flag_;//æç”»ãƒ•ãƒ©ã‚°
+	float current_camera_distance_;     // ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã¨ã®è·é›¢
 	
 };

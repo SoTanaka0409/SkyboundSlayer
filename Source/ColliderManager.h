@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include <list>
 
 class Collider;
@@ -9,46 +9,51 @@ public:
     ColliderManager();
     ~ColliderManager();
 
+// [“ü—Í]  [o—Í]  [•›ì—p] 
     void Update();
+// [“ü—Í]  [o—Í]  [•›ì—p] 
     void Draw();
 
     static ColliderManager* GetInstance()
     {
-        if (Instance == nullptr)
+        if (instance_ == nullptr)
         {
-            Instance = new ColliderManager();
+            instance_ = new ColliderManager();
         }
 
-        return Instance;
+        return instance_;
     }
 
     static void Finalize()
     {
-        if (Instance != nullptr)
+        if (instance_ != nullptr)
         {
-            delete Instance;
+            delete instance_;
         }
     }
 
 public:
-    // ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼è¿½åŠ 
+    // ƒRƒ‰ƒCƒ_[’Ç‰Á
+// [“ü—Í]  [o—Í]  [•›ì—p] 
     void AddCollider(Collider* Collider);
 
-    // ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼å…¨å‰Šé™¤
+    // ƒRƒ‰ƒCƒ_[‘Síœ
+// [“ü—Í]  [o—Í]  [•›ì—p] 
     void DeleteAllCollider();
 
-    // å‰Šé™¤ã™ã‚‹å¿…è¦ã®ã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Œã°å‰Šé™¤ã™ã‚‹
-    // note: å…¨ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°ãŒçµ‚ã‚ã£ãŸå¾Œã«å‘¼ã³å‡ºã™
+    // íœ‚·‚é•K—v‚Ì‚ ‚éƒIƒuƒWƒFƒNƒg‚ª‚ ‚ê‚Îíœ‚·‚é
+    // note: ‘S‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ÌXV‚ªI‚í‚Á‚½Œã‚ÉŒÄ‚Ño‚·
+// [“ü—Í]  [o—Í]  [•›ì—p] 
     void DeleteAllColliderIfNeeded();
 
-    //// æŒ‡å®šã—ãŸã‚¿ã‚°ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å–å¾—
-    //// note: è©²å½“ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¤‡æ•°ã‚ã‚‹å ´åˆã€æœ€åˆã«è¦‹ã¤ã‘ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
+    //// w’è‚µ‚½ƒ^ƒO‚ÌƒRƒ‰ƒCƒ_[‚ğæ“¾
+    //// note: ŠY“–‚·‚éƒIƒuƒWƒFƒNƒg‚ª•¡”‚ ‚éê‡AÅ‰‚ÉŒ©‚Â‚¯‚½ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
 
-    //// æŒ‡å®šã—ãŸã‚¿ã‚°ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ãƒªã‚¹ãƒˆã‚’å–å¾—
-    //// note: è©²å½“ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¤‡æ•°ã‚ã‚‹å ´åˆã€ãƒªã‚¹ãƒˆåŒ–ã—ã¦å…¨ã¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
+    //// w’è‚µ‚½ƒ^ƒO‚ÌƒRƒ‰ƒCƒ_[‚ÌƒŠƒXƒg‚ğæ“¾
+    //// note: ŠY“–‚·‚éƒIƒuƒWƒFƒNƒg‚ª•¡”‚ ‚éê‡AƒŠƒXƒg‰»‚µ‚Ä‘S‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
 
 private:
-    std::list<Collider*> mColliderList;    // ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆ
+    std::list<Collider*> collider_list_;    // ƒRƒ‰ƒCƒ_[‚ğŠÇ—‚·‚éƒŠƒXƒg
 
-    static ColliderManager* Instance;
+    static ColliderManager* instance_;
 };

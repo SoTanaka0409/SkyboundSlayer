@@ -8,57 +8,85 @@
 #include"Scene.h"
 
 
-Camera::Camera()
 
-	:mfHorizontalAngle(0.0f)
-	,mfVerticalAngle(0.0f)
+/*
+ * 目的（Cameraのコンストラクタ）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] メンバ変数の初期化
+ */
+Camera::Camera()
+	:horizontal_angle_(0.0f)
+	,vertical_angle_(0.0f)
 	,position_(VGet(0.0f,0.0f,0.0f))
 	,mvLookAtPosition(VGet(0.0f,0.0f,0.0f))
 	,target_(nullptr)
-	, mnShakeTime(0)
-	, mnShakeTimeCount(0)
-	, mfShakeAngle(0.0f)
-	, mfShakeTimeCounter(0.0f)
-	, mfShakeTime(0.0f)
-	, mfShakeWidth(0.0f)
-	, mfShakeAngleSpeed(0.0f)
-	, mfStepTime(0.0f)
+	, shake_angle_(0.0f)
+	, shake_time_counter_(0.0f)
+	, shake_time_(0.0f)
+	, shake_width_(0.0f)
+	, shake_angle_speed_(0.0f)
+	, step_time_(0.0f)
 	, mvShakePosition(VGet(0.0f, 0.0f, 0.0f))
 {
 }
 
+
+/*
+ * 目的（Cameraのデストラクタ）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] なし
+ */
 Camera::~Camera()
 {
 	
 }
 
+
+/*
+ * 目的（カメラの初期設定を行うため）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] 初期座標と回転のリセット
+ */
 void Camera::Initialize()
 {
 	target_ = nullptr;
-	//?J??????N???b?s???O????????
 	SetCameraNearFar(100.0f, Config::CameraFar);//10050000???????????????
 
-	//?w?i?F????i?D?F?j
 	SetBackgroundColor(0, 0, 0);
 
-	//?J??????????f
 	SetCameraPositionAndTarget_UpVecY(position_, mvLookAtPosition);
 
-	//?X?V???????x?s???????
 	Update();
 
 	
 }
 
+
+/*
+ * 目的（毎フレームのカメラ状態を更新するため）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] 揺れや追従状態の計算
+ */
 void Camera::Update()
 {
 	UpdateThirdPersonCamera();
 }
 
+
+/*
+ * 目的（3人称視点カメラの更新を行うため）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] プレイヤー座標に基づく追従処理、コリジョン判定
+ */
 void Camera::UpdateThirdPersonCamera()
 {
 	VECTOR targetPos = VGet(0,0,0);
-	if (mIsCutsceneMode)
+	if (is_cutscene_mode_)
 	{
 		targetPos = mCutsceneTargetPos;
 	} 
@@ -67,146 +95,150 @@ void Camera::UpdateThirdPersonCamera()
 		targetPos = target_->GetPosition();
 	}
 
-	VECTOR temp; //汎用変数
 	if (target_ == nullptr)
 	{
-		target_ = Master::mpPlayer;
+		target_ = Master::player_;
 	}
 
 	UpdateRotation();
+	UpdateLookAtPosition(targetPos);
+	Shake();
+	UpdateCameraPosition();
+}
 
-	if (mIsCutsceneMode || target_ != nullptr)
+/*
+ * 目的（CameraのUpdateLookAtPosition処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
+void Camera::UpdateLookAtPosition(VECTOR targetPos)
+{
+	if (is_cutscene_mode_ || target_ != nullptr)
 	{
 		mvLookAtPosition = targetPos;
-		mvLookAtPosition.y += 240.0f;
+		mvLookAtPosition.y += kTargetOffsetY;
 	}
 	else
 	{
 		//ターゲットがない場合は一定の高さ
-		mvLookAtPosition.y = 160.0f;
-	}
-
-	Shake();
-	{
-		const float distance = 500.0f;
-		temp.x = 400.0f * cosf(mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f)) * sinf(mfHorizontalAngle / 180.0f * DX_PI_F);
-		temp.y = 400.0f * sinf(-mfVerticalAngle / 180.0f * (3.1415926535897932384626433832795f));
-		temp.z = -(distance * cosf(mfVerticalAngle / 180.0f * DX_PI_F) * cosf(mfHorizontalAngle / 180.0f * DX_PI_F));
-		position_ = VAdd(temp, mvLookAtPosition);
-
-		SetCameraPositionAndTarget_UpVecY(VAdd(position_, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
+		mvLookAtPosition.y = kDefaultOffsetY;
 	}
 }
 
+/*
+ * 目的（CameraのUpdateCameraPosition処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
+void Camera::UpdateCameraPosition()
+{
+	VECTOR temp; //汎用変数
+	temp.x = kCameraCalcRadius * cosf(vertical_angle_ / 180.0f * (3.1415926535897932384626433832795f)) * sinf(horizontal_angle_ / 180.0f * DX_PI_F);
+	temp.y = kCameraCalcRadius * sinf(-vertical_angle_ / 180.0f * (3.1415926535897932384626433832795f));
+	temp.z = -(kCameraDistance * cosf(vertical_angle_ / 180.0f * DX_PI_F) * cosf(horizontal_angle_ / 180.0f * DX_PI_F));
+	position_ = VAdd(temp, mvLookAtPosition);
+
+	SetCameraPositionAndTarget_UpVecY(VAdd(position_, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
+}
+
+
+/*
+ * 目的（マウス入力によるカメラ回転を更新するため）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] target_rot_の更新
+ */
 void Camera::UpdateRotation()
 {
-	////?????L?[??J????????
-		if (mfHorizontalAngle >= 180.0f)
-		{
-			mfHorizontalAngle -= 360.0f;
-		}
-		if (mfHorizontalAngle <= -180.0f)
-		{
-			mfHorizontalAngle += 360.0f;
-		}
+	if (horizontal_angle_ >= 180.0f)
+	{
+		horizontal_angle_ -= 360.0f;
+	}
+	if (horizontal_angle_ <= -180.0f)
+	{
+		horizontal_angle_ += 360.0f;
+	}
 
-		if (mfVerticalAngle >= 80.0f)
-		{
-			mfVerticalAngle = 80.0f;
-		}
+	if (vertical_angle_ >= 80.0f)
+	{
+		vertical_angle_ = 80.0f;
+	}
 
-		if (mfVerticalAngle <= -80.0f)
-		{
-			mfVerticalAngle = -80.0f;
-		}
-	
+	if (vertical_angle_ <= -80.0f)
+	{
+		vertical_angle_ = -80.0f;
+	}
 
-	float camAngleY = 0.0f; // ?????????i???E?j
-	float camAngleX = 0.0f; // ?????????i???j
-
-	// ???x
-	const float MOUSE_SENSITIVITY = 0.05f;
-
-	// ?J?????????
-	float camDistance = 300.0f;
-
-	
-
-	// ?J?[?\?????\????
-
-		// ?}?E?X???????擾
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
-	// ???S???W
+	
 	if (!CheckHitKey(KEY_INPUT_0))
 	{
 		int centerX = 640;
 		int centerY = 360;
 	}
-	auto sceneType = Master::mpSceneManager->GetCurrentSceneType();
+	
+	auto sceneType = Master::scene_manager_->GetCurrentSceneType();
 	if (sceneType == SceneManager::kScene3D) {
 		SetMousePoint(centerX, centerY);
-
-	
 
 		int deltaX = mouseX - centerX;
 		int deltaY = mouseY - centerY;
 
-		// ??]?p?x??X?V
-		mfHorizontalAngle -= deltaX * MOUSE_SENSITIVITY;
-		mfVerticalAngle -= deltaY * MOUSE_SENSITIVITY;
+		horizontal_angle_ -= deltaX * kMouseSensitivity;
+		vertical_angle_ -= deltaY * kMouseSensitivity;
 	}
-
-		// ?????]?????i?????????????????j
-		/*if (camAngleX < -DX_PI_F / 2.0f) camAngleX = -DX_PI_F / 2.0f;
-		if (camAngleX > DX_PI_F / 2.0f) camAngleX = DX_PI_F / 2.0f;*/
-
-		//// ?J???????u??????_??v?Z
-		//VECTOR temp = VGet(
-		//	camTarget.x + camDistance * sinf(camAngleY) * cosf(camAngleX),
-		//	camTarget.y + camDistance * sinf(camAngleX),
-		//	camTarget.z + camDistance * cosf(camAngleY) * cosf(camAngleX)
-
-		
-
-		
 }
-// ??New??
-// ???h??
+
+/*
+ * 目的（カメラの揺れ（シェイク）計算を行うため）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] 一時的なカメラ座標のオフセット
+ */
 void Camera::Shake()
 {
-	if (mfShakeTimeCounter < mfShakeTime)
+	if (shake_time_counter_ < shake_time_)
 	{
-		// sinf ???p????h?????W??Z?o
-		// note: ??UY???W??????h??????
-		mvShakePosition.y = sinf(mfShakeAngle) * (1.0f - (mfShakeTimeCounter / mfShakeTime)) * mfShakeWidth;
+		mvShakePosition.y = sinf(shake_angle_) * (1.0f - (shake_time_counter_ / shake_time_)) * shake_width_;
 		mvShakePosition.x = 0.0f;
 		mvShakePosition.z = 0.0f;
 
-		// ?h????????g?p???? sinf ??n???p?x???X????
-		mfShakeAngle += mfShakeAngleSpeed * mfStepTime;
+		shake_angle_ += shake_angle_speed_ * step_time_;
 
-		// ?h???????o???????
-		mfShakeTimeCounter += mfStepTime;
+		shake_time_counter_ += step_time_;
 	}
 	else
 	{
-		// ?h?炳???????????h????????????Z???W??O?????
 		mvShakePosition = VGet(0.0f, 0.0f, 0.0f);
 	}
 }
 
-// ??New??
-// ???h????
+
+/*
+ * 目的（カメラの揺れパラメータを設定するため）
+ * [入力] float time, float width, float angleSpeed, float stepTime
+ * [出力] なし
+ * [副作用] シェイク用変数の初期化
+ */
 void Camera::SetupShake(float time, float width, float angleSpeed, float stepTime)
 {
-	mfShakeTimeCounter = 0.0f;
-	mfShakeTime = time;
-	mfShakeWidth = width;
-	mfShakeAngleSpeed = angleSpeed;
-	mfStepTime = stepTime;
+	shake_time_counter_ = 0.0f;
+	shake_time_ = time;
+	shake_width_ = width;
+	shake_angle_speed_ = angleSpeed;
+	step_time_ = stepTime;
 }
 
+
+/*
+ * 目的（カメラの終了処理を行うため）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] なし
+ */
 void Camera::Finalize()
 {
 

@@ -6,18 +6,24 @@
 #include "HaveMoneyClass.h"
 #include <math.h>
 
+/*
+ * 目的（CoinのCoin処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 Coin::Coin(std::string filename, VECTOR pos, int value)
     : Object3D(pos)
-    , mValue(value)
-    , mIsSucking(false)
-    , mCollected(false)
-    , mAge(0)
+    , value_(value)
+    , is_sucking_(false)
+    , collected_(false)
+    , age_(0)
 {
     SetTag(Object3D::Tag3D_Obj);
-    // Add Y offset so it spawns above ground
-    position_.y += 30.0f;
+    // 地面より上に出現するようにYオフセットを追加
+    position_.y += kSpawnOffsetY;
     model_ = new Model(filename, position_, false);
-    model_->SetScale(VGet(150.0f, 150.0f, 150.0f)); // Make it larger to be visible
+    model_->SetScale(VGet(kScale, kScale, kScale));
 }
 
 Coin::~Coin()
@@ -28,6 +34,12 @@ Coin::~Coin()
     }
 }
 
+/*
+ * 目的（CoinのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Coin::Draw()
 {
     if (model_) {
@@ -35,29 +47,54 @@ void Coin::Draw()
     }
 }
 
+/*
+ * 目的（CoinのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Coin::Update()
 {
-    if (mCollected) return;
+    if (collected_) return;
 
-    mAge++;
+    age_++;
     
-    // Rotate the coin for visibility
+    // 視認性を高めるためにコインを回転させる
     rotation_.y += 0.1f;
     if (model_) {
         model_->SetRotation(rotation_);
     }
 
-    // Initial pop physics
-    if (mAge < 20) {
-        position_.y += 2.0f;
+    UpdatePopPhysics();
+    UpdateSuckToPlayer();
+}
+
+/*
+ * 目的（CoinのUpdatePopPhysics処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
+void Coin::UpdatePopPhysics()
+{
+    // 出現時の物理挙動
+    if (age_ < kPopDuration) {
+        position_.y += kPopSpeedY;
         if (model_) model_->SetPosition(position_);
-        return; // Don't suck yet
     }
+}
 
-    auto mpPlayer = Master::mpPlayer;
-    if (!mpPlayer) return;
+/*
+ * 目的（CoinのUpdateSuckToPlayer処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
+void Coin::UpdateSuckToPlayer()
+{
+    if (age_ < kPopDuration) return; // Don't suck yet
 
-    Player3D* player = Master::mpPlayer;
+    auto player = Master::player_;
     if (!player) return;
 
     VECTOR pPos = player->GetPosition();
@@ -70,16 +107,15 @@ void Coin::Update()
     float dz = pPos.z - myPos.z;
     float dist = sqrt(dx*dx + dy*dy + dz*dz);
 
-    if (dist < 600.0f) {
-        mIsSucking = true;
+    if (dist < kSuckRadius) {
+        is_sucking_ = true;
     }
 
-    if (mIsSucking) {
-        float speed = 30.0f; // Faster suck
+    if (is_sucking_) {
         if (dist > 0.0f) {
-            myPos.x += (dx / dist) * speed;
-            myPos.y += (dy / dist) * speed;
-            myPos.z += (dz / dist) * speed;
+            myPos.x += (dx / dist) * kSuckSpeed;
+            myPos.y += (dy / dist) * kSuckSpeed;
+            myPos.z += (dz / dist) * kSuckSpeed;
             SetPosition(myPos);
             if (model_) {
                 model_->SetPosition(myPos);
@@ -87,9 +123,9 @@ void Coin::Update()
         }
     }
 
-    if (dist < 80.0f && !mCollected) {
-        player->have_money_->AddMoney(mValue);
-        mCollected = true;
+    if (dist < kCollectRadius && !collected_) {
+        player->have_money_->AddMoney(value_);
+        collected_ = true;
         SetDeleteFlag(true);
     }
 }

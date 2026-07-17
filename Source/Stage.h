@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include"Object3D.h"
 #include<string>
 #include"Debug.h"
@@ -8,26 +8,33 @@
 class Stage :public Object3D
 {
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Stage(VECTOR initPos,std::string StageModelName, std::string stageCollsionModelName, VECTOR scale = VGet(-1.0f, -1.0f, -1.0f), std::string textureFilename = "");
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	~Stage();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Update()override;
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Draw()override;
 
-	//ç¹§ï½¹ç¹ãƒ»ãƒ»ç¹§ï½¸ç¸ºï½¨ç¹§ï½«ç¹åŠ±ãç¹ï½«è™ä¹â†’ç¸ºï½®è –è–™â—†ç¹§é›æ„›è³ãƒ»
+	//ã‚¹ãƒEEã‚¸ã¨ã‚«ãƒ—ã‚»ãƒ«å‹ã¨ã®å½“ãŸã‚Šåˆ¤å®E
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	bool CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r);
 
-	//ç¹§ï½¹ç¹ãƒ»ãƒ»ç¹§ï½¸ç¸ºï½¨é‚±å£¼ãƒ»ç¸ºï½¨ç¸ºï½®è –è–™â—†ç¹§é›æ„›è³ãƒ»
+	//ã‚¹ãƒEEã‚¸ã¨ç·šåEã¨ã®å½“ãŸã‚Šåˆ¤å®E
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	VECTOR CheckHit_Line(VECTOR pos1, VECTOR pos2);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	VECTOR CheckHit_LineDebug(VECTOR pos1, VECTOR pos2);
 
 
 private:
-	Debug* mpDebug;
-	int mnModelHandle; //ç¹§ï½¹ç¹ãƒ»ãƒ»ç¹§ï½¸ç¹ï½¢ç¹ãƒ»Îç¸ºï½®ç¹ä¸ŠÎ¦ç¹å³¨Î
-	int mnCollisionHandle;;//ç¹§ï½¹ç¹ãƒ»ãƒ»ç¹§ï½¸ç¸ºï½®èŸ„èˆŒÎœç¹§ï½¸ç¹ï½§ç¹ï½³ç¹ï½¢ç¹ãƒ»Îç¸ºï½®ç¹ä¸ŠÎ¦ç¹å³¨Î
+	Debug* debug_;
+	int model_handle_; //ã‚¹ãƒEEã‚¸ãƒ¢ãƒEƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
+	int collision_handle_;;//ã‚¹ãƒEEã‚¸ã®å­ãƒªã‚¸ãƒ§ãƒ³ãƒ¢ãƒEƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
 
 
 

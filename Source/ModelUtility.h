@@ -32,6 +32,6 @@ enum AnimationState
 // 分割されているアニメーションのデータ
 struct AnimationInfo
 {
-	AnimationState mState;
-	int mnAnimationHandle;
+	AnimationState state_;
+	int animation_handle_;
 };

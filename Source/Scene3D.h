@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "SceneGame.h"
 #include"Dxlib.h"
 #include"Master.h"
@@ -11,26 +11,38 @@
 class Scene3D : public SceneGame
 {
 private:
-	Texture* mpTexture;
-	Texture* mpTexture2;
+	Texture* texture_;
+	Texture* texture2_;
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Scene3D();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	~Scene3D();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Initialize();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Finalize();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Draw();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Update();
 
-	
 private:
-	float warningRadius = 0.0f;
-	float maxRadius = 520.0f;
-	float LoadTimer;
-	float LoadCount;
-	bool Loadflag;
+	void SetupEnvironment();
+	void CreateInitialActors();
+	void CreateStage();
+	void LoadStageObjectsFromCsv();
+	void CreateSkyBox();
+	void DrawDebugGrid();
+
+	float warning_radius_ = 0.0f;
+	float max_radius_ = 520.0f;
+	float load_timer_;
+	float load_count_;
+	bool is_load_flag_;
 
 
-	VECTOR pos = { 200,400 };
-	VECTOR size = { 600,100 };
+	VECTOR pos_ = { 200,400 };
+	VECTOR size_ = { 600,100 };
 };

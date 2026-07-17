@@ -1,45 +1,66 @@
-#include"Effect.h"
+﻿#include"Effect.h"
 
 
+
+/*
+ * 目的（EffectのEffect処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 Effect::Effect()
 {
-	mpEffect = new EffectInfo();
-	mnGraphHandle = -1;
-	mActive = false;
+	effect_ = new EffectInfo();
+	graph_handle_ = -1;
+	active_ = false;
 }
 
+
+/*
+ * 目的（EffectのPlay処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Effect::Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime)
 {
-	mActive = true;
-	mpEffect->color = Changecolor;
+	active_ = true;
+	effect_->color = Changecolor;
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		mpEffect->particle[i].pos = initPos;
-		mpEffect->particle[i].dir.x = ((float)GetRand(200) - 100.0f) / 100.0f;
-		mpEffect->particle[i].dir.y = ((float)GetRand(200) - 100.0f) / 100.0f;
-		mpEffect->particle[i].dir.z = ((float)GetRand(200) - 100.0f) / 100.0f;
-		mpEffect->particle[i].speed = ((float)GetRand(SPEED_RAND_MAX) + SPEED_RAND_MIN) / 100.0f;
-		mpEffect->particle[i].alpha = 1.0f;
-		mpEffect->particle[i].size = Size;
-		mpEffect->particle[i].visibleTime = VisibleTime;
+		effect_->particle[i].pos = initPos;
+		effect_->particle[i].dir.x = ((float)GetRand(200) - 100.0f) / 100.0f;
+		effect_->particle[i].dir.y = ((float)GetRand(200) - 100.0f) / 100.0f;
+		effect_->particle[i].dir.z = ((float)GetRand(200) - 100.0f) / 100.0f;
+		effect_->particle[i].speed = ((float)GetRand(SPEED_RAND_MAX) + SPEED_RAND_MIN) / 100.0f;
+		effect_->particle[i].alpha = 1.0f;
+		effect_->particle[i].size = Size;
+		effect_->particle[i].visibleTime = VisibleTime;
 	}
-	if (mnGraphHandle == -1) {
+	if (graph_handle_ == -1) {
 		int oldFlag = GetUseASyncLoadFlag();
 		SetUseASyncLoadFlag(FALSE);
-		mnGraphHandle = LoadGraph(filename.c_str());
+		graph_handle_ = LoadGraph(filename.c_str());
 		SetUseASyncLoadFlag(oldFlag);
 	}
 }
 
 Effect::~Effect()
 {
-	delete mpEffect;
+	delete effect_;
 
-	DeleteGraph(mnGraphHandle);
+	DeleteGraph(graph_handle_);
 
 }
 
 
+
+/*
+ * 目的（EffectのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Effect::Update()
 {
 	bool isEnd = true;
@@ -47,40 +68,40 @@ void Effect::Update()
 
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		if (mpEffect->particle[i].alpha <= 0.0f)
+		if (effect_->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
 		isEnd = false;
-		if (mpEffect->particle[i].speed > 0.0f)
+		if (effect_->particle[i].speed > 0.0f)
 		{
-			mpEffect->particle[i].pos = VAdd(mpEffect->particle[i].pos, VScale(mpEffect->particle[i].dir, mpEffect->particle[i].speed));
+			effect_->particle[i].pos = VAdd(effect_->particle[i].pos, VScale(effect_->particle[i].dir, effect_->particle[i].speed));
 
 
-			mpEffect->particle[i].speed -= 2.0f * stepTime;
+			effect_->particle[i].speed -= 2.0f * stepTime;
 
-			if (mpEffect->particle[i].speed <= 0.0f)
+			if (effect_->particle[i].speed <= 0.0f)
 			{
-				mpEffect->particle[i].visibleTime = 0.0f;
+				effect_->particle[i].visibleTime = 0.0f;
 
 			}
 
 
 		}
-		if (mpEffect->particle[i].visibleTime > 0.0f)
+		if (effect_->particle[i].visibleTime > 0.0f)
 		{
-			mpEffect->particle[i].visibleTime -= 0.75f * stepTime;
+			effect_->particle[i].visibleTime -= 0.75f * stepTime;
 		}
 		else
 		{
-			mpEffect->particle[i].alpha -= 12.0f * stepTime;
+			effect_->particle[i].alpha -= 12.0f * stepTime;
 		}
 
 	}
 	if (isEnd)
 	{
-		mActive = false;
+		active_ = false;
 	}
 
 
@@ -89,25 +110,32 @@ void Effect::Update()
 
 }
 
+
+/*
+ * 目的（EffectのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Effect::Draw()
 {
 	SetUseZBufferFlag(TRUE);
 	SetWriteZBufferFlag(FALSE);
-	SetDrawBright(mpEffect->color.r, mpEffect->color.g, mpEffect->color.b);
+	SetDrawBright(effect_->color.r, effect_->color.g, effect_->color.b);
 
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		if (mpEffect->particle[i].alpha <= 0.0f)
+		if (effect_->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
-		SetDrawBlendMode(DX_BLENDMODE_INVSRC, static_cast<int>(mpEffect->particle[i].alpha * 255.0f));
+		SetDrawBlendMode(DX_BLENDMODE_INVSRC, static_cast<int>(effect_->particle[i].alpha * 255.0f));
 		DrawBillboard3D(
-			mpEffect->particle[i].pos, 0.5f, 0.5f,
-			mpEffect->particle[i].size * mpEffect->particle[i].alpha,
+			effect_->particle[i].pos, 0.5f, 0.5f,
+			effect_->particle[i].size * effect_->particle[i].alpha,
 			0.0f,
-			mnGraphHandle,
+			graph_handle_,
 			true
 		);
 
@@ -116,17 +144,17 @@ void Effect::Draw()
 
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		if (mpEffect->particle[i].alpha <= 0.0f)
+		if (effect_->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
-		SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(mpEffect->particle[i].alpha * 255.0f));
+		SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(effect_->particle[i].alpha * 255.0f));
 		DrawBillboard3D(
-			mpEffect->particle[i].pos, 0.5f, 0.5f,
-			mpEffect->particle[i].size * mpEffect->particle[i].alpha,
+			effect_->particle[i].pos, 0.5f, 0.5f,
+			effect_->particle[i].size * effect_->particle[i].alpha,
 			0.0f,
-			mnGraphHandle,
+			graph_handle_,
 			true
 		);
 

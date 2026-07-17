@@ -19,13 +19,13 @@ public:
 	void Draw()override;
 
 	//繝｢繝・Ν繝上Φ繝峨Ν縺ｮ蜿門ｾ・
-	int GetHandle() { return mnHandle; }
+	int GetHandle() { return handle_; }
 
 private:
-	int mnHandle; //繝｢繝・Ν縺ｮ繝上Φ繝峨Ν
-	int mnParentHandle; //隕ｪ縺ｮ繝｢繝・Ν繝上Φ繝峨Ν
-	int mnParentFrameIndex; //隕ｪ繝｢繝・Ν縺ｮ繝上Φ繝峨Ν逡ｪ蜿ｷ
-	VECTOR mOffsetPos;
-	VECTOR mOffsetRot;
+	int handle_; //繝｢繝・Ν縺ｮ繝上Φ繝峨Ν
+	int parent_handle_; //隕ｪ縺ｮ繝｢繝・Ν繝上Φ繝峨Ν
+	int parent_frame_index_; //隕ｪ繝｢繝・Ν縺ｮ繝上Φ繝峨Ν逡ｪ蜿ｷ
+	VECTOR offset_pos_;
+	VECTOR offset_rot_;
 
 };

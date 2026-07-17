@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #pragma once
 #include "DxLib.h"
 #include <vector>
@@ -8,19 +8,29 @@ class Object3D;
 class Collider
 {
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Collider(Object3D* parent);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual ~Collider();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void Update(Collider* check);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void Draw();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnEnter();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnTrigger();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnExit();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void HitCheck(Collider* check, bool isHit);
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	bool IsDeleteFlag() { return delete_flag_; }
 
 public:
@@ -33,6 +43,6 @@ public:
 	bool delete_flag_;
 
 protected:
-	std::vector<Collider*> collision_list_;	// è¡çªã—ã¦ã„ã‚‹Colliderã®ãƒªã‚¹ãƒˆ
+	std::vector<Collider*> collision_list_;	// Õ“Ë‚µ‚Ä‚¢‚éCollider‚ÌƒŠƒXƒg
 	
 };

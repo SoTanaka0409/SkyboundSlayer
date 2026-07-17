@@ -6,7 +6,7 @@ class SceneGame;
 class SceneManager
 {
 public:
-	// Scene categories used by the game flow.
+	// ゲームの流れで使用されるシーンのカテゴリ
 	enum SceneType
 	{
 		kSceneNone = 0,
@@ -18,43 +18,37 @@ public:
 
 	SceneManager();
 	~SceneManager();
+// シーンマネージャーの初期化
+    // [入力] なし [出力] なし [副作用] 初期シーンの生成
 
 	void Initialize();
+// シーンの更新処理
+    // [入力] なし [出力] なし [副作用] 現在のシーンのUpdate呼び出し
 	void Update();
+// シーンの描画処理
+    // [入力] なし [出力] なし [副作用] 現在のシーンのDraw呼び出し
 	void Draw();
+// シーンの終了処理
+    // [入力] なし [出力] なし [副作用] 現在のシーンの破棄
 	void Finalize();
+// 予約されている次のシーンへの切り替え処理
+    // [入力] なし [出力] なし [副作用] 現在のシーンの破棄と新しいシーンの生成
 
-	/*
-	 * Switches to the reserved next scene while respecting fade state.
-	 * [Input] none
-	 * [Output] none
-	 * [Side effects] Recreates current_scene_, clears colliders, starts Fade.
-	 */
-	void ChangeSceneIfNeeded();
+		void ChangeSceneIfNeeded();
+// 次に遷移するシーンを予約する
+    // [入力] SceneType next [出力] なし [副作用] next_scene_type_の変更
 
-	/*
-	 * Reserves the next scene type.
-	 * [Input] next: scene type to switch to
-	 * [Output] none
-	 * [Side effects] Updates next_scene_type_.
-	 */
-	void SetNextScene(SceneType next) { next_scene_type_ = next; }
+		void SetNextScene(SceneType next) { next_scene_type_ = next; }
+// 現在のシーンインスタンスを取得する
+    // [入力] なし [出力] Scene*: 現在のシーン [副作用] なし
 
-	/*
-	 * Returns the current scene instance.
-	 * [Input] none
-	 * [Output] Current Scene pointer
-	 * [Side effects] none
-	 */
-	Scene* GetCurrentScene() { return current_scene_; }
+		Scene* GetCurrentScene() { return current_scene_; }
+// 現在のシーンタイプを取得する
+    // [入力] なし [出力] SceneType: 現在のシーンタイプ [副作用] なし
 
-	/*
-	 * Returns the current scene type.
-	 * [Input] none
-	 * [Output] Current SceneType
-	 * [Side effects] none
-	 */
-	SceneType GetCurrentSceneType() { return scene_type_; }
+		SceneType GetCurrentSceneType() { return scene_type_; }
+// 現在のシーンがゲームシーンであれば取得する
+    // [入力] なし [出力] SceneGame*: ゲームシーンのポインタ [副作用] なし
 	SceneGame* GetSceneGame();
 
 private:

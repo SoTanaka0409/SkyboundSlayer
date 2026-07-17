@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include"Dxlib.h"
 #include "string"
 #include"Object3D.h"
@@ -13,24 +13,29 @@ public:
 
 	~Tree();
 
+// [“ü—Í]  [o—Í]  [•›ì—p] 
 	void Draw();
 
+// [“ü—Í]  [o—Í]  [•›ì—p] 
 	void Update();
 
-	float GetSize() { return mfSize; }
+	float GetSize() { return size_; }
 
+// [“ü—Í]  [o—Í]  [•›ì—p] 
 	virtual void OnEnter(Collider* collider, Collider* check)override;
+// [“ü—Í]  [o—Í]  [•›ì—p] 
 	virtual void OnTrigger(Collider* collider, Collider* check)override;
+// [“ü—Í]  [o—Í]  [•›ì—p] 
 	virtual void OnExit(Collider* collider, Collider* check)override;
 
 
-	bool GetHitFlag() { return mnHitFlag; }
+	bool GetHitFlag() { return is_hit_flag_; }
 private:
 	
-	CapsuleCollider* mpCapsuleCollider;
+	CapsuleCollider* capsule_collider_;
 	
 	Model* model_;
-	float mfSize;
-	int mnModelHandle; //ç¹§ï½¹ç¹ãƒ»ãƒ»ç¹§ï½¸ç¹ï½¢ç¹ãƒ»Îç¸ºï½®ç¹ä¸ŠÎ¦ç¹å³¨Î
-	bool mnHitFlag;
+	float size_;
+	int model_handle_; //ã‚¹ãƒEEã‚¸ãƒ¢ãƒEƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
+	bool is_hit_flag_;
 };

@@ -1,4 +1,4 @@
-ï»¿#include"Object2D.h"
+#include"Object2D.h"
 #include"Master.h"
 #include"ObjectManager.h"
 #include"Scene3D.h"
@@ -6,6 +6,13 @@
 
 
 
+
+/*
+ * –Ú“IiObject2D‚ÌObject2Dˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 Object2D::Object2D(VECTOR initPos)
 	:position_(initPos)
 	, rotation_(VGet(0.0f, 0.0f, 0.0f))
@@ -13,22 +20,36 @@ Object2D::Object2D(VECTOR initPos)
 	, tag_(Tag2D::None2D)
 	, draw_flag_(true)
 {
-	//ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®objectManagerã«è‡ªä¿¡ï¼ˆthis)ã‚’è¿½åŠ ã™ã‚‹
-	Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
+	//Œ»Ý‚ÌƒV[ƒ“‚ÌobjectManager‚ÉŽ©Mithis)‚ð’Ç‰Á‚·‚é
+	Master::scene_manager_->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
-//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//ƒfƒXƒgƒ‰ƒNƒ^
 Object2D::~Object2D()
 {
 
 }
-//æç”»
+//•`‰æ
+
+/*
+ * –Ú“IiObject2D‚ÌDrawˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object2D::Draw()
 {
 
 }
 
-//æ›´æ–°
+//XV
+
+/*
+ * –Ú“IiObject2D‚ÌUpdateˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Object2D::Update()
 {
 

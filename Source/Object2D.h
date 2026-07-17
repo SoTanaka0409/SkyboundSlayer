@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include<string>
 #include"vector"
 #include"Dxlib.h"
@@ -9,46 +9,58 @@ class Object2D
 public:
 	enum Tag2D
 	{
-		None2D = 0,//è¨­å®šãªã—
-		Tag2D_Dino1 = 1,
-		Tag2D_Dino2=100,
+		None2D = 0,//İ’è‚È‚µ
 		
 	};
 
 public:
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Object2D(VECTOR initPos);
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual ~Object2D();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void Update();
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void Draw();
 
-public://ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼
+public://ƒQƒbƒ^[AƒZƒbƒ^[
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetPosition(VECTOR pos) { position_ = pos; };
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	VECTOR GetPosition() { return position_; }
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetRotation(VECTOR rot) { rotation_ = rot; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	VECTOR GETRotation() { return rotation_; }
 
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	bool IsDeleteFlag() { return delete_flag_; }
 
-	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°è¨­å®šã€€
-	bool IsDrawFlag() { return draw_flag_; }          //æ•µã®å‰Šé™¤ãƒ•ãƒ©ã‚°ã®ä½œæˆ
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	void SetDrawFlag(bool flag) { draw_flag_ = flag; } //“G‚Ìíœƒtƒ‰ƒOİ’è@
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+	bool IsDrawFlag() { return draw_flag_; }          //“G‚Ìíœƒtƒ‰ƒO‚Ìì¬
 
-	//ã‚¿ã‚°
+	//ƒ^ƒO
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void SetTag(Tag2D tag) { tag_ = tag; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	Tag2D GetTag() { return tag_; }
 
 protected:
-	VECTOR position_;  //åº§æ¨™
-	VECTOR rotation_;   //å›è»¢
+	VECTOR position_;  //À•W
+	VECTOR rotation_;   //‰ñ“]
 
 private:
-	bool delete_flag_;  //å‰Šé™¤ãƒ•ãƒ©ã‚°
-	Tag2D tag_;   //ã‚¿ã‚°
-	bool draw_flag_;//æç”»ãƒ•ãƒ©ã‚°
+	bool delete_flag_;  //íœƒtƒ‰ƒO
+	Tag2D tag_;   //ƒ^ƒO
+	bool draw_flag_;//•`‰æƒtƒ‰ƒO
 
 
 };

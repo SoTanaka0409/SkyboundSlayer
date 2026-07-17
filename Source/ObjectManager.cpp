@@ -1,33 +1,54 @@
-ï»¿#include"ObjectManager.h"
+#include"ObjectManager.h"
 #include "Master.h"
 #include "ColliderManager.h"
 
+
+/*
+ * –Ú“IiObjectManager‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^j
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] Šeí•Ï”‚Ì‰Šú‰»
+ */
 ObjectManager::ObjectManager()
-	: mCacheDirty(true)
+	: cache_dirty_(true)
 {
 }
 
+
+/*
+ * –Ú“IiObjectManager‚ÌƒfƒXƒgƒ‰ƒNƒ^j
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒIƒuƒWƒFƒNƒg‚Ì”jŠü
+ */
 ObjectManager::~ObjectManager()
 {
 	DeleteAll3D();
 	DeleteAll2D();
 }
 
+
+/*
+ * –Ú“Ii‘SƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ğXV‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ŠeƒIƒuƒWƒFƒNƒg‚ÌUpdateŒÄ‚Ño‚µ
+ */
 void ObjectManager::Update()
 {
 
-	for (std::list < Object3D*>::iterator itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	for (std::list < Object3D*>::iterator itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
 		(*itr)->Update();
 	}
 
-	for (std::list < Object2D*>::iterator itr = mObject2DList.begin(); itr != mObject2DList.end(); itr++)
+	for (std::list < Object2D*>::iterator itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
 	{
 		(*itr)->Update();
 	}
-	for (std::list<Object3D*>::iterator itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	for (std::list<Object3D*>::iterator itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
-		VECTOR cameraPos = Master::mpCamera->GetPosition();
+		VECTOR cameraPos = Master::camera_->GetPosition();
 		VECTOR objPos = (*itr)->GetPosition();
 		(*itr)->SetCameraDistance(VSize(VSub(objPos, cameraPos)));
 	}
@@ -36,10 +57,17 @@ void ObjectManager::Update()
 
 }
 
+
+/*
+ * –Ú“Ii‘SƒIƒuƒWƒFƒNƒg‚ğ•`‰æ‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ŠeƒIƒuƒWƒFƒNƒg‚ÌDrawŒÄ‚Ño‚µ
+ */
 void ObjectManager::Draw()
 {
 	
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
 
 		if ((*itr)->IsDrawFlag() == true)
@@ -49,7 +77,7 @@ void ObjectManager::Draw()
 	}
 	ColliderManager::GetInstance()->Draw();
 
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); itr++)
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
 	{
 
 		if ((*itr)->IsDrawFlag() == true)
@@ -60,32 +88,53 @@ void ObjectManager::Draw()
 	}
 	
 }
+
+/*
+ * –Ú“IiƒIƒuƒWƒFƒNƒg‚ğƒŠƒXƒg‚É’Ç‰Á‚·‚é‚½‚ßj
+ * [“ü—Í] ƒIƒuƒWƒFƒNƒgƒ|ƒCƒ“ƒ^
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒŠƒXƒg‚Ö‚Ì—v‘f’Ç‰Á
+ */
 void ObjectManager::AddObject(Object3D* object3D)
 {
-	mObject3DList.push_back(object3D);
-	mCacheDirty = true;
+	object_3d_list_.push_back(object3D);
+	cache_dirty_ = true;
 
 
 }
 
+
+/*
+ * –Ú“Ii‘S‚Ä‚Ì3DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] 3DƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚ÌƒNƒŠƒA
+ */
 void ObjectManager::DeleteAll3D()
 {
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
 		delete *itr;
 	}
-	mObject3DList.clear();
-	mCacheDirty = true;
+	object_3d_list_.clear();
+	cache_dirty_ = true;
 }
 
-Object3D* ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
+Object3D* 
+/*
+ * –Ú“Ii“Á’è‚Ìƒ^ƒO‚ğ‚Â3DƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é‚½‚ßj
+ * [“ü—Í] Object3D::Tag3D tag
+ * [o—Í] Object3D*
+ * [•›ì—p] ‚È‚µ
+ */
+ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
 {
 	auto itr = std::find_if(
-		mObject3DList.begin(),
-		mObject3DList.end(),
+		object_3d_list_.begin(),
+		object_3d_list_.end(),
 		[&](Object3D* obj) {return obj->GetTag() == tag; }
 	);
-	if (itr != mObject3DList.end())
+	if (itr != object_3d_list_.end())
 	{
 		return (*itr);
 	}
@@ -94,28 +143,35 @@ Object3D* ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
 
 const std::vector<Object3D*>& ObjectManager::GetObject3DListByTag(Object3D::Tag3D tag)
 {
-	if (mCacheDirty)
+	if (cache_dirty_)
 	{
-		mCached3DLists.clear();
-		for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+		cached_3d_lists_.clear();
+		for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 		{
-			mCached3DLists[(*itr)->GetTag()].push_back(*itr);
+			cached_3d_lists_[(*itr)->GetTag()].push_back(*itr);
 		}
-		mCacheDirty = false;
+		cache_dirty_ = false;
 	}
-	return mCached3DLists[tag];
+	return cached_3d_lists_[tag];
 }
 
+
+/*
+ * –Ú“Iiíœƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é3DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒŠƒXƒg‚©‚ç‚Ì—v‘fíœ
+ */
 void ObjectManager::DeleteAll3DIfNeeded()
 {
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end();)
+	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end();)
 	{
 		if ((*itr)->IsDeleteFlag() == true)
 		{
 			Object3D* temp = *itr;
 
-			itr = mObject3DList.erase(itr);
-			mCacheDirty = true;
+			itr = object_3d_list_.erase(itr);
+			cache_dirty_ = true;
 
 			delete temp;
 			temp = nullptr;
@@ -128,34 +184,55 @@ void ObjectManager::DeleteAll3DIfNeeded()
 
 }
 
+
+/*
+ * –Ú“IiƒIƒuƒWƒFƒNƒg‚ğƒŠƒXƒg‚É’Ç‰Á‚·‚é‚½‚ßj
+ * [“ü—Í] ƒIƒuƒWƒFƒNƒgƒ|ƒCƒ“ƒ^
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒŠƒXƒg‚Ö‚Ì—v‘f’Ç‰Á
+ */
 void ObjectManager::AddObject(Object2D* object2D)
 {
-	mObject2DList.push_back(object2D);
+	object_2d_list_.push_back(object2D);
 }
 
+
+/*
+ * –Ú“Ii‘S‚Ä‚Ì2DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] 2DƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚ÌƒNƒŠƒA
+ */
 void ObjectManager::DeleteAll2D()
 {
-	Master::mpInfClassManager->LogList.clear();
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end();)
+	Master::inf_class_manager_->LogList.clear();
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end();)
 	{
 		Object2D* temp = *itr;
 
-		itr = mObject2DList.erase(itr);
+		itr = object_2d_list_.erase(itr);
 
 		delete temp;
 		temp = nullptr;
 	}
 }
 
+
+/*
+ * –Ú“Iiíœƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é2DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒŠƒXƒg‚©‚ç‚Ì—v‘fíœ
+ */
 void ObjectManager::DeleteAll2DIfNeeded()
 {
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end();)
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end();)
 	{
 		if ((*itr)->IsDeleteFlag() == true)
 		{
 			Object2D* temp = *itr;
 
-			itr = mObject2DList.erase(itr);
+			itr = object_2d_list_.erase(itr);
 
 			delete temp;
 			temp = nullptr;
@@ -168,15 +245,22 @@ void ObjectManager::DeleteAll2DIfNeeded()
 	}
 }
 
-Object2D* ObjectManager::GetObject2DByTag(Object2D::Tag2D tag)
+Object2D* 
+/*
+ * –Ú“Ii“Á’è‚Ìƒ^ƒO‚ğ‚Â2DƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é‚½‚ßj
+ * [“ü—Í] Object2D::Tag2D tag
+ * [o—Í] Object2D*
+ * [•›ì—p] ‚È‚µ
+ */
+ObjectManager::GetObject2DByTag(Object2D::Tag2D tag)
 {
 	auto itr = std::find_if(
-		mObject2DList.begin(),
-		mObject2DList.end(),
+		object_2d_list_.begin(),
+		object_2d_list_.end(),
 		[&](Object2D* obj) {return obj->GetTag() == tag; }
 	);
 
-	if (itr != mObject2DList.end())
+	if (itr != object_2d_list_.end())
 	{
 		return (*itr);
 	}
@@ -187,7 +271,7 @@ std::vector<Object2D*>ObjectManager::GetObject2DListByTag(Object2D::Tag2D tag)
 {
 	std::vector<Object2D*>ret;
 
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); itr++)
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
 	{
 		if ((*itr)->GetTag() == tag)
 		{

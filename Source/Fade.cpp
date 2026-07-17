@@ -1,10 +1,17 @@
 #include "Fade.h"
 #include "DxLib.h"
 
+
+/*
+ * 目的（FadeのFade処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 Fade::Fade() 
-	: mState(State::None)
-	, mAlpha(0)
-	, mFadeSpeed(10)
+	: state_(State::None)
+	, alpha_(0)
+	, fade_speed_(10)
 {
 }
 
@@ -12,51 +19,86 @@ Fade::~Fade()
 {
 }
 
+
+/*
+ * 目的（FadeのInitialize処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Fade::Initialize()
 {
-	mState = State::None;
-	mAlpha = 0;
+	state_ = State::None;
+	alpha_ = 0;
 }
 
+
+/*
+ * 目的（FadeのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Fade::Update()
 {
-	if (mState == State::FadeIn)
+	if (state_ == State::FadeIn)
 	{
-		mAlpha -= mFadeSpeed;
-		if (mAlpha <= 0)
+		alpha_ -= fade_speed_;
+		if (alpha_ <= 0)
 		{
-			mAlpha = 0;
-			mState = State::None;
+			alpha_ = 0;
+			state_ = State::None;
 		}
 	}
-	else if (mState == State::FadeOut)
+	else if (state_ == State::FadeOut)
 	{
-		mAlpha += mFadeSpeed;
-		if (mAlpha >= 255)
+		alpha_ += fade_speed_;
+		if (alpha_ >= 255)
 		{
-			mAlpha = 255;
+			alpha_ = 255;
 		}
 	}
 }
 
+
+/*
+ * 目的（FadeのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Fade::Draw()
 {
-	if (mAlpha > 0)
+	if (alpha_ > 0)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, mAlpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_);
 		DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 }
 
+
+/*
+ * 目的（FadeのStartFadeIn処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Fade::StartFadeIn()
 {
-	mState = State::FadeIn;
-	mAlpha = 255;
+	state_ = State::FadeIn;
+	alpha_ = 255;
 }
 
+
+/*
+ * 目的（FadeのStartFadeOut処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Fade::StartFadeOut()
 {
-	mState = State::FadeOut;
-	mAlpha = 0;
+	state_ = State::FadeOut;
+	alpha_ = 0;
 }

@@ -1,66 +1,66 @@
-#include "EffectU.h"
+ï»¿#include "EffectU.h"
 #include "EffekseerManager.h"
 
 EffectU::~EffectU()
 {
-    if (mPlayingHandle != -1) {
-        EffekseerManager::GetInstance()->StopEffect(mPlayingHandle);
-        mPlayingHandle = -1;
+    if (playing_handle_ != -1) {
+        EffekseerManager::GetInstance()->StopEffect(playing_handle_);
+        playing_handle_ = -1;
     }
 }
 
 bool EffectU::Load()
 {
-    // Effekseer‚ÌƒGƒtƒFƒNƒg‚ğƒ[ƒh
-    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/effect/MAGICAL/–‚–@w.efkproj", 1.0f);
+    // Effekseerã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’ãƒ­ãƒ¼ãƒ‰
+    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/effect/MAGICAL/é­”æ³•é™£.efkproj", 1.0f);
     return true;
 }
 
 void EffectU::StartHold(const VECTOR& playerPos)
 {
-    // Šù‚ÉÄ¶’†‚Ìê‡‚Í’â~
-    if (mPlayingHandle != -1) {
-        EffekseerManager::GetInstance()->StopEffect(mPlayingHandle);
+    // æ—¢ã«å†ç”Ÿä¸­ã®å ´åˆã¯åœæ­¢
+    if (playing_handle_ != -1) {
+        EffekseerManager::GetInstance()->StopEffect(playing_handle_);
     }
-    mIsHolding = true;
+    is_holding_ = true;
 
     VECTOR pos = playerPos;
-    pos.y += mYOffset;
+    pos.y += y_offset_;
     
-    // ƒGƒtƒFƒNƒgÄ¶ŠJn
-    mPlayingHandle = EffekseerManager::GetInstance()->PlayEffect("Mahoujin", pos);
+    // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿé–‹å§‹
+    playing_handle_ = EffekseerManager::GetInstance()->PlayEffect("Mahoujin", pos);
 }
 
 void EffectU::ReleaseAndShatter()
 {
-    if (!mIsHolding) return;
+    if (!is_holding_) return;
     
-    // ƒ{ƒ^ƒ“‚ğ—£‚µ‚½‚Æ‚«‚ÌƒGƒtƒFƒNƒgI—¹
-    if (mPlayingHandle != -1) {
-        EffekseerManager::GetInstance()->StopEffect(mPlayingHandle);
-        mPlayingHandle = -1;
+    // ãƒœã‚¿ãƒ³ã‚’é›¢ã—ãŸã¨ãã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆçµ‚äº†
+    if (playing_handle_ != -1) {
+        EffekseerManager::GetInstance()->StopEffect(playing_handle_);
+        playing_handle_ = -1;
     }
     
-    mIsHolding = false;
+    is_holding_ = false;
 }
 
 void EffectU::UpdateFollow(const VECTOR& playerPos)
 {
-    if (mIsHolding && mPlayingHandle != -1)
+    if (is_holding_ && playing_handle_ != -1)
     {
         VECTOR pos = playerPos;
-        pos.y += mYOffset;
+        pos.y += y_offset_;
         
-        // Ä¶’†‚©ƒ`ƒFƒbƒN‚µAI—¹‚µ‚Ä‚¢‚½‚çƒnƒ“ƒhƒ‹‚ğƒŠƒZƒbƒg
-        if (EffekseerManager::GetInstance()->IsPlaying(mPlayingHandle)) {
-            EffekseerManager::GetInstance()->SetEffectPosition(mPlayingHandle, pos);
+        // å†ç”Ÿä¸­ã‹ãƒã‚§ãƒƒã‚¯ã—ã€çµ‚äº†ã—ã¦ã„ãŸã‚‰ãƒãƒ³ãƒ‰ãƒ«ã‚’ãƒªã‚»ãƒƒãƒˆ
+        if (EffekseerManager::GetInstance()->IsPlaying(playing_handle_)) {
+            EffekseerManager::GetInstance()->SetEffectPosition(playing_handle_, pos);
         } else {
-            mPlayingHandle = -1;
+            playing_handle_ = -1;
         }
     }
 }
 
 void EffectU::Draw() const
 {
-    // Effekseer‚ÌƒGƒtƒFƒNƒg•`‰æ‚ÍEffekseerManager‚ÌŠÇŠ‚È‚Ì‚ÅA‚±‚±‚Å‚Í‰½‚à‚µ‚È‚¢
+    // Effekseerã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆæç”»ã¯EffekseerManagerã®ç®¡è½„ãªã®ã§ã€ã“ã“ã§ã¯ä½•ã‚‚ã—ãªã„
 }

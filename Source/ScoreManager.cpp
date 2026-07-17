@@ -1,133 +1,265 @@
-ï»¿
 #define _CRT_SECURE_NO_WARNINGS
 #include"ScoreManager.h"
 #include"DxLib.h"
 
+/*
+ * ƒXƒRƒAŠÇ—ƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+ * [“ü—Í] float score: ‰ŠúƒXƒRƒA
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ŠeƒXƒRƒA•Ï”‚ð‰Šú’l‚ÅÝ’è
+ */
+
+/*
+ * –Ú“IiScoreManager‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^j
+ * [“ü—Í] float score
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ŠeŽí•Ï”‚Ì‰Šú‰»
+ */
 ScoreManager::ScoreManager(float score)
-	:mnScore(score)
-	, mnHighScore(score)
-	, mnHighScore2(score)
-	, mnHighScore3(score)
+	:score_(score)
+	, high_score_(score)
+	, high_score2_(score)
+	, high_score3_(score)
 {
 
 }
+
+/*
+ * ƒXƒRƒAŠÇ—ƒNƒ‰ƒX‚ÌƒfƒXƒgƒ‰ƒNƒ^
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“IiScoreManager‚ÌƒfƒXƒgƒ‰ƒNƒ^j
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
 ScoreManager::~ScoreManager()
 {
 
 }
+
+/*
+ * ‰Šú‰»ˆ—
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“Ii‰Šú‰»ˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒXƒRƒA‚Ì“Ç‚Ýž‚Ý
+ */
 void ScoreManager::Initialize()
 {
 
 }
+
+/*
+ * XVˆ—
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“IiƒXƒRƒA‚ÌXVˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
 void ScoreManager::Update()
 {
 
 }
+
+/*
+ * •`‰æˆ—
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“IiƒXƒRƒA‚Ì•`‰æˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‰æ–Ê•`‰æ
+ */
 void ScoreManager::Draw()
 {
 
-
-
-
-
-
-
-
-
-
 }
 
+/*
+ * ƒZ[ƒuƒf[ƒ^o—Íi–¢ŽÀ‘•j
+ * [“ü—Í] SaveDate date: •\Ž¦ƒf[ƒ^
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“IiƒZ[ƒuƒf[ƒ^‚Ìî•ñ‚ð•\Ž¦‚·‚é‚½‚ßj
+ * [“ü—Í] SaveDate date
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‰æ–Ê•`‰æ
+ */
 void ScoreManager::PrintSaveDate(SaveDate date)
 {
 
 }
+
+/*
+ * ƒnƒCƒXƒRƒA‚Ìƒtƒ@ƒCƒ‹•Û‘¶
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] savedate.txt ‚ÉƒXƒRƒAƒ‰ƒ“ƒLƒ“ƒO‚ð‘‚«ž‚Þ
+ */
+
+/*
+ * –Ú“IiƒnƒCƒXƒRƒA‚ðƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«ž‚Ý
+ */
 void ScoreManager::SaveHighScore()
 {
-	/*GameScene_Bonus* pScore = new GameScene_Bonus;
-	if (pScore->SetDoScoreFlag(true))
-	{
-	}*/
-
-
 	FILE* fp = NULL;
 	fp = fopen("savedate.txt", "w");
 
+	// ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚¯‚ê‚ÎI—¹
 	if (fp == NULL)
 	{
 		return;
 	}
 
-	if (mnScore > mnHighScore)
+	// 1ˆÊXVŽž‚Ìˆ—
+	if (score_ > high_score_)
 	{
-		fprintf(fp, "SCORE;%d\n",(int) mnScore);
-
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
-		fprintf(fp, "NAME ;%s\n",msName.c_str());
-		fprintf(fp, "NAME ;%s\n", msName1.c_str());
-		fprintf(fp, "NAME ;%s\n", msName2.c_str());
+		fprintf(fp, "SCORE;%d\n",(int)score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
+		fprintf(fp, "NAME ;%s\n", name_.c_str());
+		fprintf(fp, "NAME ;%s\n", name1_.c_str());
+		fprintf(fp, "NAME ;%s\n", name2_.c_str());
 	}
-	if (mnScore > mnHighScore2 && mnScore < mnHighScore)
+	// 2ˆÊXVŽž‚Ìˆ—
+	else if (score_ > high_score2_ && score_ < high_score_)
 	{
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
-
-		fprintf(fp, "SCORE;%d\n", (int)mnScore);
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
-		fprintf(fp, "NAME ;%s\n", msName1.c_str());
-		fprintf(fp, "NAME ;%s\n", msName.c_str());
-		fprintf(fp, "NAME ;%s\n", msName2.c_str());
-
+		fprintf(fp, "SCORE;%d\n", (int)high_score_);
+		fprintf(fp, "SCORE;%d\n", (int)score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
+		fprintf(fp, "NAME ;%s\n", name1_.c_str());
+		fprintf(fp, "NAME ;%s\n", name_.c_str());
+		fprintf(fp, "NAME ;%s\n", name2_.c_str());
 	}
-	if (mnScore > mnHighScore3 && mnScore < mnHighScore2)
+	// 3ˆÊXVŽž‚Ìˆ—
+	else if (score_ > high_score3_ && score_ < high_score2_)
 	{
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
-
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
-		fprintf(fp, "SCORE;%d\n", (int)mnScore);
-		fprintf(fp, "NAME ;%s\n", msName1.c_str());
-		fprintf(fp, "NAME ;%s\n", msName2.c_str());
-		fprintf(fp, "NAME ;%s\n", msName.c_str());
+		fprintf(fp, "SCORE;%d\n", (int)high_score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
+		fprintf(fp, "SCORE;%d\n", (int)score_);
+		fprintf(fp, "NAME ;%s\n", name1_.c_str());
+		fprintf(fp, "NAME ;%s\n", name2_.c_str());
+		fprintf(fp, "NAME ;%s\n", name_.c_str());
 	}
 	fclose(fp);
-
 }
+
+/*
+ * ƒnƒCƒXƒRƒA‚Ìƒtƒ@ƒCƒ‹“Ç‚Ýž‚Ý
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] savedate.txt ‚©‚çƒXƒRƒAƒ‰ƒ“ƒLƒ“ƒO‚ð“Ç‚Ýž‚Ýƒƒ“ƒo•Ï”‚ðXV
+ */
+
+/*
+ * –Ú“IiƒnƒCƒXƒRƒA‚ðƒtƒ@ƒCƒ‹‚©‚ç“Ç‚Ýž‚Þ‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒtƒ@ƒCƒ‹“Ç‚Ýž‚Ý‚Æ•Ï”‚ÌXV
+ */
 void ScoreManager::LoadHighScore()
 {
 	FILE* fp = NULL;
 
 	fp = fopen("savedate.txt", "r");
+	
+	// ƒtƒ@ƒCƒ‹‚ª‚È‚¯‚ê‚ÎI—¹
 	if (fp == NULL)
 	{
 		return;
 	}
 
 	int s1 = 0, s2 = 0, s3 = 0;
-	fscanf(fp, "SCORE:%d\n", &s1); mnHighScore = (float)s1;
-	fscanf(fp, "SCORE:%d\n", &s2); mnHighScore2 = (float)s2;
-	fscanf(fp, "SCORE:%d\n", &s3); mnHighScore3 = (float)s3;
+	fscanf(fp, "SCORE:%d\n", &s1); high_score_ = (float)s1;
+	fscanf(fp, "SCORE:%d\n", &s2); high_score2_ = (float)s2;
+	fscanf(fp, "SCORE:%d\n", &s3); high_score3_ = (float)s3;
 
-	char name[256];
-	fscanf(fp, "NAME :%s\n", name);
-	msName = name;
-	fscanf(fp, "NAME :%s\n", name);
-	msName2 = name;
-	fscanf(fp, "NAME :%s\n", name);
-	msName3 = name;
-
-
-	/*fscanf(fp, "NAME ;%s\n", name);
-	msName3= name;*/
-	/*fscanf(fp, "NAME ;%s\n", name);
-	msName1 = name;*/
-
+	char name_buf[256];
+	fscanf(fp, "NAME :%s\n", name_buf);
+	name_ = name_buf;
+	fscanf(fp, "NAME :%s\n", name_buf);
+	name2_ = name_buf;
+	fscanf(fp, "NAME :%s\n", name_buf);
+	name3_ = name_buf;
 
 	fclose(fp);
-
-
 }
 
+/*
+ * –¼‘O•Û‘¶i–¢ŽÀ‘•j
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“Ii–¼‘O‚ðƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚é‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«ž‚Ý
+ */
+void ScoreManager::SaveName()
+{
+}
+
+/*
+ * –¼‘O“Ç‚Ýž‚Ýi–¢ŽÀ‘•j
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“Ii–¼‘O‚ðƒtƒ@ƒCƒ‹‚©‚ç“Ç‚Ýž‚Þ‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒtƒ@ƒCƒ‹“Ç‚Ýž‚Ý‚Æ•Ï”‚ÌXV
+ */
+void ScoreManager::LoadName()
+{
+}
+
+/*
+ * I—¹ˆ—
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+
+/*
+ * –Ú“IiƒXƒRƒA‚ÌI—¹ˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒXƒRƒA‚Ì•Û‘¶
+ */
 void ScoreManager::Finalize()
 {
-
 
 }

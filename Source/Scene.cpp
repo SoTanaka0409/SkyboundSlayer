@@ -1,36 +1,60 @@
-ï»¿#include"Scene.h"
+#include"Scene.h"
 #include"ObjectManager.h"
 #include"Master.h"
 #include"ColliderManager.h"
+
+
+/*
+ * –Ú“IiScene‚ÌSceneˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 Scene::Scene()
 {
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®ç”Ÿæˆ
-	mpObjectManager = new ObjectManager();
-	mpColliderManager = new ColliderManager();
+	//ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ì¶¬
+	object_manager_ = new ObjectManager();
+	collider_manager_ = new ColliderManager();
 }
 
 Scene::~Scene()
 {
-	if (mpObjectManager != nullptr)
+	if (object_manager_ != nullptr)
 	{
-		delete mpObjectManager;
+		delete object_manager_;
 	}
 	
 }
-//æç”»
+//•`‰æ
+
+
+/*
+ * –Ú“IiScene‚ÌDrawˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Scene::Draw()
 {
-	if (mpObjectManager != nullptr)
+	if (object_manager_ != nullptr)
 	{
-		mpObjectManager->Draw();
+		object_manager_->Draw();
 	}
 }
-//æ›´æ–°
+//XV
+
+
+/*
+ * –Ú“IiScene‚ÌUpdateˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void Scene::Update()
 {
-	if (mpObjectManager != nullptr)
+	if (object_manager_ != nullptr)
 	{
 		
-		mpObjectManager->Update();
+		object_manager_->Update();
 	}
 }

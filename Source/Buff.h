@@ -13,14 +13,17 @@ public:
 		int Timer;
 		int Count;
 		float Effect;
-		bool mbUse=false;
+		bool use_=false;
 		
 	}efDate;
 
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Buff(int timer,float effect,Object3D::StatusState type);
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Buff();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
 
 private:

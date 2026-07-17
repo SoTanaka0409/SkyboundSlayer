@@ -1,38 +1,43 @@
-ï»¿#pragma once
+#pragma once
 #include"DxLib.h"
 
-//å‰æ–¹å®£è¨€
+//‘O•ûéŒ¾
 class ObjectManager;
 class ColliderManager;
-//
-//ã‚·ãƒ¼ãƒ³ã®åŸºåº•ã‚¯ãƒ©ã‚¹
-// 
-// ã‚¿ã‚¤ãƒˆãƒ«ã€ã‚²ãƒ¼ãƒ ã€ãƒªã‚¶ãƒ«ãƒˆç”»é¢ãªã©
-// ç”»é¢ã‚’ä½œã‚‹éš›ã¯ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã™ã‚‹
-//
+//ƒV[ƒ“‚ÌŠî’êƒNƒ‰ƒX
+// ƒ^ƒCƒgƒ‹AƒQ[ƒ€AƒŠƒUƒ‹ƒg‰æ–Ê‚È‚Ç
+// ‰æ–Ê‚ğì‚éÛ‚Í‚±‚ÌƒNƒ‰ƒX‚ğŒp³‚·‚é
 class Scene
 {
 public:
 
-	Scene();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	Scene();
 
-	virtual ~Scene();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual ~Scene();
 
-	//åˆæœŸåŒ–
-	virtual void Initialize() = 0;
-	//æ›´æ–°
-	virtual void Update();
-	//æç”»
-	virtual void Draw();
-	//çµ‚äº†å‡¦ç†
-	virtual void Finalize() = 0;
+	//‰Šú‰»
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Initialize() = 0;
+	//XV
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Update();
+	//•`‰æ
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Draw();
+	//I—¹ˆ—
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Finalize() = 0;
 
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®å–å¾—
-	ObjectManager* GetObjectManager() { return mpObjectManager; }
-	ColliderManager* GetCollisionManager() { return mpColliderManager; }
+	//ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ìæ“¾
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	ObjectManager* GetObjectManager() { return object_manager_; }
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	ColliderManager* GetCollisionManager() { return collider_manager_; }
 
 private:
-	ObjectManager* mpObjectManager;  //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç®¡ç†ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
-	ColliderManager* mpColliderManager;
+	ObjectManager* object_manager_;  //ƒIƒuƒWƒFƒNƒgŠÇ—ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
+	ColliderManager* collider_manager_;
 };

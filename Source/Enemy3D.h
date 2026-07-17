@@ -13,22 +13,22 @@ class Model;
 class Enemy3D :public Enemy
 {
 public:
-	Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,float HitSize,float Serch1,float Serch2,float Serch3,int money,bool isSeparateAnim);
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,float HitSize,float Serch1,float Serch2,float Serch3,int money,bool is_separate_anim_);
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Enemy3D();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw()override;
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update()override;
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Attack()override;
 
 	
 	
-
-private:
-	bool mbMagic;
-
-
 
 };

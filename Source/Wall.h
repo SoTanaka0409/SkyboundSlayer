@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include"DxLib.h"
 #include"Object3D.h"
 #include<vector>
@@ -7,23 +7,25 @@
 class Wall :public Object3D
 {
 public:
-	//centerPos,,,ä¸­å¿ƒåº§æ¨™
-	//topLeft... å·¦ä¸Šåº§æ¨™
-	//bottomRight...å³ä¸‹åº§æ¨™
-	Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottomRight);//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//centerPos,,,’†SÀ•W
+	//topLeft... ¶ãÀ•W
+	//bottomRight...‰E‰ºÀ•W
+	Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottomRight);//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 
-	~Wall();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~Wall();//ƒfƒXƒgƒ‰ƒNƒ^
 
-	void Update()override;//æ›´æ–°
-	void Draw()override;//æç”»
+// [“ü—Í]  [o—Í]  [•›ì—p] 
+	void Update()override;//XV
+// [“ü—Í]  [o—Í]  [•›ì—p] 
+	void Draw()override;//•`‰æ
 
 	std::vector<VERTEX3D>GetVertex()
 	{
 		std::vector<VERTEX3D>result;
-		result.push_back(mVertex[0]);
-		result.push_back(mVertex[1]);
-		result.push_back(mVertex[2]);
-		result.push_back(mVertex[3]);
+		result.push_back(vertex_[0]);
+		result.push_back(vertex_[1]);
+		result.push_back(vertex_[2]);
+		result.push_back(vertex_[3]);
 		return result;
 
 
@@ -31,9 +33,9 @@ public:
 	}
 
 private:
-	int mnGraphHandle; //ç”»åƒãƒãƒ³ãƒ‰ãƒ«
+	int graph_handle_; //‰æ‘œƒnƒ“ƒhƒ‹
 
-	VERTEX3D mVertex[4];//é ‚ç‚¹æƒ…å ±(æœ€çµ‚çš„ã«å››è§’ã§æãã®ã§4ã¤)
+	VERTEX3D vertex_[4];//’¸“_î•ñ(ÅI“I‚ÉlŠp‚Å•`‚­‚Ì‚Å4‚Â)
 
 
 

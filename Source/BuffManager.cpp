@@ -1,5 +1,12 @@
 ﻿#include"BuffManager.h"
 
+
+/*
+ * 目的（BuffManagerのBuffManager処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 BuffManager::BuffManager()
 {
 
@@ -10,11 +17,25 @@ BuffManager::~BuffManager()
 
 }
 
+
+/*
+ * 目的（BuffManagerのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void BuffManager::Draw()
 {
 
 }
 
+
+/*
+ * 目的（BuffManagerのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void BuffManager::Update()
 {
 	for (auto b : buffList)
@@ -25,6 +46,13 @@ void BuffManager::Update()
 
 }
 
+
+/*
+ * 目的（BuffManagerのAddBuff処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void BuffManager::AddBuff(Buff* date)
 {
 	
@@ -41,12 +69,19 @@ void BuffManager::AddBuff(Buff* date)
 			return;
 		}
 	}
-	date->efDate.mbUse = true;
+	date->efDate.use_ = true;
 	buffList.push_back(date);
 	
 	
 }
 
+
+/*
+ * 目的（BuffManagerのDeleteList処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void BuffManager::DeleteList()
 {
 	for (auto b=buffList.begin();b!=buffList.end();)
@@ -64,20 +99,27 @@ void BuffManager::DeleteList()
 
 }
 
+
+/*
+ * 目的（BuffManagerのGetBuff処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 float BuffManager::GetBuff(Object3D::StatusState state)
 {
 	for (auto b : buffList)
 	{
 		if (b->efDate.type == state)
 		{
-			if ((*b).efDate.mbUse == true)
+			if ((*b).efDate.use_ == true)
 			{
 				return b->efDate.Effect;
 			}
 		}
 		/*if (b->efDate.type ==state)
 		{
-			if ((*b).efDate.mbUse == true)
+			if ((*b).efDate.use_ == true)
 			{
 				return b->efDate.Effect;
 			}

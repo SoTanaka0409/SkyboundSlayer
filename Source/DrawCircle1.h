@@ -7,11 +7,15 @@
 class DrawCircle1:public Object3D
 {
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	DrawCircle1(std::string filename,VECTOR centerPos);
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~DrawCircle1();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update()override;//更新
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw()override;//描画
 
 	
@@ -19,9 +23,12 @@ public:
 	std::vector<VERTEX3D>GetVertex()
 	{
 		std::vector<VERTEX3D>result;
-		result.push_back(mVertex[0]);
-		result.push_back(mVertex[1]);
-		result.push_back(mVertex[2]);
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		result.push_back(vertex_[0]);
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		result.push_back(vertex_[1]);
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		result.push_back(vertex_[2]);
 		return result;
 
 
@@ -29,10 +36,11 @@ public:
 	}
 
 private:
-	int mnGraphHandle; //画像ハンドル
+	int graph_handle_; //画像ハンドル
 
 
-	VERTEX3D mVertex[3];//頂点情報(最終的に四角で描くので4つ)
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	VERTEX3D vertex_[3];//頂点情報(最終的に四角で描くので4つ)
 
 	float radius;
 	float Maxradius;
@@ -42,7 +50,8 @@ private:
 	std::vector<VERTEX3D> vtx;
 	
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	int color = GetColor(255, 0, 0);
-	VECTOR mnCenter;
+	VECTOR center_;
 	VECTOR OldPosition;
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"DxLib.h"
 #include<string>
 #include"Object3D.h"
@@ -25,108 +25,211 @@ public:
 		kAttackNormal,
 		kAttackJump,
 		kAttackSlide,
-	}attack_state_;
-	
+	} attack_state_;
+
 public:
-	// �����A�j���[�V�������g�p���邩�̐ݒ��ǉ��i�f�t�H���g��false�i�g�p���Ȃ��j�j
-	Player3D(std::string filename, VECTOR initPos, float junppower, float speed, float hp, bool isSeparateAnim = false);
+	// コンストラクタ
+		// [出力] なし [副作用] メンバ初期化、コライダー生成
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	Player3D(std::string filename, VECTOR initPos, float junppower, float speed, float hp, bool is_separate_anim_ = false);
 
-	~Player3D();
+	// デストラクタ
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		~Player3D();
 
-	void Draw()override;
+	// 描画処理
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void Draw()override;
 
-	void Update()override;
-	void ManagerUpdate();
+	// 更新処理
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void Update()override;
 
-	void CheckStageOut();
-	void MoveEx();
+	// 管理クラス用更新
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void ManagerUpdate();
 
-	void SelectAttack();
-	void Attack();
-	void AttackSlide();
-	void AttackJump();
-	void Damage(float damage);
-	void ResetNUETRAL();
+	// ステージ外判定
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void CheckStageOut();
 
-	void SetInvisible(bool flag) { is_invisible_ = flag; }
-	bool GetInvisible() { return is_invisible_; }
-	void Shot();
-	void Jump();
-	void UpdateViewMode();
-	void SearchEnemy();
-	void CollPositionUpdate();
-	void UpdateAttackCooldowns();
-	void Evasion();
-	void CollDelete();
-	void UpdateTargetLock();//target�������Ԃ�.���ꂪ�Ȃ���target�����Ȃ��Ȃ����u�Ԃ�null�ɂȂ�
+	// 移動処理
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void MoveEx();
 
+	// 攻撃選択
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void SelectAttack();
 
-	float GetAngle() { return angle_; }
+	// 通常攻撃
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void Attack();
 
-	void RotationByMove();//�ړ��ɂ���]����
+	// スライド攻撃
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void AttackSlide();
 
+	// ジャンプ攻撃
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void AttackJump();
+
+	// ダメージ処理
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void Damage(float damage);
+
+	// 状態リセット
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void ResetNUETRAL();
+
+	// 無敵フラグ設定
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void SetInvisible(bool flag) { is_invisible_ = flag; }
+
+	// 無敵フラグ取得
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		bool GetInvisible() { return is_invisible_; }
+
+	// ジャンプ処理
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void Jump();
+
+	// ビューモード更新
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void UpdateViewMode();
+
+	// 敵探索
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void SearchEnemy();
+
+	// コライダー位置更新
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void UpdateColliderPosition();
+
+	// 攻撃クールダウン更新
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void UpdateAttackCooldowns();
+
+	// 回避行動
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void Evasion();
+
+	// コライダー削除
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void CollDelete();
+
+	// ロックオン対象更新
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void UpdateTargetLock();
+
+	// 角度取得
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		float GetAngle() { return angle_; }
+
+	// 移動による回転処理
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void RotationByMove();
+
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	float GetHp() { return hp_; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void SetHp(float hp) { hp_ = hp; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	float GetAttack() { return attack_; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void SetAttack(float attack) { attack_ = attack; }
-	float GetAllStatusState(Object3D::StatusState state);
+
+	// 全ステータス状態取得
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		float GetAllStatusState(Object3D::StatusState state);
+
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	float GetSpeed() { return speed_; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void SetSpeed(float speed) { speed_ = speed_ + speed; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	float GetSize() { return size_; }
-	
+
 	// --- Upgrade Setters ---
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void AddUpgradeMaxHp(float add) { upgrade_max_hp_ += add; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void AddUpgradeAttack(float add) { upgrade_attack_ += add; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void AddUpgradeSpeed(float add) { upgrade_speed_ += add; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void AddUpgradeEvasionSpeed(float add) { upgrade_evasion_speed_ += add; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void AddUpgradeEvasionInvincibility(int add) { upgrade_evasion_invincibility_ += add; }
 	// -----------------------
+
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	VECTOR GetFirstPos() { return first_position_; };
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	bool GetStageOutFlag() { return is_stage_out_; }
 
-	void DrawStatusBars();
+	// ステータスバー描画
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void DrawStatusBars();
 
+	// アニメーション追加
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		void AddAnimation(AnimationState state, std::string filename);
 
-	// �A�j���[�V�����ǉ�
-   // Model�N���X�ւ̋��n���֐�
-	void AddAnimation(AnimationState state, std::string filename);
+	// 当たり判定開始
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		virtual void OnEnter(Collider* collider, Collider* check) override;
+	// 当たり判定継続
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		virtual void OnTrigger(Collider* collider, Collider* check) override;
+	// 当たり判定終了
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+		virtual void OnExit(Collider* collider, Collider* check) override;
 
-
-	virtual void OnEnter(Collider* collider, Collider* check) override;
-	virtual void OnTrigger(Collider* collider, Collider* check) override;
-	virtual void OnExit(Collider* collider, Collider* check) override;
-
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	CapsuleCollider* GetCollisionCollider() { return capsule_collider_; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	SphereCollider* Get500Collider() { return search_enemy_collider_; }
 
-	Model* model_;//���f���N���X�̃|�C���^
+	Model* model_;
 	ShortInventory* short_inventory_;
 	BuffManager* buff_manager_;
 	ItemManager* item_manager_;
 	HaveMoneyClass* have_money_;
 	EquipmentManager* equipment_manager_;
+
 private:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void UpdateInvincibilityTimer();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void UpdatePlayerSystems();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	bool ShouldSkipGameplayUpdate() const;
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	bool IsBossFadeActive() const;
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void ValidateTarget();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void UpdateGameplayActions();
+	bool CanDrawPlayer() const;
+	void DrawPlayerModel();
+	void DrawDebugInfo();
+	void DrawAttachmentDebug();
+
 	Object3D* target_;
-	float target_angle_;//�ڕW�̉�]�n
-	float angle_;//���݂̉�]�n
+	float target_angle_;
+	float angle_;
 	VECTOR first_position_;
 
-	const float kRotateSpeed = 0.2f;//��]���x
-	const float kJumpPower = 30.0f;//�W�����v��
+	const float kRotateSpeed = 0.2f;
+	const float kJumpPower = 30.0f;
 
-	bool is_jumping_;//�W�����v���[�V���������邩�ۂ�
-	bool is_jump_falling_;//����������W�ɂ������牺�~������t���O
-	bool has_reached_jump_peak_;//�ڕW���W�ɍs�����Ƃ���true
+	bool is_jumping_;
+	bool is_jump_falling_;
+	bool has_reached_jump_peak_;
 	bool is_jump_collider_active_;
 	bool is_attack_slide_target_found_;
 
-	float jump_power_;//�W�����v��
+	float jump_power_;
 	float speed_;
 	float evasion_speed_;
 	float normal_speed_;
@@ -135,39 +238,37 @@ private:
 	float max_hp_;
 	float ride_old_hp_;
 	float size_;
-	
+
 	// --- Upgrade Stats from StatShop ---
 	float upgrade_max_hp_ = 0.0f;
 	float upgrade_attack_ = 0.0f;
 	float upgrade_speed_ = 0.0f;
 	float upgrade_evasion_speed_ = 0.0f;
-	int upgrade_evasion_invincibility_ = 0; // �ǉ����G�t���[��
-	int invincible_timer_ = 0; // ���݂̖��G�^�C�}�[
+	int upgrade_evasion_invincibility_ = 0;
+	int invincible_timer_ = 0;
 	// -----------------------------------
 
-	int attack_slide_count_;//�U���Ԋu���J�E���g����
+	int attack_slide_count_;
 	int attack_jump_count_;
 	int attack_count_;
 
-	int attack_slide_cooldown_ = 200;//�U���\���̃N�[���^�C��
+	int attack_slide_cooldown_ = 200;
 	int attack_cooldown_ = 30;
-	int attack_jump_cooldown_=200;
-	////////////////	�U����	
+	int attack_jump_cooldown_ = 200;
 
-	float attack_;//�_���[�W���v�Z����Ƃ��Ɏg�����{�I�Ȓl
-	float normal_attack_;//���炩�̗v����mfAttack�̒l��ς������ɖ߂����߂̒l
+	float attack_;
+	float normal_attack_;
 	float jump_attack_;
 	float slide_attack_;
-	float bullet_attack_;
-	VECTOR move_vec_ = VGet(0.0f, 0.0f, 0.0f);//�ړ�����
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	VECTOR move_vec_ = VGet(0.0f, 0.0f, 0.0f);
 	VECTOR previous_move_vec_;
-	VECTOR attack_slide_direction_;//�ړ�����
-	VECTOR attack_slide_step_;//�ڕW�Ƃ�����W
+	VECTOR attack_slide_direction_;
+	VECTOR attack_slide_step_;
 
-	//�X�e�[�W�Ƃ̓����蔻�������
 	bool is_invisible_;
 
-	int target_search_count_;//��ԋ߂��G
+	int target_search_count_;
 	float nearest_target_distance_;
 
 	SphereCollider* attach_collider_;
@@ -176,9 +277,6 @@ private:
 	SphereCollider* attack_jump_collider_;
 	CapsuleCollider* capsule_collider_;
 
-
 	int attack_selection_index_;
-
-	int mouseInput = GetMouseInput(); // �}�E�X�̏�Ԃ��擾
-	bool is_stage_out_;//true��������oldPosition�ɖ߂�悤�ɂ���
+	bool is_stage_out_;
 };

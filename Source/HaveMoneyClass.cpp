@@ -1,10 +1,17 @@
-#include"HaveMoneyClass.h"
+﻿#include"HaveMoneyClass.h"
 #include"Master.h"
 #include"SceneManager.h"
 #include"ObjectManager.h"
 
+
+/*
+ * 目的（HaveMoneyClassのHaveMoneyClass処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 HaveMoneyClass::HaveMoneyClass(int money)
-	:mnMoney(money)
+	:money_(money)
 	
 {
 	
@@ -16,16 +23,37 @@ HaveMoneyClass::~HaveMoneyClass()
 
 }
 
+
+/*
+ * 目的（HaveMoneyClassのAddMoney処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void HaveMoneyClass::AddMoney(int money)
 {
-	mnMoney += money;
+	money_ += money;
 }
 
+
+/*
+ * 目的（HaveMoneyClassのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void HaveMoneyClass::Update()
 {
 
 }
 
+
+/*
+ * 目的（HaveMoneyClassのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void HaveMoneyClass::Draw()
 {
 	const int panelX = 1564;
@@ -45,12 +73,19 @@ void HaveMoneyClass::Draw()
 	DrawLine(panelX, panelY, panelX, panelY + panelH, goldDark, 1);
 	DrawLine(panelX + panelW, panelY, panelX + panelW, panelY + panelH, gold, 1);
 	DrawFormatString(panelX + 18, panelY + 17, GetColor(245, 226, 174), "MONEY");
-	DrawFormatString(panelX + 186, panelY + 17, GetColor(238, 238, 238), "%d", mnMoney);
+	DrawFormatString(panelX + 186, panelY + 17, GetColor(238, 238, 238), "%d", money_);
 }
+
+/*
+ * 目的（HaveMoneyClassのPullMoney処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void HaveMoneyClass::PullMoney(int money)
 {
-	auto mpPlayer = Master::mpPlayer;
-	auto player = Master::mpPlayer;
+	auto player_ = Master::player_;
+	auto player = Master::player_;
 	player->have_money_->AddMoney(-money);
 	
 

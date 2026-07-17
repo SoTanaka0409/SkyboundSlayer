@@ -1,4 +1,4 @@
-ï»¿#include"EnemyBoss_1.h"
+#include"EnemyBoss_1.h"
 #include"Model.h"
 #include"Master.h"
 #include"Player3D.h"
@@ -19,23 +19,26 @@
 #include"CapsuleCollider.h"
 #include"Magic_Ene.h"
 
-EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool isSeparateAnim)
-	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3,money, isSeparateAnim)
+
+/*
+ * –Ú“IiEnemyBoss_1‚ÌEnemyBoss_1ˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
+EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool is_separate_anim_)
+	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3,money, is_separate_anim_)
 
 
 
 {
-	mbMagic = true;
 	mfjumpPower = 150.0f;
 	HighPositionFlag = false;
-	mbjumpDown = false;
-	mbjump = false;
-	OnJumpCollider = false;
-	mAttackType = 0;
-	mAttack1ComboCount = 0;
-	mnChance = 30;
-	AttackInterval = 60;
-	AttackCount = 0;
+	attack_type_ = 0;
+	attack1_combo_count_ = 0;
+	chance_ = 30;
+	attack_interval_ = 60;
+	attack_count_ = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
 	
 	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
@@ -46,9 +49,7 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 
 	model_->SetScale(VGet(4.0f, 4.0f, 4.0f));
 	
-	mpJumpAttackCoiider = new SphereCollider(this, position_, 400.0f);
-
-	mpDebug = new Debug();
+	jump_attack_coiider_ = new SphereCollider(this, position_, 400.0f);
 
 	
 }
@@ -58,9 +59,16 @@ EnemyBoss_1::~EnemyBoss_1()
 
 }
 
+
+/*
+ * –Ú“IiEnemyBoss_1‚ÌUpdateˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void EnemyBoss_1::Update()
 {
-	SceneGame* game = Master::mpSceneManager->GetSceneGame();
+	SceneGame* game = Master::scene_manager_->GetSceneGame();
 	if (game && game->game_manager_) {
 		auto phase = game->game_manager_->GetCurrentPhase();
 		if (phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss) {
@@ -68,7 +76,7 @@ void EnemyBoss_1::Update()
 		}
 	}
 
-	if (isDead)
+	if (is_dead_)
 	{
 		DeathEnemy();
 	}
@@ -78,65 +86,44 @@ void EnemyBoss_1::Update()
 		{
 		
 			Attack();
-			if (!(model_->GetNowState() == ANIMATION_ATTACK) || !(model_->GetNowState() == ANIMATION_ATTACKJUMP))
+			if (model_->GetNowState() != ANIMATION_ATTACK && model_->GetNowState() != ANIMATION_ATTACKJUMP)
 			{
 				RotationByMove();
 				Move();
 			}
 
-			if (model_->GetNowState() == ANIMATION_ATTACK && mAttackType == 2)
-			{
-				if (!HighPositionFlag)
-				{
-					position_ = VAdd(position_, VGet(0.0f, 15.0f, 0.0f));
-					if (position_.y >= VinitPos.y + mfjumpPower)
-					{
-						HighPositionFlag = true;
-						mbjumpDown = true;
-					}
-				}
-				else
-				{
-					position_ = VAdd(position_, VGet(0.0f, -25.0f, 0.0f));
-				}
-
-				if (position_.y <= VinitPos.y)
-				{
-					OnJumpCollider = true;
-					position_.y = VinitPos.y;
-				}
-			}
-			else
-			{
-				OnJumpCollider = false;
-				HighPositionFlag = false;
-				mbjump = false;
-				mbjumpDown = false;
-			}
+			UpdateJumpPhysics();
 
 			model_->Update();
-			CollPositionUpdate();
-			mpJumpAttackCoiider->position_ = position_;
+			UpdateColliderPosition();
+			jump_attack_coiider_->position_ = position_;
 			
-			if (position_.y < VinitPos.y)
+			if (position_.y < init_position_.y)
 			{
-				position_.y = VinitPos.y;
+				position_.y = init_position_.y;
 			}
 
 		}
 	}
 }
 
+
+/*
+ * –Ú“IiEnemyBoss_1‚ÌDrawˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void EnemyBoss_1::Draw()
 {
 	if (model_ != nullptr)
 	{
 		model_->Draw();
 	}
-	if (Master::mpDebug->Getdebug() == true)
+	if (Master::debug_->Getdebug() == true)
 	{
 		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
-			mfSize,
+			size_,
 			8,
 			GetColor(255, 255, 255),
 			GetColor(255, 255, 255),
@@ -147,47 +134,51 @@ void EnemyBoss_1::Draw()
 
 }
 
+
+/*
+ * –Ú“IiEnemyBoss_1‚ÌAttackˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void EnemyBoss_1::Attack()
 {
 	AnimationState now = model_->GetNowState();
 
-	if (AttackCount >= AttackInterval && isHitAttackSearch)
+	if (attack_count_ >= attack_interval_ && is_hit_attack_search_flag_)
 	{
-		AttackCount = 0;
-		isHitAttackSearch = false;
+		attack_count_ = 0;
+		is_hit_attack_search_flag_ = false;
 		
-		mAttackType = GetRand(2);
+		attack_type_ = GetRand(2);
 		
-		if (mAttackType == 0)
+		if (attack_type_ == 0)
 		{
-			mAttack1ComboCount = 3;
+			attack1_combo_count_ = 3;
 		}
-		else if (mAttackType == 1)
+		else if (attack_type_ == 1)
 		{
 			model_->ChangeAnimation(ANIMATION_ATTACKMAGIC);
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			
-			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
-			VECTOR leftGo = VTransform(GoPosition, MGetRotY(-30.0f * DX_PI_F / 180.0f));
+			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, go_position_, 0, 150);
+			VECTOR leftGo = VTransform(go_position_, MGetRotY(-30.0f * DX_PI_F / 180.0f));
 			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, leftGo, 0, 150);
-			VECTOR rightGo = VTransform(GoPosition, MGetRotY(30.0f * DX_PI_F / 180.0f));
+			VECTOR rightGo = VTransform(go_position_, MGetRotY(30.0f * DX_PI_F / 180.0f));
 			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, rightGo, 0, 150);
 		}
-		else if (mAttackType == 2)
+		else if (attack_type_ == 2)
 		{
 			model_->ChangeAnimation(ANIMATION_ATTACK);
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			mfjumpPower = 400.0f;
 			HighPositionFlag = false;
-			mbjumpDown = false;
-			mbjump = true;
-			OnJumpCollider = false;
 		}
 	}
 
-	if (mAttackType == 0 && mAttack1ComboCount > 0)
+	if (attack_type_ == 0 && attack1_combo_count_ > 0)
 	{
 		if (now == ANIMATION_NEUTRAL || now == ANIMATION_RUN)
 		{
@@ -195,38 +186,45 @@ void EnemyBoss_1::Attack()
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			
-			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
+			new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, go_position_, 0, 150);
 			
-			mAttack1ComboCount--;
+			attack1_combo_count_--;
 		}
 	}
 
 	if (!(now == ANIMATION_ATTACKMAGIC) && !(now == ANIMATION_ATTACK))
 	{
-		if (mAttack1ComboCount <= 0)
+		if (attack1_combo_count_ <= 0)
 		{
-			AttackCount++;
+			attack_count_++;
 		}
-		AttackHitJudgmentflag = false;
+		is_attack_hit_judgment_flag_ = false;
 	}
 }
+
+/*
+ * –Ú“IiEnemyBoss_1‚ÌOnTriggerˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 {
-	if (hp_ <= 0)return; auto mpPlayer = Master::mpPlayer;
+	if (hp_ <= 0)return;
 	AnimationState now = model_->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
-		if (collider == mpJumpAttackCoiider && check->parent_object_->GetTag() == Tag3D_Player3D)
+		if (collider == jump_attack_coiider_ && check->parent_object_->GetTag() == Tag3D_Player3D)
 		{
-			Player3D* pPlayer = Master::mpPlayer;
+			Player3D* pPlayer = Master::player_;
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
 			{
-				if (now == ANIMATION_ATTACK && !AttackHitJudgmentflag)
+				if (now == ANIMATION_ATTACK && !is_attack_hit_judgment_flag_)
 				{
 
 					pPlayer->Damage(attack_);
-					AttackHitJudgmentflag = true;
+					is_attack_hit_judgment_flag_ = true;
 				}
 			}
 
@@ -234,9 +232,16 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 	}
 }
 
+
+/*
+ * –Ú“IiEnemyBoss_1‚ÌDeathEnemyˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void EnemyBoss_1::DeathEnemy()
 {
-	isDead = true;
+	is_dead_ = true;
 	model_->ChangeAnimation(ANIMATION_DYING);
 	model_->SetLoop(false);
 	model_->SetLoopFinishState(ANIMATION_MAX);
@@ -245,7 +250,7 @@ void EnemyBoss_1::DeathEnemy()
 	if (model_->IsAnimationLoopFinish())
 	{
 		GiveRewards();
-		Master::GameClearCount++;
+		Master::game_clear_count_++;
 		
 		Delete();
 		SetDeleteFlag(true);
@@ -254,15 +259,54 @@ void EnemyBoss_1::DeathEnemy()
 	model_->Update();
 }
 
+
+/*
+ * –Ú“IiEnemyBoss_1‚ÌDeleteˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void EnemyBoss_1::Delete()
 {
 	Enemy::Delete();
-	if (mpJumpAttackCoiider != nullptr)
+	if (jump_attack_coiider_ != nullptr)
 	{
-		mpJumpAttackCoiider->SetDeleteFlag(true);
-		mpJumpAttackCoiider = nullptr;
+		jump_attack_coiider_->SetDeleteFlag(true);
+		jump_attack_coiider_ = nullptr;
 	}
 }
 
 
+/*
+ * –Ú“IiEnemyBoss_1‚ÌUpdateJumpPhysicsˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ƒWƒƒƒ“ƒvŽž‚ÌÀ•WXV
+ */
+void EnemyBoss_1::UpdateJumpPhysics()
+{
+	if (model_->GetNowState() == ANIMATION_ATTACK && attack_type_ == 2)
+	{
+		if (!HighPositionFlag)
+		{
+			position_ = VAdd(position_, VGet(0.0f, kJumpAscendSpeed, 0.0f));
+			if (position_.y >= init_position_.y + mfjumpPower)
+			{
+				HighPositionFlag = true;
+			}
+		}
+		else
+		{
+			position_ = VAdd(position_, VGet(0.0f, kJumpDescendSpeed, 0.0f));
+		}
 
+		if (position_.y <= init_position_.y)
+		{
+			position_.y = init_position_.y;
+		}
+	}
+	else
+	{
+		HighPositionFlag = false;
+	}
+}

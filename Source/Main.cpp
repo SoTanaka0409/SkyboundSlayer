@@ -1,8 +1,8 @@
-
+﻿
 #include "DxLib.h"
 #include "Config.h"
 #include"Texture.h"
-//#include"Texture Animation.h"
+//#include"Texture is_animation_.h"
 #include"Collision.h"
 #include"SceneManager.h"
 #include"Master.h"
@@ -26,68 +26,56 @@
 #include"BuffManager.h"
 #include"Chat.h"
 #include"Save.h"
-/**
-* @note リファレン�?E?E?E? https://dxlib.xsrv.jp/dxfunc.html
-*/
+// Blender Model Download Reference:
+// https://www.d5render.com/ja/workflow/blender?utm_campaign=bingsearchILJPblender&utm_source=bing&utm_medium=cpc&msclkid=929170cec1521e953f1c187910ba1cae
 
-//�?E?E?E?ー�?�?E?E?E?�E�Dモ�?E?E  metaseq316
-//https://www.d5render.com/ja/workflow/blender?utm_campaign=bingsearchILJPblender&utm_source=bing&utm_medium=cpc&msclkid=929170cec1521e953f1c187910ba1cae
-
-
-
-/**
-/**
-* @fn WinMain
-* @brief Main�?E?E?E?�?E?E?E?
-* @param[in] HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
-* @return int 0 �E?E??E?�?E?E?E?終�E?E??E?�E?E?E?E?�E1 �?E?E?E?ラー
-* @details Main�?E?E?E?�?E?E?E?
-*/
-
-//Master�?E?E?E?ラ�?E?E?E?�?E?E?E?静的メンバ変数定�?E?E?E?
-Player3D* Master::mpPlayer = nullptr;
-SceneManager* Master::mpSceneManager = new SceneManager();//�?E?E?E?�?E?E?E??E?E??E?ぁE
-SoundManager* Master::mpSoundManager = new SoundManager();
-ResourceManager* Master::mpResourceManager = new ResourceManager();
-Debug* Master::mpDebug = new Debug();
-DrawHp* Master::mpDrawHp = new DrawHp();
-Camera* Master::mpCamera = new Camera();
-ScoreManager* Master::mpScoreManager = new ScoreManager(0);
-EnemyManager* Master::mpEnemyManager = new EnemyManager();
-ItemManager* Master::mpItemManager = new ItemManager();
-InfClassManager* Master::mpInfClassManager = new InfClassManager();
-BuffManager* Master::mpBuffManager = new BuffManager();
-Chat* Master::mpChat = new Chat();
-Save* Master::mpSave = new Save();
-
-/// <summary>
-/// ///////////////////////Enemy//////////////////
-/// </summary>
-
-bool Master::PauseOn = false;
-bool Master::StatShopClassOn = false;
-bool Master::SafePointOn = false;
-bool Master::NearShopOn = false;
-bool Master::mbSave = false;
-bool Master::CutscenePlaying = false;
+Player3D* Master::player_ = nullptr;
+SceneManager* Master::scene_manager_ = new SceneManager();
+SoundManager* Master::sound_manager_ = new SoundManager();
+ResourceManager* Master::resource_manager_ = new ResourceManager();
+Debug* Master::debug_ = new Debug();
+DrawHp* Master::draw_hp_ = new DrawHp();
+Camera* Master::camera_ = new Camera();
+ScoreManager* Master::score_manager_ = new ScoreManager(0);
+EnemyManager* Master::enemy_manager_ = new EnemyManager();
+ItemManager* Master::item_manager_ = new ItemManager();
+InfClassManager* Master::inf_class_manager_ = new InfClassManager();
+BuffManager* Master::buff_manager_ = new BuffManager();
+Chat* Master::chat_ = new Chat();
+Save* Master::save_ = new Save();
 
 
-int Master::GameClearCount = 0;
+
+bool Master::is_pause_on_ = false;
+bool Master::is_stat_shop_on_ = false;
+bool Master::is_safe_point_on_ = false;
+bool Master::is_near_shop_on_ = false;
+bool Master::is_save_ = false;
+bool Master::is_cutscene_playing_ = false;
+
+
+int Master::game_clear_count_ = 0;
 
 
 
 
+/*
+ * 目的（ゲームのメインループを実行し、各種マネージャーの更新と描画を行うため）
+ * [入力] HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow
+ * [出力] int: 終了コード
+ * [副作用] ウィンドウの生成、メインループの実行、各マネージャーのメモリ確保と解放
+ */
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
-	// �?E?E?E?�?E?E?E?ンドウモードで起�?E
+	// ウィンドウモードで起動する
 	ChangeWindowMode(true);
 
 	SetGraphMode(Config::ScreenWidth, Config::ScreenHeight, 32);
 	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	
-	// DXラ�?E?E?E?ブラリ初�E?E??E?匁E
+	// DxLibライブラリの初期化
 	SetDoubleStartValidFlag(TRUE);
 	if (DxLib_Init() == -1)
 	{
@@ -95,39 +83,39 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 	EffekseerManager::GetInstance()->Init();
 
-	// --- 全体�?Eラ�?E?E?E?�?E��E?E??E??E?�?E?E?E?�E�環?E?E?E�E・太�?E?E?E?光）�?E?E?E??E?E?E?宁E---
+	// 3D空間のライト設定を有効にする
 	SetLightEnable(TRUE);
-	// �?E?E?E??E?E?E�E�E�EmbColor�E��?E?E?E??E???E?E高�?E?E?E?�?E?E?E?�?E?E?E?定�?E?E、�?E?E?E?�?E?E?E?�?E?E?E?り�?E?E?E?E?E??E?��?E?E?E?部刁E?E?E?E?��?E?E?E?��iE?E??E?�E�E�?E?E?E?�E�が真っ�?E��沈ま�?E?E?E?ぁE?E?E?E?ぁE��す�?E?E?E?E
+	// 環境光（アンビエントライト）の色を設定?E?E??E?E?E・・・mbColor・峨?E?E?E??E???E?E鬮倥?E?E?E?縺?E?E?E?險?E?E?E?螳壹?E?E縲∝ｽ?E?E?E?縺?E?E?E?縺?E?E?E?繧翫?E?E?E?E?E??E?吶?E?E?E?驛ｨ蛻・?E?E?E?亥?E?E?E?暮擁E?E??E?・・髱?E?E?E?・峨′逵溘▲鮟?E↓豐医∪縺?E?E?E?縺・?E?E?E?縺・↓縺吶?E?E?E?E
 	SetLightAmbColor(GetColorF(0.6f, 0.6f, 0.6f, 1.0f));
-	// 太�?E?E?E?光（デ�?E?E?E?レ�?E?E?E?�?E?E?E?ョナルラ�?E?E?E?ト�?E?E?E?��E向きを撚E?E??E?��?E?E?E?��?E向�?E?EめE
+	// 平行光源の向きを設定
 	SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
-	// 太�?E?E?E?光�E�?E?E?E?�E��?E?E?E?��?E?E白�?E?E?E?がか�?E?E?E?た�?Eるい�?E?E?E?�E�E
+	// 平行光源のディフューズ（拡散光）の色を設定
 	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
-	// ------------------------------------------------
+	
 
 
-	//BGM�?E?E?E?�?E?E?E?�?E?E?E?込�?E?E?E?
+	// BGMの読み込み（SoundManager内で行う）?E?E?
 
-	//�?E?E?E?�?E?E?E?ンド�Eネ�E�?E?E?E?ャー�?E?E?E?初�E?E??E?匁E
+	// 非同期読み込み設定とサウンドマネージャーの初期化
 	SetUseASyncLoadFlag(TRUE);
-	Master::mpSoundManager->Initialize();//すべ�?E?E?E?�?E?E?E?�?E?E?E?�?E?E?E?ンドが�?E?E?E?�?E?E?E?込�?E?E?E?れru----
+	Master::sound_manager_->Initialize();// すべてのサウンドを読み込む
 
-	//�?E?E?E?ーンマネー�?E?E?E?ャー�?E?E?E?生�?E�?E?E?E?初�E?E??E?匁E
-	Master::mpSceneManager->Initialize();
+	// シーンマネージャーの初期化
+	Master::scene_manager_->Initialize();
 
-	Master::mpScoreManager->Initialize();
+	Master::score_manager_->Initialize();
 
-	//�?E?E?E?メラ�?E?E?E?更�E?E??E?
-	Master::mpCamera->Initialize();
+	// カメラマネージャーの初期化??E?
+	Master::camera_->Initialize();
 
 	
 
 
 
-	//?E?�画先�?E?E?E??E?E?E?定�?E?E?E?裏画�?E?E?E?�?E?E?E?�?E?E?E?定�?E?E??E?�E
+	// 描画先を裏画面に設定
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//Z�?E��ファ�?E?E?E?書き�?E?E?E?�?E??E?E??E??E?E?E?E
+	// Zバッファを有効にする?E?E?譖ｸ縺崎ｾ?E?E?E?繧?E??E?E??E??E?E?E?E
 	SetUseZBufferFlag(true);
 	SetWriteZBufferFlag(true);
 
@@ -135,11 +123,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	int animationCounter = 0;
 	int textureCurrentNum = 0;
 
-	//�?E?E?E?ー�?�?E?E?E?メ�?E?E?E?ンルー�?E
+	// ゲームのメインループ
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 
-		//画�?E?E?E?を�?E期化す�?E?E?E?E
+		// 画面をクリアする?E?E
 		ClearDrawScreen();
 		int time = GetNowCount();
 
@@ -149,17 +137,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 		else
 		{
-				Master::mpDrawHp->Update();
-				Master::mpCamera->Update();
+				Master::draw_hp_->Update();
+				Master::camera_->Update();
 		
-				Master::mpSceneManager->Update();
-				Master::mpInfClassManager->Update();
+				Master::scene_manager_->Update();
+				Master::inf_class_manager_->Update();
 				EffekseerManager::GetInstance()->Update();
 				EffectPool::GetInstance()->Update();
 		}
 		
-		Master::mpSceneManager->Draw();
-		Master::mpScoreManager->Draw();
+		Master::scene_manager_->Draw();
+		Master::score_manager_->Draw();
 		EffekseerManager::GetInstance()->Draw();
 		EffectPool::GetInstance()->Draw();
 
@@ -168,58 +156,54 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		
 
 
-		//裏画�?E?E?E?�?E?E?E??E?�E?E?E?E??E?E?E?を�?E?E?E?画�?E?E?E?�?E?E?E?�?ぁE
+		// 裏画面の描画内容を表画面に反映
 		if (GetASyncLoadNum() > 0)
 		{
 			DrawFormatString(600, 360, GetColor(255, 255, 255), "NOW LOADING... %d", GetASyncLoadNum());
 		}
 		ScreenFlip();
 
-		//�E�７ミリ秒�?E?E?E?��?E?E?E?��?E間�?E?E?E??E?E?E?�E?E?E??E?�フレー�?�?E?E?E?�?E?E?E?たっ�?E?E?E?合�?E?E?E?�フレー�?当�?E?E??E?��E経過時間
-		//�E�７ミリ秒�?E?E?E?��?E?E?E?��?E間�?E?E?E??E?E?E?�E?E?E??E?�フレー���?E?E?E?たっ�?E?E?E?合�?E?E?E?�フレー�?��?E?E??E?��E経過時間
-		//�E�７ミリ秒�E��E?E間�EE�E?E�フレー��E�Eたっ�E合�E�フレー�当�?E��E経過時間
-		//�E�７ミリ秒�E��E?E間�EE�E?E�フレー���Eたっ�E合�E�フレービ�?E��E経過時間
-		//経過す�E�E�Eこ�IEE�E��
+		// 60FPSを維持するための待機処理（1フレーム約16.6ms）
 		while (GetNowCount() - time < 17)
 		{
-			//�E���けな�E�Eこ�IEE�E何も書か�EぁE
+			// 時間が経過するまで待機
 		}
 
-		//削除す�E�EE��Eあ�E�
+		// 非同期読み込みが完了している場合のみ、削除やシーン遷移を行う
 		if (GetASyncLoadNum() == 0)
 		{
-			//�폜����t���O������I�u�W�F�N�g������΍폜����
-			Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
-			Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
+			//削除するフラグがあるオブジェクトがあれば削除する
+			Master::scene_manager_->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
+			Master::scene_manager_->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
 			ColliderManager::GetInstance()->DeleteAllColliderIfNeeded();
 
-			//���[�v?E���O�ɃV�[���J�ڂ�����Ă���
-			Master::mpSceneManager->ChangeSceneIfNeeded();
+			//ループ?E直前にシーン遷移をいれておく
+			Master::scene_manager_->ChangeSceneIfNeeded();
 		}
 		
 
 		
 	}
-	//終�E�E�E��EE
-	Master::mpSceneManager->Finalize();
-	delete Master::mpSceneManager;
-	Master::mpSoundManager->Finalize();
-	delete Master::mpSoundManager;
-	Master::mpScoreManager->Finalize();
-	delete Master::mpScoreManager;
-	Master::mpCamera->Finalize();
-	delete Master::mpCamera;
-	delete Master::mpResourceManager;
+	// ゲーム終了前の各マネージャーの解放処理
+	Master::scene_manager_->Finalize();
+	delete Master::scene_manager_;
+	Master::sound_manager_->Finalize();
+	delete Master::sound_manager_;
+	Master::score_manager_->Finalize();
+	delete Master::score_manager_;
+	Master::camera_->Finalize();
+	delete Master::camera_;
+	delete Master::resource_manager_;
 
 	ColliderManager::GetInstance()->Finalize();
 
 
 
-	// DXラ�?E?E?E?ブラリ�?E?E?E?用�?E?E?E?終�E?E??E?�E
+	// EffekseerとDxLibの終了処理
 	EffekseerManager::GetInstance()->End();
 	DxLib_End();
 
-	// �?E?E?E?フト�?E?E?E?終�E?E??E?�E
+	// プログラムを正常終了する
 	return 0;
 }
 

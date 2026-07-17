@@ -8,28 +8,33 @@
 class Combo:public Object2D
 {
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Combo();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Combo();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void HitAddCombo();
 
 private:
-	int mnCombo;
+	int combo_;
 	int handle;
-	Texture* mpTexture0;
-	Texture* mpTexture1;
-	Texture* mpTexture2;
-	Texture* mpTexture3;
-	Texture* mpTexture4;
-	Texture* mpTexture5;
-	Texture* mpTexture6;
-	Texture* mpTexture7;
-	Texture* mpTexture8;
-	Texture* mpTexture9;
+	Texture* texture0_;
+	Texture* texture1_;
+	Texture* texture2_;
+	Texture* texture3_;
+	Texture* texture4_;
+	Texture* texture5_;
+	Texture* texture6_;
+	Texture* texture7_;
+	Texture* texture8_;
+	Texture* texture9_;
 
 };

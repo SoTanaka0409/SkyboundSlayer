@@ -1,10 +1,17 @@
 ﻿#include"InputManager.h"
 #include"DxLib.h"
 
-int InputManager::mDownBuffer[256] = { 0 };
-int InputManager::mUpBuffer[256] = { 0 };
-int InputManager::mMouseDownBuffer = 0;
+int InputManager::down_buffer_[256] = { 0 };
+int InputManager::up_buffer_[256] = { 0 };
+int InputManager::mouse_down_buffer_ = 0;
 
+
+/*
+ * 目的（InputManagerのコンストラクタ）
+ * [入力] なし
+ * [出力] なし
+ * [副作用] なし
+ */
 InputManager::InputManager()
 {
 
@@ -24,13 +31,13 @@ int InputManager::CheckDownKey(int KeyCode)
 	int keyState = CheckHitKey(KeyCode);
 	
 	//前回キーが押されておらず、現在キーが押されていたら
-	if (mDownBuffer[KeyCode] == 0 && keyState == 1)
+	if (down_buffer_[KeyCode] == 0 && keyState == 1)
 	{
 		result = 1;
 	}
 
 	//現在のキーの状態をバッファに格納
-	mDownBuffer[KeyCode] = keyState;
+	down_buffer_[KeyCode] = keyState;
 	return result;
 }
 int InputManager::CheckPressKey(int KeyCode)
@@ -41,14 +48,21 @@ int InputManager::CheckMouseClickLeft()
 {
 	int result = 0;
 	int mouseState = GetMouseInput() & MOUSE_INPUT_LEFT;
-	if (mMouseDownBuffer == 0 && mouseState != 0)
+	if (mouse_down_buffer_ == 0 && mouseState != 0)
 	{
 		result = 1;
 	}
-	mMouseDownBuffer = mouseState;
+	mouse_down_buffer_ = mouseState;
 	return result;
 }
 
+
+/*
+ * 目的（マウスの座標を取得するため）
+ * [入力] int& x, int& y
+ * [出力] なし
+ * [副作用] 引数への代入
+ */
 void InputManager::GetMousePos(int& x, int& y)
 {
 	GetMousePoint(&x, &y);

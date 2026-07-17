@@ -32,21 +32,27 @@ public:
 
 
 public:
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Effect();
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime);
-	bool IsActive() const { return mActive; }
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	bool IsActive() const { return active_; }
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Effect();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
 
+    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
 
 private:
-	bool mActive;
+	bool active_;
 
-	int mnGraphHandle;  //画像ハンドル
-	EffectInfo* mpEffect;  //エフェクトのデータ
+	int graph_handle_;  //画像ハンドル
+	EffectInfo* effect_;  //エフェクトのデータ
 
 	const int SPEED_RAND_MAX = 550;//速度の最大乱数地
 	const int SPEED_RAND_MIN = 200;//策殿最小覧数値

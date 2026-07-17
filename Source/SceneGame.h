@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "Scene.h"
 #include "GameManager.h"
 #include "EnemyManager.h"
@@ -6,13 +6,19 @@
 class SceneGame : public Scene
 {
 public:
-	SceneGame(GameManager::Difficulty diff = GameManager::Difficulty::kNormal);
-	virtual ~SceneGame();
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	SceneGame(GameManager::Difficulty diff = GameManager::Difficulty::kNormal);
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual ~SceneGame();
 
-	virtual void Initialize() override;
-	virtual void Update() override;
-	virtual void Draw() override;
-	virtual void Finalize() override;
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Initialize() override;
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Update() override;
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Draw() override;
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	virtual void Finalize() override;
 
 	/*
 	 * Checks whether the game is in a shop phase.
@@ -20,7 +26,8 @@ public:
 	 * [Output] true when the current phase is a shop phase
 	 * [Side effects] none
 	 */
-	bool IsShopPhase() const;
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	bool IsShopPhase() const;
 
 	/*
 	 * Checks whether the game is in a battle phase.
@@ -28,7 +35,8 @@ public:
 	 * [Output] true when the current phase is a battle phase
 	 * [Side effects] none
 	 */
-	bool IsBattlePhase() const;
+    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
+    	bool IsBattlePhase() const;
 
 	GameManager* game_manager_;
 	EnemyManager* enemy_manager_;

@@ -1,34 +1,48 @@
-#include"Model.h"
+﻿#include"Model.h"
 #include"AttachmentModel.h"
 #include"Master.h"
 
+
+/*
+ * 目的（ModelのModel処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
     : position_(initPos)
-    , mpAttachment(nullptr)
+    , attachment_(nullptr)
     , mvScale(VGet(1.0f, 1.0f, 1.0f))
-    , mnChangeTextureHandle(-1)
-    ,isSeparate(isSeparateAnimation)
+    , change_texture_handle_(-1)
+    ,is_separate_(isSeparateAnimation)
 {
-    mnHandle = Master::mpResourceManager->LoadModel(filename.c_str());
+    handle_ = Master::resource_manager_->LoadModel(filename.c_str());
 
 
     if (isSeparateAnimation)
     {
-        mpSeparateAnimation = new SeparateModelAnimation(mnHandle);
-        mpAnimation = nullptr;
+        separate_animation_ = new SeparateModelAnimation(handle_);
+        animation_ = nullptr;
     }
     else
     {
-        mpAnimation = new ModelAnimation(mnHandle);
-        mpSeparateAnimation = nullptr;
+        animation_ = new ModelAnimation(handle_);
+        separate_animation_ = nullptr;
     }
 }
 
+
+/*
+ * 目的（ModelのAddAnimation処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::AddAnimation(AnimationState state, std::string filename)
 {
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        mpSeparateAnimation->AddAnimation(state, filename);
+        separate_animation_->AddAnimation(state, filename);
     }
 }
 
@@ -36,160 +50,230 @@ Model::~Model()
 {
 
 
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        delete mpSeparateAnimation;
-        mpSeparateAnimation = nullptr;
+        delete separate_animation_;
+        separate_animation_ = nullptr;
     }
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        delete mpAnimation;
-        mpAnimation = nullptr;
-    }
-
-    if (mpAttachment != nullptr)
-    {
-        mpAttachment->SetDeleteFlag(true);
+        delete animation_;
+        animation_ = nullptr;
     }
 
-    if (mnChangeTextureHandle != -1)
+    if (attachment_ != nullptr)
     {
-        DeleteGraph(mnChangeTextureHandle);
-        mnChangeTextureHandle = -1;
+        attachment_->SetDeleteFlag(true);
     }
 
-    if (mnHandle != -1) { 
-        MV1DeleteModel(mnHandle); 
-        mnHandle = -1;
+    if (change_texture_handle_ != -1)
+    {
+        DeleteGraph(change_texture_handle_);
+        change_texture_handle_ = -1;
+    }
+
+    if (handle_ != -1) { 
+        MV1DeleteModel(handle_); 
+        handle_ = -1;
     }
 }
 
+
+/*
+ * 目的（ModelのUpdate処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::Update()
 {
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        mpAnimation->Update();
+        animation_->Update();
     }
 
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        mpSeparateAnimation->Update();
+        separate_animation_->Update();
     }
 
-    MV1SetPosition(mnHandle, position_);
+    MV1SetPosition(handle_, position_);
 
     
 
-    MV1SetRotationXYZ(mnHandle, rotation_);
+    MV1SetRotationXYZ(handle_, rotation_);
 }
 
+
+/*
+ * 目的（ModelのDraw処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::Draw()
 {
-    MV1DrawModel(mnHandle);
+    MV1DrawModel(handle_);
 }
 
+
+/*
+ * 目的（ModelのChangeAnimation処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::ChangeAnimation(AnimationState state)
 {
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        mpAnimation->ChangeAnimation(state);
+        animation_->ChangeAnimation(state);
     }
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        mpSeparateAnimation->ChangeAnimation(state);
+        separate_animation_->ChangeAnimation(state);
     }
 }
 
+
+/*
+ * 目的（ModelのSetLoop処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::SetLoop(bool loop)
 {
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        mpAnimation->SetLoop(loop);
+        animation_->SetLoop(loop);
     }
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        mpSeparateAnimation->SetLoop(loop);
+        separate_animation_->SetLoop(loop);
     }
 }
 
+
+/*
+ * 目的（ModelのSetLoopFinishState処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::SetLoopFinishState(AnimationState state)
 {
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        mpAnimation->SetLoopFinishState(state);
+        animation_->SetLoopFinishState(state);
     }
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        mpSeparateAnimation->SetLoopFinishState(state);
+        separate_animation_->SetLoopFinishState(state);
     }
 }
 
+
+/*
+ * 目的（ModelのSetAnimationBlend処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::SetAnimationBlend(bool isBlend)
 {
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        mpAnimation->SetAnimationBlend(isBlend);
+        animation_->SetAnimationBlend(isBlend);
     }
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        mpSeparateAnimation->SetAnimationBlend(isBlend);
+        separate_animation_->SetAnimationBlend(isBlend);
     }
 }
 
+
+/*
+ * 目的（ModelのGetNowState処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 AnimationState Model::GetNowState()
 {
     AnimationState ret = AnimationState::ANIMATION_MAX;
 
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        ret = mpAnimation->GetNowState();
+        ret = animation_->GetNowState();
     }
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        ret = mpSeparateAnimation->GetNowState();
+        ret = separate_animation_->GetNowState();
     }
 
     return ret;
 }
 
+
+/*
+ * 目的（ModelのIsAnimationLoopFinish処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 bool Model::IsAnimationLoopFinish()
 {
 
     bool ret = false;
 
-    if (mpAnimation != nullptr)
+    if (animation_ != nullptr)
     {
-        ret = mpAnimation->IsLoopFinish();
+        ret = animation_->IsLoopFinish();
     }
-    if (mpSeparateAnimation != nullptr)
+    if (separate_animation_ != nullptr)
     {
-        ret = mpSeparateAnimation->IsLoopFinish();
+        ret = separate_animation_->IsLoopFinish();
     }
 
     return ret;
 }
 
 
+
+/*
+ * 目的（ModelのAddAttachment処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos, VECTOR offsetRot)
 {
-    if (mpAttachment != nullptr)
+    if (attachment_ != nullptr)
     {
-        mpAttachment->SetDeleteFlag(true);
-        mpAttachment = nullptr;
+        attachment_->SetDeleteFlag(true);
+        attachment_ = nullptr;
     }
-    int frameIndex = MV1SearchFrame(mnHandle, attachFrameName.c_str());
+    int frameIndex = MV1SearchFrame(handle_, attachFrameName.c_str());
     if (frameIndex != -1)
     {
-        mpAttachment = new AttachmentModel(filename, mnHandle, frameIndex, offsetPos, offsetRot);
+        attachment_ = new AttachmentModel(filename, handle_, frameIndex, offsetPos, offsetRot);
     }
 }
 
+
+/*
+ * 目的（ModelのGetAttachmentPosition_None処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 {
-    int frameIndex = MV1SearchFrame(mnHandle, attachFrameName.c_str());
+    int frameIndex = MV1SearchFrame(handle_, attachFrameName.c_str());
     if (frameIndex != -1)
     {
-        return MV1GetFramePosition(mnHandle, frameIndex);
+        return MV1GetFramePosition(handle_, frameIndex);
     }
     return VGet(0.0f, 30.0f, 0.0f);
 }
@@ -197,13 +281,20 @@ VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 
 
 
+
+/*
+ * 目的（ModelのGetAttachmentPosition処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 VECTOR Model::GetAttachmentPosition()
 {
-    if (mpAttachment != nullptr)
+    if (attachment_ != nullptr)
     {
         VECTOR vec = VGet(0.0f, -50.0f, 0.0f);
 
-        MATRIX matrix = MV1GetFrameLocalWorldMatrix(mpAttachment->GetHandle(), 0);
+        MATRIX matrix = MV1GetFrameLocalWorldMatrix(attachment_->GetHandle(), 0);
 
         vec = VTransform(vec, matrix);
 
@@ -216,20 +307,34 @@ VECTOR Model::GetAttachmentPosition()
 
 
 
+
+/*
+ * 目的（ModelのSetScale処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::SetScale(VECTOR scale)
 {
-    MV1SetScale(mnHandle, scale);
+    MV1SetScale(handle_, scale);
 }
 
+
+/*
+ * 目的（ModelのSetTexture処理を行うため）
+ * [入力] 引数参照
+ * [出力] 戻り値参照
+ * [副作用] クラス内部状態の変更など
+ */
 void Model::SetTexture(std::string filename, int index)
 {
-    if (mnChangeTextureHandle != -1)
+    if (change_texture_handle_ != -1)
     {
-        DeleteGraph(mnChangeTextureHandle);
+        DeleteGraph(change_texture_handle_);
     }
 
-    mnChangeTextureHandle = Master::mpResourceManager->LoadGraphics(filename);
+    change_texture_handle_ = Master::resource_manager_->LoadGraphics(filename);
 
-    MV1SetTextureGraphHandle(mnHandle, index, mnChangeTextureHandle, FALSE);
+    MV1SetTextureGraphHandle(handle_, index, change_texture_handle_, FALSE);
 }
 

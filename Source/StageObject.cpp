@@ -1,7 +1,14 @@
-ï»¿#include"StageObject.h"
+#include"StageObject.h"
 
+
+/*
+ * –Ú“IiStageObject‚ÌStageObjectˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 StageObject::StageObject(VECTOR initPos, std::string filename, VECTOR scale, std::string textureFilename, float hitRadius, float yOffset)
-	:Object3D(initPos), mfHitRadius(hitRadius), mbHasFollowedTerrain(false), mYOffset(yOffset)
+	:Object3D(initPos), hit_radius_(hitRadius), has_followed_terrain_(false), y_offset_(yOffset)
 {
 	model_ = new Model(filename, initPos, false);
 	model_->SetScale(scale);
@@ -20,18 +27,32 @@ StageObject::~StageObject()
 	
 }
 
+
+/*
+ * –Ú“IiStageObject‚ÌUpdateˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void StageObject::Update()
 {
-	if (!mbHasFollowedTerrain)
+	if (!has_followed_terrain_)
 	{
 		TerrainFollow();
-		position_.y += mYOffset;
-		mbHasFollowedTerrain = true;
-	} // è¨ï½°è –ï½¢ï½¼åŒ»ã›ç¹ç¹ï½¼ç¹§ï½¸ï½¼å³¨ï½®é¬®å€¥ï¼†ç¸ºï½«è±ï½¿ç¸ºç¹§åŒ»â‰§ç¸ºï½«é–¾ï½ªéœ„ï½«ç¸ºï½®position_ç¹§å‘ˆå³©è­ï½°
-	model_->SetPosition(position_); // è­–ï½´è­ï½°ç¸ºè¼”ï½Œç¸ºæº·ï½ºï½§è®“å¶ï½’ç¹ï½¢ç¹ç¹ï½«ç¸ºï½«èœ¿è‚´ä¸
+		position_.y += y_offset_;
+		has_followed_terrain_ = true;
+	} // åœ°å½¢¼ˆã‚¹ãƒãƒ¼ã‚¸¼‰ã®é«˜ã•ã«æ²¿ãã‚ˆã†ã«è‡ªèº«ã®position_ã‚’æ›´æ–°
+	model_->SetPosition(position_); // æ›´æ–°ã•ã‚ŒãŸåº§æ¨™ã‚’ãƒ¢ãƒãƒ«ã«åæ˜ 
 	model_->Update();
 }
 
+
+/*
+ * –Ú“IiStageObject‚ÌDrawˆ—‚ðs‚¤‚½‚ßj
+ * [“ü—Í] ˆø”ŽQÆ
+ * [o—Í] –ß‚è’lŽQÆ
+ * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
+ */
 void StageObject::Draw()
 {
 	model_->Draw();
