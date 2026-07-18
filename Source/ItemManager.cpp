@@ -3,6 +3,7 @@
 #include"ObjectManager.h"
 #include"Buff.h"
 #include"BuffManager.h"
+#include"Player3D.h"
 
 
 /*

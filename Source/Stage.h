@@ -1,41 +1,42 @@
 #pragma once
-#include"Object3D.h"
-#include<string>
-#include"Debug.h"
+#include "Object3D.h"
+#include <string>
+#include "Debug.h"
 
-
-
-class Stage :public Object3D
+// ゲームの足場や壁となるステージ地形を管理するクラス。描画用モデルと物理演算用コライダーモデルを分離して保持する
+class Stage : public Object3D
 {
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	Stage(VECTOR initPos,std::string StageModelName, std::string stageCollsionModelName, VECTOR scale = VGet(-1.0f, -1.0f, -1.0f), std::string textureFilename = "");
+    // 入力: 初期座標, 描画モデルパス, コリジョンモデルパス, スケール, テクスチャパス
+    // 出力: なし / 副作用: 描画用と物理判定用に二つの3Dモデルをロードし、それぞれハンドルを保持する
+    Stage(VECTOR initPos, std::string StageModelName, std::string stageCollsionModelName, VECTOR scale = VGet(-1.0f, -1.0f, -1.0f), std::string textureFilename = "");
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	~Stage();
+    // 入力: なし / 出力: なし
+    // 副作用: ロードした二つの3Dモデルハンドルを破棄し、シーン終了時のメモリリークを防ぐ
+    ~Stage();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Update()override;
+    // 入力: なし / 出力: なし
+    // 副作用: ステージ固有の動的演出があれば更新する（基本は静的な地形のため空実装）
+    void Update() override;
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Draw()override;
+    // 入力: なし / 出力: なし
+    // 副作用: 描画用モデルをワールド座標に配置して描画バッファへ登録する
+    void Draw() override;
 
-	//繧ｹ繝・・繧ｸ縺ｨ繧ｫ繝励そ繝ｫ蝙九→縺ｮ蠖薙◆繧雁愛螳・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r);
+    // 入力: pos1, pos2 (カプセルの両端点), r (半径) / 出力: 衝突したか(bool)
+    // 副作用: なし / 物理判定用モデルを使用して、プレイヤーや敵のカプセル判定との接触を高速に検出する
+    bool CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r);
 
-	//繧ｹ繝・・繧ｸ縺ｨ邱壼・縺ｨ縺ｮ蠖薙◆繧雁愛螳・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	VECTOR CheckHit_Line(VECTOR pos1, VECTOR pos2);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	VECTOR CheckHit_LineDebug(VECTOR pos1, VECTOR pos2);
+    // 入力: pos1, pos2 (線の始点と終点) / 出力: 衝突座標(VECTOR)
+    // 副作用: なし / 地形に対するレイキャストを行い、接地判定や壁のめり込み検知のための着地点を算出する
+    VECTOR CheckHit_Line(VECTOR pos1, VECTOR pos2);
 
+    // 入力: pos1, pos2 / 出力: 衝突座標(VECTOR)
+    // 副作用: 判定結果をデバッグ表示し、レイがどの位置で地形に阻まれたかを可視化する（開発用）
+    VECTOR CheckHit_LineDebug(VECTOR pos1, VECTOR pos2);
 
 private:
-	Debug* debug_;
-	int model_handle_; //繧ｹ繝・・繧ｸ繝｢繝・Ν縺ｮ繝上Φ繝峨Ν
-	int collision_handle_;;//繧ｹ繝・・繧ｸ縺ｮ蟄舌Μ繧ｸ繝ｧ繝ｳ繝｢繝・Ν縺ｮ繝上Φ繝峨Ν
-
-
-
+    Debug* debug_;
+    int model_handle_;     // 画面に描画される高品質な地形3Dモデルのハンドル
+    int collision_handle_; // 物理計算専用の軽量化されたコリジョンモデルのハンドル（描画は行わない）
 };

@@ -1,113 +1,69 @@
-#include"Object3D.h"
-#include"Master.h"
-#include"ObjectManager.h"
-#include"Scene3D.h"
-#include"Scene.h"
-#include"Tree.h"
-#include"StageObject.h"
-#include"Stage.h"
-#include"wall.h"
+#include "Object3D.h"
+#include "Master.h"
+#include "ObjectManager.h"
+#include "Scene3D.h"
+#include "Scene.h"
+#include "Tree.h"
+#include "StageObject.h"
+#include "Stage.h"
+#include "wall.h"
 
-
-
-
-/*
- * 目的（Object3DのObject3D処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：initPos = 初期座標
+// 出力：なし
+// 副作用：生成されたインスタンスを現在のシーンのオブジェクトマネージャーへ登録
 Object3D::Object3D(VECTOR initPos)
-	:position_(initPos)
+	: position_(initPos)
 	, rotation_(VGet(0.0f, 0.0f, 0.0f))
 	, delete_flag_(false)
 	, tag_(Tag3D::None3D)
-	,draw_flag_(true)
+	, draw_flag_(true)
 {
-	//迴ｾ蝨ｨ縺ｮ繧ｷ繝ｼ繝ｳ縺ｮobjectManager縺ｫ閾ｪ菫｡ｼthis)繧定ｿｽ蜉縺吶ｋ
 	Master::scene_manager_->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
-//繝繧ｹ繝医Λ繧ｯ繧ｿ
 Object3D::~Object3D()
 {
-
 }
-//謠冗判
 
-/*
- * 目的（Object3DのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：なし
+// 副作用：なし
 void Object3D::Draw()
 {
-
 }
 
-//譖ｴ譁ｰ
-
-/*
- * 目的（Object3DのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：なし
+// 副作用：なし
 void Object3D::Update()
 {
-
 }
 
-
-/*
- * 目的（Object3DのOnEnter処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
+// 副作用：衝突開始時の処理（必要に応じて派生クラスでオーバーライド）
 void Object3D::OnEnter(Collider* collider, Collider* check)
 {
-
 }
 
-
-/*
- * 目的（Object3DのOnTrigger処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
+// 副作用：衝突継続時の処理（必要に応じて派生クラスでオーバーライド）
 void Object3D::OnTrigger(Collider* collider, Collider* check)
 {
-
 }
 
-
-/*
- * 目的（Object3DのOnExit処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
+// 副作用：衝突終了時の処理（必要に応じて派生クラスでオーバーライド）
 void Object3D::OnExit(Collider* collider, Collider* check)
 {
-
 }
 
-
-
-/*
- * 目的（Object3DのTerrainFollow処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：カプセル/ライン判定用パラメータ, gravity = 重力値
+// 出力：なし
+// 副作用：現在の座標（position_）をステージの高さにスナップ、または障害物との衝突による座標押し出し
 void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float capsuleRadius, float lineTopY, float lineBottomY, float gravity)
 {
 	VECTOR hit_pos_ = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
-	
+
+	// アーキテクチャ設計：全オブジェクトが共通して利用できる地形追従処理を基底クラスに集約することで、キャラクターの接地処理や障害物のめり込み防止を各クラスで再実装する手間を省く
 	const auto& objList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
 	for (int i = 0; i < objList.size(); i++)
 	{
@@ -125,6 +81,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 		}
 	}
 
+	// 物理挙動：接地判定時は地形の高さを反映し、非接地時は重力による落下処理を適用することで、物理エンジンなしでも自然な接地感を担保
 	if (isHit)
 	{
 		position_.y = hit_pos_.y;
@@ -134,13 +91,12 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 		position_.y -= gravity;
 		if (position_.y <= 0.0f || position_.y <= hit_pos_.y)
 		{
-			// Player uses hit_pos_.y even if not hit (it's 0.0f).
 			position_.y = (hit_pos_.y > 0.0f) ? hit_pos_.y : position_.y;
-			if(position_.y < 0.0f) position_.y = 0.0f;
+			if (position_.y < 0.0f) position_.y = 0.0f;
 		}
 	}
 
-	// StageObjectｼ域惠繧蟯ｩ縺ｪ縺ｩｼ峨→縺ｮ繧ｹ繝ｩ繧､繝牙愛螳
+	// 衝突解決：ステージオブジェクト（小物など）との物理的な重なりを検知し、距離の逆数を用いた押し出し処理でオブジェクト同士のめり込みを即座に解消
 	if (tag_ != Object3D::Tag3D_Object && tag_ != Object3D::Tag3D_Stage)
 	{
 		const auto& objs = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
@@ -152,12 +108,12 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 				VECTOR objPos = stObj->GetPosition();
 				float objRadius = stObj->GetHitRadius();
 				float myRadius = capsuleRadius;
-				
+
 				float dx = position_.x - objPos.x;
 				float dz = position_.z - objPos.z;
 				float distSq = dx * dx + dz * dz;
 				float hitDist = objRadius + myRadius;
-				
+
 				if (distSq > 0.0001f && distSq < hitDist * hitDist)
 				{
 					float dist = sqrtf(distSq);

@@ -14,20 +14,17 @@ public:
     // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void Update();  // 更新
 
-    // ★New★
-    // note: mixamo でモーションをダウンロードすると、
-    //       0番目のモーションデータはダミーが入っているらしいので、
-    //       デフォルトで適用するインデックスを 1 にしておく
+   
     // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void ChangeAnimation(AnimationState state, int index = 0); // モーション切り替え処理
 
-    // ★New★
+   
     // モーションデータの追加
     // note: 分割されているモーションをデータとして登録する。
     // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void AddAnimation(AnimationState state, std::string filename);
 
-    // ★New★
+   
     // 対応したモーションハンドルの取得
     // note: vector配列にデータが格納されているため、
     //       毎回ハンドルを検索する手間が出てきてしまうので、

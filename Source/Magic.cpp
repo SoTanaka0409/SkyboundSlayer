@@ -1,4 +1,4 @@
-ï»¿#include"Magic.h"
+#include"Magic.h"
 #include"SphereCollider.h"
 #include"CapsuleCollider.h"
 #include"Master.h"
@@ -7,27 +7,25 @@
 #include"Effect.h"
 #include "EffectPool.h"
 
-
 /*
- * ç›®çš„ï¼ˆMagicã®Magicå‡¦ç†ã‚’è¡Œã†ãŸã‚ï¼‰
- * [å…¥åŠ›] å¼•æ•°å‚ç…§
- * [å‡ºåŠ›] æˆ»ã‚Šå€¤å‚ç…§
- * [å‰¯ä½œç”¨] ã‚¯ãƒ©ã‚¹å†…éƒ¨çŠ¶æ…‹ã®å¤‰æ›´ãªã©
+ * –‚–@’e‚Ì‰Šú‰»‚ğs‚¤B
+ * [“ü—Í] filename:‰æ‘œƒpƒX, initPos:‰ŠúˆÊ’u, r:•\¦ƒTƒCƒY‚Æ”»’è”¼Œa, damage:UŒ‚—Í, speed:ˆÚ“®‘¬“x, movevec:ˆÚ“®•ûŒü, count:‰Šúõ–½, time:Å‘åõ–½
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‰æ‘œ‚Æ“–‚½‚è”»’è‚ğ¶¬‚·‚é
  */
-Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float speed,VECTOR movevec, int count, int time)
+Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time)
 	:Object3D(initPos)
-	,speed_(speed)
-	,mfAttack_chara(damage)
-	,magic_size_(r)
-	,move_vec_(movevec)
-	,DeleteCount(count)
-	,DeleteTime(time)
-	,Filename(filename)
-	,attack_(0)
+	, speed_(speed)
+	, mfAttack_chara(damage)
+	, magic_size_(r)
+	, move_vec_(movevec)
+	, DeleteCount(count)
+	, DeleteTime(time)
+	, Filename(filename)
+	, attack_(0)
 {
 	graph_handle_ = LoadGraph(filename.c_str());
 	hit_collider_ = new SphereCollider(this, position_, magic_size_);
-	
 }
 
 Magic::~Magic()
@@ -35,12 +33,11 @@ Magic::~Magic()
 	DeleteGraph(graph_handle_);
 }
 
-
 /*
- * ç›®çš„ï¼ˆMagicã®Drawå‡¦ç†ã‚’è¡Œã†ãŸã‚ï¼‰
- * [å…¥åŠ›] å¼•æ•°å‚ç…§
- * [å‡ºåŠ›] æˆ»ã‚Šå€¤å‚ç…§
- * [å‰¯ä½œç”¨] ã‚¯ãƒ©ã‚¹å†…éƒ¨çŠ¶æ…‹ã®å¤‰æ›´ãªã©
+ * –‚–@’e‚ğƒrƒ‹ƒ{[ƒh‚Æ‚µ‚Ä•`‰æ‚·‚éB
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] •`‰æƒuƒŒƒ“ƒhƒ‚[ƒh‚ğˆê“I‚É•ÏX‚·‚é
  */
 void Magic::Draw()
 {
@@ -49,42 +46,38 @@ void Magic::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-
 /*
- * ç›®çš„ï¼ˆMagicã®Updateå‡¦ç†ã‚’è¡Œã†ãŸã‚ï¼‰
- * [å…¥åŠ›] å¼•æ•°å‚ç…§
- * [å‡ºåŠ›] æˆ»ã‚Šå€¤å‚ç…§
- * [å‰¯ä½œç”¨] ã‚¯ãƒ©ã‚¹å†…éƒ¨çŠ¶æ…‹ã®å¤‰æ›´ãªã©
+ * –‚–@’e‚Ìõ–½‚ÆˆÚ“®‚ğXV‚·‚éB
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] õ–½“’B‚É©g‚ğíœ‘ÎÛ‚É‚·‚é
  */
 void Magic::Update()
 {
 	DeleteCount++;
 	Move();
-	if (DeleteCount > DeleteTime)//è­ã‚‹ä¿£é‚¨ç¢â„ƒç¸ºï½§è±¸åŒ»âˆ´ç¹§ä¹ï½ˆç¸ºãƒ»â†“ç¸ºå¶ï½‹
+	if (DeleteCount > DeleteTime)
 	{
 		Death();
 	}
 }
 
-
 /*
- * ç›®çš„ï¼ˆMagicã®Moveå‡¦ç†ã‚’è¡Œã†ãŸã‚ï¼‰
- * [å…¥åŠ›] å¼•æ•°å‚ç…§
- * [å‡ºåŠ›] æˆ»ã‚Šå€¤å‚ç…§
- * [å‰¯ä½œç”¨] ã‚¯ãƒ©ã‚¹å†…éƒ¨çŠ¶æ…‹ã®å¤‰æ›´ãªã©
+ * –‚–@’e‚ğis•ûŒü‚ÖˆÚ“®‚³‚¹‚éB
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] position_‚ğXV‚·‚é
  */
 void Magic::Move()
 {
 	position_ = VAdd(position_, VScale(move_vec_, speed_));
-	
 }
 
-
 /*
- * ç›®çš„ï¼ˆMagicã®Deathå‡¦ç†ã‚’è¡Œã†ãŸã‚ï¼‰
- * [å…¥åŠ›] å¼•æ•°å‚ç…§
- * [å‡ºåŠ›] æˆ»ã‚Šå€¤å‚ç…§
- * [å‰¯ä½œç”¨] ã‚¯ãƒ©ã‚¹å†…éƒ¨çŠ¶æ…‹ã®å¤‰æ›´ãªã©
+ * –‚–@’e‚ğíœ‘ÎÛ‚É‚·‚éB
+ * [“ü—Í] ‚È‚µ
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ’…’eƒGƒtƒFƒNƒg‚ğÄ¶‚µA©g‚Æ“–‚½‚è”»’è‚Ìíœƒtƒ‰ƒO‚ğ—§‚Ä‚é
  */
 void Magic::Death()
 {
@@ -92,31 +85,33 @@ void Magic::Death()
 	SetDeleteFlag(true);
 	hit_collider_->SetDeleteFlag(true);
 }
-void Magic::OnEnter(Collider* collider, Collider* check)//èŸ¾ï½¦è››ï½´.
-{
-	
-}
-
 
 /*
- * ç›®çš„ï¼ˆMagicã®OnTriggerå‡¦ç†ã‚’è¡Œã†ãŸã‚ï¼‰
- * [å…¥åŠ›] å¼•æ•°å‚ç…§
- * [å‡ºåŠ›] æˆ»ã‚Šå€¤å‚ç…§
- * [å‰¯ä½œç”¨] ã‚¯ãƒ©ã‚¹å†…éƒ¨çŠ¶æ…‹ã®å¤‰æ›´ãªã©
+ * ÚGŠJn‚ÌÕ“Ëˆ—‚ğs‚¤B
+ * [“ü—Í] collider:©•ª‚Ì“–‚½‚è”»’è, check:ÚG‘Šè
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
+ */
+void Magic::OnEnter(Collider* collider, Collider* check)
+{
+}
+
+/*
+ * ÚG’†‚ÌÕ“Ëˆ—‚ğs‚¤B
+ * [“ü—Í] collider:©•ª‚Ì“–‚½‚è”»’è, check:ÚG‘Šè
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
  */
 void Magic::OnTrigger(Collider* collider, Collider* check)
-{//è –è–™â—†ç¸ºï½£ç¸ºæº½æ¤ªé«¢è–™ãƒ»èœƒï½¦é€…ãƒ»
-	
+{
 }
 
-
 /*
- * ç›®çš„ï¼ˆMagicã®OnExitå‡¦ç†ã‚’è¡Œã†ãŸã‚ï¼‰
- * [å…¥åŠ›] å¼•æ•°å‚ç…§
- * [å‡ºåŠ›] æˆ»ã‚Šå€¤å‚ç…§
- * [å‰¯ä½œç”¨] ã‚¯ãƒ©ã‚¹å†…éƒ¨çŠ¶æ…‹ã®å¤‰æ›´ãªã©
+ * ÚGI—¹‚ÌÕ“Ëˆ—‚ğs‚¤B
+ * [“ü—Í] collider:©•ª‚Ì“–‚½‚è”»’è, check:ÚG‘Šè
+ * [o—Í] ‚È‚µ
+ * [•›ì—p] ‚È‚µ
  */
 void Magic::OnExit(Collider* collider, Collider* check)
 {
-	
 }

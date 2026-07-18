@@ -5,97 +5,83 @@
 #include "ModelAnimation.h"
 #include "SeparateModelAnimation.h"
 
-// 蜑肴婿螳｣險
 class AttachmentModel;
 
-
+// DxLibの3Dモデル表示をラップし、姿勢制御、武器などのボーン追従（アタッチメント）、およびアニメーション管理を統括するクラス
 class Model
 {
 public:
-
-    // 笘・ew笘・
-    // 繧ｳ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
-    // note: 蛻・牡繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧剃ｽｿ縺・°縺ｩ縺・°縺ｮ險ｭ螳壹ｒ霑ｽ蜉縲・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    // 入力: filename(モデルパス), initPos(初期座標), isSeparateAnimation(分離アニメ管理フラグ)
+    // 出力: なし / 副作用: 3DモデルのVRAMロードと、アニメーションデータが本体同梱か別ファイルかに応じた管理クラスの初期化を行う
     Model(std::string filename, VECTOR initPos, bool isSeparateAnimation = false);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    ~Model();   // 繝・せ繝医Λ繧ｯ繧ｿ
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    void Update();  // 譖ｴ譁ｰ
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    void Draw();    // 謠冗判
+    // 入力: なし / 出力: なし
+    // 副作用: アニメーション管理インスタンスやアタッチメントモデル、自身のモデルハンドルを破棄しメモリリークを防ぐ
+    ~Model();
 
-    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ蛻・ｊ譖ｿ縺・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    // 入力: なし / 出力: なし
+    // 副作用: アニメーションの再生時間を進め、アタッチメント（武器等）の座標を親モデルの指定ボーン位置に同期させる
+    void Update();
+
+    // 入力: なし / 出力: なし
+    // 副作用: 更新された座標・姿勢・アニメーション情報を適用し、3Dモデルを描画バッファへ登録する
+    void Draw();
+
+    // 入力: state (再生したいアニメーション状態) / 出力: なし
+    // 副作用: 待機から走りなどへアニメーションを切り替える（ブレンド有効時はフレーム間を補間して滑らかに遷移させる）
     void ChangeAnimation(AnimationState state);
-    // 繝ｫ繝ｼ繝苓ｨｭ螳・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
     void SetLoop(bool loop);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void SetLoopFinishState(AnimationState state);
-    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝悶Ξ繝ｳ繝芽ｨｭ螳・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+    // 入力: isBlend (補間の有効化フラグ) / 出力: なし
+    // 副作用: モーション切り替え時の急な姿勢変化（カクつき）を防ぐためのブレンド処理のON/OFFを切り替える
     void SetAnimationBlend(bool isBlend);
-    // 迴ｾ蝨ｨ蜀咲函縺輔ｌ縺ｦ縺・ｋ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ蜿門ｾ・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
     AnimationState GetNowState();
-    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝ｫ繝ｼ繝励′邨ゆｺ・＠縺ｦ縺・ｋ縺九←縺・° 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+    // 入力: なし / 出力: ループ終了済みか(bool) / 副作用: なし
+    // 攻撃モーションの終了検知など、次のアクションへステートを遷移させるための同期トリガーとして使用する
     bool IsAnimationLoopFinish();
 
-
-    // 繧｢繧ｿ繝・メ繝｢繝・Ν髢｢騾｣ //
-    // 繧｢繧ｿ繝・メ繝｡繝ｳ繝医ｒ霑ｽ蜉
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    // 入力: filename(アタッチするモデルのパス), attachFrameName(追従先ボーン名), offsetPos, offsetRot / 出力: なし
+    // 副作用: キャラクターの右手（指定フレーム）などに連動して動く武器や装飾品モデルを動的生成し、親子関係を構築する
     void AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos = VGet(0.0f, 0.0f, 0.0f), VECTOR offsetRot = VGet(0.0f, 0.0f, 0.0f));
-    
-   
-    // 繧｢繧ｿ繝・メ繝｢繝・Ν縺ｮ蠎ｧ讓吝叙蠕・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+    // 入力: なし / 出力: アタッチメントの現在ワールド座標 / 副作用: なし
+    // 剣の切っ先の位置を取得して攻撃判定（コライダー）を生成する際などに使用する
     VECTOR GetAttachmentPosition();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     VECTOR GetAttachmentPosition_None(std::string attachFrameName);
 
+    VECTOR GetPosition() { return position_; }
+    void SetPosition(VECTOR pos) { position_ = pos; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    VECTOR GetPosition() { return position_; } // 蠎ｧ讓吝叙蠕・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    void SetPosition(VECTOR pos) { position_ = pos; }  // 蠎ｧ讓呵ｨｭ螳・
+    VECTOR GetRotation() { return rotation_; }
+    void SetRotation(VECTOR rot) { rotation_ = rot; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    VECTOR GetRotation() { return rotation_; } // 蝗櫁ｻ｢蜿門ｾ・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    void SetRotation(VECTOR rot) { rotation_ = rot; }  // 蝗櫁ｻ｢險ｭ螳・
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void SetScale(VECTOR scale);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+    // 入力: filename(テクスチャパス), index(マテリアル番号) / 出力: なし
+    // 副作用: 被ダメージ時の点滅や、状態異常時の色変えなどを行うため、指定マテリアルのテクスチャを動的に差し替える
     void SetTexture(std::string filename, int index = 0);
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     bool GetIsSeparate() { return is_separate_; }
 
-    // 笘・ew笘・
-    // 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繝・・繧ｿ縺ｮ霑ｽ蜉
-    // note: SeparateModelAnimation 繧ｯ繝ｩ繧ｹ縺ｸ縺ｮ讖区ｸ｡縺鈴未謨ｰ
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+    // 入力: state(割り当てる状態), filename(モーションファイルのパス) / 出力: なし
+    // 副作用: 分離アニメーション形式の場合、指定した外部モーションファイル(.mv1)を読み込みステートに紐付ける
     void AddAnimation(AnimationState state, std::string filename);
 
-    // 蛻・牡隱ｭ縺ｿ霎ｼ縺ｿ繝舌・繧ｸ繝ｧ繝ｳ縺ｮ繝｢繝・Ν繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧ｯ繝ｩ繧ｹ縺ｮ繝昴う繝ｳ繧ｿ
-    SeparateModelAnimation* separate_animation_;
-    ModelAnimation* animation_;    // 繝｢繝・Ν繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧ｯ繝ｩ繧ｹ縺ｮ繝昴う繝ｳ繧ｿ
+    SeparateModelAnimation* separate_animation_; // モーションが別ファイルに分離されている場合のアニメーション管理クラス
+    ModelAnimation* animation_;                  // モデル本体にモーションが同梱されている場合のアニメーション管理クラス
+
 private:
-    int handle_;   // 隱ｭ縺ｿ霎ｼ繧薙□繝｢繝・Ν縺ｮ繝上Φ繝峨Ν
-    VECTOR position_;  // 蠎ｧ讓・
-    VECTOR rotation_;  // 蝗櫁ｻ｢
-    VECTOR mvScale;
-    int change_texture_handle_;
+    int handle_;                   // DxLib側でロードされた3Dモデルの実体ハンドル
+    VECTOR position_;              // ワールド空間上でのモデルの中心座標
+    VECTOR rotation_;              // モデルのY軸などを基準とした回転（姿勢）
+    VECTOR mvScale;                // モデルの描画スケール（初期サイズ調整や演出での拡縮に使用）
+    int change_texture_handle_;    // 動的差し替え用にロードされたテクスチャのハンドル（破棄管理用）
 
-    bool is_separate_;
+    bool is_separate_;             // アニメーションデータが別ファイルに分かれているモデルかどうかのフラグ
 
-    // 笘・ew笘・
-   
-
-    AttachmentModel* attachment_;  // 繧｢繧ｿ繝・メ繝｢繝・Ν・郁､・焚謖√◆縺帙◆縺・ｴ蜷医・ std::vector 繧・・蛻励〒邂｡逅・☆繧九→濶ｯ縺・ｼ・
+    AttachmentModel* attachment_;  // 武器など、特定のボーンに追従させる別モデル（現状単一だが拡張時はvectorを推奨）
 };

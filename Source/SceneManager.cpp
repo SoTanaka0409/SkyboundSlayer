@@ -7,7 +7,7 @@
 #include "ResultWin.h"
 #include "ColliderManager.h"
 
-
+#include"ResultWin.h"
 /*
  * 目的（SceneManagerのコンストラクタ）
  * [入力] なし

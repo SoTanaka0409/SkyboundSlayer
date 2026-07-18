@@ -8,13 +8,8 @@
 #include "Magic_Ene.h"
 #include "CapsuleCollider.h"
 
-
-/*
- * 目的（EnemyMonsterのEnemyMonster処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：filename = モデルパス, initPos = 初期座標, hp = 体力, speed = 移動速度, HitSize/Serch = コライダー半径, money = ドロップ額, is_separate_anim_ = アニメーション分離フラグ
+// 副作用：各種戦闘パラメータ（攻撃間隔等）の初期設定および着地判定用コライダーの生成
 EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	: Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 	, attack_state_(AttackState::None)
@@ -25,119 +20,81 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	, gravity_(4.0f)
 	, forward_speed_(20.0f)
 {
-	chance_ = 20; // Drop chance
-	attack_interval_ = 120; // 2 seconds between jump attacks
+	chance_ = 20;
+	attack_interval_ = 120; // 戦闘のテンポを担保するため、ジャンプ攻撃のクールダウンを2秒(120f)に設定
 	attack_count_ = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	
-	// モデルが対応していればアニメーションを追加
+
 	if (model_) {
-		model_->SetScale(VGet(3.0f, 3.0f, 3.0f)); // Make it a bit large
-		
+		model_->SetScale(VGet(3.0f, 3.0f, 3.0f));
 		model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
 		model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 		model_->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
 		model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/Model/Jump Attack.mv1");
 	}
 
-	// Landing attack collider (large radius)
+	// レベルデザイン：着地攻撃は範囲が広いため、プレイヤーが回避行動をとるための十分な視覚的猶予を持たせる大きな半径で設定
 	landing_attack_collider_ = new SphereCollider(this, position_, 800.0f);
 }
 
 EnemyMonster::~EnemyMonster()
 {
-	// landing_attack_collider_ is deleted by Object3D/ColliderManager automatically
 }
 
-
-/*
- * 目的（EnemyMonsterのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：なし
+// 出力：なし
+// 副作用：死亡時の演出進行、または攻撃ステートに応じた移動処理とモデル更新の同期
 void EnemyMonster::Update()
 {
-	AnimationState  state = model_->GetNowState();
 	if (is_dead_)
 	{
 		DeathEnemy();
 	}
-	else
+	else if (model_ != nullptr)
 	{
-		if (model_ != nullptr)
-		{
-			Attack();
-			
-			// ジャンプ攻撃中でない場合のみ通常移動
-			if (attack_state_ == AttackState::None)
-			{
-				RotationByMove();
-				Move();
-			}
+		Attack();
 
-			model_->Update();
-			model_->SetPosition(position_);
-			UpdateColliderPosition();
-			landing_attack_collider_->position_ = position_; // Update collider position
+		// 設計ルール：ジャンプ攻撃中は重力と放物線移動で座標が更新されるため、通常移動（Move）を排他制御して動きの破綻を防止
+		if (attack_state_ == AttackState::None)
+		{
+			RotationByMove();
+			Move();
 		}
+
+		model_->Update();
+		model_->SetPosition(position_);
+		UpdateColliderPosition();
+		landing_attack_collider_->position_ = position_;
 	}
 }
 
-
-/*
- * 目的（EnemyMonsterのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：なし
+// 出力：なし
+// 副作用：モデルの描画。デバッグ時のみ物理コライダーと攻撃判定範囲を可視化
 void EnemyMonster::Draw()
 {
-	if (model_ != nullptr)
-	{
-		model_->Draw();
-	}
+	if (model_ != nullptr) model_->Draw();
 
-	// デバッグ描画
 	if (Master::debug_->Getdebug() == true)
 	{
-		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
-			size_,
-			8,
-			GetColor(255, 255, 255),
-			GetColor(255, 255, 255),
-			false
-		);
-		// ジャンプ中の攻撃範囲を描画
+		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)), size_, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
 		if (attack_state_ == AttackState::Jumping || attack_state_ == AttackState::Landing) {
 			DrawSphere3D(position_, 300.0f, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), false);
 		}
 	}
 }
 
-
-/*
- * 目的（EnemyMonsterのAttack処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：なし
+// 出力：なし
+// 副作用：現在の攻撃ステートに基づいた各フェーズ更新メソッドの実行
 void EnemyMonster::Attack()
 {
 	switch (attack_state_)
 	{
-	case AttackState::None:
-		UpdateAttackIdle();
-		break;
-	case AttackState::Charging:
-		UpdateAttackCharging();
-		break;
-	case AttackState::Jumping:
-		UpdateAttackJumping();
-		break;
-	case AttackState::Landing:
-		UpdateAttackLanding();
-		break;
+	case AttackState::None:     UpdateAttackIdle();     break;
+	case AttackState::Charging: UpdateAttackCharging(); break;
+	case AttackState::Jumping:  UpdateAttackJumping();  break;
+	case AttackState::Landing:  UpdateAttackLanding();  break;
 	}
 }
 
@@ -152,25 +109,20 @@ void EnemyMonster::UpdateAttackIdle()
 		SetJumpDirectionToPlayer();
 		return;
 	}
-
 	attack_count_++;
 }
 
 void EnemyMonster::UpdateAttackCharging()
 {
 	charge_timer_++;
-
-	// チャージ中はプレイヤーを狙う
 	target_angle_ = atan2f(go_position_.x, go_position_.z);
 	RotationByMove();
 	model_->ChangeAnimation(ANIMATION_ATTACKJUMP);
 	model_->SetLoop(false);
 	model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-	if (charge_timer_ > 30)
-	{
-		StartJumpAttack();
-	}
+	// UX仕様：プレイヤーに「攻撃が来る」という予兆（テロップやモデルの溜め）を認識させ、回避行動の準備期間として30フレームの硬直を設ける
+	if (charge_timer_ > 30) StartJumpAttack();
 }
 
 void EnemyMonster::UpdateAttackJumping()
@@ -186,7 +138,7 @@ void EnemyMonster::UpdateAttackJumping()
 		attack_state_ = AttackState::Landing;
 		charge_timer_ = 0;
 
-		new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0,0,0), 0, 150);
+		new Magic_Ene("Resource/2d/Damage.png", VAdd(position_, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0, 0, 0), 0, 150);
 	}
 }
 
@@ -242,19 +194,12 @@ void EnemyMonster::StartJumpAttack()
 	forward_speed_ = dist / jumpTime;
 }
 
-
-/*
- * 目的（EnemyMonsterのOnTrigger処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
+// 副作用：着地攻撃時にプレイヤーとの接触を確認し、ダメージ（2倍補正）を適用して被弾フラグを立てる
 void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0) return;
 
-	auto player_ = Master::player_;
-	if (player_ == nullptr) return;
 	Player3D* pPlayer = Master::player_;
 	if (pPlayer == nullptr) return;
 
@@ -262,22 +207,15 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 	{
 		if (collider == landing_attack_collider_ && check == pPlayer->GetCollisionCollider())
 		{
-			pPlayer->Damage(attack_ * 2.0f); // Landing attack deals 2x damage
+			pPlayer->Damage(attack_ * 2.0f);
 			has_landed_hit_ = true;
 		}
 	}
-
-	// 通常の当たり判定のため基底クラスを呼び出し
 	Enemy::OnTrigger(collider, check);
 }
 
-
-/*
- * 目的（EnemyMonsterのDeathEnemy処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：なし
+// 副作用：死亡アニメーションの再生と、完了後の報酬付与・オブジェクト削除
 void EnemyMonster::DeathEnemy()
 {
 	is_dead_ = true;
@@ -292,18 +230,11 @@ void EnemyMonster::DeathEnemy()
 		Delete();
 		SetDeleteFlag(true);
 	}
-	
-	//model_->Draw();
 	model_->Update();
 }
 
-
-/*
- * 目的（EnemyMonsterのDelete処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力：なし
+// 副作用：着地攻撃用コライダーの明示的な破棄
 void EnemyMonster::Delete()
 {
 	Enemy::Delete();
@@ -313,4 +244,3 @@ void EnemyMonster::Delete()
 		landing_attack_collider_ = nullptr;
 	}
 }
-

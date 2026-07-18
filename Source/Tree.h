@@ -36,6 +36,6 @@ private:
 	
 	Model* model_;
 	float size_;
-	int model_handle_; //スチE�EジモチE��のハンドル
+	int model_handle_;
 	bool is_hit_flag_;
 };

@@ -27,7 +27,7 @@ public:
 	void Effect(Item::ItemID id);
 
 
-	std::list<Item::Information*>item_list_;
+	std::list<Item::ItemInformation*>item_list_;
 	Item::ItemInformation Information;
 private:
 

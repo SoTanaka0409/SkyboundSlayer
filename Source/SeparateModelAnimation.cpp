@@ -2,13 +2,8 @@
 #include "DxLib.h"
 #include "SeparateModelAnimation.h"
 
-/*
- * 目的（SeparateModelAnimationのSeparateModelAnimation処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
-// 繧ｳ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
+// 入力: modelHandle (対象の3Dモデルハンドル) / 出力: なし
+// 副作用: アニメーション管理用変数の初期化、および不正アクセスを防ぐための無効値(-1)セット
 SeparateModelAnimation::SeparateModelAnimation(int modelHandle)
     : model_handle_(modelHandle)
     , animation_time_(0.0f)
@@ -16,7 +11,7 @@ SeparateModelAnimation::SeparateModelAnimation(int modelHandle)
     , old_animation_time_(0.0f)
     , old_animation_index_(-1)
     , anim_blend_rate_(1.0f)
-    , state_(AnimationState::ANIMATION_MAX)    // 譛蛻昴・譛螟ｧ蛟､縺ｨ縺励※縺翫￥
+    , state_(AnimationState::ANIMATION_MAX)
     , loop_(true)
     , loop_finish_state_(AnimationState::ANIMATION_MAX)
     , loop_finish_(false)
@@ -25,10 +20,10 @@ SeparateModelAnimation::SeparateModelAnimation(int modelHandle)
 {
 }
 
-// 繝・せ繝医Λ繧ｯ繧ｿ
+// 入力: なし / 出力: なし
+// 副作用: 動的確保したアニメーション情報およびDxLibの追加モデルハンドルの完全破棄（メモリリーク回避）
 SeparateModelAnimation::~SeparateModelAnimation()
 {
-    // 霑ｽ蜉隱ｭ縺ｿ霎ｼ縺ｿ縺励◆繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ蜑企勁
     if (!animation_info_list_.empty())
     {
         for (auto itr = animation_info_list_.begin(); itr != animation_info_list_.end(); )
@@ -46,160 +41,113 @@ SeparateModelAnimation::~SeparateModelAnimation()
     }
 }
 
-// 譖ｴ譁ｰ
-
-/*
- * 目的（SeparateModelAnimationのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 再生時間の進行とループ制御、および旧モーションからの滑らかな遷移（ブレンド）計算の適用
 void SeparateModelAnimation::Update()
 {
-    // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝悶Ξ繝ｳ繝臥紫繧帝ｲ繧√ｋ
+    // モーション切り替え時の不自然なカクつきを防ぐため、徐々にブレンド率を上げる
     if (anim_blend_rate_ < 1.0f)
     {
-        anim_blend_rate_ += 0.1f;    // += 0.1f 縺ｯ繝悶Ξ繝ｳ繝蛾溷ｺｦ縲り・逕ｱ縺ｫ螟峨∴縺ｦ繧Ｐk
+        anim_blend_rate_ += 0.1f;
         if (anim_blend_rate_ > 1.0f)
         {
             anim_blend_rate_ = 1.0f;
         }
     }
 
-
-    // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ譖ｴ譁ｰ
     float fAnimTotalTime = 0.0f;
     if (animation_index_ != -1)
     {
-        // 邱丞・逕滓凾髢薙・蜿門ｾ・
         fAnimTotalTime = MV1GetAttachAnimTotalTime(model_handle_, animation_index_);
-
-        // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧帝ｲ繧√ｋ
         animation_time_ += animation_count_;
 
-        // 繝ｫ繝ｼ繝励＆縺帙ｋ
+        // アニメーションが終端に達した場合のループ処理、または指定された次状態への自動遷移
         if (animation_time_ > fAnimTotalTime)
         {
-            // 繝ｫ繝ｼ繝励＠縺ｪ縺・ｨｭ螳壹〒縺ゅｌ縺ｰ
             if (!loop_)
             {
-                // 谺｡縺ｮ繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺瑚ｨｭ螳壹＆繧後※縺・↑縺・ｴ蜷・
+                // 次の遷移先が未指定の場合は現在位置でアニメーションを停止させる
                 if (loop_finish_state_ == ANIMATION_MAX)
                 {
-                    // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｯ縺薙ｌ莉･荳企ｲ繧√★縲∝・逅・ｒ荳ｭ譁ｭ縺輔○繧・
                     loop_finish_ = true;
                     return;
                 }
 
-                // 繝ｫ繝ｼ繝礼ｵゆｺ・凾縺ｮ繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｸ螟画峩
+                // 待機モーション等へ自動遷移させるため、即時切り替え（ブレンド無効）で適用する
                 ChangeAnimation(loop_finish_state_);
-                // 繝悶Ξ繝ｳ繝峨・縺励↑縺・
                 SetAnimationBlend(false);
-                // 螟画峩縺輔ｌ縺溘・縺ｧ謾ｹ繧√※邱丞・逕滓凾髢薙ｒ縺ｨ縺｣縺ｦ縺翫￥
                 fAnimTotalTime = MV1GetAttachAnimTotalTime(model_handle_, animation_index_);
             }
 
             animation_time_ = 0.0f;
         }
 
-        // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧貞渚譏
         MV1SetAttachAnimTime(model_handle_, animation_index_, animation_time_);
-
-        // 繝悶Ξ繝ｳ繝臥紫繧定ｨｭ螳・
         MV1SetAttachAnimBlendRate(model_handle_, animation_index_, anim_blend_rate_);
     }
 
-    // ・代▽蜑阪・繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧呈峩譁ｰ
+    // ブレンド中の破綻を防ぐため、フェードアウトしていく旧モーション側も並行して時間を進める
     if (old_animation_index_ != -1)
     {
-        // 邱丞・逕滓凾髢薙・蜿門ｾ・
         fAnimTotalTime = MV1GetAttachAnimTotalTime(model_handle_, old_animation_index_);
-
-        // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧帝ｲ繧√ｋ
         old_animation_time_ += animation_count_;
 
-        // 繝ｫ繝ｼ繝励＆縺帙ｋ
         if (old_animation_time_ > fAnimTotalTime)
         {
             old_animation_time_ = 0.0f;
         }
 
-        // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧貞渚譏
         MV1SetAttachAnimTime(model_handle_, old_animation_index_, old_animation_time_);
-
-        // 繝悶Ξ繝ｳ繝臥紫繧定ｨｭ螳・
         MV1SetAttachAnimBlendRate(model_handle_, old_animation_index_, 1.0f - anim_blend_rate_);
     }
 }
 
-// 繝｢繝ｼ繧ｷ繝ｧ繝ｳ蛻・ｊ譖ｿ縺・
-
-/*
- * 目的（SeparateModelAnimationのChangeAnimation処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: state(遷移先状態), index(アタッチするアニメーション番号) / 出力: なし
+// 副作用: 旧モーション状態を退避しつつ新モーションをアタッチし、次フレームからのブレンド遷移を準備する
 void SeparateModelAnimation::ChangeAnimation(AnimationState state, int index)
 {
-    // 蛻・ｊ譖ｿ縺医ｈ縺・→縺励※縺・ｋ繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺後☆縺ｧ縺ｫ險ｭ螳壹＆繧後※縺・ｋ蝣ｴ蜷・
+    // 重複切り替えによるモーションの初期化（巻き戻り）を防ぐための早期リターン
     if (state_ == state)
     {
-        return;     // 菴輔ｂ縺励↑縺・
+        return;
     }
 
-    // 蛻・ｊ譖ｿ縺亥・縺ｮ逡ｪ蜿ｷ繧剃ｿ晄戟
     state_ = state;
-
-    // 繝ｫ繝ｼ繝玲ュ蝣ｱ縺ｮ蛻晄悄蛹・
-    loop_ = true;  // 險ｭ螳壹′迚ｹ縺ｫ縺ｪ縺・ｴ蜷医・繝ｫ繝ｼ繝励＆縺帙ｋ
-    loop_finish_state_ = AnimationState::ANIMATION_MAX;  // 繝ｫ繝ｼ繝礼ｵゆｺ・凾縺ｮ繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｯ迚ｹ縺ｫ縺ｪ縺・
+    loop_ = true;
+    loop_finish_state_ = AnimationState::ANIMATION_MAX;
     loop_finish_ = false;
 
-    // ・代▽蜑阪・繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺梧怏蜉ｹ迥ｶ諷九〒縺ゅｌ縺ｰ
+    // DxLibのアタッチ上限超過を防ぐため、既に用済みの「1つ前の旧モーション」は確実にデタッチする
     if (old_animation_index_ != -1)
     {
-        // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝・ち繝・メ・亥叙繧雁､悶☆・・
         MV1DetachAnim(model_handle_, old_animation_index_);
         old_animation_index_ = -1;
     }
 
-    // 迴ｾ蝨ｨ縺ｮ繝｢繝ｼ繧ｷ繝ｧ繝ｳ迥ｶ諷九ｒ菫晄戟縺吶ｋ
+    // ブレンド用に現在のモーションを「旧モーション」として退避させる
     old_animation_index_ = animation_index_;
     old_animation_time_ = animation_time_;
 
-    // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繧｢繧ｿ繝・メ (NameSearch 繧・TRUE 縺ｫ縺励※繝懊・繝ｳ蜷阪〒繝槭ャ繝√Φ繧ｰ縺輔○繧・
     animation_index_ = MV1AttachAnim(model_handle_, index, GetAnimationHandle(state), TRUE);
-
-    // 蜀咲函譎る俣縺ｮ蛻晄悄蛹・
     animation_time_ = 0.0f;
 
-    // 繝悶Ξ繝ｳ繝臥憾諷九ｒ蛻晄悄蛹・
-    // 繝悶Ξ繝ｳ繝臥紫縺ｯ縲∝商縺・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺梧怏蜉ｹ縺ｧ縺ｪ縺・ｴ蜷医・1.0f・医ヶ繝ｬ繝ｳ繝峨＠縺ｪ縺・憾諷具ｼ峨↓縺励※縺翫￥
+    // 初回設定時など旧モーションが存在しない場合は、ブレンド不要のため即時1.0fをセットする
     anim_blend_rate_ = (old_animation_index_ == -1 ? 1.0f : 0.0f);
 }
 
-// 繝｢繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝悶Ξ繝ｳ繝芽ｨｭ螳・
-
-/*
- * 目的（SeparateModelAnimationのSetAnimationBlend処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: isBlend (ブレンド有効化フラグ) / 出力: なし
+// 副作用: false時は旧モーションをデタッチして破棄し、ブレンドなしの即時切り替え状態を強制する
 void SeparateModelAnimation::SetAnimationBlend(bool isBlend)
 {
-    if (isBlend)    // 繝悶Ξ繝ｳ繝峨☆繧句ｴ蜷・
+    if (isBlend)
     {
-        // 繝悶Ξ繝ｳ繝臥紫縺ｯ縲∝商縺・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺梧怏蜉ｹ縺ｧ縺ｪ縺・ｴ蜷医・1.0f・医ヶ繝ｬ繝ｳ繝峨＠縺ｪ縺・憾諷具ｼ峨↓縺励※縺翫￥
         anim_blend_rate_ = (old_animation_index_ == -1 ? 1.0f : 0.0f);
     }
-    else    // 繝悶Ξ繝ｳ繝峨＠縺ｪ縺・ｴ蜷・
+    else
     {
-        // 繝悶Ξ繝ｳ繝峨＠縺ｪ縺・憾諷九↓縺吶ｋ
         anim_blend_rate_ = 1.0f;
 
-        // 繝悶Ξ繝ｳ繝峨☆繧句ｿ・ｦ√′縺ｪ縺・・縺ｧ縲∝商縺・Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｯ繝・ち繝・メ縺励※縺翫￥
+        // ブレンドを行わないため、不要になった旧モーションは即座にメモリから切り離す
         if (old_animation_index_ != -1)
         {
             MV1DetachAnim(model_handle_, old_animation_index_);
@@ -208,17 +156,10 @@ void SeparateModelAnimation::SetAnimationBlend(bool isBlend)
     }
 }
 
-// 繝｢繝ｼ繧ｷ繝ｧ繝ｳ霑ｽ蜉
-
-/*
- * 目的（SeparateModelAnimationのAddAnimation処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: state(紐づける状態), filename(ファイルパス) / 出力: なし
+// 副作用: 外部ファイルからモーションをロードし、NEUTRAL指定時は初期モーションとして自動適用する
 void SeparateModelAnimation::AddAnimation(AnimationState state, std::string filename)
 {
-    // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ繝｢繝・Ν隱ｭ縺ｿ霎ｼ縺ｿ
     int handle = Master::resource_manager_->LoadModel(filename.c_str());
 
     if (handle == -1)
@@ -226,31 +167,22 @@ void SeparateModelAnimation::AddAnimation(AnimationState state, std::string file
         return;
     }
 
-    // AnimationState 縺ｨ隱ｭ縺ｿ霎ｼ繧薙□繝上Φ繝峨Ν縺ｮ邏舌▼縺・
     AnimationInfo* pInfo = new AnimationInfo();
     pInfo->state_ = state;
     pInfo->animation_handle_ = handle;
     animation_info_list_.push_back(pInfo);
 
-    // NEUTRAL繝｢繝ｼ繧ｷ繝ｧ繝ｳ・亥ｾ・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ・峨′霑ｽ蜉縺輔ｌ縺溘ｉ繝｢繝ｼ繧ｷ繝ｧ繝ｳ螟画峩蜃ｦ逅・ｒ縺励※縺翫￥
+    // キャラクター生成直後にTポーズ等の無効状態が描画されるのを防ぐため、待機状態をデフォルト設定する
     if (state == AnimationState::ANIMATION_NEUTRAL)
     {
-        // 蛻晄悄迥ｶ諷九・蠕・ｩ溘Δ繝ｼ繧ｷ繝ｧ繝ｳ縺ｫ縺励※縺翫￥
         ChangeAnimation(AnimationState::ANIMATION_NEUTRAL);
     }
 }
 
-// 蟇ｾ蠢懊＠縺溘Δ繝ｼ繧ｷ繝ｧ繝ｳ繝上Φ繝峨Ν縺ｮ蜿門ｾ・
-
-/*
- * 目的（SeparateModelAnimationのGetAnimationHandle処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: state (検索する状態) / 出力: 対応するモデルハンドル(-1で未登録)
+// 副作用: なし（状態とハンドルの紐付けリストからの単なる検索処理）
 int SeparateModelAnimation::GetAnimationHandle(AnimationState state)
 {
-    // 縺昴ｂ縺昴ｂ遨ｺ縺｣縺ｽ縺ｮ蝣ｴ蜷医・謗｢縺輔↑縺・
     if (animation_info_list_.empty())
     {
         return -1;
@@ -260,13 +192,11 @@ int SeparateModelAnimation::GetAnimationHandle(AnimationState state)
     {
         auto temp = *itr;
 
-        // 蟇ｾ蠢懊☆繧九Δ繝ｼ繧ｷ繝ｧ繝ｳ繝上Φ繝峨Ν縺後≠繧後・縺昴ｌ繧定ｿ斐☆
         if (temp->state_ == state)
         {
             return temp->animation_handle_;
         }
     }
 
-    // 隕九▽縺九ｉ縺ｪ縺九▲縺溘ｉ-1繧定ｿ斐☆
     return -1;
 }

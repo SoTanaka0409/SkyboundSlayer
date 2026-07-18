@@ -22,13 +22,8 @@ namespace
 	}
 }
 
-
-/*
- * 目的（StatShopのStatShop処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: filename(モデルパス), vec(初期生成座標) / 出力: なし
+// 副作用: 3DモデルとUIリソースのVRAMロード、およびショップ判定・安全地帯用コライダーの初期構築
 StatShop::StatShop(std::string filename, VECTOR vec)
 	: Object3D(vec)
 	, mvStartPosition(vec)
@@ -40,9 +35,6 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	, upgrade_attack_count_(0)
 	, upgrade_speed_count_(0)
 	, upgrade_evasion_speed_count_(0)
-
-
-	
 {
 	SetTag(Tag3D_Shop);
 	model_ = new Model(filename, position_, true);
@@ -50,7 +42,7 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
 	model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	shop_in_ = new SphereCollider(this, position_, 200.0f);
-	safe_zoon_ = new SphereCollider(this, position_, 1000.0f); // 隰ｨｽｵ邵ｺ迹夲ｽｿ莉｣笆ｼ邵ｺ莉｣竊醍ｸｺ繝ｻ縺晉ｹ晢ｽｼ郢晁ｼ斐□郢晢ｽｼ郢晢ｽｳ
+	safe_zoon_ = new SphereCollider(this, position_, 1000.0f); // 敵の侵入を防ぎ、プレイヤーの安全を確保するための広域コライダー
 	old_mouse_down_ = false;
 
 	icon_max_hp_handle_ = LoadGraph("Resource/2D/icon_hp_up.png");
@@ -64,6 +56,8 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 	target_position_ = player->GetFirstPos();
 }
 
+// 入力: なし / 出力: なし
+// 副作用: UI画像やモデル、コライダーを確実に破棄し、シーン離脱時のメモリリークを防ぐ
 StatShop::~StatShop()
 {
 	DeleteGraph(icon_max_hp_handle_);
@@ -77,13 +71,8 @@ StatShop::~StatShop()
 	if (safe_zoon_) safe_zoon_->SetDeleteFlag(true);
 }
 
-
-/*
- * 目的（StatShopのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: フェーズやプレイヤーのUI操作状態に応じて、NPCモデルまたはショップ画面UIの描画を排他制御する
 void StatShop::Draw()
 {
 	if (shop_state_ == ShopState::WAIT_PHASE)
@@ -111,13 +100,8 @@ void StatShop::Draw()
 	}
 }
 
-
-/*
- * 目的（StatShopのDrawShopMenu処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: player (所持金参照用) / 出力: なし
+// 副作用: ショップ画面の半透明背景パネルと、ヘッダー・選択肢・フッターの各UI要素を合成描画する
 void StatShop::DrawShopMenu(Player3D* player)
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
@@ -132,13 +116,8 @@ void StatShop::DrawShopMenu(Player3D* player)
 	SetFontSize(fontSize);
 }
 
-
-/*
- * 目的（StatShopのDrawShopHeader処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: player / 出力: なし
+// 副作用: プレイヤーの現在の所持金(Money)など、状態に依存する変動情報をUI上部に描画する
 void StatShop::DrawShopHeader(Player3D* player)
 {
 	SetFontSize(40);
@@ -147,13 +126,8 @@ void StatShop::DrawShopHeader(Player3D* player)
 	DrawFormatString(350, 180, GetColor(255, 255, 0), "Money: %d", player->have_money_->HaveMoney());
 }
 
-
-/*
- * 目的（StatShopのDrawShopOptions処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 現在のアップグレード回数に基づいて動的にコストを計算し、商品リストとカーソルを描画する
 void StatShop::DrawShopOptions()
 {
 	const char* options[] =
@@ -201,25 +175,15 @@ void StatShop::DrawShopOptions()
 	}
 }
 
-
-/*
- * 目的（StatShopのDrawShopFooter処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: プレイヤーの操作を誘導するためのキーガイドテキストを画面下部に静的描画する
 void StatShop::DrawShopFooter()
 {
 	DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   Escape/Back: Close");
 }
 
-
-/*
- * 目的（StatShopのDrawShopNpc処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: player (距離計算用) / 出力: なし
+// 副作用: プレイヤーとの距離を計算し、接近時のみNPCの頭上に吹き出しテキストを動的に表示する
 void StatShop::DrawShopNpc(Player3D* player)
 {
 	VECTOR drawName3D = VAdd(position_, VGet(0.0f, 250.0f, 0.0f));
@@ -244,12 +208,8 @@ void StatShop::DrawShopNpc(Player3D* player)
 	model_->Draw();
 }
 
-/*
- * 目的（StatShopのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: ショップの営業時間監視、UI操作の受け付け、およびNPCの入場・退場アニメーション処理を統括する
 void StatShop::Update()
 {
 	if (!CanUpdateShop())
@@ -267,13 +227,8 @@ void StatShop::Update()
 	movePosition();
 }
 
-
-/*
- * 目的（StatShopのCanUpdateShop処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: 更新可能か(bool)
+// 副作用: なし（待機状態や営業時間外など、不要な更新処理を弾くためのガード条件判定）
 bool StatShop::CanUpdateShop() const
 {
 	if (shop_state_ == ShopState::WAIT_PHASE)
@@ -289,13 +244,8 @@ bool StatShop::CanUpdateShop() const
 	return true;
 }
 
-
-/*
- * 目的（StatShopのCloseShopIfPhaseEnding処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 制限時間間際になった際、強制的にショップUIを閉じてプレイヤーの行動を通常ステートへ引き戻す
 void StatShop::CloseShopIfPhaseEnding()
 {
 	SceneGame* sceneGame = Master::scene_manager_->GetSceneGame();
@@ -313,13 +263,8 @@ void StatShop::CloseShopIfPhaseEnding()
 	}
 }
 
-
-/*
- * 目的（StatShopのUpdateShopMenu処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: メニュー内のカーソル移動、アイテム購入判定、およびUIキャンセル入力を一括処理する
 void StatShop::UpdateShopMenu()
 {
 	SelectClass();
@@ -327,13 +272,8 @@ void StatShop::UpdateShopMenu()
 	HandleShopCloseInput();
 }
 
-
-/*
- * 目的（StatShopのHandleShopCloseInput処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: EscまたはBackキーによるショップ終了操作を検知し、全体のUI表示フラグを下ろす
 void StatShop::HandleShopCloseInput()
 {
 	static int oldEsc = 0;
@@ -350,12 +290,8 @@ void StatShop::HandleShopCloseInput()
 	oldBack = currentBack;
 }
 
-/*
- * 目的（StatShopのmovePosition処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 入場・退場ステートに応じた座標移動処理と、コライダーやモデルトランスフォームの同期を行う
 void StatShop::movePosition()
 {
 	if (shop_state_ == ShopState::WALKING_IN)
@@ -375,6 +311,8 @@ void StatShop::movePosition()
 	SyncModelTransform();
 }
 
+// 入力: なし / 出力: なし
+// 副作用: 目標地点への接近計算を行い、到達時にショップの営業状態（ARRIVED）へ遷移させる
 void StatShop::UpdateWalkIn()
 {
 	VECTOR dir = VSub(target_position_, position_);
@@ -395,6 +333,8 @@ void StatShop::UpdateWalkIn()
 	model_->ChangeAnimation(ANIMATION_RUN);
 }
 
+// 入力: なし / 出力: なし
+// 副作用: フェーズ終了時に初期位置へ帰還する移動計算を行い、完了後に待機状態へ戻す
 void StatShop::UpdateWalkOut()
 {
 	VECTOR startPos = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z);
@@ -414,6 +354,8 @@ void StatShop::UpdateWalkOut()
 	model_->ChangeAnimation(ANIMATION_RUN);
 }
 
+// 入力: なし / 出力: なし
+// 副作用: 営業時間外はコライダーを地下へ退避させ、他オブジェクトとの予期せぬ接触バグを回避する
 void StatShop::UpdateShopColliderVisibility()
 {
 	if (shop_state_ == ShopState::ARRIVED)
@@ -429,6 +371,8 @@ void StatShop::UpdateShopColliderVisibility()
 	}
 }
 
+// 入力: なし / 出力: なし
+// 副作用: 内部の座標・回転データをDxLib側のモデルインスタンスへ確実に反映させる
 void StatShop::SyncModelTransform()
 {
 	if (model_)
@@ -439,28 +383,19 @@ void StatShop::SyncModelTransform()
 	}
 }
 
-/*
- * 目的（StatShopのStartWalkingIn処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: ショップフェーズ開始時にNPCを入場ステートへ切り替え、初期座標からの移動を開始させる
 void StatShop::StartWalkingIn()
 {
 	if (shop_state_ == ShopState::WAIT_PHASE || shop_state_ == ShopState::WALKING_OUT)
 	{
 		shop_state_ = ShopState::WALKING_IN;
-		position_ = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z );
+		position_ = VGet(mvStartPosition.x, mvStartPosition.y, mvStartPosition.z);
 	}
 }
 
-
-/*
- * 目的（StatShopのStartWalkingOut処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: フェーズ終了時にUIを強制非表示にし、NPCを退場ステートへ切り替えて撤収を開始させる
 void StatShop::StartWalkingOut()
 {
 	if (shop_state_ == ShopState::ARRIVED || shop_state_ == ShopState::WALKING_IN)
@@ -470,25 +405,15 @@ void StatShop::StartWalkingOut()
 	}
 }
 
-
-/*
- * 目的（StatShopのGetCost処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: upgradeCount(現在の強化回数) / 出力: 必要なコスト
+// 副作用: なし（強化回数に応じた価格インフレの計算式）
 int StatShop::GetCost(int upgradeCount)
 {
 	return 100 + (upgradeCount * 50);
 }
 
-
-/*
- * 目的（StatShopのSelectClass処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: キーボード入力によるカーソル位置(select_)の更新と、範囲外アクセスを防ぐループ処理
 void StatShop::SelectClass()
 {
 	static int oldUp = 0;
@@ -514,13 +439,8 @@ void StatShop::SelectClass()
 	if (select_ > select_max_) select_ = select_min_;
 }
 
-
-/*
- * 目的（StatShopのBuyClass処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: マウスやキーボードによる購入確定を検知し、資金消費・ステータス反映・アイテム付与を行う
 void StatShop::BuyClass()
 {
 	Player3D* player = Master::player_;
@@ -531,20 +451,20 @@ void StatShop::BuyClass()
 	bool isMouseClick = (isMouseDown && !old_mouse_down_);
 	old_mouse_down_ = isMouseDown;
 
-	
+
 	int mx, my;
 	GetMousePoint(&mx, &my);
-	
+
 	static int oldMx = 0, oldMy = 0;
 	if (mx != oldMx || my != oldMy)
-			{
+	{
 		for (int i = 0; i <= select_max_; i++)
 		{
 			int optY = 250 + i * 60;
 			if (mx >= 350 && mx <= 1500 && my >= optY && my <= optY + 50)
 			{
 				if (select_ != i)
-			{
+				{
 					select_ = i;
 					Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
 				}
@@ -587,13 +507,13 @@ void StatShop::BuyClass()
 			if (player->have_money_->HaveMoney() >= cost)
 			{
 				player->have_money_->PullMoney(cost);
-				
+
 				Item::ItemInformation* info = new Item::ItemInformation();
 				info->ID = Item::ItemID::HEAL;
 				info->Count = 1;
 				info->is_log_ = true;
 				Master::item_manager_->AddItem(info);
-				
+
 				Master::sound_manager_->PlaySE(SoundManager::SE_SHOP);
 			}
 			else
@@ -634,13 +554,8 @@ void StatShop::BuyClass()
 	}
 }
 
-
-/*
- * 目的（StatShopのOnEnter処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: collider(自身の判定), check(相手の判定) / 出力: なし
+// 副作用: プレイヤーがアクセス範囲内にいる状態でEnterキーを押下した際、ショップUIを展開する
 void StatShop::OnEnter(Collider* collider, Collider* check)
 {
 	if (!IsShopPhaseActive()) return;
@@ -662,30 +577,14 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 	}
 }
 
-
-/*
- * 目的（StatShopのOnTrigger処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: collider(自身の判定), check(相手の判定) / 出力: なし
+// 副作用: なし（仕様上、接触中の継続処理は不要なため空実装とする）
 void StatShop::OnTrigger(Collider* collider, Collider* check)
 {
 }
 
-
-/*
- * 目的（StatShopのOnExit処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: collider(自身の判定), check(相手の判定) / 出力: なし
+// 副作用: なし（仕様上、離脱時の特殊処理は不要なため空実装とする）
 void StatShop::OnExit(Collider* collider, Collider* check)
 {
 }
-
-
-
-
-
-

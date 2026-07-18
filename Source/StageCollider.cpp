@@ -6,6 +6,7 @@
 #include"SceneManager.h"
 #include"Effect.h"
 #include"Config.h"
+#include"Player3D.h"
 
 
 /*

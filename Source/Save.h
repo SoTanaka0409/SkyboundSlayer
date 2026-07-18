@@ -34,25 +34,24 @@ public:
 
 	//static Save* GetInstance()
 
-	//static void Finalize()
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	
 	Save();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+   
 	~Save();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+   
 	void Draw();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+   
 	void Update();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+ 
 	void GameSave(SaveDate* date);
 	
    
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+  
 	void GameLoad(SaveDate* date);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+   
 	void SelectClass();
 private:
 	Texture* texture_;

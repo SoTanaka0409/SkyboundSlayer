@@ -1,199 +1,160 @@
 ﻿#pragma once
-#pragma once
 #include "DxLib.h"
 #include "Texture.h"
-#include"Object3D.h"
-#include"Model.h"
-#include"Debug.h"
+#include "Object3D.h"
+#include "Model.h"
+#include "Debug.h"
 
-
-#include"Item.h"
-#include"ColliderManager.h"
-#include"EquipmentManager.h"
+#include "Item.h"
+#include "ColliderManager.h"
+#include "EquipmentManager.h"
 
 class SphereCollider;
 class CapsuleCollider;
 
-
-class Enemy :public Object3D
+// 索敵・追跡・攻撃のAIを持ち、プレイヤーと敵対するキャラクターの基底クラス
+class Enemy : public Object3D
 {
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetHitSizeFlag(bool flag) { is_hit_size_flag_ = flag; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool IsHitSizeFlag() { return is_hit_size_flag_; }
+    void SetHitSizeFlag(bool flag) { is_hit_size_flag_ = flag; }
+    bool IsHitSizeFlag() { return is_hit_size_flag_; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetNewEnemyFlag(bool flag) { is_new_enemy_flag_ = flag; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool IsNewEnemyFlag() { return is_new_enemy_flag_; }
+    void SetNewEnemyFlag(bool flag) { is_new_enemy_flag_ = flag; }
+    bool IsNewEnemyFlag() { return is_new_enemy_flag_; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual CapsuleCollider* GetEnemyCollider() { return capsule_collider_; }//邵ｺ阮呻ｽ檎ｸｺ謔滓ｬ｡陜暦ｿｽ繝ｻ貅倥″郢晏干縺晉ｹ晢ｽｫ郢ｧ・ｳ郢晢ｽｩ郢ｧ・､郢敖郢晢ｽｼ邵ｺ・ｽ邵ｺ隨ｬ・ｶ蛹ｻ竏ｴ邵ｺ・ｪ邵ｺ繝ｻ
+    virtual CapsuleCollider* GetEnemyCollider() { return capsule_collider_; }
 
 private:
-	bool is_hit_size_flag_;//陟冶侭笳・ｹｧ髮∵・陞ｳ螟ら舞邵ｺ・ｮ郢ｧ・ｵ郢ｧ・､郢ｧ・ｺ郢ｧ蜻域亜邵ｺ・｣邵ｺ・ｦ邵ｺ荳奇ｽ狗ｸｺ荵昶・邵ｺ繝ｻﾂｰ邵ｺ・ｮflag?
-	bool is_new_enemy_flag_;//隰ｨ・ｵ郢ｧ蝨ｰew邵ｺ蜷ｶ・狗ｸｺ貅假ｽ∫ｸｺ・ｮ郢晁ｼ釆帷ｹｧ・ｰ繝ｻ貊会ｽｽ・ｿ邵ｺ繝ｻ蟀ｿ邵ｺ・ｯ郢ｧ蛹ｻ・･郢ｧ荳環ｰ郢ｧ蟲ｨ竊醍ｸｺ繝ｻ
+    bool is_hit_size_flag_; // 被ダメージ時のノックバックや特殊な判定サイズ変更を管理するフラグ
+    bool is_new_enemy_flag_;// 生成直後の初期化処理（落下アニメーション等）の実行状態を管理するフラグ
 
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2,float Serch3,int money,bool is_separate_anim_);
+    // 入力: filename, 初期座標, HP, 移動速度, 攻撃力, 判定サイズ, 索敵半径群, 所持金, アニメ分離フラグ
+    // 出力: なし / 副作用: 敵の3Dモデルや各用途（索敵・攻撃等）のコライダー群の動的確保と初期化
+    Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_);
+    virtual ~Enemy();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	~Enemy();
+    virtual void Draw() override;
+    virtual void Update() override;
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Draw()override;
+    // 入力: なし / 出力: なし
+    // 副作用: 現在のAIステート（待機・追跡等）に基づく目標座標への移動ベクトルの算出と座標更新
+    virtual void Move();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Update()override;
+    // 入力: なし / 出力: なし
+    // 副作用: 移動方向へモデルの向きを補間計算し、急な振り向きによる不自然な描画を防ぐ
+    virtual void RotationByMove();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void Move();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-    virtual void RotationByMove();//驕假ｽｻ陷崎ｼ披・郢ｧ蛹ｻ・玖摎讚・ｽｻ・｢陷・ｽｦ騾・・
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void Damage(float damage);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void AttackList();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void Attack();
+    // 入力: damage(被ダメージ量) / 出力: なし
+    // 副作用: HPの減算処理および、0以下になった際の死亡ステート（is_dead_）への移行発火
+    virtual void Damage(float damage);
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void Delete();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void DeathColliderPosition();
+    virtual void AttackList();
 
+    // 入力: なし / 出力: なし
+    // 副作用: 攻撃インターバルの進行と、条件合致時におけるプレイヤーへのダメージ判定の生成
+    virtual void Attack();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void DeathEnemy();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void GiveRewards();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void UpdateColliderPosition();
+    virtual void Delete();
+    virtual void DeathColliderPosition();
 
+    // 入力: なし / 出力: なし
+    // 副作用: 死亡アニメーションの再生開始や、不要になった索敵・攻撃コライダーの無効化を行う
+    virtual void DeathEnemy();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	float GetHp() { return hp_; };
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetHp(float hp) { hp_ = hp; };
+    // 入力: なし / 出力: なし
+    // 副作用: 死亡時に確率計算を行い、プレイヤーへ所持金(have_money_)やドロップアイテムを付与する
+    virtual void GiveRewards();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	float GetMaxHp() { return max_hp_; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetMaxHp(float mhp) { max_hp_ = mhp; }
+    virtual void UpdateColliderPosition();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool GetInvisible() { return is_invisible_; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetInvisible(int Inv) { is_invisible_ = Inv; }
+    float GetHp() { return hp_; }
+    void SetHp(float hp) { hp_ = hp; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	VECTOR GetGoPosition() { return go_position_; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetGoPosition(VECTOR goplayer) { go_position_ = goplayer; }
+    float GetMaxHp() { return max_hp_; }
+    void SetMaxHp(float mhp) { max_hp_ = mhp; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetInitPosition(VECTOR pos) { init_position_ = pos; }//陋ｻ譎・ｄ郢晢ｽｪ郢ｧ・ｹ郢晄亢繝ｻ郢晢ｽｳ陜ｨ・ｰ霓､・ｹ邵ｺ・ｮ陟趣ｽｧ隶灘生・定愾謔ｶ笆ｲ邵ｺ・ｦ邵ｺ鄙ｫ・･
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	VECTOR GetInitPosition() { return init_position_; }
+    bool GetInvisible() { return is_invisible_; }
+    void SetInvisible(int Inv) { is_invisible_ = Inv; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	float GetSize() { return size_; }
+    VECTOR GetGoPosition() { return go_position_; }
+    void SetGoPosition(VECTOR goplayer) { go_position_ = goplayer; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetHitJudgmentFlagPlayer(bool flag) { is_hit_judgment_flag_player_=flag; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool IsHitJudgmentFlagPlayer() { return is_hit_judgment_flag_player_; }
+    void SetInitPosition(VECTOR pos) { init_position_ = pos; }
+    VECTOR GetInitPosition() { return init_position_; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool IsDead() { return is_dead_; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetIsDead(bool dead) { is_dead_ = dead; }
+    float GetSize() { return size_; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool IsHitSearchFlag() const { return is_hit_search_flag_; }
+    void SetHitJudgmentFlagPlayer(bool flag) { is_hit_judgment_flag_player_ = flag; }
+    bool IsHitJudgmentFlagPlayer() { return is_hit_judgment_flag_player_; }
 
+    bool IsDead() { return is_dead_; }
+    void SetIsDead(bool dead) { is_dead_ = dead; }
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void OnEnter(Collider* collider, Collider* check) ;
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void OnTrigger(Collider* collider, Collider* check);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	virtual void OnExit(Collider* collider, Collider* check) ;
+    bool IsHitSearchFlag() const { return is_hit_search_flag_; }
 
-
-
-
-
-private:
-	
+    // 入力: collider(自身の判定), check(相手の判定) / 出力: なし
+    // 副作用: 索敵コライダーにプレイヤーが侵入した際、待機から追跡ステートへAIを切り替える
+    virtual void OnEnter(Collider* collider, Collider* check) override;
+    virtual void OnTrigger(Collider* collider, Collider* check) override;
+    virtual void OnExit(Collider* collider, Collider* check) override;
 
 protected:
-	
-	SphereCollider* attach_collider_;
-	CapsuleCollider* capsule_collider_;
-	SphereCollider* serch_collider_;
-	SphereCollider* attack_collider_;//隰ｾ・ｻ隰ｦ繝ｻ・陝倶ｹ晢ｽ∫ｹｧ蜿･繝ｻ
-	SphereCollider* stop_collider_;
-	Model* model_;
-	Debug* debug_;
+    SphereCollider* attach_collider_;
+    CapsuleCollider* capsule_collider_; // オブジェクト本体の物理的な衝突判定（壁抜け防止や被弾判定）
+    SphereCollider* serch_collider_;    // プレイヤーを検知して追跡モードへ移行するための広域索敵判定
+    SphereCollider* attack_collider_;   // プレイヤーがこの判定内に入ると攻撃アクションをトリガーする
+    SphereCollider* stop_collider_;     // プレイヤーとの密着を防ぎ、適切な間合いを保つための停止判定
+    Model* model_;
+    Debug* debug_;
+
 protected:
-	float hp_;
-	float max_hp_;
-	float speed_;
-	float normal_speed_;
-	float max_speed_;
-	float attack_;
+    float hp_;
+    float max_hp_;
+    float speed_;
+    float normal_speed_;
+    float max_speed_;
+    float attack_;
 
-	int walk_timer_;//陷ｷ蠕個ｧ陞ｳ譎擾ｽｺ・ｫ邵ｺ・ｫ雎・ｽｩ邵ｺ蜥ｲ・ｶ螢ｹ・郢ｧ蛹ｺ蜃ｾ鬮｢繝ｻ
-	int walk_count_;//
+    int walk_timer_;           // パトロール時の進行方向切り替えなどを計るためのタイマー
+    int walk_count_;
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	VECTOR hit_pos_ = VGet(0.0f, 0.0f, 0.0f);
-	VECTOR go_position_;//陷ｷ莉｣ﾂｰ邵ｺ繝ｻ繝ｻ郢ｧ・ｯ郢晏現ﾎ昴・蛹ｻ繝ｻ郢晢ｽｬ郢ｧ・､郢晢ｽ､郢晢ｽｼ郢ｧ蜻遺楳驕擾ｽ･邵ｺ蜉ｱ笳・ｸｺ・ｨ邵ｺ繝ｻ
-	VECTOR old_position_;
-	VECTOR init_position_;//spown陜ｨ・ｰ霓､・ｹ
-	VECTOR no_position_;
-	VECTOR move_vec_;
-	VECTOR up_move_vector_;
-	VECTOR left_move_vector_;
-	bool is_invisible_;//霎滂ｽ｡隰ｨ・ｵ邵ｺ荵昶・邵ｺ繝ｻﾂｰ
-	int algorithm_id_;//郢晢ｽｩ郢晢ｽｳ郢敖郢晢ｿｽ驕假ｽｻ陷阪・
-	int alg_hit_;
+    VECTOR hit_pos_ = VGet(0.0f, 0.0f, 0.0f);
+    VECTOR go_position_;       // AIが現在向かおうとしているワールド空間上の目標座標
+    VECTOR old_position_;
+    VECTOR init_position_;     // ヘイトが切れた際に、元の位置へ帰還するためのスポーン座標
+    VECTOR no_position_;
+    VECTOR move_vec_;
+    VECTOR up_move_vector_;
+    VECTOR left_move_vector_;
+    bool is_invisible_;        // 描画および当たり判定をスキップするための無敵/非表示フラグ
+    int algorithm_id_;         // 待機、追跡、攻撃などのAIステートを切り替えるための状態ID
+    int alg_hit_;
 
-	int attack_interval_;
-	int attack_count_;
+    int attack_interval_;
+    int attack_count_;
 
-	bool is_animation_;
-	float target_angle_;//騾ｶ・ｮ隶灘生繝ｻ陜玲ｫ・ｽｻ・｢陜ｨ・ｰ
-	float angle_;//霑ｴ・ｾ陜ｨ・ｨ邵ｺ・ｮ陜玲ｫ・ｽｻ・｢陜ｨ・ｰ
-	const float ROTATE_SPEED = 0.1f;//陜玲ｫ・ｽｻ・｢鬨ｾ貅ｷ・ｺ・ｦ
+    bool is_animation_;
+    float target_angle_;       // 瞬時な振り向きを避け、滑らかに旋回するための目標角度
+    float angle_;              // 現在のモデルのY軸回転角度（ラジアン）
+    const float ROTATE_SPEED = 0.1f; // 旋回時の補間係数（大きすぎるとカクつき、小さすぎると追従が遅れる）
 
-	float size_;//隰ｨ・ｵ邵ｺ・ｮ郢ｧ・ｵ郢ｧ・､郢ｧ・ｺ
-	float hit_search_;//髴台ｻ｣・･邵ｺ・ｫ郢晏干ﾎ樒ｹｧ・､郢晢ｽ､郢晢ｽｼ邵ｺ蠕鯉ｼ樒ｹｧ荵敖ｰ
-	float hit_attack_search_;//髴台ｻ｣・･邵ｺ・ｫ郢晏干ﾎ樒ｹｧ・､郢晢ｽ､郢晢ｽｼ邵ｺ蠕鯉ｼ樒ｹｧ荵敖ｰ&隰ｾ・ｻ隰ｦ繝ｻ縲堤ｸｺ髦ｪ・矩恪譎槫ｱｬ邵ｺ繝ｻ
-	float hit_stop_search_;//髴台ｻ｣・･邵ｺ・ｫ郢晏干ﾎ樒ｹｧ・､郢晢ｽ､郢晢ｽｼ邵ｺ蠕鯉ｼ樒ｹｧ繝ｻ鬩包ｽｩ陋ｻ繝ｻ竊鷹恪譎槫ｱｬ邵ｺ繝ｻ
-	bool is_dead_;
+    float size_;
+    float hit_search_;         // 索敵判定の半径（仕様制約に基づく）
+    float hit_attack_search_;  // 攻撃トリガーとなる判定の半径
+    float hit_stop_search_;    // 接近を停止する限界距離の半径
+    bool is_dead_;
 
-	bool is_hit_search_flag_;
-	bool is_hit_attack_search_flag_;
-	bool is_hit_search_stop_flag_;
-	bool is_hit_attack_flag_;//隰ｾ・ｻ隰ｦ繝ｻ窶ｲ陟冶侭笳・ｸｺ・｣邵ｺ貅伉ｰ
+    bool is_hit_search_flag_;
+    bool is_hit_attack_search_flag_;
+    bool is_hit_search_stop_flag_;
+    bool is_hit_attack_flag_;  // 現在攻撃モーション中であり、ダメージ判定を生成すべきかを示すフラグ
 
-	int chance_;//inventory郢ｧ螳夊ｪ邵ｺ・ｨ邵ｺ蜥擾ｽ｢・ｺ驍・・
-	
-	bool has_item_=true;//item郢ｧ螳夊ｪ邵ｺ・ｨ邵ｺ蜷ｶﾂｰ陷ｷ・ｦ邵ｺ繝ｻ
+    int chance_;               // レアドロップなどのアイテムドロップ抽選に使用する確率値
+    bool has_item_ = true;     // 死亡時に報酬としてアイテムをドロップするかを制御するフラグ
 
-	bool is_attack_hit_judgment_flag_;//隰ｾ・ｻ隰ｦ繝ｻ窶ｲ闕ｳﾂ陜玲ｧｫ・ｽ阮吮螺邵ｺ・｣邵ｺ貅假ｽ臥ｸｺ譏ｴ繝ｻ隰ｨ・ｵ邵ｺ・ｫ陝・ｽｾ邵ｺ蜉ｱ窶ｻ隰ｾ・ｻ隰ｦ繝ｻ窶ｲ鬩･蟠趣ｽ､繝ｻ・邵ｺ・ｪ邵ｺ繝ｻ・育ｸｺ繝ｻ竊鍋ｸｺ蜷ｶ・・
+    bool is_attack_hit_judgment_flag_; // プレイヤーへの多段ヒットを防ぐため、1モーションにつき1回のダメージを保証するフラグ
+    bool is_hit_judgment_flag_player_;
 
-	bool is_hit_judgment_flag_player_;
-	int have_money_;
-	/// <summary>
-	/// ///////////郢昶・ﾎ礼ｹ晢ｽｼ郢晏現ﾎ懃ｹｧ・｢郢晢ｽｫ
-	/// </summary>
-
-	
-
+    int have_money_;           // 死亡時にプレイヤーに付与するスコア・通貨の量
 };
-

@@ -122,7 +122,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 			ene_list_.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.is_separate_anim_));
 		}
 	}
-	//窶假ｿｽ窶堙｢窶堋ｵ窶堙・堋｢窶堋ｭ
+	
 }
 
 

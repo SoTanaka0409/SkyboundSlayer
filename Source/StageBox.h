@@ -21,22 +21,15 @@ public:
 	std::vector<VERTEX3D>GEtVertex()
 	{
 		std::vector<VERTEX3D>result;
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+  
 		result.push_back(vertex_[0]);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 		result.push_back(vertex_[1]);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 		result.push_back(vertex_[2]);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 		result.push_back(vertex_[3]);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 		result.push_back(vertex_[4]);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 		result.push_back(vertex_[5]);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 		result.push_back(vertex_[6]);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-		result.push_back(vertex_[7]);
+  		result.push_back(vertex_[7]);
 		return result;
 	}
 

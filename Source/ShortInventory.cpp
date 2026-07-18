@@ -117,21 +117,21 @@ void ShortInventory::HandleSelectionInput(int itemCount)
  */
 void ShortInventory::UseSelectedItem()
 {
-	Item::Information* info = GetSelectedItem();
+	Item::ItemInformation* info = GetSelectedItem();
 	if (info && info->Count > 0)
 	{
 		Master::item_manager_->UseItem(info->ID);
 	}
 }
 
-Item::Information* 
+
 /*
  * 目的（ShortInventoryのGetSelectedItem処理を行うため）
  * [入力] 引数参照
  * [出力] 戻り値参照
  * [副作用] クラス内部状態の変更など
  */
-ShortInventory::GetSelectedItem() const
+Item::ItemInformation* ShortInventory::GetSelectedItem() const
 {
 	if (!Master::item_manager_)
 	{
@@ -164,7 +164,7 @@ void ShortInventory::Draw()
 	}
 
 	ClampSelectedIndex(itemCount);
-	Item::Information* info = GetSelectedItem();
+	Item::ItemInformation* info = GetSelectedItem();
 	if (!info)
 	{
 		return;
@@ -180,7 +180,7 @@ void ShortInventory::Draw()
  * [出力] 戻り値参照
  * [副作用] クラス内部状態の変更など
  */
-void ShortInventory::DrawItemPanel(const Item::Information* info)
+void ShortInventory::DrawItemPanel(const Item::ItemInformation* info)
 {
 	const int boxW = 300;
 	const int boxH = 74;

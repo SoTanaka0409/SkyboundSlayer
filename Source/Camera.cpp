@@ -5,6 +5,7 @@
 #include"ObjectManager.h"
 #include"Scene3D.h"
 #include"Object3D.h"
+#include"Player3D.h"
 #include"Scene.h"
 
 
@@ -53,7 +54,7 @@ Camera::~Camera()
 void Camera::Initialize()
 {
 	target_ = nullptr;
-	SetCameraNearFar(100.0f, Config::CameraFar);//10050000???????????????
+	SetCameraNearFar(100.0f, Config::CameraFar);
 
 	SetBackgroundColor(0, 0, 0);
 

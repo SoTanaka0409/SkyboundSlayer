@@ -12,16 +12,10 @@
 #include "SkyBox.h"
 #include "Config.h"
 
-
-
-/*
- * 目的（TitleSceneのTitleScene処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 各種アニメーション制御用変数の初期化
 TitleScene::TitleScene()
-: color_fade_(1), color_flag_(false), camera_angle_(0.0f)
+	: color_fade_(1), color_flag_(false), camera_angle_(0.0f)
 {
 }
 
@@ -29,32 +23,26 @@ TitleScene::~TitleScene()
 {
 }
 
-
-
-/*
- * 目的（TitleSceneのInitialize処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: カメラやスコアの初期化、およびタイトル画面の背景となる3Dステージ・オブジェクト群のVRAMロード
 void TitleScene::Initialize()
 {
 	Master::camera_->Initialize();
 	Master::game_clear_count_ = 0;
 	ColliderManager::GetInstance()->DeleteAllCollider();
-	
+
 	Master::score_manager_->LoadHighScore();
 	Master::sound_manager_->PlayBGM(SoundManager::BGM_TITLE);
-	
-	// 譛ｬ邱ｨ縺ｨ蜷後§繧ｹ繝・・繧ｸ縺ｨ繧ｪ繝悶ず繧ｧ繧ｯ繝医ｒ隱ｭ縺ｿ霎ｼ繧
+
+	// 実際のゲームプレイ中と同じ迫力ある背景を演出として表示するため、本編用のステージをロードする
 	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", VGet(200.0f, 100.0f, 200.0f));
-	new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1",VGet(3.0f,0.3f,3.0f));
-	
+	new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1", VGet(3.0f, 0.3f, 3.0f));
+
 	std::ifstream file("Resource/CSV/stage_objects.csv");
 	if (file.is_open())
 	{
 		std::string line;
-		std::getline(file, line); // 繝倥ャ繝繝ｼ繧偵せ繧ｭ繝・・
+		std::getline(file, line); // 1行目は定義用のCSVヘッダーであるため読み飛ばす
 		while (std::getline(file, line))
 		{
 			if (line.empty()) continue;
@@ -71,7 +59,7 @@ void TitleScene::Initialize()
 			std::getline(ss, texture, ',');
 			std::getline(ss, colSizeStr, ',');
 			std::getline(ss, isRelativeStr, ',');
-			
+
 			float x = std::stof(xStr);
 			float y = std::stof(yStr);
 			float z = std::stof(zStr);
@@ -80,197 +68,145 @@ void TitleScene::Initialize()
 			float sz = std::stof(szStr);
 			int isRelative = 0;
 			if (!isRelativeStr.empty()) isRelative = std::stoi(isRelativeStr);
+
 			VECTOR pos = VGet(x, y, z);
 			if (isRelative == 1) { pos = VAdd(Config::GetStageCenter(), pos); }
 			VECTOR scale = VGet(sx, sy, sz);
-			
+
 			if (type == "StageObject") {
 				float colSize = 0.0f;
 				if (!colSizeStr.empty()) colSize = std::stof(colSizeStr);
 				new StageObject(pos, model, scale, "", colSize);
-			} else if (type == "Stage") {
+			}
+			else if (type == "Stage") {
 				new Stage(pos, model, model, scale, texture);
 			}
 		}
 		file.close();
 	}
-	
-	SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x",VGet(0,0,-5000));
+
+	SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x", VGet(0, 0, -5000));
 	float scale = 13.0f;
 	pSkyBox->SetScale(VGet(scale, scale, scale));
 	pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");
-	
-	// 繧ｿ繧､繝医Ν逕ｨ縺ｫ繝・Ξ繝昴・繧ｿ繝ｼ繧ゆｸ縺､鄂ｮ縺・※縺翫￥
+
+	// 景観のアクセントとしてタイトル画面専用のオブジェクトを配置
 	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3D/portal/source/portal.mv1", VGet(3.0f, 3.0f, 3.0f));
-	
+
 	camera_angle_ = 0.0f;
 }
 
-
-
-/*
- * 目的（TitleSceneのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: カメラの旋回アニメーションと、プレイヤーのマウス入力によるUI選択状態を毎フレーム処理する
 void TitleScene::Update()
 {
-    Scene::Update();
-    UpdateTitleCamera();
-    HandleMenuInput();
+	Scene::Update();
+	UpdateTitleCamera();
+	HandleMenuInput();
 }
 
-
-
-/*
- * 目的（TitleSceneのUpdateTitleCamera処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 静止画のような退屈な印象を避けるため、原点を中心にカメラを円軌道で自動旋回させる
 void TitleScene::UpdateTitleCamera()
 {
-    camera_angle_ += 0.002f;
-    if (camera_angle_ >= DX_PI_F * 2.0f)
-    {
-        camera_angle_ -= DX_PI_F * 2.0f;
-    }
+	camera_angle_ += 0.002f;
+	if (camera_angle_ >= DX_PI_F * 2.0f)
+	{
+		camera_angle_ -= DX_PI_F * 2.0f;
+	}
 
-    VECTOR camPos = VGet(cosf(camera_angle_) * 3000.0f, 2000.0f, sinf(camera_angle_) * 3000.0f);
-    VECTOR camTarget = VGet(0.0f, 1000.0f, 0.0f);
-    SetCameraPositionAndTarget_UpVecY(camPos, camTarget);
+	VECTOR camPos = VGet(cosf(camera_angle_) * 3000.0f, 2000.0f, sinf(camera_angle_) * 3000.0f);
+	VECTOR camTarget = VGet(0.0f, 1000.0f, 0.0f);
+	SetCameraPositionAndTarget_UpVecY(camPos, camTarget);
 }
 
-
-
-/*
- * 目的（TitleSceneのHandleMenuInput処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 左クリック検知時にマウス座標とボタン領域を照合し、条件合致時に対応するシーンへの遷移要求を発行する
 void TitleScene::HandleMenuInput()
 {
-    int mx, my;
-    InputManager::GetMousePos(mx, my);
+	int mx, my;
+	InputManager::GetMousePos(mx, my);
 
-    if (!InputManager::CheckMouseClickLeft())
-    {
-        return;
-    }
+	if (!InputManager::CheckMouseClickLeft())
+	{
+		return;
+	}
 
-    if (IsHoverStart(mx, my))
-    {
-        Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
-        Master::scene_manager_->SetNextScene(SceneManager::kScene3D);
-    }
-    else if (IsHoverRule(mx, my))
-    {
-        Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
-        Master::scene_manager_->SetNextScene(SceneManager::kSceneRule);
-    }
+	if (IsHoverStart(mx, my))
+	{
+		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::scene_manager_->SetNextScene(SceneManager::kScene3D);
+	}
+	else if (IsHoverRule(mx, my))
+	{
+		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::scene_manager_->SetNextScene(SceneManager::kSceneRule);
+	}
 }
 
-
-
-/*
- * 目的（TitleSceneのIsHoverStart処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: mx, my (マウス座標) / 出力: 対象領域内か否か(bool)
+// 副作用: なし（ハードコードされたSTARTボタン領域に対する静的な当たり判定）
 bool TitleScene::IsHoverStart(int mx, int my) const
 {
-    return mx >= 96 && mx <= 416 && my >= 732 && my <= 794;
+	return mx >= 96 && mx <= 416 && my >= 732 && my <= 794;
 }
 
-
-
-/*
- * 目的（TitleSceneのIsHoverRule処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: mx, my (マウス座標) / 出力: 対象領域内か否か(bool)
+// 副作用: なし（ハードコードされたRULEボタン領域に対する静的な当たり判定）
 bool TitleScene::IsHoverRule(int mx, int my) const
 {
-    return mx >= 96 && mx <= 416 && my >= 812 && my <= 874;
+	return mx >= 96 && mx <= 416 && my >= 812 && my <= 874;
 }
 
-
-
-/*
- * 目的（TitleSceneのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: 背景3Dモデルの上に、タイトルロゴやメニューUIなどをZ順を考慮して合成し、描画バッファへ登録する
 void TitleScene::Draw()
 {
-    UpdatePromptBlink();
-    DrawSceneBackground();
-    DrawTitlePanel();
-    DrawMenuPanel();
-    DrawPrompt();
+	UpdatePromptBlink();
+	DrawSceneBackground();
+	DrawTitlePanel();
+	DrawMenuPanel();
+	DrawPrompt();
 }
 
-
-
-/*
- * 目的（TitleSceneのUpdatePromptBlink処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: ユーザーの目を引くため、アルファ値を周期的に増減させてテキストの点滅（ブリンク）演出を進行させる
 void TitleScene::UpdatePromptBlink()
 {
-    if (color_flag_)
-    {
-        color_fade_ -= 4;
-        if (color_fade_ <= 0)
-        {
-            color_fade_ = 0;
-            color_flag_ = false;
-        }
-    }
-    else
-    {
-        color_fade_ += 4;
-        if (color_fade_ >= 255)
-        {
-            color_fade_ = 255;
-            color_flag_ = true;
-        }
-    }
+	if (color_flag_)
+	{
+		color_fade_ -= 4;
+		if (color_fade_ <= 0)
+		{
+			color_fade_ = 0;
+			color_flag_ = false;
+		}
+	}
+	else
+	{
+		color_fade_ += 4;
+		if (color_fade_ >= 255)
+		{
+			color_fade_ = 255;
+			color_flag_ = true;
+		}
+	}
 }
 
-
-
-/*
- * 目的（TitleSceneのDrawSceneBackground処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: UIパネルの視認性を高めるため、3D背景とUIの中間層に半透明の暗いフィルター（暗幕）を描画する
 void TitleScene::DrawSceneBackground()
 {
-    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
-    Scene::Draw();
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	Scene::Draw();
 
-    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
-    DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(15, 18, 25), TRUE); // Base 60%
-    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
+	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(15, 18, 25), TRUE); // Base 60%
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-
-
-/*
- * 目的（TitleSceneのDrawTitlePanel処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: メインタイトルの文字列と、それを装飾する背景パネル・枠線を描画する
 void TitleScene::DrawTitlePanel()
 {
 	const int accentGold = GetColor(218, 178, 86); // Accent 10%
@@ -288,20 +224,15 @@ void TitleScene::DrawTitlePanel()
 	DrawLine(760, 70, 760, 250, accentGold, 2);
 	DrawBox(84, 88, 746, 98, panelLight, TRUE);
 
-    SetFontSize(76);
-    DrawFormatString(99, 119, GetColor(10, 8, 4), "Sky Castle Hunter");
-    DrawFormatString(94, 114, GetColor(255, 231, 155), "Sky Castle Hunter");
-    SetFontSize(24);
+	SetFontSize(76);
+	// 黒いテキストを少しずらして先に描画することでドロップシャドウを表現し、テキストの可読性を向上させる
+	DrawFormatString(99, 119, GetColor(10, 8, 4), "Sky Castle Hunter");
+	DrawFormatString(94, 114, GetColor(255, 231, 155), "Sky Castle Hunter");
+	SetFontSize(24);
 }
 
-
-
-/*
- * 目的（TitleSceneのDrawMenuPanel処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: マウスのホバー状態を動的に反映させながら、各種メニューボタンと装飾を描画する
 void TitleScene::DrawMenuPanel()
 {
 	int mx, my;
@@ -335,33 +266,21 @@ void TitleScene::DrawMenuPanel()
 	DrawFormatString(126, 828, hoverRule ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sRULE", hoverRule ? "> " : "  ");
 }
 
-
-
-/*
- * 目的（TitleSceneのDrawPrompt処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: UpdatePromptBlinkで更新されたアルファ値を適用し、点滅する操作プロンプトを描画する
 void TitleScene::DrawPrompt()
 {
-    	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + color_fade_ / 3);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + color_fade_ / 3);
 	DrawBox(Config::ScreenWidth / 2 - 210, Config::ScreenHeight - 76, Config::ScreenWidth / 2 + 210, Config::ScreenHeight - 34, GetColor(30, 35, 45), TRUE); // Main 30%
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-    SetFontSize(22);
-    DrawFormatString(Config::ScreenWidth / 2 - 156, Config::ScreenHeight - 66, GetColor(214, 220, 224), "CLICK A COMMAND TO BEGIN");
-    SetFontSize(24);
+	SetFontSize(22);
+	DrawFormatString(Config::ScreenWidth / 2 - 156, Config::ScreenHeight - 66, GetColor(214, 220, 224), "CLICK A COMMAND TO BEGIN");
+	SetFontSize(24);
 }
 
-
-/*
- * 目的（TitleSceneのFinalize処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: なし（このクラス固有の動的リソースがないため空実装とする）
 void TitleScene::Finalize()
 {
 }
-

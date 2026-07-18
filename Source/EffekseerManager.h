@@ -4,74 +4,69 @@
 #include <string>
 #include <unordered_map>
 
+// 外部ライブラリ(Effekseer)のコンテキストやリソースをアプリケーション全体で一元管理するシングルトン
 class EffekseerManager
 {
 public:
-	static EffekseerManager* GetInstance()
-	{
-		static EffekseerManager instance;
-		return &instance;
-	}
+    static EffekseerManager* GetInstance()
+    {
+        static EffekseerManager instance;
+        return &instance;
+    }
 
-	// 蛻晄悄蛹・(DxLib_Init縺ｮ蠕後↓蜻ｼ縺ｶ)
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Init();
+    // 入力: なし / 出力: なし
+    // 副作用: Effekseerのコンテキストを構築する（DxLib_Init後に呼ばないと内部クラッシュするため順序厳守）
+    void Init();
 
-	// 譖ｴ譁ｰ (豈弱ヵ繝ｬ繝ｼ繝蜻ｼ縺ｶ)
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Update();
+    // 入力: なし / 出力: なし
+    // 副作用: 全てのアクティブなエフェクトのパーティクル演算（寿命・座標・状態更新）を1フレーム進める
+    void Update();
 
-	// 謠冗判 (3D謠冗判縺ｮ蠕後↓蜻ｼ縺ｶ)
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Draw();
+    // 入力: なし / 出力: なし
+    // 副作用: 半透明エフェクトのZテスト破綻を防ぐため、必ず3Dモデル描画後の最終パスとしてバッファに書き込む
+    void Draw();
 
-	// 邨ゆｺ・・逅・(DxLib_End縺ｮ蜑阪↓蜻ｼ縺ｶ)
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void End();
+    // 入力: なし / 出力: なし
+    // 副作用: DxLib_End前にライブラリ管理下の全リソースを明示的に解放し、不正なメモリアクセスを防ぐ
+    void End();
 
-	// 繧ｨ繝輔ぉ繧ｯ繝医・隱ｭ縺ｿ霎ｼ縺ｿ
-	// name: 繝励Ο繧ｰ繝ｩ繝蜀・〒菴ｿ縺・匳骭ｲ蜷・
-	// filepath: efk繝輔ぃ繧､繝ｫ縺ｮ繝代せ
-	// magnification: 諡｡螟ｧ邇・(繝・ヵ繧ｩ繝ｫ繝・.0f)
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	int LoadEffect(const std::string& name, const char* filepath, float magnification = 1.0f);
+    // 入力: name(登録名), filepath(パス), magnification(ベース倍率) / 出力: ロード済みエフェクトハンドル
+    // 副作用: 毎フレームのディスクI/O負荷を避けるため、efkファイルをメモリへロードしハッシュマップにキャッシュする
+    int LoadEffect(const std::string& name, const char* filepath, float magnification = 1.0f);
 
-	// 繧ｨ繝輔ぉ繧ｯ繝医・蜀咲函
-	// name: 隱ｭ縺ｿ霎ｼ繧薙□譎ゅ・逋ｻ骭ｲ蜷・
-	// pos: 蜀咲函縺吶ｋ3D蠎ｧ讓・
-	// 謌ｻ繧雁､: 蜀咲函荳ｭ縺ｮ繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν (蛛懈ｭ｢譎ゅ↑縺ｩ縺ｫ菴ｿ逕ｨ)
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	int PlayEffect(const std::string& name, VECTOR pos);
+    // 入力: name(キャッシュ名), pos(初期座標) / 出力: 再生中エフェクトの固有ハンドル
+    // 副作用: キャッシュからエフェクトのインスタンスを生成・配置し、再生キューへ登録する
+    int PlayEffect(const std::string& name, VECTOR pos);
 
-	// 蜀咲函荳ｭ縺ｮ繧ｨ繝輔ぉ繧ｯ繝医ｒ蛛懈ｭ｢
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void StopEffect(int playingHandle);
+    // 入力: playingHandle / 出力: なし
+    // 副作用: 指定されたエフェクトの再生を強制終了し、リソース（パーティクル群）を即座に回収する
+    void StopEffect(int playingHandle);
 
-	// 再生中か確認
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool IsPlaying(int playingHandle);
+    // 入力: playingHandle / 出力: 再生中か否か(bool) / 副作用: なし
+    // 攻撃判定の持続時間や、次の演出への遷移タイミングをエフェクトの生存状態と同期させるために使用する
+    bool IsPlaying(int playingHandle);
 
-	// 再生速度を設定
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetEffectSpeed(int playingHandle, float speed);
+    // 入力: playingHandle, speed(倍率) / 出力: なし
+    // 副作用: ヒットストップやスローモーション等の演出時、特定エフェクトのみ進行速度を動的に書き換える
+    void SetEffectSpeed(int playingHandle, float speed);
 
-	// 迚ｹ螳壹・繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν縺ｮ菴咲ｽｮ繧呈峩譁ｰ縺吶ｋ
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetEffectPosition(int playingHandle, VECTOR pos);
+    // 入力: playingHandle, pos / 出力: なし
+    // 副作用: 移動するキャラクターや弾にエフェクト（オーラなど）を追従させるため、毎フレーム座標を上書きする
+    void SetEffectPosition(int playingHandle, VECTOR pos);
 
-	// 迚ｹ螳壹・繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν縺ｮ蝗櫁ｻ｢繧呈峩譁ｰ縺吶ｋ (繝ｩ繧ｸ繧｢繝ｳ)
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetEffectRotation(int playingHandle, float x, float y, float z);
+    // 入力: playingHandle, x,y,z(ラジアン) / 出力: なし
+    // 副作用: 武器の振り下ろし角度や進行方向の変化に合わせて、エフェクトの射出方向や姿勢を動的に同期する
+    void SetEffectRotation(int playingHandle, float x, float y, float z);
 
-	// 迚ｹ螳壹・繧ｨ繝輔ぉ繧ｯ繝医ワ繝ｳ繝峨Ν縺ｮ繧ｹ繧ｱ繝ｼ繝ｫ繧呈峩譁ｰ縺吶ｋ
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void SetEffectScale(int playingHandle, float x, float y, float z);
+    // 入力: playingHandle, x,y,z(スケール) / 出力: なし
+    // 副作用: 爆発の規模やチャージサイズなど、実行時のパラメータ変動に応じてエフェクトの描画サイズを拡縮する
+    void SetEffectScale(int playingHandle, float x, float y, float z);
 
 private:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	EffekseerManager();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	~EffekseerManager();
+    // 入力: なし / 出力: なし / 副作用: なし
+    // シングルトンパターンの制約として、外部からの不用意なインスタンス生成や破棄を禁止する
+    EffekseerManager();
+    ~EffekseerManager();
 
-	std::unordered_map<std::string, int> effects_;
+    std::unordered_map<std::string, int> effects_; // 文字列比較による検索負荷をハッシュ計算で軽減するエフェクトキャッシュ
 };

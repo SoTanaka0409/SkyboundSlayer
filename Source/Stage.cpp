@@ -1,26 +1,27 @@
 #include"Stage.h"
 #include"Master.h"
 
-Stage::Stage(VECTOR initPos,std::string stageModelName, std::string stageCollisionModelName, VECTOR scale, std::string textureFilename)//蠎ｧ讓吶・蜴溽せ縺ｨ縺励※縺翫￥
+// 入力: 初期座標, 表示モデル名, 当たり判定モデル名, スケール, テクスチャ名 / 出力: なし
+// 副作用: 描画用と判定用（不可視）のモデルを分離してロードし、無効値(-1)時はデフォルトスケールを適用する
+Stage::Stage(VECTOR initPos, std::string stageModelName, std::string stageCollisionModelName, VECTOR scale, std::string textureFilename)
 	:Object3D(initPos)
 {
-	//繧ｿ繧ｰ險ｭ螳・
 	SetTag(Object3D::Tag3D_Stage);
-	//繧ｹ繝・・繧ｸ繝｢繝・Ν縺ｮ隱ｭ縺ｿ霎ｼ縺ｿ
+
 	model_handle_ = MV1LoadModel(stageModelName.c_str());
-	
-	//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繝｢繝・Ν(蠖薙◆繧雁愛螳夂畑縺ｮ繝｢繝・Ν)縺ｮ隱ｭ縺ｿ霎ｼ縺ｿ
 	collision_handle_ = MV1LoadModel(stageCollisionModelName.c_str());
 
-	//繝・ヵ繧ｩ繝ｫ繝医・蠑墓焚縺梧ｸ｡縺輔ｌ縺溷?ｴ蜷医・蠕捺擂縺ｮ繧ｹ繧ｱ繝ｼ繝ｫ繧剃ｽｿ逕ｨ
+	// 呼び出し元からスケール指定が省略された場合は、従来の固定ステージサイズ(300.0f)でフォールバックする
 	if (scale.x == -1.0f && scale.y == -1.0f && scale.z == -1.0f) {
 		float StageSize = 300.0f;
 		MV1SetScale(model_handle_, VGet(StageSize, 50.0f, StageSize));
 		MV1SetScale(collision_handle_, VGet(StageSize, StageSize, StageSize));
-	} else {
+	}
+	else {
 		MV1SetScale(model_handle_, scale);
 		MV1SetScale(collision_handle_, scale);
 	}
+
 	MV1SetPosition(collision_handle_, initPos);
 	MV1SetPosition(model_handle_, initPos);
 	MV1SetupCollInfo(collision_handle_);
@@ -31,66 +32,41 @@ Stage::Stage(VECTOR initPos,std::string stageModelName, std::string stageCollisi
 			MV1SetTextureGraphHandle(model_handle_, 0, texHandle, FALSE);
 		}
 	}
-	
 }
 
+// 入力: なし / 出力: なし
+// 副作用: VRAM上のモデルリソース（描画用・判定用）を破棄し、シーン切り替え時のメモリリークを防ぐ
 Stage::~Stage()
 {
-	//隱ｭ縺ｿ霎ｼ繧薙□繝｢繝・Ν縺ｮ遐ｴ譽・
 	MV1DeleteModel(model_handle_);
 	MV1DeleteModel(collision_handle_);
 }
 
-
-/*
- * 目的（StageのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: なし（背景ステージ等の静的な環境オブジェクトを想定しているため、動的な状態更新は行わない）
 void Stage::Update()
 {
-
 }
 
-/*
- * 目的（StageのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: なし / 出力: なし
+// 副作用: プレイヤーに視認させるための描画用モデルのみを描画バッファへ登録する
 void Stage::Draw()
 {
-	//繧ｹ繝・・繧ｸ繝｢繝・Ν縺ｮ謠冗判
 	MV1DrawModel(model_handle_);
-
-	//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ繝｢繝・Ν縺ｮ謠冗判(繝ｯ繧､繝､繝ｼ繝輔Ξ繝ｼ繝?縺ｿ縺溘＞縺ｪ諢溘§縺ｧ謠冗判)
-	// ///蠖薙◆繧雁愛螳夂畑縺ｮ繝｢繝・Ν縺ｨ縺励※菴懊ｉ繧後※縺・ｋ
-	//隱ｭ縺ｿ霎ｼ繧?繝｢繝・Ν縲∬牡縲・
 }
 
-
-/*
- * 目的（StageのCheckHit_Capsule処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: pos1, pos2 (カプセルの始点・終点), r (半径) / 出力: 衝突の有無(bool)
+// 副作用: デバッグ有効時は衝突ポリゴンを可視化描画し、判定後はDxLib側のメモリ(result)を確実に解放する
 bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 {
-	//逕滓・縺励※縺・◆蠖薙◆繧雁愛螳壹ｒ蝓ｺ縺ｫ繧ｫ繝励そ繝ｫ縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ陦後≧
-	//繧ｳ繝ｪ繧ｸ繝ｧ繝ｳ邨先棡莉｣蜈･逕ｨ繝昴Μ繧ｴ繝ｳ驟榊・
 	MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_Capsule(collision_handle_, -1, pos1, pos2, r);
 
 	if (Master::debug_->Getdebug() == true)
 	{
-		//繝昴Μ繧ｴ繝ｳ縺ｫ荳?縺､莉･荳雁ｽ薙◆縺｣縺ｦ縺・ｋ蝣ｴ蜷・
 		if (result.HitNum >= 1)
 		{
-			//蝗樊焚繧貞ｽ薙◆縺｣縺溷屓謨ｰ繧貞屓縺・
 			for (int i = 0; i < result.HitNum; i++)
 			{
-				//3D縺ｮ荳芽ｧ貞ｽ｢繧呈緒逕ｻ縺吶ｋ
 				DrawTriangle3D(
 					result.Dim[i].Position[0],
 					result.Dim[i].Position[1],
@@ -101,57 +77,37 @@ bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 			}
 		}
 	}
-	//蠖薙◆繧雁愛螳壽ュ蝣ｱ縺ｮ蠕檎援縺･縺・
-	MV1CollResultPolyDimTerminate(result);
 
+	// DxLibの仕様上、取得したポリゴン情報は明示的に破棄しないとメモリリークを起こすため必須
+	MV1CollResultPolyDimTerminate(result);
 
 	return(result.HitNum >= 1);
 }
 
-
-/*
- * 目的（StageのCheckHit_Line処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: pos1, pos2 (レイの始点・終点) / 出力: 衝突した空間座標（未ヒット時はゼロベクトル）
+// 副作用: なし（レイキャストによる着弾点の計算や、射線が通っているかの判定などに使用する）
 VECTOR Stage::CheckHit_Line(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
-
-	//蠖薙◆繧雁愛螳壽ュ蝣ｱ縺ｨ邱壼・縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ陦後≧
 	auto result = MV1CollCheck_Line(collision_handle_, -1, pos1, pos2);
 
-	//蠖薙◆縺｣縺ｦ縺・◆蝣ｴ蜷・
-	if (result.HitFlag)//result.HitNum >= 1
+	if (result.HitFlag)
 	{
-		//蠖薙◆縺｣縺溷?区焚縺ｮ繝昴ず繧ｷ繝ｧ繝ｳ繧池eturn縺吶ｋ繧医≧縺ｫ蜿門ｾ励☆繧・
-		//螢√・譎ゅ∩縺溘＞縺ｫHitPosition繧偵→繧句ｿ・ｦ√↑縺・
 		ret = result.HitPosition;
 	}
 
 	return ret;
 }
 
-
-/*
- * 目的（StageのCheckHit_LineDebug処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+// 入力: pos1, pos2 (レイの始点・終点) / 出力: 衝突した空間座標（未ヒット時はゼロベクトル）
+// 副作用: 画面上にヒットした座標テキスト、または未ヒットの警告UIを描画する（デバッグ用途）
 VECTOR Stage::CheckHit_LineDebug(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
-
-	//蠖薙◆繧雁愛螳壽ュ蝣ｱ縺ｨ邱壼・縺ｨ縺ｮ蠖薙◆繧雁愛螳壹ｒ陦後≧
 	auto result = MV1CollCheck_Line(collision_handle_, -1, pos1, pos2);
 
-	//蠖薙◆縺｣縺ｦ縺・◆蝣ｴ蜷・
-	if (result.HitFlag)//result.HitNum >= 1
+	if (result.HitFlag)
 	{
-		//蠖薙◆縺｣縺溷?区焚縺ｮ繝昴ず繧ｷ繝ｧ繝ｳ繧池eturn縺吶ｋ繧医≧縺ｫ蜿門ｾ励☆繧・
-		//螢√・譎ゅ∩縺溘＞縺ｫHitPosition繧偵→繧句ｿ・ｦ√↑縺・
 		ret = result.HitPosition;
 		if (Master::debug_->Getdebug() == true)
 		{
@@ -163,7 +119,6 @@ VECTOR Stage::CheckHit_LineDebug(VECTOR pos1, VECTOR pos2)
 		if (Master::debug_->Getdebug() == true)
 		{
 			DrawFormatString(200, 0, GetColor(255, 0, 0), "Hit None");
-
 		}
 	}
 

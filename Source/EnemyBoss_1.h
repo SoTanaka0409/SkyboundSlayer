@@ -11,48 +11,56 @@
 
 class Model;
 
-class EnemyBoss_1 :public Enemy
+// プレイヤーの進行を阻む中ボス/大ボス用クラス。コンボ攻撃やジャンプなどの複雑な行動パターンを単独で管理する
+class EnemyBoss_1 : public Enemy
 {
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool is_separate_anim_);
+    // 入力: filename, 初期座標, ステータス群, 判定サイズ群, 所持金, アニメ分離フラグ
+    // 出力: なし / 副作用: ボス専用の巨大なモデルや、ジャンプ攻撃用の特殊コライダーを動的確保して初期化する
+    EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_);
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	~EnemyBoss_1();
+    // 入力: なし / 出力: なし
+    // 副作用: ボス固有の攻撃用コライダー（ジャンプ衝撃波など）を破棄し、シーン離脱時のメモリリークを防ぐ
+    ~EnemyBoss_1();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Draw()override;
+    // 入力: なし / 出力: なし
+    // 副作用: モデル本体の描画に加え、画面上部に固定表示されるボス専用の長大なHPバーUIを描画バッファへ登録する
+    void Draw() override;
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Update()override;
+    // 入力: なし / 出力: なし
+    // 副作用: HP残量（フェーズ）に応じた行動パターンの切り替えや、ジャンプ中の物理演算を毎フレーム進行させる
+    void Update() override;
 
-	
+    // 入力: なし / 出力: なし
+    // 副作用: プレイヤーとの距離や乱数に基づき、通常コンボやジャンプ急降下などの攻撃モーションを動的に出し分ける
+    void Attack() override;
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Attack()override;
+    // 入力: collider(自身の判定), check(相手の判定) / 出力: なし
+    // 副作用: プレイヤーの攻撃に対する怯み耐性（スーパーアーマー）や、部位破壊などのボス特有の接触判定を処理する
+    void OnTrigger(Collider* collider, Collider* check) override;
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void OnTrigger(Collider* collider, Collider* check)override;
-	
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void DeathEnemy()override;
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Delete()override;
+    // 入力: なし / 出力: なし
+    // 副作用: 即座に消滅させず、スローモーションや爆発エフェクトなどの長尺な「ボス撃破演出」のトリガーを発火させる
+    void DeathEnemy() override;
+
+    // 入力: なし / 出力: なし
+    // 副作用: 撃破演出が完全に終了した後、安全にインスタンスを破棄してゲームクリアフラグ等へ繋ぐ
+    void Delete() override;
 
 private:
-	// ジャンプ中の物理計算処理
-	void UpdateJumpPhysics();
+    // 入力: なし / 出力: なし
+    // 副作用: 共通の重力処理を無視し、ボス特有の「溜めからの急降下」を実現するためY軸座標を直接上書きする
+    void UpdateJumpPhysics();
 
-	// === 定数 ===
-	static constexpr float kJumpAscendSpeed = 15.0f;
-	static constexpr float kJumpDescendSpeed = -25.0f;
-	SphereCollider* jump_attack_coiider_;
+    // === 定数 ===
+    static constexpr float kJumpAscendSpeed = 15.0f;  // ジャンプ攻撃時の浮上初速（プレイヤーの視界から消える高さ）
+    static constexpr float kJumpDescendSpeed = -25.0f; // 回避の猶予を削るための急降下落下速度
 
-	int attack_type_;
-	int attack1_combo_count_;
-	
-	float mfjumpPower;
-	bool HighPositionFlag;
+    SphereCollider* jump_attack_coiider_; // 着地時に広範囲へ広がる衝撃波のダメージ判定用コライダー
 
+    int attack_type_;         // 乱数やヘイトに応じて分岐する、現在実行中の攻撃アクションID
+    int attack1_combo_count_; // 連続攻撃の段数（コンボルートの派生判定に使用）
 
+    float mfjumpPower;        // 現在のY軸方向への推進力（滞空時間の計算用）
+    bool HighPositionFlag;    // ジャンプの頂点に達し、急降下ステートへ移行すべきかを判定するフラグ
 };

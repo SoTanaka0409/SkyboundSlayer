@@ -2,6 +2,7 @@
 #include"Master.h"
 #include"SceneManager.h"
 #include"ObjectManager.h"
+#include"Player3D.h"
 
 
 /*

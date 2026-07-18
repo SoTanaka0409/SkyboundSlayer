@@ -1,48 +1,64 @@
 #pragma once
 #include "SceneGame.h"
-#include"Dxlib.h"
-#include"Master.h"
-#include"Texture.h"
-#include"EnemyManager.h"
-#include"GameManager.h"
+#include "Dxlib.h"
+#include "Master.h"
+#include "Texture.h"
+#include "EnemyManager.h"
+#include "GameManager.h"
 
-
-
+// 3D空間をベースとしたメインゲームループを管理するシーン。ステージの構築、アクターのロード、環境構築を統括する
 class Scene3D : public SceneGame
 {
 private:
-	Texture* texture_;
-	Texture* texture2_;
-public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	Scene3D();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	~Scene3D();
+    Texture* texture_;  // ロード画面や警告UIなどで使用する2Dテクスチャ（汎用背景等）
+    Texture* texture2_; // 汎用UIやエフェクト用のサブテクスチャ
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Initialize();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Finalize();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Draw();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Update();
+public:
+    // 入力: なし / 出力: なし
+    // 副作用: 3Dゲームシーン固有のタイマーや状態フラグを安全な初期値にセットアップする
+    Scene3D();
+
+    // 入力: なし / 出力: なし
+    // 副作用: 派生シーンとして確保したリソースを確実に解放するための仮想デストラクタ
+    ~Scene3D();
+
+    // 入力: なし / 出力: なし
+    // 副作用: 3Dモデル、CSVからのステージ配置、環境光などのセットアップを開始し、ロード画面へ移行する
+    void Initialize();
+
+    // 入力: なし / 出力: なし
+    // 副作用: シーン離脱時（タイトルへの帰還等）に、動的生成したアクターや3Dリソースを破棄してメモリリークを防ぐ
+    void Finalize();
+
+    // 入力: なし / 出力: なし
+    // 副作用: 3D空間（地形・キャラ）の描画パスを実行後、Zバッファを無視して手前に2D UI（ロードバー等）を描画する
+    void Draw();
+
+    // 入力: なし / 出力: なし
+    // 副作用: ロード完了フラグ(is_load_flag_)を監視し、完了後は各アクターやゲームマネージャーのロジックを進行させる
+    void Update();
 
 private:
-	void SetupEnvironment();
-	void CreateInitialActors();
-	void CreateStage();
-	void LoadStageObjectsFromCsv();
-	void CreateSkyBox();
-	void DrawDebugGrid();
+    // 入力: なし / 出力: なし / 副作用: 3D空間の光源（ディレクショナルライト等）、フォグ、カメラの初期クリップ面を設定する
+    void SetupEnvironment();
+    // 入力: なし / 出力: なし / 副作用: プレイヤーや中核となる敵AIなど、ゲーム進行に必須な動的エンティティをメモリに生成する
+    void CreateInitialActors();
+    // 入力: なし / 出力: なし / 副作用: 地形モデルのロードと、コリジョンマネージャーへの当たり判定用メッシュの登録を行う
+    void CreateStage();
+    // 入力: なし / 出力: なし / 副作用: CSVから座標データを読み込み、木や障害物などの静的オブジェクトをレベルデザイン通りに自動配置する
+    void LoadStageObjectsFromCsv();
+    // 入力: なし / 出力: なし / 副作用: プレイヤーの視点に追従する巨大な天球モデルを配置し、空間の果て（背景）を表現する
+    void CreateSkyBox();
+    // 入力: なし / 出力: なし / 副作用: デバッグビルド時のみ、XZ平面に距離感把握用のグリッド線を描画バッファへ登録する
+    void DrawDebugGrid();
 
-	float warning_radius_ = 0.0f;
-	float max_radius_ = 520.0f;
-	float load_timer_;
-	float load_count_;
-	bool is_load_flag_;
+    float warning_radius_; // ボス出現時など、特定エリアの接近警告エフェクトを描画するための現在の半径
+    float max_radius_ = 520.0f; // 警告エフェクトが広がる最大範囲（この値に達すると点滅等の演出へ移行）
 
+    float load_timer_;     // アセットの非同期読み込み中にプログレスバーやロード演出を進行させるためのタイマー
+    float load_count_;     // 読み込みが完了したアセットの数（ロード進捗率の計算用）
+    bool is_load_flag_;    // 全リソースの準備が完了し、Updateによるメインロジックを開始してよいかを示すフラグ
 
-	VECTOR pos_ = { 200,400 };
-	VECTOR size_ = { 600,100 };
+    VECTOR pos_ = { 200, 400 }; // 画面ロード時や警告UI表示時の基準となるスクリーン2D座標
+    VECTOR size_ = { 600, 100 }; // UI要素（プログレスバーや背景パネル）のピクセルサイズ
 };

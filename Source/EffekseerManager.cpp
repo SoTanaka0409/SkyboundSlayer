@@ -68,7 +68,6 @@ int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, 
 {
 	if (effects_.find(name) != effects_.end())
 	{
-	return_handle:
 		return effects_[name];
 	}
 

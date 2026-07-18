@@ -5,9 +5,7 @@
 
 class ModelAnimation
 {
-public:
-    // ★New★
-    // ここにあった定義が ModelUtilityへ移動されている]
+
 
 public:
     // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
