@@ -68,7 +68,7 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     new Stage(VAdd(boss_portal_pos_, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D/portal/source/portal.mv1", "Resource/3D/portal/source/portal.mv1", VGet(portalSize, portalSize, portalSize));
 
     // Portal Magic Circle Effect (slightly above the portal base to prevent clipping)
-    new EffekseerObject("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efkproj", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
+    new EffekseerObject("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efk", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
 }
 
 

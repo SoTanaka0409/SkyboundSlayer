@@ -1,4 +1,4 @@
-﻿#include "EffectU.h"
+#include "EffectU.h"
 #include "EffekseerManager.h"
 
 EffectU::~EffectU()
@@ -12,7 +12,7 @@ EffectU::~EffectU()
 bool EffectU::Load()
 {
     // Effekseerのエフェクトをロード
-    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/effect/MAGICAL/魔法陣.efkproj", 1.0f);
+    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efkproj", 1.0f);
     return true;
 }
 
