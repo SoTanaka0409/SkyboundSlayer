@@ -11,7 +11,7 @@ public:
 	void SetDebug(bool debug) { debugOn = debug; }
 
 private:
-	bool debugOn = true;
+	bool debugOn = false;
 
 
 

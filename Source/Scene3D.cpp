@@ -179,11 +179,6 @@ void Scene3D::Update()
 		Master::scene_manager_->SetNextScene(SceneManager::kSceneResultWin);
 	}
 
-	// バグ回避：物理演算等の衝突解決漏れでプレイヤーがステージ境界外へ飛び出してしまった場合、即座に前フレームの安全な座標へ強制的に巻き戻して落下死やスタックを防止する
-	if (player->GetStageOutFlag() == false)
-	{
-		player->GetPosition() = player->GetOldPosition();
-	}
 }
 
 // 入力：なし

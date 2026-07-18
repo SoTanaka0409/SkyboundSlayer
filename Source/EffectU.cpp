@@ -11,14 +11,14 @@ EffectU::~EffectU()
 
 bool EffectU::Load()
 {
-    // Effekseerのエフェクトをロード
+    // Load the hold effect resource.
     EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efkproj", 1.0f);
     return true;
 }
 
 void EffectU::StartHold(const VECTOR& playerPos)
 {
-    // 既に再生中の場合は停止
+
     if (playing_handle_ != -1) {
         EffekseerManager::GetInstance()->StopEffect(playing_handle_);
     }
@@ -26,16 +26,14 @@ void EffectU::StartHold(const VECTOR& playerPos)
 
     VECTOR pos = playerPos;
     pos.y += y_offset_;
-    
-    // エフェクト再生開始
+
     playing_handle_ = EffekseerManager::GetInstance()->PlayEffect("Mahoujin", pos);
 }
 
 void EffectU::ReleaseAndShatter()
 {
     if (!is_holding_) return;
-    
-    // ボタンを離したときのエフェクト終了
+
     if (playing_handle_ != -1) {
         EffekseerManager::GetInstance()->StopEffect(playing_handle_);
         playing_handle_ = -1;
@@ -50,8 +48,7 @@ void EffectU::UpdateFollow(const VECTOR& playerPos)
     {
         VECTOR pos = playerPos;
         pos.y += y_offset_;
-        
-        // 再生中かチェックし、終了していたらハンドルをリセット
+
         if (EffekseerManager::GetInstance()->IsPlaying(playing_handle_)) {
             EffekseerManager::GetInstance()->SetEffectPosition(playing_handle_, pos);
         } else {
@@ -62,5 +59,5 @@ void EffectU::UpdateFollow(const VECTOR& playerPos)
 
 void EffectU::Draw() const
 {
-    // Effekseerのエフェクト描画はEffekseerManagerの管轄なので、ここでは何もしない
+    // Load the hold effect resource.
 }

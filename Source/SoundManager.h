@@ -82,6 +82,17 @@ public:       //サウンド再生系
 // [入力] なし [出力] なし [副作用] BGMの停止
 	void StopBGM();
 
+	bool IsBgmEnabled() const { return is_bgm_enabled_; }
+	bool IsSeEnabled() const { return is_se_enabled_; }
+	int GetBgmVolume() const { return bgm_volume_; }
+	int GetSeVolume() const { return se_volume_; }
+	void SetBgmEnabled(bool enabled);
+	void SetSeEnabled(bool enabled);
+	void SetBgmVolume(int volume);
+	void SetSeVolume(int volume);
+	void ToggleBgmEnabled();
+	void ToggleSeEnabled();
+
 private:  //メンバ変数
 	SOUND_BGM now_playing_bgm_;   //現在再生されているBGMの種類
 	SOUND_SE now_playing_se_;     //現在再生されているSEの種類
@@ -89,4 +100,8 @@ private:  //メンバ変数
 
 	std::vector < std::pair<SOUND_BGM, int>>bgm_handle_list_;  //読み込んだBGMのハンドルのリスト
 	std::vector<std::pair<SOUND_SE, int>>se_handle_list_;     //読み込んだSEハンドルのリスト
+	bool is_bgm_enabled_;
+	bool is_se_enabled_;
+	int bgm_volume_;
+	int se_volume_;
 };

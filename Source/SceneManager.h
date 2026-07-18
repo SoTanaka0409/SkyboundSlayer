@@ -3,52 +3,66 @@
 class Scene;
 class SceneGame;
 
+// アーキテクチャ設計：ゲーム内の各フェーズ（タイトル、本編、リザルト等）を一元管理し、シーン間の安全な移行、メモリ管理、および更新・描画の委譲を担うステート管理ハブ
 class SceneManager
 {
 public:
-	// ゲームの流れで使用されるシーンのカテゴリ
 	enum SceneType
 	{
 		kSceneNone = 0,
 		kSceneTitle,
 		kSceneRule,
+		kSceneSettings,
 		kScene3D,
 		kSceneResultWin
 	};
 
 	SceneManager();
 	~SceneManager();
-// シーンマネージャーの初期化
-    // [入力] なし [出力] なし [副作用] 初期シーンの生成
 
+	// 入力：なし
+	// 出力：なし
+	// 副作用：初期シーンへの遷移予約およびシーン構築処理の実行
 	void Initialize();
-// シーンの更新処理
-    // [入力] なし [出力] なし [副作用] 現在のシーンのUpdate呼び出し
+
+	// 入力：なし
+	// 出力：なし
+	// 副作用：現在アクティブなシーンのUpdateおよびフェード演出の進行
 	void Update();
-// シーンの描画処理
-    // [入力] なし [出力] なし [副作用] 現在のシーンのDraw呼び出し
+
+	// 入力：なし
+	// 出力：なし
+	// 副作用：現在アクティブなシーンのDrawおよびフェード演出のレンダリング
 	void Draw();
-// シーンの終了処理
-    // [入力] なし [出力] なし [副作用] 現在のシーンの破棄
+
+	// 入力：なし
+	// 出力：なし
+	// 副作用：全シーン管理リソースの破棄
 	void Finalize();
-// 予約されている次のシーンへの切り替え処理
-    // [入力] なし [出力] なし [副作用] 現在のシーンの破棄と新しいシーンの生成
 
-		void ChangeSceneIfNeeded();
-// 次に遷移するシーンを予約する
-    // [入力] SceneType next [出力] なし [副作用] next_scene_type_の変更
+	// 入力：なし
+	// 出力：なし
+	// 副作用：フェードアウト完了検知後、古いシーンの破棄と新しいシーンの構築、およびフェードインの開始
+	void ChangeSceneIfNeeded();
 
-		void SetNextScene(SceneType next) { next_scene_type_ = next; }
-// 現在のシーンインスタンスを取得する
-    // [入力] なし [出力] Scene*: 現在のシーン [副作用] なし
+	// 入力：next = 遷移先シーンID
+	// 出力：なし
+	// 副作用：次フレーム移行用の遷移先ステート更新
+	void SetNextScene(SceneType next) { next_scene_type_ = next; }
 
-		Scene* GetCurrentScene() { return current_scene_; }
-// 現在のシーンタイプを取得する
-    // [入力] なし [出力] SceneType: 現在のシーンタイプ [副作用] なし
+	// 入力：なし
+	// 出力：現在アクティブなシーンへのポインタ
+	// 副作用：なし
+	Scene* GetCurrentScene() { return current_scene_; }
 
-		SceneType GetCurrentSceneType() { return scene_type_; }
-// 現在のシーンがゲームシーンであれば取得する
-    // [入力] なし [出力] SceneGame*: ゲームシーンのポインタ [副作用] なし
+	// 入力：なし
+	// 出力：現在アクティブなシーンの列挙型ID
+	// 副作用：なし
+	SceneType GetCurrentSceneType() { return scene_type_; }
+
+	// 入力：なし
+	// 出力：SceneGameへのダウンキャストポインタ（ゲーム本編でない場合はnullptr）
+	// 副作用：なし
 	SceneGame* GetSceneGame();
 
 private:

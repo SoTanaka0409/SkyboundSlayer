@@ -65,6 +65,7 @@
     <ClCompile Include="Source\ResultWin.cpp" />
     <ClCompile Include="Source\Rock.cpp" />
     <ClCompile Include="Source\Rule.cpp" />
+    <ClCompile Include="Source\SettingsScene.cpp" />
     <ClCompile Include="Source\Save.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Source\ResultWin.h" />
     <ClInclude Include="Source\Rock.h" />
     <ClInclude Include="Source\Rule.h" />
+    <ClInclude Include="Source\SettingsScene.h" />
     <ClInclude Include="Source\Save.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\GameManager.h" />

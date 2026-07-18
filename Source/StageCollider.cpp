@@ -101,7 +101,7 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 			texture2_->Draw();
 			if (check == player->GetCollisionCollider())
 			{
-				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//場所を移勁E
+				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//場所を移勁
 				Master::sound_manager_->PlaySE(SoundManager::SE_WARP);//warp音を鳴らす
 				/*new Effect(VGet(17000, 0, 16000), "Resource/2d/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
 				new Effect(VGet(16000, 0, 17000), "Resource/2d/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);*/

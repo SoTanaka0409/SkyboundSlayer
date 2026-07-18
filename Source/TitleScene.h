@@ -1,64 +1,89 @@
 #pragma once
-#include "Dxlib.h"
+#include "dxlib.h"
 #include "Scene.h"
 
-// ゲーム起動時のタイトルシーン。メニュー選択、カメラ演出、および「Press Start」等のUI表示を管理する
+// アーキテクチャ設計：タイトル画面を担当するシーンクラス。
+// ゲームの第一印象を決定づける場所として、3D背景の旋回演出や、操作を促す点滅UIなどを統合的に制御する。
 class TitleScene : public Scene
 {
 public:
-    // 入力: なし / 出力: なし / 副作用: タイトルシーン固有の変数初期化を行う
-    TitleScene();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：点滅演出用タイマーおよびカメラ角度の初期化
+	TitleScene();
 
-    // 入力: なし / 出力: なし / 副作用: 確保したリソースを解放する
-    ~TitleScene();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：なし
+	~TitleScene();
 
-    // 入力: なし / 出力: なし
-    // 副作用: タイトル用画像や背景音楽のロード、カメラ演出の初期化を行う
-    void Initialize();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：カメラリセット、BGMの開始、ステージ背景および天球モデルの動的ロードと生成
+	void Initialize() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: カメラ演出の更新、メニュー入力の監視、および点滅UIタイマーの進行を行う
-    void Update();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：カメラ旋回アニメーションの進行およびメニューUIへのマウス入力判定の毎フレーム実行
+	void Update() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: 背景、タイトルロゴ、メニュー項目、操作ガイドなどの描画バッファへの登録を行う
-    void Draw();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：背景、タイトルロゴ、メニューパネル、および点滅テキストの描画命令発行
+	void Draw() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: シーン遷移時に画像ハンドル等を破棄し、VRAMメモリリークを防ぐ
-    void Finalize();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：タイトルシーン専用に確保した動的リソースの解放
+	void Finalize() override;
 
 private:
-    // 入力: なし / 出力: なし / 副作用: タイトルロゴ周りを旋回するカメラの角度(camera_angle_)を更新し、視覚演出を進行させる
-    void UpdateTitleCamera();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：カメラ位置の三角関数計算および強制注視点設定による旋回演出
+	void UpdateTitleCamera();
 
-    // 入力: なし / 出力: なし / 副作用: ゲーム開始やルール説明などの選択肢に対するユーザー入力を検知し、遷移先を決定する
-    void HandleMenuInput();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：マウス座標と各ボタン領域の判定に基づいた、シーン遷移（Game/Rule/Settings）要求の発行
+	void HandleMenuInput();
 
-    // 入力: なし / 出力: なし / 副作用: 「Press Start」等のテキストのアルファ値を増減させ、点滅演出を進行させる
-    void UpdatePromptBlink();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：点滅演出用アルファ値の周期的な変動（ブリンク演出）
+	void UpdatePromptBlink();
 
-    // 入力: なし / 出力: なし / 副作用: シーン全体の背景画像または3D空間を描画する
-    void DrawSceneBackground();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：3D背景の描画およびUI可読性を高めるための半透明な暗幕レイヤーの重ね描き
+	void DrawSceneBackground();
 
-    // 入力: なし / 出力: なし / 副作用: タイトルロゴ画像をスクリーン中央へ描画する
-    void DrawTitlePanel();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：タイトルロゴの描画（影による可読性向上処理を含む）
+	void DrawTitlePanel();
 
-    // 入力: なし / 出力: なし / 副作用: 「Start」「Rule」等のメニューリストを描画する
-    void DrawMenuPanel();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：マウスホバー判定に合わせた、各メニューボタンのカラー変更と描画
+	void DrawMenuPanel();
 
-    // 入力: なし / 出力: なし / 副作用: 点滅中であれば操作ガイドのテキストをスクリーン下部へ描画する
-    void DrawPrompt();
+	// 入力：なし
+	// 出力：なし
+	// 副作用：点滅用のアルファ値を適用した操作プロンプト（Press Start等）の描画
+	void DrawPrompt();
 
-    // 入力: mx, my (マウス座標) / 出力: ホバー中か(bool) / 副作用: なし
-    // マウスカーソルが「Start」ボタン範囲内にあるかを判定し、視覚フィードバック（拡大や色変更）に用いる
-    bool IsHoverStart(int mx, int my) const;
+	// 入力：mx, my = マウス座標
+	// 出力：指定ボタン領域内であれば true
+	// 副作用：なし（ボタン領域に対する静的ヒットボックス判定）
+	bool IsHoverStart(int mx, int my) const;
+	bool IsHoverRule(int mx, int my) const;
+	bool IsHoverSettings(int mx, int my) const;
 
-    // 入力: mx, my (マウス座標) / 出力: ホバー中か(bool) / 副作用: なし
-    // マウスカーソルが「Rule」ボタン範囲内にあるかを判定する
-    bool IsHoverRule(int mx, int my) const;
+	// カメラ演出用：自動旋回アニメーションの現在の回転角
+	float camera_angle_;
 
-    float camera_angle_; // タイトル画面を一周するカメラの現在の回転角
-    int color_fade_;     // 点滅演出やフェードイン・アウト用の現在のアルファ値
-    bool color_flag_;    // 点滅演出の増減方向（加算か減算か）を切り替えるフラグ
+	// UI演出用：点滅処理のためのアルファ値（fade）と、明滅方向を制御するトグルフラグ
+	int color_fade_;
+	bool color_flag_;
 };
