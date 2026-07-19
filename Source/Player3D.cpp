@@ -1,4 +1,4 @@
-#include"Player3D.h"
+ï»¿#include"Player3D.h"
 #include"Model.h"
 #include"ModelAnimation.h"
 #include"Master.h"
@@ -27,9 +27,9 @@
 #include"InfClass.h"
 #include"HaveMoneyClass.h"
 
-// “ü—ÍFfilename = ƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹ƒpƒX, initPos = ‰ŠúÀ•W, jumppower = ƒWƒƒƒ“ƒv—Í, speed = ˆÚ“®‘¬“x, hp = ‰Šú‘Ì—Í, is_separate_anim_ = ã”¼g/‰º”¼g‚Ì•ª—£ƒtƒ‰ƒO
-// o—ÍF‚È‚µ
-// •›ì—pFƒvƒŒƒCƒ„[ƒ‚ƒfƒ‹AŠeíƒRƒ‰ƒCƒ_[AƒCƒ“ƒxƒ“ƒgƒŠA‚¨‚æ‚Ñƒ}ƒl[ƒWƒƒ[ŒQ‚Ì“®“I¶¬‚Æ‰Šú‰»
+// å…¥åŠ›: ãƒ¢ãƒ‡ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€åˆæœŸåº§æ¨™ã€ã‚¸ãƒ£ãƒ³ãƒ—åŠ›ã€ç§»å‹•é€Ÿåº¦ã€åˆæœŸHPã€ã‚¢ãƒ‹ãƒ¡åˆ†å‰²ãƒ•ãƒ©ã‚°
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–ã€ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¨ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ç”Ÿæˆã€ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã¸ã®ç™»éŒ²
 Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float speed, float hp, bool is_separate_anim_)
 	:Object3D(initPos)
 	, attack_(3)
@@ -55,6 +55,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	, is_attack_slide_target_found_(false)
 	, evasion_speed_(20.0f)
 	, is_stage_out_(true)
+	, is_dead_(false)
 {
 	Master::player_ = this;
 
@@ -65,14 +66,14 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	model_ = new Model(filename, initPos, is_separate_anim_);
 	have_money_ = new HaveMoneyClass(0);
 
-	model_->AddAttachment("Resource/3D/Sabel.mv1", "mixamorig:RightHand");
-	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
-	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
-	model_->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
-	model_->AddAnimation(ANIMATION_ATTACK, "Resource/Model/Attack_3.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKSLIDE, "Resource/Model/Attack.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/Model/Jump Attack.mv1");
-	model_->AddAnimation(ANIMATION_SLIDE, "Resource/Model/kaihi.mv1");
+	model_->AddAttachment("Resource/3Dãƒ¢ãƒ‡ãƒ«/æ­¦å™¨/01_å‰£ãƒ¢ãƒ‡ãƒ«.mv1", "mixamorig:RightHand");
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/11_å¾…æ©Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/12_èµ°ã‚Šã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³.mv1");
+	model_->AddAnimation(ANIMATION_DYING, "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/13_æ­»äº¡ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³.mv1");
+	model_->AddAnimation(ANIMATION_ATTACK, "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/16_é€šå¸¸æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³.mv1");
+	model_->AddAnimation(ANIMATION_ATTACKSLIDE, "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/15_æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‘.mv1");
+	model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/17_ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³.mv1");
+	model_->AddAnimation(ANIMATION_SLIDE, "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/18_å›é¿ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³.mv1");
 
 	Master::camera_->Initialize();
 	item_manager_ = Master::item_manager_;
@@ -90,7 +91,6 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	normal_attack_ = 10;
 	attack_ = 10;
 
-	// ƒA[ƒLƒeƒNƒ`ƒƒİŒvF–{‘Ì‚Ì‰Ÿ‚µo‚µ”»’èA•Šíæ’[iƒAƒ^ƒbƒ`ƒƒ“ƒgjAõ“G”ÍˆÍA“ÁêUŒ‚”ÍˆÍ‚È‚ÇA–ğŠ„‚ÌˆÙ‚È‚é•¡”‚Ì•¨—ƒRƒ‰ƒCƒ_[‚ğ‡¬‚µ‚ÄƒAƒNƒVƒ‡ƒ“”»’è‚ğ\’z‚·‚é
 	capsule_collider_ = new CapsuleCollider(this, position_, VAdd(position_, VGet(0.0f, size_, 0.0f)), size_);
 	attach_collider_ = new SphereCollider(this, model_->GetAttachmentPosition(), 60.0f);
 	attack_slide_collider_ = new SphereCollider(this, position_, 200.0f);
@@ -101,20 +101,21 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	attack_state_ = kAttackNormal;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF“®“I‚ÉŠm•Û‚³‚ê‚½ƒ‚ƒfƒ‹EƒCƒ“ƒxƒ“ƒgƒŠ“™‚Ì‰ğ•ú‚ÆAƒRƒ‰ƒCƒ_[‚Ì”jŠü—\–ñ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å‹•çš„ç¢ºä¿ã—ãŸãƒ¢ãƒ‡ãƒ«ã‚„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ç ´æ£„ã€ã‚°ãƒ­ãƒ¼ãƒãƒ«å‚ç…§ã®ã‚¯ãƒªã‚¢
 Player3D::~Player3D()
 {
+	// ãƒ€ãƒ³ã‚°ãƒªãƒ³ã‚°ãƒã‚¤ãƒ³ã‚¿ã«ã‚ˆã‚‹ã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã‚’é˜²ããŸã‚å‚ç…§ã‚’ã‚¯ãƒªã‚¢
 	if (Master::player_ == this) Master::player_ = nullptr;
 	delete model_;
 	delete short_inventory_;
 	CollDelete();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFŠeíƒ^ƒCƒ}[‚ÌisA“ü—Íó‘Ô‚ÌŠÄ‹A‚¨‚æ‚ÑƒAƒNƒVƒ‡ƒ“ˆ—‚ÌƒfƒBƒXƒpƒbƒ`
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹æ›´æ–°ã€å…¥åŠ›ã‚’å—ã‘ä»˜ã‘ã¦ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å®Ÿè¡Œ
 void Player3D::Update()
 {
 	UpdateInvincibilityTimer();
@@ -124,6 +125,13 @@ void Player3D::Update()
 		short_inventory_->Update();
 	}
 
+	if (is_dead_ && model_ != nullptr)
+	{
+		model_->Update();
+		return;
+	}
+
+	// ã‚¤ãƒ™ãƒ³ãƒˆé€²è¡Œä¸­ã‚„ãƒãƒ¼ã‚ºä¸­ã¯ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ“ä½œãƒ»åº§æ¨™æ›´æ–°ã‚’ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹
 	if (ShouldSkipGameplayUpdate() || Master::is_pause_on_ || model_ == nullptr)
 	{
 		return;
@@ -133,30 +141,29 @@ void Player3D::Update()
 	UpdateGameplayActions();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF–³“Gƒ^ƒCƒ}[‚ÌƒfƒNƒŠƒƒ“ƒg
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ç„¡æ•µæ™‚é–“ã®æ¸›å°‘
 void Player3D::UpdateInvincibilityTimer()
 {
-	// UXd—lF”í’eŒã‚â‰ñ”ğiƒXƒ‰ƒCƒfƒBƒ“ƒOj”­“®‚É•t—^‚³‚ê‚é–³“GŠÔii-framesj‚ğŠÇ—‚µAƒvƒŒƒCƒ„[‚É‘Ì§‚ğ—§‚Ä’¼‚·—P—\‚ğ—^‚¦‚é
 	if (invincible_timer_ > 0)
 	{
 		invincible_timer_--;
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍFƒQ[ƒ€ƒvƒŒƒC‚Ìis‚ğƒXƒLƒbƒv‚·‚×‚«‚È‚çtrue
-// •›ì—pF‚È‚µ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: æ›´æ–°å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã¹ãã‹
+// å‰¯ä½œç”¨: ãªã—
 bool Player3D::ShouldSkipGameplayUpdate() const
 {
 	if (Master::is_stat_shop_on_) return true;
 	return IsBossFadeActive();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍFƒ{ƒX‚ÌƒtƒF[ƒh‰‰o’†‚È‚çtrue
-// •›ì—pF‚È‚µ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãƒœã‚¹æˆ¦ã¸ã®é·ç§»æ¼”å‡ºä¸­ã‹
+// å‰¯ä½œç”¨: ãªã—
 bool Player3D::IsBossFadeActive() const
 {
 	SceneGame* game = Master::scene_manager_->GetSceneGame();
@@ -166,9 +173,9 @@ bool Player3D::IsBossFadeActive() const
 	return phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒƒbƒNƒIƒ“‘ÎÛ‚Ì“G‚ª€–SE”jŠü‚³‚ê‚Ä‚¢‚½ê‡Atarget_ƒ|ƒCƒ“ƒ^‚ğnull‚ÉƒŠƒZƒbƒg‚·‚é
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒå­˜åœ¨ã—ãªã„ã€ã¾ãŸã¯å‰Šé™¤æ¸ˆã¿ã®å ´åˆã¯nullã«ãƒªã‚»ãƒƒãƒˆ
 void Player3D::ValidateTarget()
 {
 	if (target_ == nullptr) return;
@@ -187,17 +194,17 @@ void Player3D::ValidateTarget()
 	if (!isValid) target_ = nullptr;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒoƒtƒ}ƒl[ƒWƒƒ[‚¨‚æ‚ÑƒCƒ“ƒxƒ“ƒgƒŠ‚ÌƒtƒŒ[ƒ€XV
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼é¡ã®æ›´æ–°
 void Player3D::UpdatePlayerSystems()
 {
 	ManagerUpdate();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒvƒŒƒCƒ„[‚ÌˆÚ“®AUŒ‚A‰ñ”ğAƒJƒƒ‰XV‚È‚Ç‚Ì‹ï‘Ì“I‚ÈƒAƒNƒVƒ‡ƒ“ƒOƒ‹[ƒ`ƒ“‚ÌÀs
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ­ãƒƒã‚¯ã‚ªãƒ³æ›´æ–°ã€ç§»å‹•ã€æ”»æ’ƒã€å›é¿ãªã©ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®å®Ÿè¡Œ
 void Player3D::UpdateGameplayActions()
 {
 	UpdateTargetLock();
@@ -218,9 +225,9 @@ void Player3D::UpdateGameplayActions()
 	model_->Update();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFUŒ‚‚â‰ñ”ğƒAƒNƒVƒ‡ƒ“‚ªI—¹‚µ‚½ÛA©“®“I‚Éƒjƒ…[ƒgƒ‰ƒ‹ó‘Ô‚Ö‘JˆÚ‚³‚¹‚é
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å¾…æ©ŸçŠ¶æ…‹ã«æˆ»ã£ãŸéš›ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè§£é™¤ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆæœŸåŒ–
 void Player3D::ResetNUETRAL()
 {
 	AnimationState now = model_->GetNowState();
@@ -234,9 +241,9 @@ void Player3D::ResetNUETRAL()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒoƒt‚¨‚æ‚ÑƒCƒ“ƒxƒ“ƒgƒŠ‚ÌƒNƒŠ[ƒ“ƒAƒbƒv‚ÆXV
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒãƒ•çŠ¶æ…‹ã¨ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã®æ›´æ–°
 void Player3D::ManagerUpdate()
 {
 	buff_manager_->DeleteList();
@@ -244,14 +251,14 @@ void Player3D::ManagerUpdate()
 	short_inventory_->Update();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒvƒŒƒCƒ„[ƒ‚ƒfƒ‹AHUDA‚¨‚æ‚ÑƒfƒoƒbƒOî•ñ‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ¢ãƒ‡ãƒ«ã‚„UIã€ãƒ‡ãƒãƒƒã‚°æƒ…å ±ã®æç”»
 void Player3D::Draw()
 {
 	if (!CanDrawPlayer()) return;
 
-	if (!Master::is_pause_on_)
+	if (!Master::is_pause_on_ && !is_dead_)
 	{
 		DrawStatusBars();
 	}
@@ -263,7 +270,25 @@ void Player3D::Draw()
 
 bool Player3D::CanDrawPlayer() const
 {
-	return hp_ > 0 && !Master::is_stat_shop_on_ && model_ != nullptr;
+	return (hp_ > 0 || is_dead_) && !Master::is_stat_shop_on_ && model_ != nullptr;
+}
+
+void Player3D::StartDeath()
+{
+	if (is_dead_ || model_ == nullptr) return;
+
+	hp_ = 0.0f;
+	is_dead_ = true;
+	CollDelete();
+	model_->ChangeAnimation(ANIMATION_DYING);
+	model_->SetAnimationBlend(false);
+	model_->SetLoop(false);
+	model_->SetLoopFinishState(ANIMATION_MAX);
+}
+
+bool Player3D::IsDeathAnimationFinished() const
+{
+	return is_dead_ && model_ != nullptr && model_->IsAnimationLoopFinish();
 }
 
 void Player3D::DrawPlayerModel()
@@ -289,13 +314,13 @@ void Player3D::DrawAttachmentDebug()
 	DrawSphere3D(model_->GetAttachmentPosition(), 30.0f, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFWASD“ü—Í‚ÉŠî‚Ã‚­ˆÚ“®ƒxƒNƒgƒ‹‚ÌZoA’nŒ`‚Ö‚Ì’Ç]A‚¨‚æ‚ÑƒAƒjƒ[ƒVƒ‡ƒ“‚ÌØ‚è‘Ö‚¦
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å…¥åŠ›ã«åŸºã¥ããƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åº§æ¨™ã¨å‘ãã®æ›´æ–°
 void Player3D::MoveEx()
 {
 	AnimationState state = model_->GetNowState();
-	// ƒA[ƒLƒeƒNƒ`ƒƒİŒvFUŒ‚ƒ‚[ƒVƒ‡ƒ“’†‚â‰ñ”ğ’†‚È‚Ç‚Í’Êí‚ÌˆÚ“®“ü—Í‚ğó‚¯•t‚¯‚È‚¢‚æ‚¤‚ÉƒuƒƒbƒN‚µAƒAƒNƒVƒ‡ƒ“‚ÌƒLƒƒƒ“ƒZƒ‹‚ğ—}§‚µ‚Ä‘€ì‚Ìd‚İ‚ğ‚½‚¹‚é
+	// æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã‚„å›é¿ä¸­ã¯ä¸è‡ªç„¶ãªæ»‘ã‚Šç§»å‹•ã‚’é˜²ããŸã‚WASDå…¥åŠ›ã‚’ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹
 	if (state == ANIMATION_ATTACKJUMP || state == ANIMATION_ATTACK || state == ANIMATION_JUMP_OUT || state == ANIMATION_SLIDE || state == ANIMATION_ATTACKSLIDE || Master::is_stat_shop_on_)
 	{
 		return;
@@ -354,21 +379,26 @@ void Player3D::MoveEx()
 	model_->SetRotation(rotation_);
 }
 
-// “ü—ÍFdamage = “G“™‚©‚çó‚¯‚éŠî€ƒ_ƒ[ƒW—Ê
-// o—ÍF‚È‚µ
-// •›ì—pFHP‚ÌŒ¸ZB‚½‚¾‚µ–³“Gƒ^ƒCƒ}[’†‚â‰ñ”ğƒAƒNƒVƒ‡ƒ“’†‚Í–³Œø‰»‚·‚é
+// å…¥åŠ›: å—ã‘ã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸é‡
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®HPæ¸›å°‘
 void Player3D::Damage(float damage)
 {
 	AnimationState now = model_->GetNowState();
+	// ç„¡æ•µæ™‚é–“ä¸­ã€ã¾ãŸã¯å›é¿ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã¯ãƒ€ãƒ¡ãƒ¼ã‚¸åˆ¤å®šã‚’ç„¡åŠ¹åŒ–ã™ã‚‹
 	if (invincible_timer_ > 0) return;
 	if (now == ANIMATION_SLIDE || now == ANIMATION_ATTACKSLIDE) return;
 
 	hp_ -= (damage - equipment_manager_->GetDamage());
+	if (hp_ <= 0.0f)
+	{
+		StartDeath();
+	}
 }
 
-// Input: none
-// Output: none
-// •›ì—p: ƒvƒŒƒCƒ„[‚ÌÀ•W‚ªƒXƒe[ƒW‚Ì‹«ŠE‚ğ’´‚¦‚½ê‡AƒXƒe[ƒW“à‚É‰Ÿ‚µ–ß‚·ˆ—‚ğs‚¤
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚¹ãƒ†ãƒ¼ã‚¸å¤–ã«å‡ºãŸå ´åˆã€ã‚¹ãƒ†ãƒ¼ã‚¸å¢ƒç•Œã¾ã§åº§æ¨™ã‚’æŠ¼ã—æˆ»ã™
 void Player3D::CheckStageOut()
 {
 	float radiusX = Config::StageRadius_x;
@@ -396,15 +426,16 @@ void Player3D::CheckStageOut()
 		return;
 	}
 
+	// å¢ƒç•Œå¤–ã¸ã®è„±å‡ºãƒã‚°ã‚’é˜²ããŸã‚ã€å††å½¢å¢ƒç•Œã®ç¸ã¸åº§æ¨™ã‚’å¼·åˆ¶è£œæ­£ã™ã‚‹
 	float scale = 1.0f / distance;
 	position_.x = centerPos.x + dx * scale;
 	position_.z = centerPos.z + dz * scale;
 	is_stage_out_ = true;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒXƒy[ƒXƒL[“ü—Í‚ÅƒXƒ^ƒ~ƒi/ƒN[ƒ‹ƒ_ƒEƒ“‚ğÁ”ï‚µA–³“GƒtƒŒ[ƒ€‚ğ‚Â‹Ù‹}‰ñ”ğiƒXƒ‰ƒCƒfƒBƒ“ƒOjƒAƒNƒVƒ‡ƒ“‚ğƒgƒŠƒK[‚·‚é
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å›é¿ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®å®Ÿè¡Œã¨ç„¡æ•µæ™‚é–“ã®ä»˜ä¸
 void Player3D::Evasion()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_SPACE))
@@ -425,9 +456,9 @@ void Player3D::Evasion()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFˆÚ“®ƒxƒNƒgƒ‹‚É‰‚¶‚½–Ú•WŠp“x‚Ö‚Ìƒ‚ƒfƒ‹‚ÌŠŠ‚ç‚©‚È‰ñ“]•âŠÔiƒC[ƒWƒ“ƒOj
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ç§»å‹•æ–¹å‘ã¸å‘ã‘ãŸãƒ¢ãƒ‡ãƒ«ã®æ»‘ã‚‰ã‹ãªå›è»¢å‡¦ç†
 void Player3D::RotationByMove()
 {
 	float subAngle = target_angle_ - angle_;
@@ -451,9 +482,9 @@ void Player3D::RotationByMove()
 	model_->SetRotation(rotation_);
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFã•ûŒü‚Ö‚Ì‘¬“xƒxƒNƒgƒ‹•t—^‚¨‚æ‚ÑƒWƒƒƒ“ƒvƒXƒe[ƒg‚Ö‚ÌˆÚs
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¸ãƒ£ãƒ³ãƒ—ã®é–‹å§‹ã¨ä¸Šæ–¹å‘ã¸ã®åˆé€Ÿä»˜ä¸
 void Player3D::Jump()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_SPACE))
@@ -464,9 +495,9 @@ void Player3D::Jump()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF’ÊíUŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶AŒø‰Ê‰¹‚ÌÄ¶A‚¨‚æ‚ÑUŒ‚”»’è—pƒp[ƒeƒBƒNƒ‹‚Ì¶¬
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: é€šå¸¸æ”»æ’ƒã®å®Ÿè¡Œã¨æ•µã®ãƒ’ãƒƒãƒˆåˆ¤å®šãƒªã‚»ãƒƒãƒˆ
 void Player3D::Attack()
 {
 	AnimationState now = model_->GetNowState();
@@ -492,9 +523,7 @@ void Player3D::Attack()
 
 		if (attack_count_ % 5 == 0)
 		{
-			
-
-			// ƒoƒO‰ñ”ğF‘½’iƒqƒbƒgUŒ‚‚É‚¨‚¢‚ÄA“¯ˆê‚Ì“G‚É1ƒtƒŒ[ƒ€‚Åd•¡‚µ‚Äƒ_ƒ[ƒW‚ª“ü‚è‘¦€‚·‚é‚Ì‚ğ–h‚®‚½‚ßAUŒ‚üŠú‚²‚Æ‚Éƒqƒbƒgƒtƒ‰ƒO‚ğ‹­§ƒŠƒZƒbƒg‚·‚é
+			// 1å›ã®æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã§å¤šæ®µãƒ’ãƒƒãƒˆã—ã™ãã‚‹ã®ã‚’é˜²ããŸã‚ã€ä¸€å®šãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã«ãƒ’ãƒƒãƒˆãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 			for (int i = 0; i < pObjList.size(); i++)
 			{
 				Enemy* pEne = pObjList.at(i)->CastTo<Enemy>();
@@ -505,9 +534,9 @@ void Player3D::Attack()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF’µ–ôƒ‚[ƒVƒ‡ƒ“‚©‚ç‚Ì‹}~‰ºUŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“A‚¨‚æ‚Ñ’…’n‚ÌL”ÍˆÍÕŒ‚”giƒGƒtƒFƒNƒg‚Æƒ_ƒ[ƒW”»’èj‚Ì¶¬
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã®è»Œé“è¨ˆç®—ã¨ç€åœ°æ™‚ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆç”Ÿæˆ
 void Player3D::AttackJump()
 {
 	AnimationState now = model_->GetNowState();
@@ -562,15 +591,14 @@ void Player3D::AttackJump()
 		}
 		if (groundY == -10000.0f) groundY = 0.0f;
 
-		// ‰‰od—lF’…’n‚µ‚½uŠÔ‚É’n–Ê—p”»’èƒRƒ‰ƒCƒ_[iis_jump_collider_active_j‚ğƒIƒ“‚É‚µAƒh”hè‚È“y‰ŒƒGƒtƒFƒNƒg‚ğ”­¶‚³‚¹‚Äd—ÊŠ´‚ÆˆĞ—Í‚ğ‹­’²‚·‚é
+		// ç€åœ°åˆ¤å®šæ™‚ã®ã¿ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã—ã€ç©ºä¸­ã§æ•µã«è§¦ã‚Œã¦ã‚‚ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒç™ºç”Ÿã—ãªã„ä»•æ§˜ã«ã™ã‚‹
 		if (position_.y <= groundY)
 		{
 			if (!is_jump_collider_active_)
 			{
 				is_jump_collider_active_ = true;
-				new EffekseerObject("JumpAttack", "Resource/effect/Pierre02/JumpAttack.efk", position_, this, false);
+				new EffekseerObject("JumpAttack", "Resource/ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ/ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒ/01_ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒã‚¨ãƒ•ã‚§ã‚¯ãƒˆ.efk", position_, this, false);
 
-				// ’…’n‚É‘S“G‚Ìƒqƒbƒgƒtƒ‰ƒO‚ğƒŠƒZƒbƒg‚µ‚ÄŠmÀ‚Éƒ_ƒ[ƒW‚ª“ü‚é‚æ‚¤‚É‚·‚é
 				const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 				for (int i = 0; i < (int)pObjList.size(); i++)
 				{
@@ -592,9 +620,9 @@ void Player3D::AttackJump()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒƒbƒNƒIƒ“‘ÎÛ‚ÉŒü‚©‚Á‚Ä‚Ì‚‘¬“ËiiƒXƒ‰ƒCƒfƒBƒ“ƒOUŒ‚j‚¨‚æ‚Ñê—pƒGƒtƒFƒNƒg‚Ì¶¬
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å‘ã‹ã£ã¦ã®ã‚¹ãƒ©ã‚¤ãƒ‰æ”»æ’ƒã¨åº§æ¨™æ›´æ–°
 void Player3D::AttackSlide()
 {
 	AnimationState now = model_->GetNowState();
@@ -617,7 +645,6 @@ void Player3D::AttackSlide()
 		model_->SetLoop(false);
 		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-		// ƒXƒ‰ƒCƒhUŒ‚ŠJn‚É‘S“G‚Ìƒqƒbƒgƒtƒ‰ƒO‚ğƒŠƒZƒbƒg‚µ‚ÄŠmÀ‚Éƒ_ƒ[ƒW‚ª“ü‚é‚æ‚¤‚É‚·‚é
 		const auto& pObjListSlide = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		for (int i = 0; i < (int)pObjListSlide.size(); i++)
 		{
@@ -626,7 +653,7 @@ void Player3D::AttackSlide()
 			pEneSlide->SetHitJudgmentFlagPlayer(false);
 		}
 
-		new EffekseerObject("Slash", "Resource/effect/sword/slash.efkproj", position_, this, true);
+		new EffekseerObject("Slash", "Resource/ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ/ã‚¹ãƒ©ã‚¤ãƒ‰æ”»æ’ƒ/02_ã‚¹ãƒ©ã‚¤ãƒ‰æ”»æ’ƒã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿç”¨.efk", position_, this, true);
 	}
 
 	if (now == ANIMATION_ATTACKSLIDE && attack_state_ == kAttackSlide)
@@ -643,12 +670,11 @@ void Player3D::AttackSlide()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF‰æ–Êè‘O‚Ì2DƒŒƒCƒ„[‚É‘Î‚µAHPƒQ[ƒW‚âŠeƒXƒLƒ‹‚ÌƒŠƒ[ƒhiƒN[ƒ‹ƒ_ƒEƒ“jó‹µ‚ğƒI[ƒo[ƒŒƒC•`‰æ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: HPãƒãƒ¼ã¨ã‚¹ã‚­ãƒ«ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ UIã®æç”»
 void Player3D::DrawStatusBars()
 {
-	// UId—lFƒQ[ƒ€’†‚Ì‹”F«‚ğÅ—Dæ‚·‚é‚½‚ßA3DƒIƒuƒWƒFƒNƒg‚Æ‚µ‚Ä‚Å‚Í‚È‚­2D‚Ì‰æ–ÊƒXƒNƒŠ[ƒ“À•W‚É’¼ÚƒQ[ƒW—Ş‚ğ•`‰æ‚·‚é
 	float maxHp = GetAllStatusState(Object3D::Status_Hp);
 	if (maxHp <= 0.0f) maxHp = 1.0f;
 	hp_ = hp_ < 0.0f ? 0.0f : hp_;
@@ -743,20 +769,25 @@ void Player3D::DrawStatusBars()
 	short_inventory_->Draw();
 }
 
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãªã—
 void Player3D::UpdateViewMode()
 {
 }
 
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãªã—
 void Player3D::SearchEnemy()
 {
 }
 
-// “ü—ÍFcollider = ©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
-// o—ÍF‚È‚µ
-// •›ì—pF“G‚Ö‚Ìƒ^[ƒQƒbƒgƒƒbƒNƒIƒ“•ß‘¨A‚¨‚æ‚Ñ•Ç‚È‚ÇÃ“IƒIƒuƒWƒFƒNƒg‚Ö‚Ì‚ß‚è‚İ–h~i‰Ÿ‚µ–ß‚µj
+// å…¥åŠ›: è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã€æ¥è§¦ã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ç´¢æ•µç¯„å›²ã«å…¥ã£ãŸæ•µã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆç™»éŒ²ã€ã¾ãŸã¯éšœå®³ç‰©ã¨ã®è¡çªè£œæ­£
 void Player3D::OnEnter(Collider* collider, Collider* check)
 {
-	// õ“G—p‹‘å‹…Œ`ƒRƒ‰ƒCƒ_[isearch_enemy_collider_j‚Ì”ÍˆÍ“à‚É“G‚ª“ü‚Á‚½ê‡AÅ‚à‹——£‚ª‹ß‚¢“G‚ğƒXƒ‰ƒCƒfƒBƒ“ƒOUŒ‚—p‚ÌƒƒbƒNƒIƒ“ƒ^[ƒQƒbƒg‚Éİ’è‚·‚é
 	if (collider == search_enemy_collider_ && check->parent_object_->GetTag() == Object3D::Tag3D_Enemy3D)
 	{
 		auto pEne = check->parent_object_->CastTo<Enemy>();
@@ -781,15 +812,16 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 		}
 	}
 
+	// éšœå®³ç‰©ã«ã‚ã‚Šè¾¼ã‚“ã éš›ã€ç›´å‰ã®åº§æ¨™ã«å·»ãæˆ»ã™ã“ã¨ã§å£æŠœã‘ã‚’é˜²ã
 	if (collider == capsule_collider_ && check->parent_object_->GetTag() == Tag3D_Obj)
 	{
 		position_ = old_position_;
 	}
 }
 
-// “ü—ÍFcollider = ©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
-// o—ÍF‚È‚µ
-// •›ì—pF•ŠíƒRƒ‰ƒCƒ_[‚Æ“G‚Æ‚ÌÚG‚Ìƒ_ƒ[ƒW“K—pA‚¨‚æ‚ÑUŒ‚ƒqƒbƒg‚ÌƒJƒƒ‰ƒVƒFƒCƒN‰‰oƒgƒŠƒK[
+// å…¥åŠ›: è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã€æ¥è§¦ã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å„ç¨®æ”»æ’ƒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ãŒæ•µã«ãƒ’ãƒƒãƒˆã—ãŸéš›ã®ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ã¨ã‚¨ãƒ•ã‚§ã‚¯ãƒˆç”Ÿæˆ
 void Player3D::OnTrigger(Collider* collider, Collider* check)
 {
 	AnimationState now = model_->GetNowState();
@@ -803,13 +835,13 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 
 			if (check == pEne->GetEnemyCollider())
 			{
+				// å¤šæ®µãƒ’ãƒƒãƒˆã‚’é˜²ããŸã‚ã€æ—¢ã«ã“ã®æ”»æ’ƒãŒãƒ’ãƒƒãƒˆã—ãŸæ•µã¯é™¤å¤–ã™ã‚‹
 				if (now == ANIMATION_ATTACK && attack_state_ == kAttackNormal && !is_jumping_ && !pEne->IsHitJudgmentFlagPlayer())
 				{
 					pEne->Damage(GetAllStatusState(Object3D::Status_Attack));
 
-					// UXd—lFUŒ‚‚ª“G‚Éƒqƒbƒg‚µ‚½uŠÔ‚É‹­‚ß‚ÌƒJƒƒ‰ƒVƒFƒCƒN‚Æ—¬ŒŒiƒ_ƒ[ƒWjƒGƒtƒFƒNƒg‚ğ”­¶‚³‚¹AŒ•ŒƒAƒNƒVƒ‡ƒ“‚Æ‚µ‚Ä‚Ìud‚¢è‰‚¦v‚ğƒvƒŒƒCƒ„[‚Éƒ_ƒCƒŒƒNƒg‚É“`‚¦‚é
 					Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
-					EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/2d/Damage.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
+					EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/ç”»åƒ/æˆ¦é—˜/01_ãƒ€ãƒ¡ãƒ¼ã‚¸è¡¨ç¤ºç”»åƒ.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
 				}
 			}
 		}
@@ -827,7 +859,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_);
 
 				Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
-				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/2d/Damage.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
+				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/ç”»åƒ/æˆ¦é—˜/01_ãƒ€ãƒ¡ãƒ¼ã‚¸è¡¨ç¤ºç”»åƒ.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
 			}
 		}
 	}
@@ -844,15 +876,15 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				pEne->SetHitJudgmentFlagPlayer(true);
 
 				Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
-				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/2d/Damage.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
+				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/ç”»åƒ/æˆ¦é—˜/01_ãƒ€ãƒ¡ãƒ¼ã‚¸è¡¨ç¤ºç”»åƒ.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
 			}
 		}
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒƒbƒNƒIƒ“‘ÎÛƒŠƒXƒg‚Ì–³Œø‰»ŒŸ’m‚Æƒ^[ƒQƒbƒg‚ÌƒNƒŠƒA
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã—ãŸæ•µãŒæ¶ˆæ»…ã—ãŸéš›ã®ãƒ­ãƒƒã‚¯ã‚ªãƒ³è§£é™¤
 void Player3D::UpdateTargetLock()
 {
 	if (target_ != nullptr)
@@ -874,13 +906,16 @@ void Player3D::UpdateTargetLock()
 	}
 }
 
+// å…¥åŠ›: è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã€é›¢ã‚ŒãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãªã—
 void Player3D::OnExit(Collider* collider, Collider* check)
 {
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFEƒL[“ü—Í‚É‚æ‚éUŒ‚ƒXƒ^ƒCƒ‹‚ÌzŠÂØ‚è‘Ö‚¦‚ÆA‘I‘ğ‚³‚ê‚½ƒXƒ^ƒCƒ‹‚É‰‚¶‚½UŒ‚ŠÖ”‚ÌŒÄ‚Ño‚µ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: æ”»æ’ƒã‚¿ã‚¤ãƒ—ã®åˆ‡ã‚Šæ›¿ãˆã¨å¯¾å¿œã™ã‚‹æ”»æ’ƒé–¢æ•°ã®å‘¼ã³å‡ºã—
 void Player3D::SelectAttack()
 {
 	UpdateAttackCooldowns();
@@ -917,7 +952,7 @@ void Player3D::SelectAttack()
 		DrawFormatString(300, 300, GetColor(255, 255, 255), "%d", attack_selection_index_);
 	}
 
-	// ƒoƒO‰ñ”ğFUŒ‚ƒAƒNƒVƒ‡ƒ“’†‚Å‚È‚¢‚Æ‚«‚ÍA“G‘S‘Ì‚É‘Î‚·‚éƒvƒŒƒCƒ„[—R—ˆ‚Ìƒqƒbƒgƒtƒ‰ƒOi–³“GŠÔj‚ğˆêÄ‚ÉƒŠƒZƒbƒg‚µAŸ‚ÌUŒ‚”»’è‚ğŠmÀ‚É’Ê‚·‚½‚ß‚Ì•zÎ‚ğ‘Å‚Â
+	// æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã«ãƒ’ãƒƒãƒˆåˆ¤å®šãƒ•ãƒ©ã‚°ã‚’ãƒªã‚»ãƒƒãƒˆã—ã€æ¬¡å›ã®æ”»æ’ƒãŒå½“ãŸã‚‹ã‚ˆã†ã«ã™ã‚‹
 	if (now != ANIMATION_ATTACK && now != ANIMATION_ATTACKJUMP && now != ANIMATION_ATTACKSLIDE)
 	{
 		const auto& mpEne = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
@@ -930,9 +965,9 @@ void Player3D::SelectAttack()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFŠeíUŒ‚ƒXƒLƒ‹‚É‚¨‚¯‚éƒCƒ“ƒ^[ƒoƒ‹ƒ^ƒCƒ}[‚Ìis
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å„ç¨®æ”»æ’ƒã®ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã‚«ã‚¦ãƒ³ãƒˆé€²è¡Œ
 void Player3D::UpdateAttackCooldowns()
 {
 	attack_count_++;
@@ -940,9 +975,9 @@ void Player3D::UpdateAttackCooldowns()
 	attack_jump_count_++;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒvƒŒƒCƒ„[‚ÌˆÚ“®À•W‚ÆƒAƒjƒ[ƒVƒ‡ƒ“ó‘Ô‚É“¯Šú‚µ‚ÄA”»’èƒRƒ‰ƒCƒ_[i–{‘ÌA•ŠíA“Áê”ÍˆÍj‚Ì3DÀ•W‚ğ–ˆƒtƒŒ[ƒ€’Ç]‚³‚¹‚é
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç¾åœ¨åº§æ¨™ã‚„ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«å¿œã˜ãŸå„ç¨®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ä½ç½®æ›´æ–°
 void Player3D::UpdateColliderPosition()
 {
 	AnimationState now = model_->GetNowState();
@@ -950,6 +985,7 @@ void Player3D::UpdateColliderPosition()
 	capsule_collider_->position_ = position_;
 	capsule_collider_->position2_ = VAdd(position_, VGet(0.0f, 150.0f, 0.0f));
 
+	// éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®èª¤åˆ¤å®šã‚’é˜²ããŸã‚ã€ç”»é¢å¤–ã®åº§æ¨™ã¸é€€é¿ã•ã›ã‚‹
 	attach_collider_->position_ = VGet(1000, 10000, 1000);
 	search_enemy_collider_->position_ = position_;
 	attack_slide_collider_->position_ = VGet(1000, 10000, 1000);
@@ -969,14 +1005,14 @@ void Player3D::UpdateColliderPosition()
 	}
 }
 
-// “ü—ÍFstate = æ“¾‚µ‚½‚¢ƒXƒe[ƒ^ƒXí•ÊiUŒ‚—ÍA‘¬“xAHP“™j
-// o—ÍF‘•”õ•â³‚âƒoƒt‚ªæZE‰ÁZ‚³‚ê‚½ÅI“I‚ÈƒXƒe[ƒ^ƒXŒvZ’l
-// •›ì—pF‚È‚µ
+// å…¥åŠ›: å–å¾—ã—ãŸã„ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ç¨®é¡
+// å‡ºåŠ›: ãƒãƒ•ã‚„è£…å‚™è£œæ­£ã‚’å«ã‚ãŸæœ€çµ‚ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å€¤
+// å‰¯ä½œç”¨: ãªã—
 float Player3D::GetAllStatusState(Object3D::StatusState state)
 {
 	if (buff_manager_ == nullptr) return 0;
 
-	// ƒA[ƒLƒeƒNƒ`ƒƒİŒvFƒvƒŒƒCƒ„[‚Ì‘f‚ÌƒXƒe[ƒ^ƒX‚É‰Á‚¦‚ÄAƒAƒCƒeƒ€ƒoƒtibuff_manager_j‚Æ‘•”õ•â³iupgrade_j‚ğˆêŒ³“I‚É‡Z‚µ‚Ä•Ô‚·‚±‚Æ‚ÅAƒ_ƒ[ƒWŒvZ‚ÌƒXƒe[ƒ^ƒXæ“¾Œû‚ğ“ˆê‚·‚é
+	// ãƒãƒ•ã‚„è£…å‚™å“ã«ã‚ˆã‚‹è£œæ­£å€¤ã‚’åŠ ç®—ã—ã€å®Ÿãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ç­‰ã«ç”¨ã„ã‚‹æœ€çµ‚çš„ãªã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å€¤ã‚’è¿”ã™
 	if (state == Status_Attack)
 	{
 		return normal_attack_ + buff_manager_->GetBuff(state) + upgrade_attack_;
@@ -992,13 +1028,35 @@ float Player3D::GetAllStatusState(Object3D::StatusState state)
 	return 0.0f;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFPlayerƒNƒ‰ƒX‚ªŠ—LE“WŠJ‚µ‚½Šeí“®“IƒRƒ‰ƒCƒ_[‚Ì–¾¦“I‚È”jŠüƒtƒ‰ƒOİ’è
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å‹•çš„ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ç ´æ£„äºˆç´„
 void Player3D::CollDelete()
 {
-	if (attach_collider_ != nullptr) attach_collider_->SetDeleteFlag(true);
-	if (attack_jump_collider_ != nullptr) attack_jump_collider_->SetDeleteFlag(true);
-	if (attack_slide_collider_ != nullptr) attack_slide_collider_->SetDeleteFlag(true);
-	if (search_enemy_collider_ != nullptr) search_enemy_collider_->SetDeleteFlag(true);
+	// ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯é˜²æ­¢ã®ãŸã‚ã€ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç ´æ£„æ™‚ã«ç´ã¥ãã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚‚ç ´æ£„ã™ã‚‹
+	if (capsule_collider_ != nullptr)
+	{
+		capsule_collider_->SetDeleteFlag(true);
+		capsule_collider_ = nullptr;
+	}
+	if (attach_collider_ != nullptr)
+	{
+		attach_collider_->SetDeleteFlag(true);
+		attach_collider_ = nullptr;
+	}
+	if (attack_jump_collider_ != nullptr)
+	{
+		attack_jump_collider_->SetDeleteFlag(true);
+		attack_jump_collider_ = nullptr;
+	}
+	if (attack_slide_collider_ != nullptr)
+	{
+		attack_slide_collider_->SetDeleteFlag(true);
+		attack_slide_collider_ = nullptr;
+	}
+	if (search_enemy_collider_ != nullptr)
+	{
+		search_enemy_collider_->SetDeleteFlag(true);
+		search_enemy_collider_ = nullptr;
+	}
 }

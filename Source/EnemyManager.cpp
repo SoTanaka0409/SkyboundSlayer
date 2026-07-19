@@ -112,7 +112,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 	}
 	if (date.tag == night_Defo)
 	{
-		ene_list_.push_back(new Enemy3D_AT("Resource/Model/T.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, date.money, true));
+		ene_list_.push_back(new Enemy3D_AT("Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, date.money, true));
 	}
 	if (date.tag == monster_stage1)
 	{

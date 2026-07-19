@@ -13,7 +13,7 @@ Save::Save()
 	, SelectMax(0)
 	, SelectMin(0)
 {
-	texture_ = new Texture("Resource/2D/Save.png", VGet(500, 500, 0), true);
+	texture_ = new Texture("Resource/画像/UI/02_セーブ画面画像.png", VGet(500, 500, 0), true);
 }
 
 // 入力：なし

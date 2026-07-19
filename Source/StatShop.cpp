@@ -38,18 +38,18 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 {
 	SetTag(Tag3D_Shop);
 	model_ = new Model(filename, position_, true);
-	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
-	model_->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
 	model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	shop_in_ = new SphereCollider(this, position_, 200.0f);
 	safe_zoon_ = new SphereCollider(this, position_, 1000.0f); // 敵の侵入を防ぎ、プレイヤーの安全を確保するための広域コライダー
 	old_mouse_down_ = false;
 
-	icon_max_hp_handle_ = LoadGraph("Resource/2D/icon_hp_up.png");
-	icon_attack_handle_ = LoadGraph("Resource/2D/icon_attack_up.png");
-	icon_speed_handle_ = LoadGraph("Resource/2D/icon_speed_up.png");
-	icon_evasion_dist_handle_ = LoadGraph("Resource/2D/icon_evade_dist_up.png");
-	icon_evasion_inv_handle_ = LoadGraph("Resource/2D/icon_evade_inv_up.png");
+	icon_max_hp_handle_ = LoadGraph("Resource/画像/ショップ/01_最大HP強化アイコン.png");
+	icon_attack_handle_ = LoadGraph("Resource/画像/ショップ/02_攻撃力強化アイコン.png");
+	icon_speed_handle_ = LoadGraph("Resource/画像/ショップ/03_移動速度強化アイコン.png");
+	icon_evasion_dist_handle_ = LoadGraph("Resource/画像/ショップ/04_回避距離強化アイコン.png");
+	icon_evasion_inv_handle_ = LoadGraph("Resource/画像/ショップ/05_回避無敵時間強化アイコン.png");
 
 	auto pPlayer = Master::player_;
 	auto player = dynamic_cast<Player3D*>(pPlayer);

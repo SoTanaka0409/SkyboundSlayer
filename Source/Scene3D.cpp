@@ -1,4 +1,4 @@
-#include <fstream>
+ï»¿#include <fstream>
 #include <sstream>
 #include"Scene3D.h"
 #include"Config.h"
@@ -17,26 +17,26 @@
 #include"Rock.h"
 #include"StageObject.h"
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒ[ƒhƒ^ƒCƒ}[‚âƒtƒ‰ƒO‚È‚ÇAƒV[ƒ“‰Šú‰»‚É•K—v‚Èƒx[ƒXƒXƒe[ƒ^ƒX‚ÌƒfƒtƒHƒ‹ƒg’lÝ’è
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: éžåŒæœŸãƒ­ãƒ¼ãƒ‰é€²è¡Œç”¨ãƒ•ãƒ©ã‚°ã¨ã‚¿ã‚¤ãƒžãƒ¼ã®åˆæœŸåŒ–
 Scene3D::Scene3D()
-	: load_timer_(500)
-	, load_count_(0)
-	, is_load_flag_(true)
+	: load_timer_(500)     // ãƒ­ãƒ¼ãƒ‰å¾…æ©Ÿãƒ•ãƒ¬ãƒ¼ãƒ æ•°
+	, load_count_(0)       // ãƒ­ãƒ¼ãƒ‰å®Œäº†ã‚¢ã‚»ãƒƒãƒˆæ•°
+	, is_load_flag_(true)  // ãƒ­ãƒ¼ãƒ‰ä¸­åˆ¤å®šãƒ•ãƒ©ã‚°
 {
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFScene3DƒCƒ“ƒXƒ^ƒ“ƒX‚Ì”jŠü
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãªã—
 Scene3D::~Scene3D()
 {
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒQ[ƒ€–{•Ò‚ÌŠÂ‹«iƒ‰ƒCƒgEƒtƒHƒOjAƒAƒNƒ^[AƒXƒe[ƒWA‚¨‚æ‚ÑCSV’è‹`ƒIƒuƒWƒFƒNƒg‚ÌˆêŠ‡ƒZƒbƒgƒAƒbƒvˆ—
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: 3Dç’°å¢ƒã®è¨­å®šã€ã‚¢ã‚¯ã‚¿ãƒ¼ç”Ÿæˆã€ã‚¹ãƒ†ãƒ¼ã‚¸æƒ…å ±ã®ãƒ‘ãƒ¼ã‚¹å‡¦ç†ã®å®Ÿè¡Œ
 void Scene3D::Initialize()
 {
 	SceneGame::Initialize();
@@ -45,14 +45,15 @@ void Scene3D::Initialize()
 	CreateStage();
 	LoadStageObjectsFromCsv();
 	CreateSkyBox();
+	Master::sound_manager_->PlayBGM(SoundManager::BGM_GAME);
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFDxLib‚Ì3D•`‰æŠÂ‹«‚É‚¨‚¯‚éƒtƒHƒOi–¶j‚ÆŠeŽíƒOƒ[ƒoƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚Ì“K—p
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ãƒ•ã‚©ã‚°ãƒ»ç’°å¢ƒå…‰è¨­å®šã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ›´
 void Scene3D::SetupEnvironment()
 {
-	// ‰‰oŽd—lF‹óŠÔ‚ÌL‚ª‚è‚Æ‰œs‚«i‹ó‹C‰“‹ß–@j‚ð•\Œ»‚·‚é‚½‚ß‚ÌƒtƒHƒOÝ’è‚ÆA3Dƒ‚ƒfƒ‹‘S‘Ì‚ð‹Ïˆê‚ÉÆ‚ç‚µ‚ÄŽ‹”F«‚ðŠm•Û‚·‚éŠÂ‹«ŒõEŽwŒü«ƒ‰ƒCƒg‚Ìƒx[ƒXƒZƒbƒgƒAƒbƒv
+	// ç©ºé–“ã®å¥¥è¡Œãã‚’è¡¨ç¾ã—ã€é æ–¹ã®ãƒ¢ãƒ‡ãƒ«æç”»ã®å¢ƒç•Œã‚’è‡ªç„¶ã«é¦´æŸ“ã¾ã›ã‚‹ãŸã‚ãƒ•ã‚©ã‚°ã‚’è¨­å®š
 	SetFogEnable(TRUE);
 	SetFogColor(20, 30, 50);
 	SetFogStartEnd(500.0f, 10000.0f);
@@ -64,35 +65,35 @@ void Scene3D::SetupEnvironment()
 	SetLightDirection(VNorm(VGet(-0.5f, -0.8f, 0.3f)));
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFŽ©‹@iPlayer3DjAƒVƒ‡ƒbƒvAƒLƒƒƒ“ƒvƒtƒ@ƒCƒ„[‚È‚ÇAƒXƒe[ƒW‚ÉˆË‘¶‚¹‚¸•K‚¸‘¶Ý‚·‚éƒRƒAƒAƒNƒ^[ŒQ‚Ì“®“I¶¬
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚„ã‚·ãƒ§ãƒƒãƒ—ç­‰ã®å¿…é ˆã‚¢ã‚¯ã‚¿ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ’ãƒ¼ãƒ—ç¢ºä¿
 void Scene3D::CreateInitialActors()
 {
-	new Player3D("Resource/Model/T.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
-	new StatShop("Resource/Model/shop.mv1", VGet(-1500, 100, 1500));
-	new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3D/low-poly-campfire/source/campfire.mv1", VGet(10.0f, 10.0f, 10.0f));
+	new Player3D("Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/01_äººåž‹ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ¢ãƒ‡ãƒ«.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
+	new StatShop("Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³/04_ã‚·ãƒ§ãƒƒãƒ—åº—å“¡ãƒ¢ãƒ‡ãƒ«.mv1", VGet(-1500, 100, 1500));
+	new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3Dãƒ¢ãƒ‡ãƒ«/å°ç‰©/ç„šãç«/01_ç„šãç«ãƒ¢ãƒ‡ãƒ«.mv1", VGet(10.0f, 10.0f, 10.0f));
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒƒCƒ“ƒXƒe[ƒW‚¨‚æ‚Ñ‰“Œi—pi•‚—V“‡“™j‚Ì‹‘å‚È’nŒ`ƒXƒ^ƒeƒBƒbƒNƒƒbƒVƒ…‚Ì¶¬
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: åœ°å½¢ãƒ¢ãƒ‡ãƒ«ãŠã‚ˆã³å½“ãŸã‚Šåˆ¤å®šãƒ¢ãƒ‡ãƒ«ã®ç”Ÿæˆ
 void Scene3D::CreateStage()
 {
-	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", VGet(200.0f, 100.0f, 200.0f));
-	new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1", VGet(3.0f, 0.3f, 3.0f));
+	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/æµ®éŠå³¶/01_æµ®éŠå³¶ãƒ¢ãƒ‡ãƒ«.mv1", "Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/æµ®éŠå³¶/01_æµ®éŠå³¶ãƒ¢ãƒ‡ãƒ«.mv1", VGet(200.0f, 100.0f, 200.0f));
+	new Stage(Config::GetStageCenter(), "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚¹ãƒ†ãƒ¼ã‚¸/é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸/01_é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«.mv1", "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚¹ãƒ†ãƒ¼ã‚¸/é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸/02_é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸å½“ãŸã‚Šåˆ¤å®šãƒ¢ãƒ‡ãƒ«.mv1", VGet(3.0f, 0.3f, 3.0f));
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFŠO•”CSVƒtƒ@ƒCƒ‹‚Ìƒp[ƒXA‚¨‚æ‚Ñ’è‹`“à—e‚ÉŠî‚Ã‚­ŠeŽíƒXƒe[ƒWƒIƒuƒWƒFƒNƒgiáŠQ•¨A•ÇA¬•¨‚È‚Çj‚ÌÀ•WŒvŽZ‚ÆƒCƒ“ƒXƒ^ƒ“ƒX‘å—Ê¶¬
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: CSVãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿ãŠã‚ˆã³ã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å¤§é‡ç”Ÿæˆ
 void Scene3D::LoadStageObjectsFromCsv()
 {
-	// ƒA[ƒLƒeƒNƒ`ƒƒÝŒvFƒXƒe[ƒW‚Ì\¬—v‘f‚ðC++ƒR[ƒh“à‚Éƒn[ƒhƒR[ƒh‚¹‚¸AŠO•”CSV‚©‚ç“®“I‚É“Ç‚Ýž‚Þƒf[ƒ^‹ì“®ÝŒvB‚±‚ê‚É‚æ‚èAƒrƒ‹ƒhiƒRƒ“ƒpƒCƒ‹j‚ð‹²‚Ü‚¸‚ÉƒŒƒxƒ‹ƒfƒUƒCƒ“‚ÌƒCƒeƒŒ[ƒVƒ‡ƒ“i’²®EÄ”z’uj‚ð‚‘¬‚É‰ñ‚·‚±‚Æ‚ª‰Â”\‚É‚È‚é
-	std::ifstream file("Resource/CSV/stage_objects.csv");
+	std::ifstream file(L"Resource/ãƒ‡ãƒ¼ã‚¿/CSV/01_ã‚¹ãƒ†ãƒ¼ã‚¸é…ç½®ãƒ‡ãƒ¼ã‚¿.csv");
 	if (file.is_open())
 	{
 		std::string line;
+		// ãƒ‡ãƒ¼ã‚¿ä¸æ•´åˆã‚„åž‹å¤‰æ›ã‚¨ãƒ©ãƒ¼ã§ã®ã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã‚’é˜²ããŸã‚ãƒ˜ãƒƒãƒ€ãƒ¼è¡Œã‚’èª­ã¿é£›ã°ã™
 		std::getline(file, line);
 		while (std::getline(file, line))
 		{
@@ -123,7 +124,7 @@ void Scene3D::LoadStageObjectsFromCsv()
 
 			VECTOR pos = VGet(x, y, z);
 
-			// ƒŒƒxƒ‹ƒfƒUƒCƒ“Fâ‘ÎÀ•W‚¾‚¯‚Å‚È‚­uƒXƒe[ƒW’†S‚©‚ç‚Ì‘Š‘ÎÀ•Wv‚Å‚Ì”z’u‚ðƒTƒ|[ƒg‚µAƒXƒe[ƒW‘S‘Ì‚ÌÀ•W‚ªƒVƒtƒg‚µ‚½Û‚É‚àƒAƒZƒbƒgŒQ‚ª”j’]‚È‚­’Ç]‚Å‚«‚éÝŒv
+			// ã‚¹ãƒ†ãƒ¼ã‚¸ä¸­å¿ƒã‹ã‚‰ã®ç›¸å¯¾åº§æ¨™æŒ‡å®šã‚’è¨±å¯ã—ã€å¾Œã‹ã‚‰ã®ã‚¹ãƒ†ãƒ¼ã‚¸å…¨ä½“ç§»å‹•ã«è¿½å¾“ã•ã›ã‚‹
 			if (isRelative == 1)
 			{
 				pos = VAdd(Config::GetStageCenter(), pos);
@@ -144,27 +145,41 @@ void Scene3D::LoadStageObjectsFromCsv()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF‘S•ûˆÊ‚Ì‰“Œi‚ð•¢‚¤“V‹…iƒXƒJƒCƒ{ƒbƒNƒXjƒ‚ƒfƒ‹‚Ì¶¬‚ÆƒeƒNƒXƒ`ƒƒ“K—p
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: å¤©çƒãƒ‰ãƒ¼ãƒ ã®ç”Ÿæˆã¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é©ç”¨
 void Scene3D::CreateSkyBox()
 {
-	SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x", VGet(0, 0, -5000));
+	SkyBox* pSkyBox = new SkyBox("Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/ç©º/01_ç©ºãƒ‰ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«.x", VGet(0, 0, -5000));
 	float scale = 13.0f;
 	pSkyBox->SetScale(VGet(scale, scale, scale));
-	pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");
+	pSkyBox->SetModelTexture("Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/ç©º/02_ç©ºãƒ†ã‚¯ã‚¹ãƒãƒ£.jpg");
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒIƒuƒWƒFƒNƒgŒQ‚ÌƒtƒŒ[ƒ€isAƒZ[ƒuƒf[ƒ^‚ÌXVAƒQ[ƒ€ƒNƒŠƒA”»’è‚ÌŠÄŽ‹A‚¨‚æ‚ÑŒ‹‰Ê‚É‰ž‚¶‚½ƒŠƒUƒ‹ƒgƒV[ƒ“‚Ö‚Ì‘JˆÚƒgƒŠƒK[
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚²ãƒ¼ãƒ çŠ¶æ…‹ã®æ›´æ–°ãŠã‚ˆã³ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã¸ã®é·ç§»
 void Scene3D::Update()
 {
 	SceneGame::Update();
 	Master::save_->Update();
 	Player3D* player = Master::player_;
 
-	// ƒŒƒxƒ‹ƒfƒUƒCƒ“Fƒ{ƒX‚ÌŒ‚”j‚È‚Ç‚É‚æ‚èƒtƒF[ƒY‚ªuƒNƒŠƒAv‚ÉˆÚs‚µ‚½‚±‚Æ‚ðŒŸ’m‚µAÅI“I‚ÈƒvƒŒƒCƒ„[ƒXƒe[ƒ^ƒXiHPEUŒ‚E‘¬“xj‚ðƒXƒRƒAŽZ’è—p‚ÉƒLƒƒƒvƒ`ƒƒ‚µ‚ÄƒŠƒUƒ‹ƒgƒV[ƒ“‚Öƒoƒgƒ“ƒ^ƒbƒ`‚·‚é
+	if (player != nullptr && player->GetHp() <= 0.0f)
+	{
+		player->StartDeath();
+		if (player->IsDeathAnimationFinished())
+		{
+			if (Master::score_manager_ != nullptr)
+			{
+				Master::score_manager_->SetResultVictory(false);
+				Master::score_manager_->SetFinalStats(0.0f, player->GetAllStatusState(Object3D::Status_Attack), player->GetAllStatusState(Object3D::Status_Speed));
+			}
+			Master::scene_manager_->SetNextScene(SceneManager::kSceneResultScene);
+		}
+		return;
+	}
+
 	if (game_manager_->GetCurrentPhase() == GameManager::Phase::kClear)
 	{
 		Master::game_clear_count_ = 2;
@@ -172,18 +187,19 @@ void Scene3D::Update()
 
 	if (Master::game_clear_count_ == 2)
 	{
+		// ã‚¯ãƒªã‚¢æ™‚ã®æœ€çµ‚ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã¸å¼•ãç¶™ããŸã‚ã‚¹ã‚³ã‚¢ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã«ä¿å­˜
 		if (player != nullptr && Master::score_manager_ != nullptr)
 		{
+			Master::score_manager_->SetResultVictory(true);
 			Master::score_manager_->SetFinalStats(player->GetAllStatusState(Object3D::Status_Hp), player->GetAllStatusState(Object3D::Status_Attack), player->GetAllStatusState(Object3D::Status_Speed));
 		}
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneResultWin);
+		Master::scene_manager_->SetNextScene(SceneManager::kSceneResultScene);
 	}
-
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF–{•Ò‚Ì3D‹óŠÔ•`‰æAƒZ[ƒuUI“™‚ÌƒŒƒCƒ„[•`‰æA‚¨‚æ‚ÑƒfƒoƒbƒO—pƒOƒŠƒbƒh‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: 3Dãƒ¢ãƒ‡ãƒ«ã€UIã€ãƒ‡ãƒãƒƒã‚°ç”¨ã‚°ãƒªãƒƒãƒ‰ã®æç”»
 void Scene3D::Draw()
 {
 	SceneGame::Draw();
@@ -191,12 +207,12 @@ void Scene3D::Draw()
 	DrawDebugGrid();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFŒ´“_‚ðŠî€‚Æ‚µ‚½XZ•½–Êã‚ÌƒƒCƒ„[ƒtƒŒ[ƒ€ƒƒbƒVƒ…i‹——£500px‚Ýj‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: åœ°é¢ã¸ã®ã‚°ãƒªãƒƒãƒ‰ç·šã®æç”»
 void Scene3D::DrawDebugGrid()
 {
-	// Ž‹Šo“IƒtƒB[ƒhƒoƒbƒNFŠJ”­’†‚ÉƒAƒNƒ^[‚ÌÀ•WƒXƒP[ƒ‹Š´‚âAˆÚ“®‚Ìâ‘Î“I‚È‘¬“xŠ´‚ðŽ‹Šo“I‚É”cˆ¬‚µ‚â‚·‚­‚·‚é‚½‚ß‚ÌƒfƒoƒbƒOê—pƒtƒƒAƒOƒŠƒbƒh
+	// ãƒžãƒƒãƒ—ä½œæˆæ™‚ã‚„ãƒ‡ãƒãƒƒã‚°æ™‚ã®åº§æ¨™ã‚¹ã‚±ãƒ¼ãƒ«æ„Ÿã‚’ç›®è¦–ç¢ºèªã—ã‚„ã™ãã™ã‚‹ãŸã‚ã®è£œåŠ©ç·š
 	const int count = 51;
 	const float distance = 500.0f;
 	for (int i = 0; i < count; i++)
@@ -217,14 +233,14 @@ void Scene3D::DrawDebugGrid()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFBGM‚Ì‹­§’âŽ~AŠî’êƒNƒ‰ƒX‚Ì”jŠüƒƒWƒbƒNŒÄ‚Ño‚µA‚¨‚æ‚ÑƒV[ƒ“ê—p‚ÌŠÂ‹«ƒGƒtƒFƒNƒgiƒtƒHƒOj‚Ì–³Œø‰»
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: BGMåœæ­¢ã¨æç”»è¨­å®šã®åˆæœŸåŒ–
 void Scene3D::Finalize()
 {
 	Master::sound_manager_->StopBGM();
 	SceneGame::Finalize();
 
-	// ƒƒ‚ƒŠŠÇ—FŽŸ‚ÌƒV[ƒ“iƒŠƒUƒ‹ƒg‰æ–Ê‚âƒ^ƒCƒgƒ‹‚È‚Çj‚É—\Šú‚¹‚ÊƒtƒHƒOÝ’è‚ªˆø‚«Œp‚ª‚ê‚Ä‰æ–Ê‚ª”’‘÷‚·‚éƒoƒO‚ð–h‚®‚½‚ß‚ÌƒXƒe[ƒg‰Šú‰»
+	// æ¬¡ã®ã‚·ãƒ¼ãƒ³ï¼ˆUIã‚„2Dç”»é¢ï¼‰ã«ãƒ•ã‚©ã‚°åŠ¹æžœãŒæ®‹ç•™ã—ã¦ç”»é¢ãŒç™½æ¿ã™ã‚‹ã®ã‚’é˜²ããŸã‚æ˜Žç¤ºçš„ã«OFFã«ã™ã‚‹
 	SetFogEnable(FALSE);
 }

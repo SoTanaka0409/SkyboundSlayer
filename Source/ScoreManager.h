@@ -152,6 +152,7 @@ public:
 		final_hp_ = 0.0f;
 		final_attack_ = 0.0f;
 		final_speed_ = 0.0f;
+		is_result_victory_ = true;
 	}
 
 	// 敵討伐数加算
@@ -191,6 +192,9 @@ public:
 	// [入力] なし [出力] float: スピード [副作用] なし
 	float GetFinalSpeed() const { return final_speed_; }
 
+	void SetResultVictory(bool isWin) { is_result_victory_ = isWin; }
+	bool IsResultVictory() const { return is_result_victory_; }
+
 private:
 	int name_id_;
 	float score_;
@@ -210,4 +214,5 @@ private:
 	float final_hp_ = 0.0f;
 	float final_attack_ = 0.0f;
 	float final_speed_ = 0.0f;
+	bool is_result_victory_ = true;
 };

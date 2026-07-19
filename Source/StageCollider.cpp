@@ -25,8 +25,8 @@ StageCollider::StageCollider()
 	
 	
 
-	texture_ = new Texture("Resource/2D/BossLogo.png",VGet(400,400,0),true);
-	texture2_ = new Texture("Resource/2D/NormalLogo.png", VGet(400, 400, 0), true);
+	texture_ = new Texture("Resource/画像/エリア表示/01_ボスエリア表示画像.png",VGet(400,400,0),true);
+	texture2_ = new Texture("Resource/画像/エリア表示/02_通常エリア表示画像.png", VGet(400, 400, 0), true);
 
 }
 
@@ -103,8 +103,8 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 			{
 				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//場所を移勁
 				Master::sound_manager_->PlaySE(SoundManager::SE_WARP);//warp音を鳴らす
-				/*new Effect(VGet(17000, 0, 16000), "Resource/2d/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
-				new Effect(VGet(16000, 0, 17000), "Resource/2d/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);*/
+				/*new Effect(VGet(17000, 0, 16000), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
+				new Effect(VGet(16000, 0, 17000), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);*/
 			}
 		}
 	

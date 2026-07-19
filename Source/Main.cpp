@@ -54,6 +54,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetWindowSize(Config::ScreenWidth, Config::ScreenHeight);
 
 	SetDoubleStartValidFlag(TRUE);
+	SetUseCharCodeFormat(DX_CHARCODEFORMAT_SHIFTJIS);
 	if (DxLib_Init() == -1) return -1;
 
 	EffekseerManager::GetInstance()->Init();

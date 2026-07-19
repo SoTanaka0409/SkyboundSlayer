@@ -34,8 +34,8 @@ Rule::~Rule()
 void Rule::Initialize()
 {
 	page_ = 1;
-	bg_handle1_ = LoadGraph("Resource/2D/rule_bg_1.png");
-	bg_handle2_ = LoadGraph("Resource/2D/rule_bg_2.png");
+	bg_handle1_ = LoadGraph("Resource/画像/ルール画面/01_ルール画面背景１.png");
+	bg_handle2_ = LoadGraph("Resource/画像/ルール画面/02_ルール画面背景２.png");
 }
 
 

@@ -62,7 +62,7 @@
     <ClCompile Include="Source\ObjectManager.cpp" />
     <ClCompile Include="Source\Player3D.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
-    <ClCompile Include="Source\ResultWin.cpp" />
+    <ClCompile Include="Source\ResultScene.cpp" />
     <ClCompile Include="Source\Rock.cpp" />
     <ClCompile Include="Source\Rule.cpp" />
     <ClCompile Include="Source\SettingsScene.cpp" />
@@ -90,9 +90,6 @@
     <ClCompile Include="Source\TitleScene.cpp" />
     <ClCompile Include="Source\Tree.cpp" />
     <ClCompile Include="Source\Wall.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resource\Player.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AttachmentModel.h" />
@@ -138,7 +135,7 @@
     <ClInclude Include="Source\ObjectManager.h" />
     <ClInclude Include="Source\Player3D.h" />
     <ClInclude Include="Source\ResourceManager.h" />
-    <ClInclude Include="Source\ResultWin.h" />
+    <ClInclude Include="Source\ResultScene.h" />
     <ClInclude Include="Source\Rock.h" />
     <ClInclude Include="Source\Rule.h" />
     <ClInclude Include="Source\SettingsScene.h" />

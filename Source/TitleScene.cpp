@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+ï»¿#include "TitleScene.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -12,9 +12,9 @@
 #include "SkyBox.h"
 #include "Config.h"
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF“_–Å‰‰o—pƒ^ƒCƒ}[‚¨‚æ‚ÑƒJƒƒ‰Šp“x‚Ì‰Šú‰»
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: UIç‚¹æ»…ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åˆæœŸåŒ–
 TitleScene::TitleScene()
 	: color_fade_(1), color_flag_(false), camera_angle_(0.0f)
 {
@@ -24,31 +24,32 @@ TitleScene::~TitleScene()
 {
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒJƒƒ‰ƒŠƒZƒbƒgAƒnƒCƒXƒRƒA“Ç‚Ýž‚ÝABGMŠJŽnA‚¨‚æ‚ÑƒXƒe[ƒW”wŒiE“V‹…ƒ‚ƒfƒ‹‚Ìƒf[ƒ^‹ì“®Œ^ƒ[ƒh
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚«ãƒ¡ãƒ©ãƒ»é€²è¡Œåº¦ãƒ»ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®åˆæœŸåŒ–ã€ãŠã‚ˆã³ã‚¿ã‚¤ãƒˆãƒ«å°‚ç”¨ã®3DèƒŒæ™¯ã®ç”Ÿæˆ
 void TitleScene::Initialize()
 {
 	Master::camera_->Initialize();
+	// å‘¨å›žãƒ—ãƒ¬ã‚¤æ™‚ã®ä¸å…·åˆã‚’é˜²ããŸã‚ã€ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã£ãŸæ™‚ç‚¹ã§ã‚¯ãƒªã‚¢å›žæ•°ã¨ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 	Master::game_clear_count_ = 0;
 	ColliderManager::GetInstance()->DeleteAllCollider();
 
 	Master::score_manager_->LoadHighScore();
 	Master::sound_manager_->PlayBGM(SoundManager::BGM_TITLE);
 
-	// ƒŒƒxƒ‹ƒfƒUƒCƒ“FÃŽ~‰æ‚Å‚Í‚È‚­AŽÀÛ‚ÌƒQ[ƒ€ƒvƒŒƒC‚Æ“¯‚¶3DŠÂ‹«‚ð”wŒi‚É“®‚©‚·‚±‚Æ‚ÅA‹N“®’¼Œã‚Ì–v“üŠ´‚ðŒüã‚³‚¹‚é
-	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D/stage_sky/source/Flooting_Stage.mv1", "Resource/3D/stage_sky/source/Flooting_Stage.mv1", VGet(200.0f, 100.0f, 200.0f));
-	new Stage(Config::GetStageCenter(), "Resource/3D/Stage/Stage00.mv1", "Resource/3D/Stage/Stage00_c.mv1", VGet(3.0f, 0.3f, 3.0f));
+	// ä¸€æžšçµµã§ã¯ãªãã€å®Ÿéš›ã®ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ã¨åŒã˜3Dãƒ¢ãƒ‡ãƒ«ã‚’é…ç½®ã—ã¦ã‚«ãƒ¡ãƒ©ã‚’å›žã™ã“ã¨ã§ã‚·ãƒ¼ãƒ ãƒ¬ã‚¹ãªä¸–ç•Œè¦³ã‚’æ¼”å‡ºã™ã‚‹
+	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/æµ®éŠå³¶/01_æµ®éŠå³¶ãƒ¢ãƒ‡ãƒ«.mv1", "Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/æµ®éŠå³¶/01_æµ®éŠå³¶ãƒ¢ãƒ‡ãƒ«.mv1", VGet(200.0f, 100.0f, 200.0f));
+	new Stage(Config::GetStageCenter(), "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚¹ãƒ†ãƒ¼ã‚¸/é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸/01_é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¢ãƒ‡ãƒ«.mv1", "Resource/3Dãƒ¢ãƒ‡ãƒ«/ã‚¹ãƒ†ãƒ¼ã‚¸/é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸/02_é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸å½“ãŸã‚Šåˆ¤å®šãƒ¢ãƒ‡ãƒ«.mv1", VGet(3.0f, 0.3f, 3.0f));
 
-	// ƒf[ƒ^‹ì“®ÝŒvFƒXƒe[ƒW”z’u‚ðCSVŠÇ—‚·‚é‚±‚Æ‚ÅAŠJ”­ŽÒ‚ªƒ‚ƒfƒ‹‚ÌÀ•W‚ð—eˆÕ‚É’²®‚Å‚«‚é‚æ‚¤‚É‚·‚é
-	std::ifstream file("Resource/CSV/stage_objects.csv");
+	// é…ç½®ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒ¼ãƒ‰ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚’é¿ã‘ã€CSVã‹ã‚‰èª­ã¿è¾¼ã‚€ã“ã¨ã§ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ã®èª¿æ•´å·¥æ•°ã‚’å‰Šæ¸›ã™ã‚‹
+	std::ifstream file(L"Resource/ãƒ‡ãƒ¼ã‚¿/CSV/01_ã‚¹ãƒ†ãƒ¼ã‚¸é…ç½®ãƒ‡ãƒ¼ã‚¿.csv");
 	if (file.is_open())
 	{
 		std::string line;
-		std::getline(file, line);
+		std::getline(file, line); // ãƒ˜ãƒƒãƒ€ãƒ¼è¡Œã‚’ã‚¹ã‚­ãƒƒãƒ—ã—ã¦ãƒ‘ãƒ¼ã‚¹ã‚¨ãƒ©ãƒ¼ã‚’å›žé¿
 		while (std::getline(file, line))
 		{
-			if (line.empty()) continue;
+			if (line.empty()) continue; // ç©ºè¡Œã«ã‚ˆã‚‹ã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã‚’é˜²æ­¢
 			std::stringstream ss(line);
 			std::string type, model, xStr, yStr, zStr, sxStr, syStr, szStr, texture, colSizeStr, isRelativeStr;
 			std::getline(ss, type, ',');
@@ -88,18 +89,18 @@ void TitleScene::Initialize()
 		file.close();
 	}
 
-	SkyBox* pSkyBox = new SkyBox("Resource/3D/SkyBox/SkyBox.x", VGet(0, 0, -5000));
+	SkyBox* pSkyBox = new SkyBox("Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/ç©º/01_ç©ºãƒ‰ãƒ¼ãƒ ãƒ¢ãƒ‡ãƒ«.x", VGet(0, 0, -5000));
 	float scale = 13.0f;
 	pSkyBox->SetScale(VGet(scale, scale, scale));
-	pSkyBox->SetModelTexture("Resource/3D/SkyBox/sky001.jpg");
+	pSkyBox->SetModelTexture("Resource/3Dãƒ¢ãƒ‡ãƒ«/èƒŒæ™¯/ç©º/02_ç©ºãƒ†ã‚¯ã‚¹ãƒãƒ£.jpg");
 
-	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3D/portal/source/portal.mv1", VGet(3.0f, 3.0f, 3.0f));
+	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3Dãƒ¢ãƒ‡ãƒ«/å°ç‰©/ãƒãƒ¼ã‚¿ãƒ«/01_ãƒãƒ¼ã‚¿ãƒ«ãƒ¢ãƒ‡ãƒ«.mv1", VGet(3.0f, 3.0f, 3.0f));
 	camera_angle_ = 0.0f;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒJƒƒ‰ù‰ñƒAƒjƒ[ƒVƒ‡ƒ“‚Ìis‚ÆAUI‚Ö‚Ìƒ}ƒEƒX“ü—Í”»’è‚Ì–ˆƒtƒŒ[ƒ€ŽÀs
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚«ãƒ¡ãƒ©ã‚¢ãƒ³ã‚°ãƒ«ã®æ›´æ–°ã¨ãƒžã‚¦ã‚¹ã‚¯ãƒªãƒƒã‚¯ã«ã‚ˆã‚‹ç”»é¢é·ç§»åˆ¤å®š
 void TitleScene::Update()
 {
 	Scene::Update();
@@ -107,12 +108,12 @@ void TitleScene::Update()
 	HandleMenuInput();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒJƒƒ‰ˆÊ’u‚ÌŽOŠpŠÖ”ŒvŽZ‚¨‚æ‚Ñ‹­§’Ž‹“_Ý’è‚É‚æ‚éù‰ñ‰‰o
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¿ã‚¤ãƒˆãƒ«èƒŒæ™¯ã‚’æ—‹å›žã™ã‚‹ã‚«ãƒ¡ãƒ©åº§æ¨™ã®è¨ˆç®—ã¨é©ç”¨
 void TitleScene::UpdateTitleCamera()
 {
-	// ‰‰oŽd—lFí‚ÉƒJƒƒ‰‚ð‰~‹O“¹‚ÅŽ©“®ù‰ñ‚³‚¹‚é‚±‚Æ‚ÅAƒ^ƒCƒgƒ‹‰æ–Ê‚É“®“I‚ÈL‚ª‚è‚ðŽ‚½‚¹‚é
+	// æµ®å‹•å°æ•°ç‚¹ç²¾åº¦ã®ä½Žä¸‹ã«ã‚ˆã‚‹ã‚«ãƒ¡ãƒ©ã®ã‚«ã‚¯ã¤ãã‚’é˜²ããŸã‚ã€2Ï€ãƒ©ã‚¸ã‚¢ãƒ³ã‚’è¶…ãˆãŸã‚‰ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 	camera_angle_ += 0.002f;
 	if (camera_angle_ >= DX_PI_F * 2.0f) camera_angle_ -= DX_PI_F * 2.0f;
 
@@ -121,14 +122,15 @@ void TitleScene::UpdateTitleCamera()
 	SetCameraPositionAndTarget_UpVecY(camPos, camTarget);
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒ}ƒEƒXÀ•W‚ÆUIƒ{ƒ^ƒ“—Ìˆæ‚ÌÕ“Ë”»’è‚ÉŠî‚Ã‚­AƒV[ƒ“‘JˆÚ—v‹‚Ì”­s
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¯ãƒªãƒƒã‚¯ã—ãŸãƒœã‚¿ãƒ³ã«å¿œã˜ãŸã‚·ãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆè¦æ±‚
 void TitleScene::HandleMenuInput()
 {
 	int mx, my;
 	InputManager::GetMousePos(mx, my);
 
+	// ç„¡é§„ãªå½“ãŸã‚Šåˆ¤å®šè¨ˆç®—ã‚’çœããŸã‚ã€å·¦ã‚¯ãƒªãƒƒã‚¯ã•ã‚Œã¦ã„ãªã„ãƒ•ãƒ¬ãƒ¼ãƒ ã¯æ—©æœŸãƒªã‚¿ãƒ¼ãƒ³
 	if (!InputManager::CheckMouseClickLeft()) return;
 
 	if (IsHoverStart(mx, my))
@@ -148,9 +150,9 @@ void TitleScene::HandleMenuInput()
 	}
 }
 
-// “ü—ÍFmx, my = ƒ}ƒEƒXÀ•W
-// o—ÍFŽw’è—Ìˆæ“à‚Å‚ ‚ê‚Î true
-// •›ì—pF‚È‚µiÃ“I‚Èƒqƒbƒgƒ{ƒbƒNƒX”»’èj
+// å…¥åŠ›: ãƒžã‚¦ã‚¹åº§æ¨™ (mx, my)
+// å‡ºåŠ›: åˆ¤å®šé ˜åŸŸå†…ã§ã‚ã‚Œã° true
+// å‰¯ä½œç”¨: ãªã—
 bool TitleScene::IsHoverStart(int mx, int my) const
 {
 	return mx >= 96 && mx <= 416 && my >= 732 && my <= 794;
@@ -166,9 +168,9 @@ bool TitleScene::IsHoverSettings(int mx, int my) const
 	return mx >= 96 && mx <= 416 && my >= 872 && my <= 934;
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFUI—v‘fiƒ^ƒCƒgƒ‹ƒƒSAƒpƒlƒ‹Aƒvƒƒ“ƒvƒgj‚Ì•`‰æ–½—ß”­s
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚¿ã‚¤ãƒˆãƒ«ã®3DèƒŒæ™¯ã€ãƒ­ã‚´ã€å„ç¨®UIãƒ‘ãƒãƒ«ã®æç”»
 void TitleScene::Draw()
 {
 	UpdatePromptBlink();
@@ -178,12 +180,12 @@ void TitleScene::Draw()
 	DrawPrompt();
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFcolor_fade_’l‚ÌŽüŠú“I‚È•Ï“®
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ã‚¯ãƒªãƒƒã‚¯ã‚’ä¿ƒã™ãƒ†ã‚­ã‚¹ãƒˆç”¨ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã®è¨ˆç®—
 void TitleScene::UpdatePromptBlink()
 {
-	// ‰‰oŽd—lFƒ†[ƒU[‚Ì‘€ì‚ð‘£‚·ƒeƒLƒXƒg‚ð–¾–Å‚³‚¹AƒCƒ“ƒ^ƒ‰ƒNƒeƒBƒu«‚ð‹­’²‚·‚é
+	// é€éŽåº¦ã‚’å¾ã€…ã«å¢—æ¸›ã•ã›ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®è¦–ç·šã‚’èª˜å°Žã™ã‚‹ãŸã‚ã®æ»‘ã‚‰ã‹ãªæ˜Žæ»…ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ä½œã‚‹
 	if (color_flag_)
 	{
 		color_fade_ -= 4;
@@ -196,23 +198,23 @@ void TitleScene::UpdatePromptBlink()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒV[ƒ“”wŒi‚Ì•`‰æ‚¨‚æ‚ÑUI‰Â“Ç«‚ð‚‚ß‚éˆÃ–‹‚Ìd‚Ë•`‚«
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: èƒŒæ™¯ãƒ¢ãƒ‡ãƒ«ã®æç”»ã¨ã€UIã®è¦–èªæ€§ã‚’é«˜ã‚ã‚‹ãŸã‚ã®åŠé€æ˜Žæš—å¹•ã®æç”»
 void TitleScene::DrawSceneBackground()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	Scene::Draw();
 
-	// Ž‹”F«Žd—lF3D‹óŠÔ‚ª–¾‚é‚¢ê‡‚Å‚àUI‚ª“Ç‚Ý‚â‚·‚¢‚æ‚¤A”wŒi‚Ìã‚É”¼“§–¾‚ÌˆÃ–‹‚ð•~‚­‚±‚Æ‚ÅƒRƒ“ƒgƒ‰ƒXƒg‚ð’²®‚·‚é
+	// æ˜¼èƒŒæ™¯ãªã©æ˜Žåº¦ã®é«˜ã„3Dãƒ¢ãƒ‡ãƒ«ãŒæ¥ãŸå ´åˆã§ã‚‚ã€æ‰‹å‰ã®ç™½æ–‡å­—UIãŒèª­ã‚ãªããªã‚‹ã®ã‚’é˜²ã
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
 	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(15, 18, 25), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒ^ƒCƒgƒ‹ƒƒS‚Ì•`‰æi‰e‚É‚æ‚é‰Â“Ç«Œüãˆ—‚ðŠÜ‚Þj
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ã‚²ãƒ¼ãƒ ã‚¿ã‚¤ãƒˆãƒ«ã®ãƒ‘ãƒãƒ«ã¨ãƒ‰ãƒ­ãƒƒãƒ—ã‚·ãƒ£ãƒ‰ã‚¦ä»˜ããƒ†ã‚­ã‚¹ãƒˆã®æç”»
 void TitleScene::DrawTitlePanel()
 {
 	const int accentGold = GetColor(218, 178, 86);
@@ -231,15 +233,15 @@ void TitleScene::DrawTitlePanel()
 	DrawBox(84, 88, 746, 98, panelLight, TRUE);
 
 	SetFontSize(76);
-	// Ž‹”F«Žd—lFƒeƒLƒXƒg‚ÉƒIƒtƒZƒbƒg‚µ‚½ˆÃF‚ðæ‚É•`‰æ‚µAƒhƒƒbƒvƒVƒƒƒhƒE‚ð•\Œ»‚·‚é‚±‚Æ‚Å•¶Žš‚Ì‰Â“Ç«‚ðŠm•Û‚·‚é
+	// å³ä¸‹ã«ãšã‚‰ã—ã¦é»’æ–‡å­—ã‚’æç”»ã™ã‚‹ã“ã¨ã§ã€ã‚¢ã‚¦ãƒˆãƒ©ã‚¤ãƒ³/å½±ä»˜ããƒ•ã‚©ãƒ³ãƒˆã‚’æ“¬ä¼¼çš„ã«è¡¨ç¾ã™ã‚‹
 	DrawFormatString(99, 119, GetColor(10, 8, 4), "Sky Castle Hunter");
 	DrawFormatString(94, 114, GetColor(255, 231, 155), "Sky Castle Hunter");
 	SetFontSize(24);
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pFƒ}ƒEƒXƒzƒo[”»’è‚É‡‚í‚¹‚½Šeƒƒjƒ…[ƒ{ƒ^ƒ“‚ÌƒJƒ‰[•ÏX‚Æ•`‰æ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãƒžã‚¦ã‚¹ãƒ›ãƒãƒ¼çŠ¶æ…‹ã«å¿œã˜ãŸãƒœã‚¿ãƒ³ã®è‰²å¤‰æ›´ã¨æç”»
 void TitleScene::DrawMenuPanel()
 {
 	int mx, my;
@@ -278,9 +280,9 @@ void TitleScene::DrawMenuPanel()
 	DrawFormatString(126, 888, hoverSettings ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sSETTINGS", hoverSettings ? "> " : "  ");
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF“_–Åƒvƒƒ“ƒvƒg‚Ì•`‰æ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ç”»é¢ä¸‹éƒ¨ã«ç‚¹æ»…ã™ã‚‹æ¡ˆå†…ãƒ†ã‚­ã‚¹ãƒˆã®æç”»
 void TitleScene::DrawPrompt()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + color_fade_ / 3);
@@ -292,9 +294,10 @@ void TitleScene::DrawPrompt()
 	SetFontSize(24);
 }
 
-// “ü—ÍF‚È‚µ
-// o—ÍF‚È‚µ
-// •›ì—pF‚È‚µ
+// å…¥åŠ›: ãªã—
+// å‡ºåŠ›: ãªã—
+// å‰¯ä½œç”¨: ãªã—
 void TitleScene::Finalize()
 {
+	Master::sound_manager_->StopBGM();
 }

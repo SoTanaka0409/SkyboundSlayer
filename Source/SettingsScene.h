@@ -65,7 +65,7 @@ private:
 	bool IsMouseInRect(const Rect& rect, int mouseX, int mouseY) const;
 
 	// 入力：rect = バーの領域, mouseX = マウスX座標
-	// 出力：0〜255の範囲にスケーリングされた音量値
+	// 出力：0-255の範囲にスケーリングされた音量値
 	int GetVolumeFromMouseX(const Rect& rect, int mouseX) const;
 
 	// 各UI操作領域の定義

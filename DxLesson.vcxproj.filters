@@ -144,7 +144,7 @@
     <ClCompile Include="Source\ResourceManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ResultWin.cpp">
+    <ClCompile Include="Source\ResultScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\Rock.cpp">
@@ -359,7 +359,7 @@
     <ClInclude Include="Source\ResourceManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ResultWin.h">
+    <ClInclude Include="Source\ResultScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\Rock.h">

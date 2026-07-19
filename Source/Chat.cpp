@@ -13,7 +13,7 @@
 Chat::Chat()
     :first_font_(0)
 {
-    texture_= new Texture("Resource/2D/Chat.png", VGet(500, 200, 0), true);
+    texture_= new Texture("Resource/画像/UI/01_会話ウィンドウ画像.png", VGet(500, 200, 0), true);
 }
 
 Chat::~Chat()

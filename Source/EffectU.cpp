@@ -1,4 +1,4 @@
-#include "EffectU.h"
+﻿#include "EffectU.h"
 #include "EffekseerManager.h"
 
 EffectU::~EffectU()
@@ -12,7 +12,7 @@ EffectU::~EffectU()
 bool EffectU::Load()
 {
     // Load the hold effect resource.
-    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/effect/MAGICAL/Mahoujin.efkproj", 1.0f);
+    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/エフェクト/魔法陣/02_魔法陣エフェクト再生用.efk", 1.0f);
     return true;
 }
 

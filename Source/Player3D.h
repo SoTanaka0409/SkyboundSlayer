@@ -116,6 +116,9 @@ public:
 
 	float GetHp() { return hp_; }
 	void SetHp(float hp) { hp_ = hp; }
+	void StartDeath();
+	bool IsDead() const { return is_dead_; }
+	bool IsDeathAnimationFinished() const;
 	float GetAttack() { return attack_; }
 	void SetAttack(float attack) { attack_ = attack; }
 	float GetSpeed() { return speed_; }
@@ -222,6 +225,7 @@ private:
 	VECTOR attack_slide_step_;          // スライド攻撃中の毎フレームの座標加算量
 
 	bool is_invisible_;                 // 被弾直後や回避アクション中の完全無敵状態を示すフラグ
+	bool is_dead_ = false;              // 死亡アニメーション中かどうか
 
 	int target_search_count_;           // 索敵処理の負荷分散（数フレームに1回実行）用のカウンター
 	float nearest_target_distance_;     // ロックオン・索敵判定に用いる、最も近い敵までの距離キャッシュ

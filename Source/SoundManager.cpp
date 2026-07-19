@@ -28,24 +28,24 @@ void SoundManager::Initialize()
 {
 	// アーキテクチャ設計：プレイ中のロードによるカクつき（処理落ち）や音ズレを防ぐため、起動時やシーン切り替え時の非同期ロード中に全音声アセットをオンメモリ化しておく
 	// BGMの読み込み
-	LoadBGM(SOUND_BGM::BGM_TITLE, "Resource/BGM/natsuyasuminotanken.mp3");
-	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/BGM/MusMus-BGM-081.mp3"); //増やしたい場合
-	LoadBGM(SOUND_BGM::BGM_RESULT, "Resource/BGM/MusMus-BGM-084.mp3");
+	LoadBGM(SOUND_BGM::BGM_TITLE, "Resource/音源/BGM/01_タイトル画面BGM.mp3");
+	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/音源/BGM/02_ゲーム中BGM.mp3"); //増やしたい場合
+	LoadBGM(SOUND_BGM::BGM_RESULT, "Resource/音源/BGM/03_リザルト画面BGM.mp3");
 
 	// SEの読み込み
-	LoadSE(SOUND_SE::SE_FIRE, "Resource/SE/se_fire_magic01.mp3");
-	LoadSE(SOUND_SE::SE_ATTACK, "Resource/SE/se_swing13-1.mp3");
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/SE/se_sword6.mp3");
-	LoadSE(SOUND_SE::SE_SLIDE, "Resource/SE/バタンと倒れる.mp3");
-	LoadSE(SOUND_SE::SE_HEAL, "Resource/SE/回復魔法2.mp3");
+	LoadSE(SOUND_SE::SE_FIRE, "Resource/音源/SE/01_火魔法効果音.mp3");
+	LoadSE(SOUND_SE::SE_ATTACK, "Resource/音源/SE/02_通常攻撃効果音.mp3");
+	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/音源/SE/03_スライド攻撃効果音.mp3");
+	LoadSE(SOUND_SE::SE_SLIDE, "Resource/音源/SE/04_スライド移動効果音.mp3");
+	LoadSE(SOUND_SE::SE_HEAL, "Resource/音源/SE/05_回復効果音.mp3");
 	
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/SE/se_sword6.mp3");
-	LoadSE(SOUND_SE::SE_JUMP, "Resource/SE/ジャンプ.mp3");
-	LoadSE(SOUND_SE::SE_WARP, "Resource/SE/ワープ.mp3");
-	LoadSE(SOUND_SE::SE_POWER, "Resource/SE/ステータス上昇魔法2.mp3");
-	LoadSE(SOUND_SE::SE_SHOP, "Resource/SE/レジスターで精算.mp3");
-	LoadSE(SOUND_SE::SE_SELECT, "Resource/SE/決定ボタンを押す7.mp3");
-	LoadSE(SOUND_SE::SE_WINDOW, "Resource/SE/メニューを開く4.mp3");
+	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/音源/SE/03_スライド攻撃効果音.mp3");
+	LoadSE(SOUND_SE::SE_JUMP, "Resource/音源/SE/06_ジャンプ効果音.mp3");
+	LoadSE(SOUND_SE::SE_WARP, "Resource/音源/SE/07_ワープ効果音.mp3");
+	LoadSE(SOUND_SE::SE_POWER, "Resource/音源/SE/08_能力上昇効果音.mp3");
+	LoadSE(SOUND_SE::SE_SHOP, "Resource/音源/SE/09_購入効果音.mp3");
+	LoadSE(SOUND_SE::SE_SELECT, "Resource/音源/SE/10_決定効果音.mp3");
+	LoadSE(SOUND_SE::SE_WINDOW, "Resource/音源/SE/11_メニュー効果音.mp3");
 }
 
 // 入力：なし
@@ -220,7 +220,7 @@ void SoundManager::SetSeEnabled(bool enabled)
 	is_se_enabled_ = enabled;
 }
 
-// 入力：volume = 設定する音量（0〜255）
+// 入力：volume = 設定する音量（0-255）
 // 出力：なし
 // 副作用：クランプ処理を挟んだ音量変数の更新、およびロード済みの全BGMハンドルへの即時適用
 void SoundManager::SetBgmVolume(int volume)
@@ -232,7 +232,7 @@ void SoundManager::SetBgmVolume(int volume)
 	}
 }
 
-// 入力：volume = 設定する音量（0〜255）
+// 入力：volume = 設定する音量（0-255）
 // 出力：なし
 // 副作用：クランプ処理を挟んだ音量変数の更新、およびロード済みの全SEハンドルへの即時適用
 void SoundManager::SetSeVolume(int volume)
