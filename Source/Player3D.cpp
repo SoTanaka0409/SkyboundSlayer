@@ -539,7 +539,6 @@ void Player3D::Attack()
 // 副作用: ジャンプ攻撃の軌道計算と着地時のエフェクト生成
 void Player3D::AttackJump()
 {
-	AnimationState now = model_->GetNowState();
 	int mouse_input_ = GetMouseInput();
 
 	if (mouse_input_ & MOUSE_INPUT_LEFT && attack_jump_count_ >= attack_jump_cooldown_ && !is_jumping_)
@@ -557,9 +556,8 @@ void Player3D::AttackJump()
 		else model_->animation_->SetAnimationCount(1.0f);
 	}
 
-	if (now == ANIMATION_ATTACKJUMP)
+	if (is_jumping_ && attack_state_ == kAttackJump)
 	{
-		attack_state_ = kAttackJump;
 		if (jump_power_ >= position_.y && !has_reached_jump_peak_)
 		{
 			position_ = VAdd(position_, VGet(0.0f, 5.0f, 0.0f));
@@ -608,6 +606,9 @@ void Player3D::AttackJump()
 				}
 			}
 			position_.y = groundY;
+			is_jumping_ = false;
+			is_jump_falling_ = false;
+			has_reached_jump_peak_ = false;
 		}
 		model_->SetPosition(position_);
 	}
@@ -817,6 +818,8 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 	{
 		position_ = old_position_;
 	}
+
+	ApplyJumpAttackHit(collider, check);
 }
 
 // 入力: 自身のコライダー、接触したコライダー
@@ -847,22 +850,7 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 		}
 	}
 
-	if (collider == attack_jump_collider_ && check->parent_object_->GetTag() == Tag3D_Enemy3D)
-	{
-		Enemy* pEne = check->parent_object_->CastTo<Enemy>();
-		if (pEne == nullptr) return;
-		if (check == pEne->GetEnemyCollider())
-		{
-			if (now == ANIMATION_ATTACKJUMP && attack_state_ == kAttackJump && !pEne->IsHitJudgmentFlagPlayer())
-			{
-				pEne->SetHitJudgmentFlagPlayer(true);
-				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_);
-
-				Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
-				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
-			}
-		}
-	}
+	ApplyJumpAttackHit(collider, check);
 
 	if (collider == attack_slide_collider_ && check->parent_object_->GetTag() == Tag3D_Enemy3D)
 	{
@@ -880,6 +868,26 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 			}
 		}
 	}
+}
+
+void Player3D::ApplyJumpAttackHit(Collider* collider, Collider* check)
+{
+	if (collider != attack_jump_collider_) return;
+	if (!is_jump_collider_active_) return;
+	if (attack_state_ != kAttackJump) return;
+	if (check == nullptr || check->parent_object_ == nullptr) return;
+	if (check->parent_object_->GetTag() != Tag3D_Enemy3D) return;
+
+	Enemy* pEne = check->parent_object_->CastTo<Enemy>();
+	if (pEne == nullptr) return;
+	if (check != pEne->GetEnemyCollider()) return;
+	if (pEne->IsHitJudgmentFlagPlayer()) return;
+
+	pEne->SetHitJudgmentFlagPlayer(true);
+	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_);
+
+	Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
+	EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
 }
 
 // 入力: なし
@@ -995,7 +1003,7 @@ void Player3D::UpdateColliderPosition()
 	{
 		attack_slide_collider_->position_ = position_;
 	}
-	else if (now == ANIMATION_ATTACKJUMP && attack_state_ == kAttackJump && is_jump_collider_active_)
+	else if (attack_state_ == kAttackJump && is_jump_collider_active_)
 	{
 		attack_jump_collider_->position_ = position_;
 	}

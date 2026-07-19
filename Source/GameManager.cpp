@@ -478,14 +478,22 @@ void GameManager::UpdateDebugControls()
  */
 void GameManager::DebugKillEnemies()
 {
-    const auto& enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+    if (Master::scene_manager_ == nullptr ||
+        Master::scene_manager_->GetCurrentScene() == nullptr ||
+        Master::scene_manager_->GetCurrentScene()->GetObjectManager() == nullptr)
+    {
+        return;
+    }
+
+    const auto enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
     for (auto obj : enemies)
     {
+        if (obj == nullptr || obj->IsDeleteFlag()) continue;
+
         Enemy* enemy = obj->CastTo<Enemy>();
-        if (enemy)
-        {
-            enemy->Damage(999999.0f);
-        }
+        if (enemy == nullptr || enemy->IsDead()) continue;
+
+        enemy->Damage(999999.0f);
     }
 }
 
@@ -511,12 +519,26 @@ void GameManager::DebugGoBoss()
         Master::camera_->SetCutsceneMode(false);
     }
 
-    const auto& enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+    if (Master::scene_manager_ == nullptr ||
+        Master::scene_manager_->GetCurrentScene() == nullptr ||
+        Master::scene_manager_->GetCurrentScene()->GetObjectManager() == nullptr)
+    {
+        return;
+    }
+
+    const auto enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
     for (auto obj : enemies)
     {
+        if (obj == nullptr || obj->IsDeleteFlag()) continue;
+
+        Enemy* enemy = obj->CastTo<Enemy>();
+        if (enemy != nullptr)
+        {
+            enemy->Delete();
+        }
+
         obj->SetDeleteFlag(true);
     }
-    Master::scene_manager_->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
 
     SendShopsOut();
     StartBossTransition();

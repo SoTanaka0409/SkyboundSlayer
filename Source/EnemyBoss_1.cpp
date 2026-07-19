@@ -170,7 +170,7 @@ void EnemyBoss_1::Attack()
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, go_position_, 0, 150);
+			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 100.0f, 5, 30.0f, go_position_, 0, 150);
 
 			attack1_combo_count_--;
 		}

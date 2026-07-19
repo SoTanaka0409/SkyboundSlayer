@@ -172,6 +172,7 @@ private:
 	void DrawPlayerModel();
 	void DrawDebugInfo();
 	void DrawAttachmentDebug();
+	void ApplyJumpAttackHit(Collider* collider, Collider* check);
 
 	Object3D* target_;                  // ロックオン中の対象オブジェクト（カメラ追従やホーミング攻撃の基準点）
 	float target_angle_;                // 目標とする旋回角度（滑らかな振り向き補間に使用）
