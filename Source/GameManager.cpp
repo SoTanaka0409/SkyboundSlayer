@@ -41,19 +41,16 @@ namespace
 }
 
 
-/*
- * 目的（GameManagerのコンストラクタ）
- * [入力] EnemyManager* enemyManager, Difficulty diff
- * [出力] なし
- * [副作用] 各種変数の初期化、フェーズ1の開始
- */
+/// @brief GameManager縺ｮ繧ｳ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
+/// @param EnemyManager* enemyManager, Difficulty diff
+/// @details 蜷・ｨｮ螟画焚縺ｮ蛻晄悄蛹悶√ヵ繧ｧ繝ｼ繧ｺ1縺ｮ髢句ｧ・
 GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     	: enemy_manager_(enemyManager), difficulty_(diff), current_phase_(Phase::kPhase1), shop_timer_(0), fade_alpha_(0), boss_portal_pos_(VGet(0,0,0)), boss_cutscene_timer_(0), cutscene_start_pos_(VGet(0,0,0))
 {
-    // 最初のウェーブを開始
+    // 譛蛻昴・繧ｦ繧ｧ繝ｼ繝悶ｒ髢句ｧ・
     SpawnPhaseEnemies();
 
-    // ゲーム開始時にプレイヤーの反対側にボスポータルを初期化
+    // 繧ｲ繝ｼ繝髢句ｧ区凾縺ｫ繝励Ξ繧､繝､繝ｼ縺ｮ蜿榊ｯｾ蛛ｴ縺ｫ繝懊せ繝昴・繧ｿ繝ｫ繧貞・譛溷喧
     VECTOR playerStartPos = VGet(-1200.0f, 20.0f, -1000.0f);
     VECTOR center = Config::GetStageCenter();
     VECTOR dir = VSub(playerStartPos, center);
@@ -63,32 +60,23 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
     boss_portal_pos_ = VAdd(center, VScale(dir, -5000.0f));
 
 
-    // ポータルの土台
+    // 繝昴・繧ｿ繝ｫ縺ｮ蝨溷床
     float portalSize = 100.0f;
-    new Stage(VAdd(boss_portal_pos_, VGet(0.0f, -570.0f, 0.0f)), "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", VGet(portalSize, portalSize, portalSize));
+    new Stage(VAdd(boss_portal_pos_, VGet(0.0f, -570.0f, 0.0f)), "Resource/3D繝｢繝・Ν/蟆冗黄/繝昴・繧ｿ繝ｫ/01_繝昴・繧ｿ繝ｫ繝｢繝・Ν.mv1", "Resource/3D繝｢繝・Ν/蟆冗黄/繝昴・繧ｿ繝ｫ/01_繝昴・繧ｿ繝ｫ繝｢繝・Ν.mv1", VGet(portalSize, portalSize, portalSize));
 
    
-    new EffekseerObject("Mahoujin", "Resource/エフェクト/魔法陣/02_魔法陣エフェクト再生用.efk", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
+    new EffekseerObject("Mahoujin", "Resource/繧ｨ繝輔ぉ繧ｯ繝・鬲疲ｳ暮劵/02_鬲疲ｳ暮劵繧ｨ繝輔ぉ繧ｯ繝亥・逕溽畑.efk", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
 }
 
 
-/*
- * 目的（GameManagerのデストラクタ）
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
+/// @brief GameManager縺ｮ繝・せ繝医Λ繧ｯ繧ｿ
 GameManager::~GameManager()
 {
 }
 
 
-/*
- * 目的（毎フレームの更新処理を行うため）
- * [入力] なし
- * [出力] なし
- * [副作用] フェーズの移行、敵の出現管理、ショップ処理など
- */
+/// @brief 豈弱ヵ繝ｬ繝ｼ繝縺ｮ譖ｴ譁ｰ蜃ｦ逅・ｒ陦後≧縺溘ａ
+/// @details 繝輔ぉ繝ｼ繧ｺ縺ｮ遘ｻ陦後∵雰縺ｮ蜃ｺ迴ｾ邂｡逅・√す繝ｧ繝・・蜃ｦ逅・↑縺ｩ
 void GameManager::Update()
 {
     UpdateDebugControls();
@@ -114,12 +102,9 @@ void GameManager::Update()
 }
 
 
-/*
- * 目的（ボスカットシーン中のカメラ座標などを更新するため）
- * [入力] なし
- * [出力] bool: 完了していればtrue
- * [副作用] カメラの注視点移動、タイマー減少
- */
+/// @brief 繝懊せ繧ｫ繝・ヨ繧ｷ繝ｼ繝ｳ荳ｭ縺ｮ繧ｫ繝｡繝ｩ蠎ｧ讓吶↑縺ｩ繧呈峩譁ｰ縺吶ｋ縺溘ａ
+/// @return bool: 螳御ｺ・＠縺ｦ縺・ｌ縺ｰtrue
+/// @details 繧ｫ繝｡繝ｩ縺ｮ豕ｨ隕也せ遘ｻ蜍輔√ち繧､繝槭・貂帛ｰ・
 bool GameManager::UpdateBossCutscene()
 {
     if (!Master::is_cutscene_playing_)
@@ -149,12 +134,9 @@ bool GameManager::UpdateBossCutscene()
 }
 
 
-/*
- * 目的（ボス戦前の画面暗転フェードを更新するため）
- * [入力] なし
- * [出力] bool: 完了していればtrue
- * [副作用] fade_alpha_の増減
- */
+/// @brief 繝懊せ謌ｦ蜑阪・逕ｻ髱｢證苓ｻ｢繝輔ぉ繝ｼ繝峨ｒ譖ｴ譁ｰ縺吶ｋ縺溘ａ
+/// @return bool: 螳御ｺ・＠縺ｦ縺・ｌ縺ｰtrue
+/// @details fade_alpha_縺ｮ蠅玲ｸ・
 bool GameManager::UpdateBossFade()
 {
     if (current_phase_ == Phase::kFadeOutToBoss)
@@ -194,12 +176,8 @@ bool GameManager::UpdateBossFade()
 }
 
 
-/*
- * 目的（ショップフェーズのタイマーを管理するため）
- * [入力] なし
- * [出力] なし
- * [副作用] タイマーの減少、0になれば次のフェーズへ移行
- */
+/// @brief 繧ｷ繝ｧ繝・・繝輔ぉ繝ｼ繧ｺ縺ｮ繧ｿ繧､繝槭・繧堤ｮ｡逅・☆繧九◆繧・
+/// @details 繧ｿ繧､繝槭・縺ｮ貂帛ｰ代・縺ｫ縺ｪ繧後・谺｡縺ｮ繝輔ぉ繝ｼ繧ｺ縺ｸ遘ｻ陦・
 void GameManager::UpdateShopPhase()
 {
     if (current_phase_ == Phase::kShop3)
@@ -238,12 +216,8 @@ void GameManager::UpdateShopPhase()
 }
 
 
-/*
- * 目的（バトルフェーズの進行を管理するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 敵が全滅した場合、ショップまたはボスへの移行処理を行う
- */
+/// @brief 繝舌ヨ繝ｫ繝輔ぉ繝ｼ繧ｺ縺ｮ騾ｲ陦後ｒ邂｡逅・☆繧九◆繧・
+/// @details 謨ｵ縺悟・貊・＠縺溷ｴ蜷医√す繝ｧ繝・・縺ｾ縺溘・繝懊せ縺ｸ縺ｮ遘ｻ陦悟・逅・ｒ陦後≧
 void GameManager::UpdateBattlePhase()
 {
     if (GetEnemyCount() > 0)
@@ -271,12 +245,9 @@ void GameManager::UpdateBattlePhase()
 }
 
 
-/*
- * 目的（ショップフェーズへの移行処理を行うため）
- * [入力] Phase nextPhase
- * [出力] なし
- * [副作用] 敵マネージャーの停止、NPCの出現、UIタイマーのセット
- */
+/// @brief 繧ｷ繝ｧ繝・・繝輔ぉ繝ｼ繧ｺ縺ｸ縺ｮ遘ｻ陦悟・逅・ｒ陦後≧縺溘ａ
+/// @param Phase nextPhase
+/// @details 謨ｵ繝槭ロ繝ｼ繧ｸ繝｣繝ｼ縺ｮ蛛懈ｭ｢縲¨PC縺ｮ蜃ｺ迴ｾ縲ゞI繧ｿ繧､繝槭・縺ｮ繧ｻ繝・ヨ
 void GameManager::StartShopPhase(Phase nextPhase)
 {
     current_phase_ = nextPhase;
@@ -285,12 +256,8 @@ void GameManager::StartShopPhase(Phase nextPhase)
 }
 
 
-/*
- * 目的（ボス戦前のフェード演出を開始するため）
- * [入力] なし
- * [出力] なし
- * [副作用] プレイヤー停止、フェードアルファ値の初期化
- */
+/// @brief 繝懊せ謌ｦ蜑阪・繝輔ぉ繝ｼ繝画ｼ泌・繧帝幕蟋九☆繧九◆繧・
+/// @details 繝励Ξ繧､繝､繝ｼ蛛懈ｭ｢縲√ヵ繧ｧ繝ｼ繝峨い繝ｫ繝輔ぃ蛟､縺ｮ蛻晄悄蛹・
 void GameManager::StartBossTransition()
 {
     current_phase_ = Phase::kFadeOutToBoss;
@@ -298,12 +265,8 @@ void GameManager::StartBossTransition()
 }
 
 
-/*
- * 目的（ボスゲート出現の演出を開始するため）
- * [入力] なし
- * [出力] なし
- * [副作用] カメラ操作の無効化など
- */
+/// @brief 繝懊せ繧ｲ繝ｼ繝亥・迴ｾ縺ｮ貍泌・繧帝幕蟋九☆繧九◆繧・
+/// @details 繧ｫ繝｡繝ｩ謫堺ｽ懊・辟｡蜉ｹ蛹悶↑縺ｩ
 void GameManager::StartBossGateCutscene()
 {
     Master::is_cutscene_playing_ = true;
@@ -313,12 +276,8 @@ void GameManager::StartBossGateCutscene()
 }
 
 
-/*
- * 目的（ショップNPCをフィールドに出現させるため）
- * [入力] なし
- * [出力] なし
- * [副作用] ObjectManagerへのStatShop追加
- */
+/// @brief 繧ｷ繝ｧ繝・・NPC繧偵ヵ繧｣繝ｼ繝ｫ繝峨↓蜃ｺ迴ｾ縺輔○繧九◆繧・
+/// @details ObjectManager縺ｸ縺ｮStatShop霑ｽ蜉
 void GameManager::SendShopsIn()
 {
     const auto& shops = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
@@ -333,12 +292,8 @@ void GameManager::SendShopsIn()
 }
 
 
-/*
- * 目的（ショップNPCを退場させるため）
- * [入力] なし
- * [出力] なし
- * [副作用] StatShopオブジェクトの退場フラグ有効化
- */
+/// @brief 繧ｷ繝ｧ繝・・NPC繧帝蝣ｴ縺輔○繧九◆繧・
+/// @details StatShop繧ｪ繝悶ず繧ｧ繧ｯ繝医・騾蝣ｴ繝輔Λ繧ｰ譛牙柑蛹・
 void GameManager::SendShopsOut()
 {
     const auto& shops = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
@@ -353,12 +308,8 @@ void GameManager::SendShopsOut()
 }
 
 
-/*
- * 目的（ショップNPCが所定の位置に到着したか判定するため）
- * [入力] なし
- * [出力] bool: 全て到着していればtrue
- * [副作用] なし
- */
+/// @brief 繧ｷ繝ｧ繝・・NPC縺梧園螳壹・菴咲ｽｮ縺ｫ蛻ｰ逹縺励◆縺句愛螳壹☆繧九◆繧・
+/// @return bool: 蜈ｨ縺ｦ蛻ｰ逹縺励※縺・ｌ縺ｰtrue
 bool GameManager::AreShopsArrived() const
 {
     const auto& shops = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
@@ -375,36 +326,24 @@ bool GameManager::AreShopsArrived() const
 }
 
 
-/*
- * 目的（現在ショップフェーズかどうか判定するため）
- * [入力] なし
- * [出力] bool: ショップフェーズならtrue
- * [副作用] なし
- */
+/// @brief 迴ｾ蝨ｨ繧ｷ繝ｧ繝・・繝輔ぉ繝ｼ繧ｺ縺九←縺・°蛻､螳壹☆繧九◆繧・
+/// @return bool: 繧ｷ繝ｧ繝・・繝輔ぉ繝ｼ繧ｺ縺ｪ繧液rue
 bool GameManager::IsShopPhase() const
 {
     return current_phase_ == Phase::kShop1 || current_phase_ == Phase::kShop2 || current_phase_ == Phase::kShop3;
 }
 
 
-/*
- * 目的（現在ボスへのフェード遷移中か判定するため）
- * [入力] なし
- * [出力] bool: 遷移中ならtrue
- * [副作用] なし
- */
+/// @brief 迴ｾ蝨ｨ繝懊せ縺ｸ縺ｮ繝輔ぉ繝ｼ繝蛾・遘ｻ荳ｭ縺句愛螳壹☆繧九◆繧・
+/// @return bool: 驕ｷ遘ｻ荳ｭ縺ｪ繧液rue
 bool GameManager::IsBossFadePhase() const
 {
     return current_phase_ == Phase::kFadeOutToBoss || current_phase_ == Phase::kFadeInBoss;
 }
 
 
-/*
- * 目的（プレイヤーがボスポータルに触れたか判定するため）
- * [入力] なし
- * [出力] bool: 触れていればtrue
- * [副作用] なし
- */
+/// @brief 繝励Ξ繧､繝､繝ｼ縺後・繧ｹ繝昴・繧ｿ繝ｫ縺ｫ隗ｦ繧後◆縺句愛螳壹☆繧九◆繧・
+/// @return bool: 隗ｦ繧後※縺・ｌ縺ｰtrue
 bool GameManager::IsBossGateTouched() const
 {
     if (!Master::player_)
@@ -423,23 +362,19 @@ bool GameManager::IsBossGateTouched() const
 }
 
 
-/*
- * 目的（デバッグコントロールが有効か判定するため）
- * [入力] なし
- * [出力] bool: 有効ならtrue
- * [副作用] なし
- */
+/// @brief 繝・ヰ繝・げ繧ｳ繝ｳ繝医Ο繝ｼ繝ｫ縺梧怏蜉ｹ縺句愛螳壹☆繧九◆繧・
+/// @return bool: 譛牙柑縺ｪ繧液rue
 bool GameManager::IsDebugControlsEnabled() const
 {
     return Master::debug_ != nullptr && Master::debug_->Getdebug();
 }
 
 
-/*
- * 目的（F5やF6キーによるデバッグ操作を更新するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 敵の全滅やフェーズの強制変更
+/**
+ * @brief 髢狗匱繝ｻ繝・ヰ繝・げ逕ｨ縺ｮ蟆ら畑蜈･蜉帛・逅・
+ * @details 蟇ｩ譟ｻ繧・ユ繧ｹ繝医・繝ｬ繧､譎ゅ・蜍穂ｽ懃｢ｺ隱阪ｒ螳ｹ譏薙↓縺吶ｋ縺溘ａ縲・
+ * 繝・ヰ繝・げ繝輔Λ繧ｰ縺梧怏蜉ｹ縺ｪ蝣ｴ蜷医・縺ｿ縲：5(謨ｵ蜈ｨ貊・繧Ё6(繝懊せ驕ｷ遘ｻ)縺ｪ縺ｩ縺ｮ讖溯・繧定ｨｱ蜿ｯ縺励※縺・∪縺吶・
+ * 陬ｽ蜩∫沿繝薙Ν繝峨〒縺ｯ繝輔Λ繧ｰ蛻ｶ蠕｡縺ｫ繧医ｊ螳悟・縺ｫ繧ｹ繧ｭ繝・・縺輔ｌ縺ｾ縺吶・
  */
 void GameManager::UpdateDebugControls()
 {
@@ -470,12 +405,8 @@ void GameManager::UpdateDebugControls()
 }
 
 
-/*
- * 目的（デバッグ用：敵を全滅させるため）
- * [入力] なし
- * [出力] なし
- * [副作用] 全ての敵のHPをゼロにする
- */
+/// @brief 繝・ヰ繝・げ逕ｨ・壽雰繧貞・貊・＆縺帙ｋ縺溘ａ
+/// @details 蜈ｨ縺ｦ縺ｮ謨ｵ縺ｮHP繧偵ぞ繝ｭ縺ｫ縺吶ｋ
 void GameManager::DebugKillEnemies()
 {
     if (Master::scene_manager_ == nullptr ||
@@ -498,12 +429,8 @@ void GameManager::DebugKillEnemies()
 }
 
 
-/*
- * 目的（デバッグ用：強制的にボス戦へ移行させるため）
- * [入力] なし
- * [出力] なし
- * [副作用] フェーズ変更とボスポータルの出現
- */
+/// @brief 繝・ヰ繝・げ逕ｨ・壼ｼｷ蛻ｶ逧・↓繝懊せ謌ｦ縺ｸ遘ｻ陦後＆縺帙ｋ縺溘ａ
+/// @details 繝輔ぉ繝ｼ繧ｺ螟画峩縺ｨ繝懊せ繝昴・繧ｿ繝ｫ縺ｮ蜃ｺ迴ｾ
 void GameManager::DebugGoBoss()
 {
     if (current_phase_ == Phase::kBoss ||
@@ -544,12 +471,8 @@ void GameManager::DebugGoBoss()
     StartBossTransition();
 }
 
-/*
- * 目的（ゲームマネージャーに関連するHUDなどを描画するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 画面描画
- */
+/// @brief 繧ｲ繝ｼ繝繝槭ロ繝ｼ繧ｸ繝｣繝ｼ縺ｫ髢｢騾｣縺吶ｋHUD縺ｪ縺ｩ繧呈緒逕ｻ縺吶ｋ縺溘ａ
+/// @details 逕ｻ髱｢謠冗判
 void GameManager::Draw()
 {
     DrawPhaseHud();
@@ -561,12 +484,8 @@ void GameManager::Draw()
 
 
 
-/*
- * 目的（デバッグ用のUIパネルを描画するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 画面描画
- */
+/// @brief 繝・ヰ繝・げ逕ｨ縺ｮUI繝代ロ繝ｫ繧呈緒逕ｻ縺吶ｋ縺溘ａ
+/// @details 逕ｻ髱｢謠冗判
 void GameManager::DrawDebugPanel()
 {
     if (!IsDebugControlsEnabled())
@@ -578,7 +497,7 @@ void GameManager::DrawDebugPanel()
     int mouseY = 0;
     InputManager::GetMousePos(mouseX, mouseY);
 
-    // デバッグパネルのX座標
+    // 繝・ヰ繝・げ繝代ロ繝ｫ縺ｮX蠎ｧ讓・
     const int panelX = 22;
     const int panelY = 96;
     const int panelW = 318;
@@ -601,12 +520,8 @@ void GameManager::DrawDebugPanel()
     SetFontSize(fontSize);
 }
 const char*
-/*
- * 目的（現在のフェーズの文字列ラベルを取得するため）
- * [入力] なし
- * [出力] const char*: フェーズラベル
- * [副作用] なし
- */
+/// @brief 迴ｾ蝨ｨ縺ｮ繝輔ぉ繝ｼ繧ｺ縺ｮ譁・ｭ怜・繝ｩ繝吶Ν繧貞叙蠕励☆繧九◆繧・
+/// @return const char*: 繝輔ぉ繝ｼ繧ｺ繝ｩ繝吶Ν
 GameManager::GetPhaseLabel() const
 {
     switch (current_phase_)
@@ -632,12 +547,8 @@ GameManager::GetPhaseLabel() const
 }
 
 const char*
-/*
- * 目的（現在のフェーズのサブラベル（BATTLEなど）を取得するため）
- * [入力] なし
- * [出力] const char*: サブラベル
- * [副作用] なし
- */
+/// @brief 迴ｾ蝨ｨ縺ｮ繝輔ぉ繝ｼ繧ｺ縺ｮ繧ｵ繝悶Λ繝吶Ν・・ATTLE縺ｪ縺ｩ・峨ｒ蜿門ｾ励☆繧九◆繧・
+/// @return const char*: 繧ｵ繝悶Λ繝吶Ν
 GameManager::GetPhaseSubLabel() const
 {
     switch (current_phase_)
@@ -662,12 +573,8 @@ GameManager::GetPhaseSubLabel() const
 }
 
 
-/*
- * 目的（現在の敵の生存数を取得するため）
- * [入力] なし
- * [出力] int: 生存数
- * [副作用] なし
- */
+/// @brief 迴ｾ蝨ｨ縺ｮ謨ｵ縺ｮ逕溷ｭ俶焚繧貞叙蠕励☆繧九◆繧・
+/// @return int: 逕溷ｭ俶焚
 int GameManager::GetEnemyCount() const
 {
     const auto& enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
@@ -675,18 +582,14 @@ int GameManager::GetEnemyCount() const
 }
 
 
-/*
- * 目的（現在のフェーズと敵の残数を画面右上に描画するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 画面描画
- */
+/// @brief 迴ｾ蝨ｨ縺ｮ繝輔ぉ繝ｼ繧ｺ縺ｨ謨ｵ縺ｮ谿区焚繧堤判髱｢蜿ｳ荳翫↓謠冗判縺吶ｋ縺溘ａ
+/// @details 逕ｻ髱｢謠冗判
 void GameManager::DrawPhaseHud()
 {
     int fontSize = GetFontSize();
     SetFontSize(24);
 
-    // HUDパネルのX座標（画面右寄せ）
+    // HUD繝代ロ繝ｫ縺ｮX蠎ｧ讓呻ｼ育判髱｢蜿ｳ蟇・○・・
     const int panelX = Config::ScreenWidth - 356;
     const int panelY = 28;
     const int panelW = 328;
@@ -713,12 +616,8 @@ void GameManager::DrawPhaseHud()
 }
 
 
-/*
- * 目的（ショップフェーズの残り時間バナーを画面上部に描画するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 画面描画
- */
+/// @brief 繧ｷ繝ｧ繝・・繝輔ぉ繝ｼ繧ｺ縺ｮ谿九ｊ譎る俣繝舌リ繝ｼ繧堤判髱｢荳企Κ縺ｫ謠冗判縺吶ｋ縺溘ａ
+/// @details 逕ｻ髱｢謠冗判
 void GameManager::DrawShopBanner()
 {
     if (!IsShopPhase())
@@ -729,9 +628,9 @@ void GameManager::DrawShopBanner()
     int fontSize = GetFontSize();
     SetFontSize(28);
 
-    // バナーの横幅
+    // 繝舌リ繝ｼ縺ｮ讓ｪ蟷・
     const int bannerW = 700;
-    // バナーのX座標（画面中央）
+    // 繝舌リ繝ｼ縺ｮX蠎ｧ讓呻ｼ育判髱｢荳ｭ螟ｮ・・
     const int bannerX = Config::ScreenWidth / 2 - bannerW / 2;
     const int bannerY = 26;
     const int gold = GetColor(198, 154, 64);
@@ -757,12 +656,8 @@ void GameManager::DrawShopBanner()
 }
 
 
-/*
- * 目的（ボス戦遷移時のフェード（暗転）を描画するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 画面描画
- */
+/// @brief 繝懊せ謌ｦ驕ｷ遘ｻ譎ゅ・繝輔ぉ繝ｼ繝会ｼ域囓霆｢・峨ｒ謠冗判縺吶ｋ縺溘ａ
+/// @details 逕ｻ髱｢謠冗判
 void GameManager::DrawBossFade()
 {
     if (!IsBossFadePhase())
@@ -775,12 +670,9 @@ void GameManager::DrawBossFade()
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-/*
- * 目的（難易度に応じて敵のステータスに倍率を適用するため）
- * [入力] EnemyManager::enemydate& e
- * [出力] なし
- * [副作用] 引数で渡された敵データのHPや攻撃力などの変更
- */
+/// @brief 髮｣譏灘ｺｦ縺ｫ蠢懊§縺ｦ謨ｵ縺ｮ繧ｹ繝・・繧ｿ繧ｹ縺ｫ蛟咲紫繧帝←逕ｨ縺吶ｋ縺溘ａ
+/// @param EnemyManager::enemydate& e
+/// @details 蠑墓焚縺ｧ貂｡縺輔ｌ縺滓雰繝・・繧ｿ縺ｮHP繧・判謦・鴨縺ｪ縺ｩ縺ｮ螟画峩
 void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 {
     float statMultiplier = 1.0f;
@@ -804,7 +696,7 @@ void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 
     e.hp = e.hp * statMultiplier;
     e.attack = e.attack * statMultiplier;
-    // ボスの数は通常1体を維持する
+    // 繝懊せ縺ｮ謨ｰ縺ｯ騾壼ｸｸ1菴薙ｒ邯ｭ謖√☆繧・
     if (e.tag != EnemyManager::boss_stage1)
     {
         e.Count = static_cast<int>(std::ceil(e.Count * countMultiplier));
@@ -816,12 +708,8 @@ void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 }
 
 
-/*
- * 目的（現在のフェーズに応じた敵キャラクターをフィールドにスポーンさせるため）
- * [入力] なし
- * [出力] なし
- * [副作用] EnemyManagerへの敵追加
- */
+/// @brief 迴ｾ蝨ｨ縺ｮ繝輔ぉ繝ｼ繧ｺ縺ｫ蠢懊§縺滓雰繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ繧偵ヵ繧｣繝ｼ繝ｫ繝峨↓繧ｹ繝昴・繝ｳ縺輔○繧九◆繧・
+/// @details EnemyManager縺ｸ縺ｮ謨ｵ霑ｽ蜉
 void GameManager::SpawnPhaseEnemies()
 {
     VECTOR centerPos = Config::GetStageCenter();
@@ -849,7 +737,7 @@ void GameManager::SpawnPhase1Enemies(const VECTOR& centerPos)
 {
     AddEnemy(MakeEnemyData(
         EnemyManager::night_stage1,
-        "Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+        "Resource/3D繝｢繝・Ν/繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｨ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ/01_莠ｺ蝙九く繝｣繝ｩ繧ｯ繧ｿ繝ｼ繝｢繝・Ν.mv1",
         centerPos,
         VGet(3000.0f, 100.0f, 3000.0f),
         20,
@@ -868,7 +756,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 {
     AddEnemy(MakeEnemyData(
         EnemyManager::archerl_stage1,
-        "Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+        "Resource/3D繝｢繝・Ν/繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｨ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ/01_莠ｺ蝙九く繝｣繝ｩ繧ｯ繧ｿ繝ｼ繝｢繝・Ν.mv1",
         centerPos,
         VGet(8000.0f, 100.0f, 8000.0f),
         20,
@@ -884,7 +772,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 
     AddEnemy(MakeEnemyData(
         EnemyManager::night_stage1,
-        "Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+        "Resource/3D繝｢繝・Ν/繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｨ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ/01_莠ｺ蝙九く繝｣繝ｩ繧ｯ繧ｿ繝ｼ繝｢繝・Ν.mv1",
         centerPos,
         VGet(2000.0f, 100.0f, 2000.0f),
         20,
@@ -903,7 +791,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 {
     AddEnemy(MakeEnemyData(
         EnemyManager::monster_stage1,
-        "Resource/3Dモデル/キャラクターとアニメーション/02_敵モンスターモデル.mv1",
+        "Resource/3D繝｢繝・Ν/繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｨ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ/02_謨ｵ繝｢繝ｳ繧ｹ繧ｿ繝ｼ繝｢繝・Ν.mv1",
         centerPos,
         VGet(12000.0f, 100.0f, 12000.0f),
         100,
@@ -919,7 +807,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
     AddEnemy(MakeEnemyData(
         EnemyManager::archerl_stage1,
-        "Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+        "Resource/3D繝｢繝・Ν/繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｨ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ/01_莠ｺ蝙九く繝｣繝ｩ繧ｯ繧ｿ繝ｼ繝｢繝・Ν.mv1",
         centerPos,
         VGet(6000.0f, 100.0f, 6000.0f),
         20,
@@ -935,7 +823,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
     AddEnemy(MakeEnemyData(
         EnemyManager::night_stage1,
-        "Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+        "Resource/3D繝｢繝・Ν/繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｨ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ/01_莠ｺ蝙九く繝｣繝ｩ繧ｯ繧ｿ繝ｼ繝｢繝・Ν.mv1",
         centerPos,
         VGet(6000.0f, 100.0f, 6000.0f),
         20,
@@ -955,7 +843,7 @@ void GameManager::SpawnBossEnemy()
     VECTOR bossCenter = Config::GetStageBossCenter();
     AddEnemy(MakeEnemyData(
         EnemyManager::boss_stage1,
-        "Resource/3Dモデル/キャラクターとアニメーション/03_ボスモデル.mv1",
+        "Resource/3D繝｢繝・Ν/繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｨ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ/03_繝懊せ繝｢繝・Ν.mv1",
         bossCenter,
         VAdd(bossCenter, VGet(-500.0f, 0.0f, 2000.0f)),
         300,
@@ -1010,12 +898,8 @@ void GameManager::AddEnemy(EnemyManager::enemydate enemyData)
     enemy_manager_->NewEnemyList(enemyData);
 }
 
-/*
- * 目的（ミニマップを描画するため）
- * [入力] なし
- * [出力] なし
- * [副作用] 画面描画
- */
+/// @brief 繝溘ル繝槭ャ繝励ｒ謠冗判縺吶ｋ縺溘ａ
+/// @details 逕ｻ髱｢謠冗判
 void GameManager::DrawMinimap()
 {
     const float mapSize = 220.0f;

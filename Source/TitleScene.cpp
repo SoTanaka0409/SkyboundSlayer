@@ -12,9 +12,7 @@
 #include "SkyBox.h"
 #include "Config.h"
 
-// 入力: なし
-// 出力: なし
-// 副作用: UI点滅アニメーション用のパラメータ初期化
+/// @details UI轤ｹ貊・い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ逕ｨ縺ｮ繝代Λ繝｡繝ｼ繧ｿ蛻晄悄蛹・
 TitleScene::TitleScene()
 	: color_fade_(1), color_flag_(false), camera_angle_(0.0f)
 {
@@ -24,32 +22,30 @@ TitleScene::~TitleScene()
 {
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: カメラ・進行度・コライダーの初期化、およびタイトル専用の3D背景の生成
+/// @details 繧ｫ繝｡繝ｩ繝ｻ騾ｲ陦悟ｺｦ繝ｻ繧ｳ繝ｩ繧､繝繝ｼ縺ｮ蛻晄悄蛹悶√♀繧医・繧ｿ繧､繝医Ν蟆ら畑縺ｮ3D閭梧勹縺ｮ逕滓・
 void TitleScene::Initialize()
 {
 	Master::camera_->Initialize();
-	// 周回プレイ時の不具合を防ぐため、タイトルに戻った時点でクリア回数とコライダー情報をリセットする
+	// 蜻ｨ蝗槭・繝ｬ繧､譎ゅ・荳榊・蜷医ｒ髦ｲ縺舌◆繧√√ち繧､繝医Ν縺ｫ謌ｻ縺｣縺滓凾轤ｹ縺ｧ繧ｯ繝ｪ繧｢蝗樊焚縺ｨ繧ｳ繝ｩ繧､繝繝ｼ諠・ｱ繧偵Μ繧ｻ繝・ヨ縺吶ｋ
 	Master::game_clear_count_ = 0;
 	ColliderManager::GetInstance()->DeleteAllCollider();
 
 	Master::score_manager_->LoadHighScore();
 	Master::sound_manager_->PlayBGM(SoundManager::BGM_TITLE);
 
-	// 一枚絵ではなく、実際のゲームプレイと同じ3Dモデルを配置してカメラを回すことでシームレスな世界観を演出する
-	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", VGet(200.0f, 100.0f, 200.0f));
-	new Stage(Config::GetStageCenter(), "Resource/3Dモデル/ステージ/通常ステージ/01_通常ステージモデル.mv1", "Resource/3Dモデル/ステージ/通常ステージ/02_通常ステージ当たり判定モデル.mv1", VGet(3.0f, 0.3f, 3.0f));
+	// 荳譫夂ｵｵ縺ｧ縺ｯ縺ｪ縺上∝ｮ滄圀縺ｮ繧ｲ繝ｼ繝繝励Ξ繧､縺ｨ蜷後§3D繝｢繝・Ν繧帝・鄂ｮ縺励※繧ｫ繝｡繝ｩ繧貞屓縺吶％縺ｨ縺ｧ繧ｷ繝ｼ繝繝ｬ繧ｹ縺ｪ荳也阜隕ｳ繧呈ｼ泌・縺吶ｋ
+	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3D繝｢繝・Ν/閭梧勹/豬ｮ驕雁ｳｶ/01_豬ｮ驕雁ｳｶ繝｢繝・Ν.mv1", "Resource/3D繝｢繝・Ν/閭梧勹/豬ｮ驕雁ｳｶ/01_豬ｮ驕雁ｳｶ繝｢繝・Ν.mv1", VGet(200.0f, 100.0f, 200.0f));
+	new Stage(Config::GetStageCenter(), "Resource/3D繝｢繝・Ν/繧ｹ繝・・繧ｸ/騾壼ｸｸ繧ｹ繝・・繧ｸ/01_騾壼ｸｸ繧ｹ繝・・繧ｸ繝｢繝・Ν.mv1", "Resource/3D繝｢繝・Ν/繧ｹ繝・・繧ｸ/騾壼ｸｸ繧ｹ繝・・繧ｸ/02_騾壼ｸｸ繧ｹ繝・・繧ｸ蠖薙◆繧雁愛螳壹Δ繝・Ν.mv1", VGet(3.0f, 0.3f, 3.0f));
 
-	// 配置データのハードコーディングを避け、CSVから読み込むことでプランナーの調整工数を削減する
-	std::ifstream file(L"Resource/データ/CSV/01_ステージ配置データ.csv");
+	// 驟咲ｽｮ繝・・繧ｿ縺ｮ繝上・繝峨さ繝ｼ繝・ぅ繝ｳ繧ｰ繧帝∩縺代，SV縺九ｉ隱ｭ縺ｿ霎ｼ繧縺薙→縺ｧ繝励Λ繝ｳ繝翫・縺ｮ隱ｿ謨ｴ蟾･謨ｰ繧貞炎貂帙☆繧・
+	std::ifstream file(L"Resource/繝・・繧ｿ/CSV/01_繧ｹ繝・・繧ｸ驟咲ｽｮ繝・・繧ｿ.csv");
 	if (file.is_open())
 	{
 		std::string line;
-		std::getline(file, line); // ヘッダー行をスキップしてパースエラーを回避
+		std::getline(file, line); // 繝倥ャ繝繝ｼ陦後ｒ繧ｹ繧ｭ繝・・縺励※繝代・繧ｹ繧ｨ繝ｩ繝ｼ繧貞屓驕ｿ
 		while (std::getline(file, line))
 		{
-			if (line.empty()) continue; // 空行によるクラッシュを防止
+			if (line.empty()) continue; // 遨ｺ陦後↓繧医ｋ繧ｯ繝ｩ繝・す繝･繧帝亟豁｢
 			std::stringstream ss(line);
 			std::string type, model, xStr, yStr, zStr, sxStr, syStr, szStr, texture, colSizeStr, isRelativeStr;
 			std::getline(ss, type, ',');
@@ -89,18 +85,16 @@ void TitleScene::Initialize()
 		file.close();
 	}
 
-	SkyBox* pSkyBox = new SkyBox("Resource/3Dモデル/背景/空/01_空ドームモデル.x", VGet(0, 0, -5000));
+	SkyBox* pSkyBox = new SkyBox("Resource/3D繝｢繝・Ν/閭梧勹/遨ｺ/01_遨ｺ繝峨・繝繝｢繝・Ν.x", VGet(0, 0, -5000));
 	float scale = 13.0f;
 	pSkyBox->SetScale(VGet(scale, scale, scale));
-	pSkyBox->SetModelTexture("Resource/3Dモデル/背景/空/02_空テクスチャ.jpg");
+	pSkyBox->SetModelTexture("Resource/3D繝｢繝・Ν/閭梧勹/遨ｺ/02_遨ｺ繝・け繧ｹ繝√Ε.jpg");
 
-	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", VGet(3.0f, 3.0f, 3.0f));
+	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3D繝｢繝・Ν/蟆冗黄/繝昴・繧ｿ繝ｫ/01_繝昴・繧ｿ繝ｫ繝｢繝・Ν.mv1", VGet(3.0f, 3.0f, 3.0f));
 	camera_angle_ = 0.0f;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: カメラアングルの更新とマウスクリックによる画面遷移判定
+/// @details 繧ｫ繝｡繝ｩ繧｢繝ｳ繧ｰ繝ｫ縺ｮ譖ｴ譁ｰ縺ｨ繝槭え繧ｹ繧ｯ繝ｪ繝・け縺ｫ繧医ｋ逕ｻ髱｢驕ｷ遘ｻ蛻､螳・
 void TitleScene::Update()
 {
 	Scene::Update();
@@ -108,12 +102,10 @@ void TitleScene::Update()
 	HandleMenuInput();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: タイトル背景を旋回するカメラ座標の計算と適用
+/// @details 繧ｿ繧､繝医Ν閭梧勹繧呈雷蝗槭☆繧九き繝｡繝ｩ蠎ｧ讓吶・險育ｮ励→驕ｩ逕ｨ
 void TitleScene::UpdateTitleCamera()
 {
-	// 浮動小数点精度の低下によるカメラのカクつきを防ぐため、2πラジアンを超えたらリセットする
+	// 豬ｮ蜍募ｰ乗焚轤ｹ邊ｾ蠎ｦ縺ｮ菴惹ｸ九↓繧医ｋ繧ｫ繝｡繝ｩ縺ｮ繧ｫ繧ｯ縺､縺阪ｒ髦ｲ縺舌◆繧√・ﾏ繝ｩ繧ｸ繧｢繝ｳ繧定ｶ・∴縺溘ｉ繝ｪ繧ｻ繝・ヨ縺吶ｋ
 	camera_angle_ += 0.002f;
 	if (camera_angle_ >= DX_PI_F * 2.0f) camera_angle_ -= DX_PI_F * 2.0f;
 
@@ -122,15 +114,13 @@ void TitleScene::UpdateTitleCamera()
 	SetCameraPositionAndTarget_UpVecY(camPos, camTarget);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: クリックしたボタンに応じたシーンの切り替え要求
+/// @details 繧ｯ繝ｪ繝・け縺励◆繝懊ち繝ｳ縺ｫ蠢懊§縺溘す繝ｼ繝ｳ縺ｮ蛻・ｊ譖ｿ縺郁ｦ∵ｱ・
 void TitleScene::HandleMenuInput()
 {
 	int mx, my;
 	InputManager::GetMousePos(mx, my);
 
-	// 無駄な当たり判定計算を省くため、左クリックされていないフレームは早期リターン
+	// 辟｡鬧・↑蠖薙◆繧雁愛螳夊ｨ育ｮ励ｒ逵√￥縺溘ａ縲∝ｷｦ繧ｯ繝ｪ繝・け縺輔ｌ縺ｦ縺・↑縺・ヵ繝ｬ繝ｼ繝縺ｯ譌ｩ譛溘Μ繧ｿ繝ｼ繝ｳ
 	if (!InputManager::CheckMouseClickLeft()) return;
 
 	if (IsHoverStart(mx, my))
@@ -150,9 +140,8 @@ void TitleScene::HandleMenuInput()
 	}
 }
 
-// 入力: マウス座標 (mx, my)
-// 出力: 判定領域内であれば true
-// 副作用: なし
+/// @param 繝槭え繧ｹ蠎ｧ讓・(mx, my)
+/// @return 蛻､螳夐伜沺蜀・〒縺ゅｌ縺ｰ true
 bool TitleScene::IsHoverStart(int mx, int my) const
 {
 	return mx >= 96 && mx <= 416 && my >= 732 && my <= 794;
@@ -168,9 +157,7 @@ bool TitleScene::IsHoverSettings(int mx, int my) const
 	return mx >= 96 && mx <= 416 && my >= 872 && my <= 934;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: タイトルの3D背景、ロゴ、各種UIパネルの描画
+/// @details 繧ｿ繧､繝医Ν縺ｮ3D閭梧勹縲√Ο繧ｴ縲∝推遞ｮUI繝代ロ繝ｫ縺ｮ謠冗判
 void TitleScene::Draw()
 {
 	UpdatePromptBlink();
@@ -180,12 +167,10 @@ void TitleScene::Draw()
 	DrawPrompt();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ユーザーにクリックを促すテキスト用アルファ値の計算
+/// @details 繝ｦ繝ｼ繧ｶ繝ｼ縺ｫ繧ｯ繝ｪ繝・け繧剃ｿ・☆繝・く繧ｹ繝育畑繧｢繝ｫ繝輔ぃ蛟､縺ｮ險育ｮ・
 void TitleScene::UpdatePromptBlink()
 {
-	// 透過度を徐々に増減させ、ユーザーの視線を誘導するための滑らかな明滅アニメーションを作る
+	// 騾城℃蠎ｦ繧貞ｾ舌・↓蠅玲ｸ帙＆縺帙√Θ繝ｼ繧ｶ繝ｼ縺ｮ隕也ｷ壹ｒ隱伜ｰ弱☆繧九◆繧√・貊代ｉ縺九↑譏取ｻ・い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧剃ｽ懊ｋ
 	if (color_flag_)
 	{
 		color_fade_ -= 4;
@@ -198,23 +183,19 @@ void TitleScene::UpdatePromptBlink()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 背景モデルの描画と、UIの視認性を高めるための半透明暗幕の描画
+/// @details 閭梧勹繝｢繝・Ν縺ｮ謠冗判縺ｨ縲ゞI縺ｮ隕冶ｪ肴ｧ繧帝ｫ倥ａ繧九◆繧√・蜊企乗・證怜ｹ輔・謠冗判
 void TitleScene::DrawSceneBackground()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 	Scene::Draw();
 
-	// 昼背景など明度の高い3Dモデルが来た場合でも、手前の白文字UIが読めなくなるのを防ぐ
+	// 譏ｼ閭梧勹縺ｪ縺ｩ譏主ｺｦ縺ｮ鬮倥＞3D繝｢繝・Ν縺梧擂縺溷ｴ蜷医〒繧ゅ∵焔蜑阪・逋ｽ譁・ｭ誘I縺瑚ｪｭ繧√↑縺上↑繧九・繧帝亟縺・
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
 	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(15, 18, 25), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ゲームタイトルのパネルとドロップシャドウ付きテキストの描画
+/// @details 繧ｲ繝ｼ繝繧ｿ繧､繝医Ν縺ｮ繝代ロ繝ｫ縺ｨ繝峨Ο繝・・繧ｷ繝｣繝峨え莉倥″繝・く繧ｹ繝医・謠冗判
 void TitleScene::DrawTitlePanel()
 {
 	const int accentGold = GetColor(218, 178, 86);
@@ -233,15 +214,13 @@ void TitleScene::DrawTitlePanel()
 	DrawBox(84, 88, 746, 98, panelLight, TRUE);
 
 	SetFontSize(76);
-	// 右下にずらして黒文字を描画することで、アウトライン/影付きフォントを擬似的に表現する
-	DrawFormatString(99, 119, GetColor(10, 8, 4), "Sky Castle Hunter");
-	DrawFormatString(94, 114, GetColor(255, 231, 155), "Sky Castle Hunter");
+	// 蜿ｳ荳九↓縺壹ｉ縺励※鮟呈枚蟄励ｒ謠冗判縺吶ｋ縺薙→縺ｧ縲√い繧ｦ繝医Λ繧､繝ｳ/蠖ｱ莉倥″繝輔か繝ｳ繝医ｒ謫ｬ莨ｼ逧・↓陦ｨ迴ｾ縺吶ｋ
+	DrawFormatString(99, 119, GetColor(10, 8, 4), "Skybound Slayer");
+	DrawFormatString(94, 114, GetColor(255, 231, 155), "Skybound Slayer");
 	SetFontSize(24);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: マウスホバー状態に応じたボタンの色変更と描画
+/// @details 繝槭え繧ｹ繝帙ヰ繝ｼ迥ｶ諷九↓蠢懊§縺溘・繧ｿ繝ｳ縺ｮ濶ｲ螟画峩縺ｨ謠冗判
 void TitleScene::DrawMenuPanel()
 {
 	int mx, my;
@@ -280,9 +259,7 @@ void TitleScene::DrawMenuPanel()
 	DrawFormatString(126, 888, hoverSettings ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sSETTINGS", hoverSettings ? "> " : "  ");
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 画面下部に点滅する案内テキストの描画
+/// @details 逕ｻ髱｢荳矩Κ縺ｫ轤ｹ貊・☆繧区｡亥・繝・く繧ｹ繝医・謠冗判
 void TitleScene::DrawPrompt()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + color_fade_ / 3);
@@ -294,9 +271,6 @@ void TitleScene::DrawPrompt()
 	SetFontSize(24);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: なし
 void TitleScene::Finalize()
 {
 	Master::sound_manager_->StopBGM();

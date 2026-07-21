@@ -1,13 +1,8 @@
-#include "SphereCollider.h"
+ï»¿#include "SphereCollider.h"
 #include"CapsuleCollider.h"
 
 
-/*
- * –Ú“IiSphereCollider‚ÌSphereColliderˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SphereColliderã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 SphereCollider::SphereCollider(Object3D* parent, VECTOR center, float radius)
 	: Collider(parent)
 {
@@ -21,17 +16,12 @@ SphereCollider::~SphereCollider()
 }
 
 
-/*
- * –Ú“IiSphereCollider‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SphereColliderã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void SphereCollider::Update(Collider* check)
 {
 	if (check != nullptr)
 	{
-		// ‘Šè‚ªƒJƒvƒZƒ‹‚Ìê‡
+		// ç›¸æ‰‹ãŒã‚«ãƒ—ã‚»ãƒ«ã®å ´åˆ
 		CapsuleCollider* capsule = dynamic_cast<CapsuleCollider*>(check);
 		if (capsule != nullptr)
 		{
@@ -46,7 +36,7 @@ void SphereCollider::Update(Collider* check)
 			HitCheck(check, isHit);
 		}
 
-		// ‘Šè‚ªƒXƒtƒBƒA‚Ìê‡
+		// ç›¸æ‰‹ãŒã‚¹ãƒ•ã‚£ã‚¢ã®å ´åˆ
 		SphereCollider* sphere = dynamic_cast<SphereCollider*>(check);
 		if (sphere != nullptr)
 		{
@@ -64,12 +54,7 @@ void SphereCollider::Update(Collider* check)
 }
 
 
-/*
- * –Ú“IiSphereCollider‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SphereColliderã®æç”»å‡¦ç†
 void SphereCollider::Draw()
 {
 	DrawSphere3D(
@@ -83,36 +68,21 @@ void SphereCollider::Draw()
 }
 
 
-/*
- * –Ú“IiSphereCollider‚ÌOnEnterˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SphereColliderã®OnEnterå‡¦ç†
 void SphereCollider::OnEnter()
 {
 
 }
 
 
-/*
- * –Ú“IiSphereCollider‚ÌOnTriggerˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SphereColliderã®OnTriggerå‡¦ç†
 void SphereCollider::OnTrigger()
 {
 
 }
 
 
-/*
- * –Ú“IiSphereCollider‚ÌOnExitˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SphereColliderã®OnExitå‡¦ç†
 void SphereCollider::OnExit()
 {
 

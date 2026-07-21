@@ -3,12 +3,7 @@
 
 
 
-/*
- * 目的（TextureのTexture処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Textureの初期化（コンストラクタ）
 Texture::Texture(std::string filename, VECTOR centerPosition, int transFlag)
     : handle_(-1)
     , position_(centerPosition)
@@ -30,12 +25,7 @@ Texture::~Texture()
 }
 
 
-/*
- * 目的（TextureのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Textureの描画処理
 void Texture::Draw()
 {
     // 画像の表示
@@ -43,12 +33,7 @@ void Texture::Draw()
 }
 
 
-/*
- * 目的（TextureのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Textureの状態更新処理
 void Texture::Update()
 {
 }

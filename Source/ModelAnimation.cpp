@@ -2,12 +2,7 @@
 #include"ModelAnimation.h"
 
 
-/*
- * 目的（ModelAnimationのModelAnimation処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelAnimationの初期化（コンストラクタ）
 ModelAnimation::ModelAnimation(int ModelHandle)
 	:model_handle_(ModelHandle)
 	, animation_time_(0.0f)
@@ -47,12 +42,7 @@ ModelAnimation::~ModelAnimation()
 
 
 
-/*
- * 目的（ModelAnimationのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelAnimationの状態更新処理
 void ModelAnimation::Update()
 {
 
@@ -138,12 +128,7 @@ void ModelAnimation::Update()
 
 //アニメーションの切り替え
 
-/*
- * 目的（ModelAnimationのChangeAnimation処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelAnimationのChangeAnimation処理
 void ModelAnimation::ChangeAnimation(AnimationState state, int index)
 {
 	/*if (AnimationStart())
@@ -196,12 +181,7 @@ void ModelAnimation::ChangeAnimation(AnimationState state, int index)
 //		//ループさせる
 //アニメションのブレンド設定
 
-/*
- * 目的（ModelAnimationのSetAnimationBlend処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelAnimationのSetAnimationBlend処理
 void ModelAnimation::SetAnimationBlend(bool isblend)
 {
 	if (isblend)

@@ -6,12 +6,7 @@ int InputManager::up_buffer_[256] = { 0 };
 int InputManager::mouse_down_buffer_ = 0;
 
 
-/*
- * 目的（InputManagerのコンストラクタ）
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
+/// @brief InputManagerのコンストラクタ
 InputManager::InputManager()
 {
 
@@ -57,12 +52,9 @@ int InputManager::CheckMouseClickLeft()
 }
 
 
-/*
- * 目的（マウスの座標を取得するため）
- * [入力] int& x, int& y
- * [出力] なし
- * [副作用] 引数への代入
- */
+/// @brief マウスの座標を取得するため
+/// @param int& x, int& y
+/// @details 引数への代入
 void InputManager::GetMousePos(int& x, int& y)
 {
 	GetMousePoint(&x, &y);

@@ -3,12 +3,7 @@
 EffectPool* EffectPool::sInstance = nullptr;
 
 EffectPool* 
-/*
- * 目的（EffectPoolのGetInstance処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffectPoolのGetInstance処理
 EffectPool::GetInstance() {
     if (!sInstance) {
         sInstance = new EffectPool();
@@ -17,12 +12,7 @@ EffectPool::GetInstance() {
 }
 
 
-/*
- * 目的（EffectPoolのEffectPool処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffectPoolの初期化（コンストラクタ）
 EffectPool::EffectPool() {
     for (int i = 0; i < POOL_SIZE; i++) {
         pool_[i] = new Effect();
@@ -36,12 +26,7 @@ EffectPool::~EffectPool() {
 }
 
 
-/*
- * 目的（EffectPoolのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffectPoolの状態更新処理
 void EffectPool::Update() {
     for (int i = 0; i < POOL_SIZE; i++) {
         if (pool_[i]->IsActive()) {
@@ -51,12 +36,7 @@ void EffectPool::Update() {
 }
 
 
-/*
- * 目的（EffectPoolのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffectPoolの描画処理
 void EffectPool::Draw() {
     for (int i = 0; i < POOL_SIZE; i++) {
         if (pool_[i]->IsActive()) {
@@ -66,12 +46,7 @@ void EffectPool::Draw() {
 }
 
 
-/*
- * 目的（EffectPoolのPlay処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffectPoolのPlay処理
 void EffectPool::Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor, float Size, float VisibleTime) {
     for (int i = 0; i < POOL_SIZE; i++) {
         if (!pool_[i]->IsActive()) {

@@ -18,29 +18,26 @@ public:
         WALKING_OUT
     };
 
-    // 入力: filename, vec(出現座標) / 出力: なし
-    // 副作用: NPCモデルのロードと、プレイヤー進入検知用のコライダー(shop_in_)を初期化する
+/// @param filename, vec(出現座標)
+/// @details NPCモデルのロードと、プレイヤー進入検知用のコライダー(shop_in_)を初期化する
     StatShop(std::string filename, VECTOR vec);
 
-    // 入力: なし / 出力: なし
-    // 副作用: 動的確保したモデルやコライダーを破棄し、メモリリークを防ぐ
+/// @details 動的確保したモデルやコライダーを破棄し、メモリリークを防ぐ
     ~StatShop();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 到着後であればショップメニューを描画し、NPCモデルとUIをバッファへ登録する
+/// @details 到着後であればショップメニューを描画し、NPCモデルとUIをバッファへ登録する
     void Draw() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: 徒歩移動演出の進行や、プレイヤーとの距離によるメニューの開閉（Close/Open）を制御する
+/// @details 徒歩移動演出の進行や、プレイヤーとの距離によるメニューの開閉（Close
     void Update() override;
 
-    // 入力: なし / 出力: なし / 副作用: 待機状態から店舗前への移動ステートを開始する
+/// @details 待機状態から店舗前への移動ステートを開始する
     void StartWalkingIn();
-    // 入力: なし / 出力: なし / 副作用: 店舗外への移動ステートを開始し、終了後にインスタンスを破棄予約する
+/// @details 店舗外への移動ステートを開始し、終了後にインスタンスを破棄予約する
     void StartWalkingOut();
-    // 入力: なし / 出力: なし / 副作用: 目標座標へ向けてNPCモデルの座標を線形補間（Lerp）する
+/// @details 目標座標へ向けてNPCモデルの座標を線形補間（Lerp）する
     void movePosition();
-    // 入力: なし / 出力: 到着完了か(bool) / 副作用: なし
+/// @return 到着完了か(bool)
     bool IsArrived() const { return shop_state_ == ShopState::ARRIVED; }
 
     virtual void OnEnter(Collider* collider, Collider* check) override;
@@ -48,13 +45,13 @@ public:
     virtual void OnExit(Collider* collider, Collider* check) override;
 
 private:
-    // 入力: なし / 出力: 更新可能か(bool) / 副作用: なし
+/// @return 更新可能か(bool)
     bool CanUpdateShop() const;
-    // 入力: なし / 出力: なし / 副作用: ゲーム終了やフェーズ遷移時に、強制的にショップメニューを閉じる
+/// @details ゲーム終了やフェーズ遷移時に、強制的にショップメニューを閉じる
     void CloseShopIfPhaseEnding();
-    // 入力: なし / 出力: なし / 副作用: プレイヤーのカーソル移動や決定入力を監視し、購入処理を呼び出す
+/// @details プレイヤーのカーソル移動や決定入力を監視し、購入処理を呼び出す
     void UpdateShopMenu();
-    // 入力: なし / 出力: なし / 副作用: キャンセルボタン検知時に購入画面を閉じ、ゲームプレイへ復帰する
+/// @details キャンセルボタン検知時に購入画面を閉じ、ゲームプレイへ復帰する
     void HandleShopCloseInput();
 
     void DrawShopMenu(Player3D* player);
@@ -63,10 +60,11 @@ private:
     void DrawShopFooter();
     void DrawShopNpc(Player3D* player);
 
-    // 入力: なし / 出力: なし / 副作用: 選択中の強化項目(select_)に対し、所持金とコストを照合して購入処理を実行する
+/// @details 選択中の強化項目(select_)に対し、所持金とコストを照合して購入処理を実行する
     void SelectClass();
     void BuyClass();
-    // 入力: upgradeCount(強化回数) / 出力: 必要金額(int) / 副作用: なし
+/// @param upgradeCount(強化回数)
+/// @return 必要金額(int)
     int GetCost(int upgradeCount);
 
     void UpdateWalkIn();

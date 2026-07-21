@@ -1,26 +1,18 @@
-#include"ObjectManager.h"
+ï»¿#include"ObjectManager.h"
 #include "Master.h"
 #include "ColliderManager.h"
 
 
-/*
- * –Ú“IiObjectManager‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^j
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] Šeí•Ï”‚Ì‰Šú‰»
- */
+/// @brief ObjectManagerã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @details å„ç¨®å¤‰æ•°ã®åˆæœŸåŒ–
 ObjectManager::ObjectManager()
 	: cache_dirty_(true)
 {
 }
 
 
-/*
- * –Ú“IiObjectManager‚ÌƒfƒXƒgƒ‰ƒNƒ^j
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒIƒuƒWƒFƒNƒg‚Ì”jŠü
- */
+/// @brief ObjectManagerã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @details ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç ´æ£„
 ObjectManager::~ObjectManager()
 {
 	DeleteAll3D();
@@ -28,12 +20,8 @@ ObjectManager::~ObjectManager()
 }
 
 
-/*
- * –Ú“Ii‘SƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ğXV‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ŠeƒIƒuƒWƒFƒNƒg‚ÌUpdateŒÄ‚Ño‚µ
- */
+/// @brief å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹ãŸã‚
+/// @details å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Updateå‘¼ã³å‡ºã—
 void ObjectManager::Update()
 {
 
@@ -58,12 +46,8 @@ void ObjectManager::Update()
 }
 
 
-/*
- * –Ú“Ii‘SƒIƒuƒWƒFƒNƒg‚ğ•`‰æ‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ŠeƒIƒuƒWƒFƒNƒg‚ÌDrawŒÄ‚Ño‚µ
- */
+/// @brief å…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æç”»ã™ã‚‹ãŸã‚
+/// @details å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Drawå‘¼ã³å‡ºã—
 void ObjectManager::Draw()
 {
 	
@@ -89,12 +73,9 @@ void ObjectManager::Draw()
 	
 }
 
-/*
- * –Ú“IiƒIƒuƒWƒFƒNƒg‚ğƒŠƒXƒg‚É’Ç‰Á‚·‚é‚½‚ßj
- * [“ü—Í] ƒIƒuƒWƒFƒNƒgƒ|ƒCƒ“ƒ^
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒŠƒXƒg‚Ö‚Ì—v‘f’Ç‰Á
- */
+/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹ãŸã‚
+/// @param ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒã‚¤ãƒ³ã‚¿
+/// @details ãƒªã‚¹ãƒˆã¸ã®è¦ç´ è¿½åŠ 
 void ObjectManager::AddObject(Object3D* object3D)
 {
 	object_3d_list_.push_back(object3D);
@@ -104,12 +85,8 @@ void ObjectManager::AddObject(Object3D* object3D)
 }
 
 
-/*
- * –Ú“Ii‘S‚Ä‚Ì3DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] 3DƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚ÌƒNƒŠƒA
- */
+/// @brief å…¨ã¦ã®3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤ã™ã‚‹ãŸã‚
+/// @details 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆã®ã‚¯ãƒªã‚¢
 void ObjectManager::DeleteAll3D()
 {
 	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
@@ -121,12 +98,9 @@ void ObjectManager::DeleteAll3D()
 }
 
 Object3D* 
-/*
- * –Ú“Ii“Á’è‚Ìƒ^ƒO‚ğ‚Â3DƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é‚½‚ßj
- * [“ü—Í] Object3D::Tag3D tag
- * [o—Í] Object3D*
- * [•›ì—p] ‚È‚µ
- */
+/// @brief ç‰¹å®šã®ã‚¿ã‚°ã‚’æŒã¤3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹ãŸã‚
+/// @param Object3D::Tag3D tag
+/// @return Object3D*
 ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
 {
 	auto itr = std::find_if(
@@ -156,12 +130,8 @@ const std::vector<Object3D*>& ObjectManager::GetObject3DListByTag(Object3D::Tag3
 }
 
 
-/*
- * –Ú“Iiíœƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é3DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒŠƒXƒg‚©‚ç‚Ì—v‘fíœ
- */
+/// @brief å‰Šé™¤ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤ã™ã‚‹ãŸã‚
+/// @details ãƒªã‚¹ãƒˆã‹ã‚‰ã®è¦ç´ å‰Šé™¤
 void ObjectManager::DeleteAll3DIfNeeded()
 {
 	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end();)
@@ -185,24 +155,17 @@ void ObjectManager::DeleteAll3DIfNeeded()
 }
 
 
-/*
- * –Ú“IiƒIƒuƒWƒFƒNƒg‚ğƒŠƒXƒg‚É’Ç‰Á‚·‚é‚½‚ßj
- * [“ü—Í] ƒIƒuƒWƒFƒNƒgƒ|ƒCƒ“ƒ^
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒŠƒXƒg‚Ö‚Ì—v‘f’Ç‰Á
- */
+/// @brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒªã‚¹ãƒˆã«è¿½åŠ ã™ã‚‹ãŸã‚
+/// @param ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒã‚¤ãƒ³ã‚¿
+/// @details ãƒªã‚¹ãƒˆã¸ã®è¦ç´ è¿½åŠ 
 void ObjectManager::AddObject(Object2D* object2D)
 {
 	object_2d_list_.push_back(object2D);
 }
 
 
-/*
- * –Ú“Ii‘S‚Ä‚Ì2DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] 2DƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚ÌƒNƒŠƒA
- */
+/// @brief å…¨ã¦ã®2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤ã™ã‚‹ãŸã‚
+/// @details 2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆã®ã‚¯ãƒªã‚¢
 void ObjectManager::DeleteAll2D()
 {
 	Master::inf_class_manager_->LogList.clear();
@@ -218,12 +181,8 @@ void ObjectManager::DeleteAll2D()
 }
 
 
-/*
- * –Ú“Iiíœƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é2DƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒŠƒXƒg‚©‚ç‚Ì—v‘fíœ
- */
+/// @brief å‰Šé™¤ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤ã™ã‚‹ãŸã‚
+/// @details ãƒªã‚¹ãƒˆã‹ã‚‰ã®è¦ç´ å‰Šé™¤
 void ObjectManager::DeleteAll2DIfNeeded()
 {
 	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end();)
@@ -246,12 +205,9 @@ void ObjectManager::DeleteAll2DIfNeeded()
 }
 
 Object2D* 
-/*
- * –Ú“Ii“Á’è‚Ìƒ^ƒO‚ğ‚Â2DƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é‚½‚ßj
- * [“ü—Í] Object2D::Tag2D tag
- * [o—Í] Object2D*
- * [•›ì—p] ‚È‚µ
- */
+/// @brief ç‰¹å®šã®ã‚¿ã‚°ã‚’æŒã¤2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹ãŸã‚
+/// @param Object2D::Tag2D tag
+/// @return Object2D*
 ObjectManager::GetObject2DByTag(Object2D::Tag2D tag)
 {
 	auto itr = std::find_if(

@@ -3,12 +3,7 @@
 #include"ObjectManager.h"
 
 
-/*
- * 目的（BuffのBuff処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Buffの初期化（コンストラクタ）
 Buff::Buff(int timer, float effect,Object3D::StatusState type)
 	:Do_buff(true)
 {
@@ -26,12 +21,7 @@ Buff::~Buff()
 }
 
 
-/*
- * 目的（BuffのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Buffの状態更新処理
 void Buff::Update()
 {
 	efDate.Count++;

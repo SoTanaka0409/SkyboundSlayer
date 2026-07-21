@@ -1,4 +1,4 @@
-#include"Camera.h"
+ï»¿#include"Camera.h"
 #include"Config.h"
 #include<cmath>
 #include"Master.h"
@@ -10,12 +10,8 @@
 
 
 
-/*
- * –Ú“IiCamera‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^j
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
- */
+/// @brief Cameraã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @details ãƒ¡ãƒ³ãƒå¤‰æ•°ã®åˆæœŸåŒ–
 Camera::Camera()
 	:horizontal_angle_(0.0f)
 	,vertical_angle_(0.0f)
@@ -33,24 +29,15 @@ Camera::Camera()
 }
 
 
-/*
- * –Ú“IiCamera‚ÌƒfƒXƒgƒ‰ƒNƒ^j
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ‚È‚µ
- */
+/// @brief Cameraã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Camera::~Camera()
 {
 	
 }
 
 
-/*
- * –Ú“IiƒJƒƒ‰‚Ì‰Šúİ’è‚ğs‚¤‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ‰ŠúÀ•W‚Æ‰ñ“]‚ÌƒŠƒZƒbƒg
- */
+/// @brief ã‚«ãƒ¡ãƒ©ã®åˆæœŸè¨­å®š
+/// @details åˆæœŸåº§æ¨™ã¨å›è»¢ã®ãƒªã‚»ãƒƒãƒˆ
 void Camera::Initialize()
 {
 	target_ = nullptr;
@@ -66,24 +53,16 @@ void Camera::Initialize()
 }
 
 
-/*
- * –Ú“Ii–ˆƒtƒŒ[ƒ€‚ÌƒJƒƒ‰ó‘Ô‚ğXV‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] —h‚ê‚â’Ç]ó‘Ô‚ÌŒvZ
- */
+/// @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚«ãƒ¡ãƒ©çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹ãŸã‚
+/// @details æºã‚Œã‚„è¿½å¾“çŠ¶æ…‹ã®è¨ˆç®—
 void Camera::Update()
 {
 	UpdateThirdPersonCamera();
 }
 
 
-/*
- * –Ú“Ii3lÌ‹“_ƒJƒƒ‰‚ÌXV‚ğs‚¤‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒvƒŒƒCƒ„[À•W‚ÉŠî‚Ã‚­’Ç]ˆ—AƒRƒŠƒWƒ‡ƒ“”»’è
- */
+/// @brief 3äººç§°è¦–ç‚¹ã‚«ãƒ¡ãƒ©ã®æ›´æ–°å‡¦ç†
+/// @details ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™ã«åŸºã¥ãè¿½å¾“å‡¦ç†ã€ã‚³ãƒªã‚¸ãƒ§ãƒ³åˆ¤å®š
 void Camera::UpdateThirdPersonCamera()
 {
 	VECTOR targetPos = VGet(0,0,0);
@@ -107,12 +86,7 @@ void Camera::UpdateThirdPersonCamera()
 	UpdateCameraPosition();
 }
 
-/*
- * –Ú“IiCamera‚ÌUpdateLookAtPositionˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Cameraã®UpdateLookAtPositionå‡¦ç†
 void Camera::UpdateLookAtPosition(VECTOR targetPos)
 {
 	if (is_cutscene_mode_ || target_ != nullptr)
@@ -122,20 +96,15 @@ void Camera::UpdateLookAtPosition(VECTOR targetPos)
 	}
 	else
 	{
-		//ƒ^[ƒQƒbƒg‚ª‚È‚¢ê‡‚Íˆê’è‚Ì‚‚³
+		//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒãªã„å ´åˆã¯ä¸€å®šã®é«˜ã•
 		mvLookAtPosition.y = kDefaultOffsetY;
 	}
 }
 
-/*
- * –Ú“IiCamera‚ÌUpdateCameraPositionˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Cameraã®UpdateCameraPositionå‡¦ç†
 void Camera::UpdateCameraPosition()
 {
-	VECTOR temp; //”Ä—p•Ï”
+	VECTOR temp; //æ±ç”¨å¤‰æ•°
 	temp.x = kCameraCalcRadius * cosf(vertical_angle_ / 180.0f * (3.1415926535897932384626433832795f)) * sinf(horizontal_angle_ / 180.0f * DX_PI_F);
 	temp.y = kCameraCalcRadius * sinf(-vertical_angle_ / 180.0f * (3.1415926535897932384626433832795f));
 	temp.z = -(kCameraDistance * cosf(vertical_angle_ / 180.0f * DX_PI_F) * cosf(horizontal_angle_ / 180.0f * DX_PI_F));
@@ -145,12 +114,8 @@ void Camera::UpdateCameraPosition()
 }
 
 
-/*
- * –Ú“Iiƒ}ƒEƒX“ü—Í‚É‚æ‚éƒJƒƒ‰‰ñ“]‚ğXV‚·‚é‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] target_rot_‚ÌXV
- */
+/// @brief ãƒã‚¦ã‚¹å…¥åŠ›ã«ã‚ˆã‚‹ã‚«ãƒ¡ãƒ©å›è»¢ã‚’æ›´æ–°ã™ã‚‹ãŸã‚
+/// @details target_rot_ã®æ›´æ–°
 void Camera::UpdateRotation()
 {
 	if (horizontal_angle_ >= 180.0f)
@@ -193,12 +158,8 @@ void Camera::UpdateRotation()
 	}
 }
 
-/*
- * –Ú“IiƒJƒƒ‰‚Ì—h‚êiƒVƒFƒCƒNjŒvZ‚ğs‚¤‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ˆê“I‚ÈƒJƒƒ‰À•W‚ÌƒIƒtƒZƒbƒg
- */
+/// @brief ã‚«ãƒ¡ãƒ©ã®æºã‚Œï¼ˆã‚·ã‚§ã‚¤ã‚¯ï¼‰è¨ˆç®—å‡¦ç†
+/// @details ä¸€æ™‚çš„ãªã‚«ãƒ¡ãƒ©åº§æ¨™ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 void Camera::Shake()
 {
 	if (shake_time_counter_ < shake_time_)
@@ -218,12 +179,9 @@ void Camera::Shake()
 }
 
 
-/*
- * –Ú“IiƒJƒƒ‰‚Ì—h‚êƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚é‚½‚ßj
- * [“ü—Í] float time, float width, float angleSpeed, float stepTime
- * [o—Í] ‚È‚µ
- * [•›ì—p] ƒVƒFƒCƒN—p•Ï”‚Ì‰Šú‰»
- */
+/// @brief ã‚«ãƒ¡ãƒ©ã®æºã‚Œãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ãŸã‚
+/// @param float time, float width, float angleSpeed, float stepTime
+/// @details ã‚·ã‚§ã‚¤ã‚¯ç”¨å¤‰æ•°ã®åˆæœŸåŒ–
 void Camera::SetupShake(float time, float width, float angleSpeed, float stepTime)
 {
 	shake_time_counter_ = 0.0f;
@@ -234,12 +192,7 @@ void Camera::SetupShake(float time, float width, float angleSpeed, float stepTim
 }
 
 
-/*
- * –Ú“IiƒJƒƒ‰‚ÌI—¹ˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ‚È‚µ
- */
+/// @brief ã‚«ãƒ¡ãƒ©ã®çµ‚äº†å‡¦ç†
 void Camera::Finalize()
 {
 

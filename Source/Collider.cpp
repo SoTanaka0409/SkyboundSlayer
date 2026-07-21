@@ -1,14 +1,9 @@
-#include "Collider.h"
+ï»¿#include "Collider.h"
 #include "Object3D.h"
 #include "ColliderManager.h"
 
 
-/*
- * –Ú“IiCollider‚ÌColliderˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Colliderã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 Collider::Collider(Object3D* parent)
 	: parent_object_(parent)
 	, position_(VGet(0.0f, 0.0f, 0.0f))
@@ -16,7 +11,7 @@ Collider::Collider(Object3D* parent)
 	, radius_(0.0f)
 	, delete_flag_(false)
 {
-	// ColliderManager‚É Add ‚µ‚Ä‚¨‚­
+	// ColliderManagerã« Add ã—ã¦ãŠã
 	ColliderManager::GetInstance()->AddCollider(this);
 }
 
@@ -26,125 +21,95 @@ Collider::~Collider()
 }
 
 
-/*
- * –Ú“IiCollider‚ÌHitCheckˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Colliderã®HitCheckå‡¦ç†
 void Collider::HitCheck(Collider* check, bool isHit)
 {
 	
 	if (isHit)
 	{
 		
-		// “–‚½‚Á‚Ä‚¢‚½ê‡ //
+		// å½“ãŸã£ã¦ã„ãŸå ´åˆ //
 
-		// ‚·‚Å‚É“–‚½‚Á‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+		// ã™ã§ã«å½“ãŸã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 		auto itr = std::find_if(
 			collision_list_.begin(),
 			collision_list_.end(),
-			[&](Collider* col) { return col == check; } // ƒ‰ƒ€ƒ_®
+			[&](Collider* col) { return col == check; } // ãƒ©ãƒ ãƒ€å¼
 		);
 
 		if (itr != collision_list_.end())
 		{
-			// ‚·‚Å‚É“–‚½‚Á‚Ä‚¢‚½ê‡ //
+			// ã™ã§ã«å½“ãŸã£ã¦ã„ãŸå ´åˆ //
 			
-			// “–‚½‚Á‚Ä‚¢‚éó‘Ô‚Ìˆ—‚ğŒÄ‚Ño‚·
+			// å½“ãŸã£ã¦ã„ã‚‹çŠ¶æ…‹ã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 			this->parent_object_->OnEnter(this, check);
 		}
 		else
 		{
-			// ‚·‚Å‚É“–‚½‚Á‚Ä‚¢‚È‚©‚Á‚½ê‡ //
+			// ã™ã§ã«å½“ãŸã£ã¦ã„ãªã‹ã£ãŸå ´åˆ //
 
-			// ƒŠƒXƒg‚É“o˜^‚µ‚Ä‚¨‚­
-			collision_list_.push_back(check);//”CˆÓ‚Ìƒ^ƒCƒ~ƒ“ƒO‚Å‚µ‚©’Ç‰Á‚µ‚È‚¢‚æ‚¤‚É‚·‚Á‚ê‚Î
+			// ãƒªã‚¹ãƒˆã«ç™»éŒ²ã—ã¦ãŠã
+			collision_list_.push_back(check);//ä»»æ„ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§ã—ã‹è¿½åŠ ã—ãªã„ã‚ˆã†ã«ã™ã£ã‚Œã°
 
-			// “–‚½‚Á‚½uŠÔó‘Ô‚Ìˆ—‚ğŒÄ‚Ño‚·
+			// å½“ãŸã£ãŸç¬é–“çŠ¶æ…‹ã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 			this->parent_object_->OnTrigger(this, check);
 			
 		}
 	}
 	else
 	{
-		// “–‚½‚Á‚Ä‚¢‚È‚©‚Á‚½ê‡ //
+		// å½“ãŸã£ã¦ã„ãªã‹ã£ãŸå ´åˆ //
 
-		// ‚·‚Å‚É“–‚½‚Á‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+		// ã™ã§ã«å½“ãŸã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 		auto itr = std::find_if(
 			collision_list_.begin(),
 			collision_list_.end(),
-			[&](Collider* col) { return col == check; } // ƒ‰ƒ€ƒ_®
+			[&](Collider* col) { return col == check; } // ãƒ©ãƒ ãƒ€å¼
 		);
 
 		if (itr != collision_list_.end())
 		{
-			// “–‚½‚Á‚Ä‚¢‚½ê‡ //
+			// å½“ãŸã£ã¦ã„ãŸå ´åˆ //
 
-			// —£‚ê‚½uŠÔ‚Ìˆ—‚ğŒÄ‚Ño‚·
+			// é›¢ã‚ŒãŸç¬é–“ã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 			this->parent_object_->OnExit(this, check);
 
-			// “–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚ÅƒŠƒXƒg‚©‚ç‚ÍœŠO‚·‚é
+			// å½“ãŸã£ã¦ã„ãªã„ã®ã§ãƒªã‚¹ãƒˆã‹ã‚‰ã¯é™¤å¤–ã™ã‚‹
 			collision_list_.erase(itr);
 		}
 	}
 }
 
 
-/*
- * –Ú“IiCollider‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Colliderã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void Collider::Update(Collider* check)
 {
 
 }
 
 
-/*
- * –Ú“IiCollider‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Colliderã®æç”»å‡¦ç†
 void Collider::Draw()
 {
 
 }
 
 
-/*
- * –Ú“IiCollider‚ÌOnEnterˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Colliderã®OnEnterå‡¦ç†
 void Collider::OnEnter()
 {
 
 }
 
 
-/*
- * –Ú“IiCollider‚ÌOnTriggerˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Colliderã®OnTriggerå‡¦ç†
 void Collider::OnTrigger()
 {
 
 }
 
 
-/*
- * –Ú“IiCollider‚ÌOnExitˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Colliderã®OnExitå‡¦ç†
 void Collider::OnExit()
 {
 

@@ -1,14 +1,12 @@
 ﻿#include "DxLib.h"
 #include "ResourceManager.h"
 
-// 入力: なし / 出力: なし
-// 副作用: なし（インスタンス生成時の初期化処理）
+/// @details なし（インスタンス生成時の初期化処理）
 ResourceManager::ResourceManager()
 {
 }
 
-// 入力: なし / 出力: なし
-// 副作用: キャッシュした全リソース（3Dモデル・単一画像・分割画像）のDxLibハンドルを完全破棄し、メモリリークを防ぐ
+/// @details キャッシュした全リソース（3Dモデル・単一画像・分割画像）のDxLibハンドルを完全破棄し、メモリリークを防ぐ
 ResourceManager::~ResourceManager()
 {
     for (int i = 0; i < (int)resourceMapList.size(); i++)
@@ -40,8 +38,9 @@ ResourceManager::~ResourceManager()
     divGraphicResourceMapList.clear();
 }
 
-// 入力: pathName (ファイルパス) / 出力: モデルハンドル(-1で失敗)
-// 副作用: I/O負荷軽減のためのキャッシュ機構。ロード済みモデルは状態を独立させるため複製して返す
+/// @param pathName (ファイルパス)
+/// @return モデルハンドル(-1で失敗)
+/// @details I
 int ResourceManager::LoadModel(std::string pathName)
 {
     for (int i = 0; i < resourceMapList.size(); i++)
@@ -69,8 +68,9 @@ int ResourceManager::LoadModel(std::string pathName)
     return MV1DuplicateModel(handle);
 }
 
-// 入力: pathName (ファイルパス) / 出力: 画像ハンドル(-1で失敗)
-// 副作用: 同一画像の重複ロードによるVRAM圧迫を防ぐため、キャッシュ済みであれば既存ハンドルを使い回す
+/// @param pathName (ファイルパス)
+/// @return 画像ハンドル(-1で失敗)
+/// @details 同一画像の重複ロードによるVRAM圧迫を防ぐため、キャッシュ済みであれば既存ハンドルを使い回す
 int ResourceManager::LoadGraphics(std::string pathName)
 {
     for (int i = 0; i < graphicResourceMapList.size(); i++)
@@ -91,8 +91,9 @@ int ResourceManager::LoadGraphics(std::string pathName)
     return handle;
 }
 
-// 入力: pathName(パス), allNum(総数), numX(横分割数), numY(縦分割数) / 出力: 分割画像データ構造体のポインタ
-// 副作用: 画像サイズから1コマの解像度を自動計算し、分割ロードした配列データをキャッシュに登録する
+/// @param pathName(パス), allNum(総数), numX(横分割数), numY(縦分割数)
+/// @return 分割画像データ構造体のポインタ
+/// @details 画像サイズから1コマの解像度を自動計算し、分割ロードした配列データをキャッシュに登録する
 DivGraphData* ResourceManager::LoadDivGraphics(std::string pathName, int allNum, int numX, int numY)
 {
     for (int i = 0; i < divGraphicResourceMapList.size(); i++)

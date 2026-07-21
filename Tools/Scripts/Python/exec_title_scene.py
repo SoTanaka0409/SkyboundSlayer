@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os
 import math
 
@@ -109,7 +109,7 @@ void TitleScene::Draw()
 	
 	SetFontSize(80);
 	// ゴールド系の色でタイトル
-	DrawFormatString(300, 100, GetColor(255, 215, 0), "Sky Castle Hunter");
+	DrawFormatString(300, 100, GetColor(255, 215, 0), "Skybound Slayer");
 	
 	Master::mpScoreManager->LoadHighScore();
 	

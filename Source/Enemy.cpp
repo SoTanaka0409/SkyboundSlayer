@@ -20,12 +20,7 @@
 
 
 
-/*
- * 目的（EnemyのEnemy処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Enemyの初期化（コンストラクタ）
 Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3,int money, bool is_separate_anim_)
 	:Object3D(initPos)
 	, hp_(hp)
@@ -79,12 +74,7 @@ Enemy::~Enemy()
 }
 
 
-/*
- * 目的（EnemyのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Enemyの状態更新処理
 void Enemy::Update()
 {
 
@@ -104,12 +94,7 @@ void Enemy::Update()
 }
 
 
-/*
- * 目的（EnemyのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Enemyの描画処理
 void Enemy::Draw()
 {
 	if (model_ != nullptr)
@@ -131,12 +116,7 @@ void Enemy::Draw()
 }
 
 
-/*
- * 目的（EnemyのAttackList処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのAttackList処理
 void Enemy::AttackList()
 {
 
@@ -144,12 +124,7 @@ void Enemy::AttackList()
 }
 
 
-/*
- * 目的（EnemyのAttack処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのAttack処理
 void Enemy::Attack()
 {
 	AnimationState now = model_->GetNowState();
@@ -177,12 +152,7 @@ void Enemy::Attack()
 
 
 
-/*
- * 目的（EnemyのMove処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのMove処理
 void Enemy::Move()
 {
 	AnimationState now = model_->GetNowState();
@@ -256,12 +226,7 @@ void Enemy::Move()
 }
 
 
-/*
- * 目的（EnemyのRotationByMove処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのRotationByMove処理
 void Enemy::RotationByMove()
 {
 	float subAngle = target_angle_ - angle_;
@@ -300,12 +265,7 @@ void Enemy::RotationByMove()
 }
 
 
-/*
- * 目的（EnemyのDamage処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのDamage処理
 void Enemy::Damage(float damage)
 {
 
@@ -323,12 +283,7 @@ void Enemy::Damage(float damage)
 
 
 
-/*
- * 目的（EnemyのDeathEnemy処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのDeathEnemy処理
 void Enemy::DeathEnemy()
 {
 	if (!is_dead_)return;
@@ -352,12 +307,7 @@ void Enemy::DeathEnemy()
 }
 
 
-/*
- * 目的（EnemyのDeathColliderPosition処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのDeathColliderPosition処理
 void Enemy::DeathColliderPosition()
 {
 	VECTOR pos = VGet(10000, 10000, 10000);
@@ -387,12 +337,7 @@ void Enemy::DeathColliderPosition()
 }
 
 
-/*
- * 目的（EnemyのOnEnter処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのOnEnter処理
 void Enemy::OnEnter(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0)return;
@@ -424,12 +369,7 @@ void Enemy::OnEnter(Collider* collider, Collider* check)
 }
 
 
-/*
- * 目的（EnemyのOnTrigger処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのOnTrigger処理
 void Enemy::OnTrigger(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0)return;
@@ -452,12 +392,7 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 }
 
 
-/*
- * 目的（EnemyのOnExit処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのOnExit処理
 void Enemy::OnExit(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0)return;
@@ -484,12 +419,7 @@ void Enemy::OnExit(Collider* collider, Collider* check)
 }
 
 
-/*
- * 目的（EnemyのUpdateColliderPosition処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのUpdateColliderPosition処理
 void Enemy::UpdateColliderPosition()
 {
 	if (capsule_collider_ != nullptr)
@@ -523,12 +453,7 @@ void Enemy::UpdateColliderPosition()
 }
 
 
-/*
- * 目的（EnemyのDelete処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのDelete処理
 void Enemy::Delete()
 {
 
@@ -562,12 +487,7 @@ void Enemy::Delete()
 
 
 
-/*
- * 目的（EnemyのGiveRewards処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyのGiveRewards処理
 void Enemy::GiveRewards()
 {
 	Player3D* player = Master::player_;

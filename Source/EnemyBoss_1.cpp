@@ -19,9 +19,8 @@
 #include"CapsuleCollider.h"
 #include"Magic_Ene.h"
 
-// 入力: 初期化パラメータ（位置、HP、速度、当たり判定サイズ、探索範囲、所持金など）
-// 出力: なし
-// 副作用: 3Dモデル、アニメーション、当たり判定用のメモリ確保と設定
+/// @param 初期化パラメータ（位置、HP、速度、当たり判定サイズ、探索範囲、所持金など）
+/// @details 3Dモデル、アニメーション、当たり判定用のメモリ確保と設定
 EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 {
@@ -51,9 +50,7 @@ EnemyBoss_1::~EnemyBoss_1()
 
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ボスの座標更新、攻撃判定、アニメーション進行
+/// @details ボスの座標更新、攻撃判定、アニメーション進行
 void EnemyBoss_1::Update()
 {
 	SceneGame* game = Master::scene_manager_->GetSceneGame();
@@ -98,9 +95,7 @@ void EnemyBoss_1::Update()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ボスモデルとデバッグ用コライダーの画面描画
+/// @details ボスモデルとデバッグ用コライダーの画面描画
 void EnemyBoss_1::Draw()
 {
 	if (model_ != nullptr)
@@ -119,9 +114,7 @@ void EnemyBoss_1::Draw()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 乱数による攻撃パターンの決定と魔法オブジェクトの生成
+/// @details 乱数による攻撃パターンの決定と魔法オブジェクトの生成
 void EnemyBoss_1::Attack()
 {
 	AnimationState now = model_->GetNowState();
@@ -186,9 +179,8 @@ void EnemyBoss_1::Attack()
 	}
 }
 
-// 入力: 自身のコライダー、衝突対象のコライダー
-// 出力: なし
-// 副作用: プレイヤーのHP減少と、ヒット済みフラグの設定
+/// @param 自身のコライダー、衝突対象のコライダー
+/// @details プレイヤーのHP減少と、ヒット済みフラグの設定
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0)return;
@@ -212,9 +204,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: アニメーション完了後のインスタンス破棄予約、およびクリアフラグの更新
+/// @details アニメーション完了後のインスタンス破棄予約、およびクリアフラグの更新
 void EnemyBoss_1::DeathEnemy()
 {
 	is_dead_ = true;
@@ -236,9 +226,7 @@ void EnemyBoss_1::DeathEnemy()
 	model_->Update();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 保持しているコライダーのメモリ解放フラグ設定
+/// @details 保持しているコライダーのメモリ解放フラグ設定
 void EnemyBoss_1::Delete()
 {
 	Enemy::Delete();
@@ -250,9 +238,7 @@ void EnemyBoss_1::Delete()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 攻撃タイプ2時のボスのY座標の直接更新
+/// @details 攻撃タイプ2時のボスのY座標の直接更新
 void EnemyBoss_1::UpdateJumpPhysics()
 {
 	if (model_->GetNowState() == ANIMATION_ATTACK && attack_type_ == 2)

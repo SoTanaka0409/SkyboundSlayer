@@ -6,12 +6,7 @@
 
 
 
-/*
- * 目的（RuleのRule処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Ruleの初期化（コンストラクタ）
 Rule::Rule()
 	: page_(1)
 	, bg_handle1_(-1)
@@ -25,12 +20,7 @@ Rule::~Rule()
 
 
 
-/*
- * 目的（RuleのInitialize処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Ruleの初期化処理
 void Rule::Initialize()
 {
 	page_ = 1;
@@ -40,12 +30,7 @@ void Rule::Initialize()
 
 
 
-/*
- * 目的（RuleのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Ruleの状態更新処理
 void Rule::Update()
 {
 	Scene::Update();
@@ -54,12 +39,7 @@ void Rule::Update()
 
 
 
-/*
- * 目的（RuleのHandlePageInput処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief RuleのHandlePageInput処理
 void Rule::HandlePageInput()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_RIGHT) || InputManager::CheckDownKey(KEY_INPUT_D))
@@ -85,12 +65,7 @@ void Rule::HandlePageInput()
 
 
 
-/*
- * 目的（RuleのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Ruleの描画処理
 void Rule::Draw()
 {
 	Scene::Draw();
@@ -111,12 +86,7 @@ void Rule::Draw()
 
 
 
-/*
- * 目的（RuleのDrawRuleBackground処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief RuleのDrawRuleBackground処理
 void Rule::DrawRuleBackground()
 {
 	int handle = (page_ == 1) ? bg_handle1_ : bg_handle2_;
@@ -136,12 +106,7 @@ void Rule::DrawRuleBackground()
 
 
 
-/*
- * 目的（RuleのDrawRulePage1処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief RuleのDrawRulePage1処理
 void Rule::DrawRulePage1()
 {
 	SetFontSize(48);
@@ -165,12 +130,7 @@ void Rule::DrawRulePage1()
 
 
 
-/*
- * 目的（RuleのDrawRulePage2処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief RuleのDrawRulePage2処理
 void Rule::DrawRulePage2()
 {
 	SetFontSize(48);
@@ -190,12 +150,7 @@ void Rule::DrawRulePage2()
 
 
 
-/*
- * 目的（RuleのDrawRuleFooter処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief RuleのDrawRuleFooter処理
 void Rule::DrawRuleFooter()
 {
 	SetFontSize(32);
@@ -205,12 +160,7 @@ void Rule::DrawRuleFooter()
 
 
 
-/*
- * 目的（RuleのFinalize処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief RuleのFinalize処理
 void Rule::Finalize()
 {
 	if (bg_handle1_ != -1)

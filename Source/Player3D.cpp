@@ -27,9 +27,8 @@
 #include"InfClass.h"
 #include"HaveMoneyClass.h"
 
-// 入力: モデルファイルパス、初期座標、ジャンプ力、移動速度、初期HP、アニメ分割フラグ
-// 出力: なし
-// 副作用: プレイヤーモデルの初期化、アニメーションとコライダーの生成、マネージャーへの登録
+/// @param モデルファイルパス、初期座標、ジャンプ力、移動速度、初期HP、アニメ分割フラグ
+/// @details プレイヤーモデルの初期化、アニメーションとコライダーの生成、マネージャーへの登録
 Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float speed, float hp, bool is_separate_anim_)
 	:Object3D(initPos)
 	, attack_(3)
@@ -101,9 +100,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	attack_state_ = kAttackNormal;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 動的確保したモデルやコライダーの破棄、グローバル参照のクリア
+/// @details 動的確保したモデルやコライダーの破棄、グローバル参照のクリア
 Player3D::~Player3D()
 {
 	// ダングリングポインタによるクラッシュを防ぐため参照をクリア
@@ -113,9 +110,7 @@ Player3D::~Player3D()
 	CollDelete();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: プレイヤーの状態更新、入力を受け付けてのアクション実行
+/// @details プレイヤーの状態更新、入力を受け付けてのアクション実行
 void Player3D::Update()
 {
 	UpdateInvincibilityTimer();
@@ -141,9 +136,7 @@ void Player3D::Update()
 	UpdateGameplayActions();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 無敵時間の減少
+/// @details 無敵時間の減少
 void Player3D::UpdateInvincibilityTimer()
 {
 	if (invincible_timer_ > 0)
@@ -152,18 +145,14 @@ void Player3D::UpdateInvincibilityTimer()
 	}
 }
 
-// 入力: なし
-// 出力: 更新処理をスキップすべきか
-// 副作用: なし
+/// @return 更新処理をスキップすべきか
 bool Player3D::ShouldSkipGameplayUpdate() const
 {
 	if (Master::is_stat_shop_on_) return true;
 	return IsBossFadeActive();
 }
 
-// 入力: なし
-// 出力: ボス戦への遷移演出中か
-// 副作用: なし
+/// @return ボス戦への遷移演出中か
 bool Player3D::IsBossFadeActive() const
 {
 	SceneGame* game = Master::scene_manager_->GetSceneGame();
@@ -173,9 +162,7 @@ bool Player3D::IsBossFadeActive() const
 	return phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ターゲットが存在しない、または削除済みの場合はnullにリセット
+/// @details ターゲットが存在しない、または削除済みの場合はnullにリセット
 void Player3D::ValidateTarget()
 {
 	if (target_ == nullptr) return;
@@ -194,17 +181,13 @@ void Player3D::ValidateTarget()
 	if (!isValid) target_ = nullptr;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: マネージャー類の更新
+/// @details マネージャー類の更新
 void Player3D::UpdatePlayerSystems()
 {
 	ManagerUpdate();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ロックオン更新、移動、攻撃、回避などのプレイヤーアクションの実行
+/// @details ロックオン更新、移動、攻撃、回避などのプレイヤーアクションの実行
 void Player3D::UpdateGameplayActions()
 {
 	UpdateTargetLock();
@@ -225,9 +208,7 @@ void Player3D::UpdateGameplayActions()
 	model_->Update();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 待機状態に戻った際のターゲット解除とアニメーション初期化
+/// @details 待機状態に戻った際のターゲット解除とアニメーション初期化
 void Player3D::ResetNUETRAL()
 {
 	AnimationState now = model_->GetNowState();
@@ -241,9 +222,7 @@ void Player3D::ResetNUETRAL()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: バフ状態とインベントリの更新
+/// @details バフ状態とインベントリの更新
 void Player3D::ManagerUpdate()
 {
 	buff_manager_->DeleteList();
@@ -251,9 +230,7 @@ void Player3D::ManagerUpdate()
 	short_inventory_->Update();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: プレイヤーモデルやUI、デバッグ情報の描画
+/// @details プレイヤーモデルやUI、デバッグ情報の描画
 void Player3D::Draw()
 {
 	if (!CanDrawPlayer()) return;
@@ -314,9 +291,7 @@ void Player3D::DrawAttachmentDebug()
 	DrawSphere3D(model_->GetAttachmentPosition(), 30.0f, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 入力に基づくプレイヤーの座標と向きの更新
+/// @details 入力に基づくプレイヤーの座標と向きの更新
 void Player3D::MoveEx()
 {
 	AnimationState state = model_->GetNowState();
@@ -379,9 +354,8 @@ void Player3D::MoveEx()
 	model_->SetRotation(rotation_);
 }
 
-// 入力: 受けるダメージ量
-// 出力: なし
-// 副作用: プレイヤーのHP減少
+/// @param 受けるダメージ量
+/// @details プレイヤーのHP減少
 void Player3D::Damage(float damage)
 {
 	AnimationState now = model_->GetNowState();
@@ -396,9 +370,7 @@ void Player3D::Damage(float damage)
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: プレイヤーがステージ外に出た場合、ステージ境界まで座標を押し戻す
+/// @details プレイヤーがステージ外に出た場合、ステージ境界まで座標を押し戻す
 void Player3D::CheckStageOut()
 {
 	float radiusX = Config::StageRadius_x;
@@ -433,9 +405,7 @@ void Player3D::CheckStageOut()
 	is_stage_out_ = true;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 回避アクションの実行と無敵時間の付与
+/// @details 回避アクションの実行と無敵時間の付与
 void Player3D::Evasion()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_SPACE))
@@ -456,9 +426,7 @@ void Player3D::Evasion()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 移動方向へ向けたモデルの滑らかな回転処理
+/// @details 移動方向へ向けたモデルの滑らかな回転処理
 void Player3D::RotationByMove()
 {
 	float subAngle = target_angle_ - angle_;
@@ -482,9 +450,7 @@ void Player3D::RotationByMove()
 	model_->SetRotation(rotation_);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ジャンプの開始と上方向への初速付与
+/// @details ジャンプの開始と上方向への初速付与
 void Player3D::Jump()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_SPACE))
@@ -495,9 +461,7 @@ void Player3D::Jump()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 通常攻撃の実行と敵のヒット判定リセット
+/// @details 通常攻撃の実行と敵のヒット判定リセット
 void Player3D::Attack()
 {
 	AnimationState now = model_->GetNowState();
@@ -534,9 +498,7 @@ void Player3D::Attack()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ジャンプ攻撃の軌道計算と着地時のエフェクト生成
+/// @details ジャンプ攻撃の軌道計算と着地時のエフェクト生成
 void Player3D::AttackJump()
 {
 	int mouse_input_ = GetMouseInput();
@@ -621,9 +583,7 @@ void Player3D::AttackJump()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ターゲットに向かってのスライド攻撃と座標更新
+/// @details ターゲットに向かってのスライド攻撃と座標更新
 void Player3D::AttackSlide()
 {
 	AnimationState now = model_->GetNowState();
@@ -671,9 +631,7 @@ void Player3D::AttackSlide()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: HPバーとスキルクールタイムUIの描画
+/// @details HPバーとスキルクールタイムUIの描画
 void Player3D::DrawStatusBars()
 {
 	float maxHp = GetAllStatusState(Object3D::Status_Hp);
@@ -770,23 +728,16 @@ void Player3D::DrawStatusBars()
 	short_inventory_->Draw();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: なし
 void Player3D::UpdateViewMode()
 {
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: なし
 void Player3D::SearchEnemy()
 {
 }
 
-// 入力: 自身のコライダー、接触したコライダー
-// 出力: なし
-// 副作用: 索敵範囲に入った敵のターゲット登録、または障害物との衝突補正
+/// @param 自身のコライダー、接触したコライダー
+/// @details 索敵範囲に入った敵のターゲット登録、または障害物との衝突補正
 void Player3D::OnEnter(Collider* collider, Collider* check)
 {
 	if (collider == search_enemy_collider_ && check->parent_object_->GetTag() == Object3D::Tag3D_Enemy3D)
@@ -822,9 +773,8 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 	ApplyJumpAttackHit(collider, check);
 }
 
-// 入力: 自身のコライダー、接触したコライダー
-// 出力: なし
-// 副作用: 各種攻撃コライダーが敵にヒットした際のダメージ計算とエフェクト生成
+/// @param 自身のコライダー、接触したコライダー
+/// @details 各種攻撃コライダーが敵にヒットした際のダメージ計算とエフェクト生成
 void Player3D::OnTrigger(Collider* collider, Collider* check)
 {
 	AnimationState now = model_->GetNowState();
@@ -890,9 +840,7 @@ void Player3D::ApplyJumpAttackHit(Collider* collider, Collider* check)
 	EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ターゲットした敵が消滅した際のロックオン解除
+/// @details ターゲットした敵が消滅した際のロックオン解除
 void Player3D::UpdateTargetLock()
 {
 	if (target_ != nullptr)
@@ -914,16 +862,12 @@ void Player3D::UpdateTargetLock()
 	}
 }
 
-// 入力: 自身のコライダー、離れたコライダー
-// 出力: なし
-// 副作用: なし
+/// @param 自身のコライダー、離れたコライダー
 void Player3D::OnExit(Collider* collider, Collider* check)
 {
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 攻撃タイプの切り替えと対応する攻撃関数の呼び出し
+/// @details 攻撃タイプの切り替えと対応する攻撃関数の呼び出し
 void Player3D::SelectAttack()
 {
 	UpdateAttackCooldowns();
@@ -973,9 +917,7 @@ void Player3D::SelectAttack()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 各種攻撃のクールタイムカウント進行
+/// @details 各種攻撃のクールタイムカウント進行
 void Player3D::UpdateAttackCooldowns()
 {
 	attack_count_++;
@@ -983,9 +925,7 @@ void Player3D::UpdateAttackCooldowns()
 	attack_jump_count_++;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: プレイヤーの現在座標やモーションに応じた各種コライダーの位置更新
+/// @details プレイヤーの現在座標やモーションに応じた各種コライダーの位置更新
 void Player3D::UpdateColliderPosition()
 {
 	AnimationState now = model_->GetNowState();
@@ -1013,9 +953,8 @@ void Player3D::UpdateColliderPosition()
 	}
 }
 
-// 入力: 取得したいステータスの種類
-// 出力: バフや装備補正を含めた最終ステータス値
-// 副作用: なし
+/// @param 取得したいステータスの種類
+/// @return バフや装備補正を含めた最終ステータス値
 float Player3D::GetAllStatusState(Object3D::StatusState state)
 {
 	if (buff_manager_ == nullptr) return 0;
@@ -1036,9 +975,7 @@ float Player3D::GetAllStatusState(Object3D::StatusState state)
 	return 0.0f;
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 動的生成されたコライダーの破棄予約
+/// @details 動的生成されたコライダーの破棄予約
 void Player3D::CollDelete()
 {
 	// メモリリーク防止のため、インスタンス破棄時に紐づくコライダーも破棄する

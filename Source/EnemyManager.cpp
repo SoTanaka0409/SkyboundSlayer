@@ -9,12 +9,7 @@
 #include"ObjectManager.h"
 
 
-/*
- * 目的（EnemyManagerのEnemyManager処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyManagerの初期化（コンストラクタ）
 EnemyManager::EnemyManager()
 
 {
@@ -28,12 +23,7 @@ EnemyManager::~EnemyManager()
 }
 
 
-/*
- * 目的（EnemyManagerのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyManagerの描画処理
 void EnemyManager::Draw()
 {
 	
@@ -41,12 +31,7 @@ void EnemyManager::Draw()
 }
 
 
-/*
- * 目的（EnemyManagerのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyManagerの状態更新処理
 void EnemyManager::Update()
 {
 }
@@ -54,12 +39,7 @@ void EnemyManager::Update()
 
 
 
-/*
- * 目的（EnemyManagerのNewEnemyList処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EnemyManagerのNewEnemyList処理
 void EnemyManager::NewEnemyList(enemydate date)
 {
 	auto pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);

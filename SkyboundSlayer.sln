@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1231
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DxLesson", "DxLesson.vcxproj", "{BDFC8402-337B-4CEB-AFEE-070D71436F48}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkyboundSlayer", "SkyboundSlayer.vcxproj", "{BDFC8402-337B-4CEB-AFEE-070D71436F48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,3 +29,4 @@ Global
 		SolutionGuid = {B4548EB9-389B-464A-BAD7-9DA2CB457AAA}
 	EndGlobalSection
 EndGlobal
+

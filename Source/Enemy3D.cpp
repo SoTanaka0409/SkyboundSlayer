@@ -17,8 +17,8 @@
 #include "CapsuleCollider.h"
 #include "Magic_Ene.h"
 
-// 入力：filename=モデルパス, initPos=初期座標, hp=体力, speed=移動速度, HitSize=判定半径, Serch1~3=各種索敵半径, money=撃破報酬, is_separate_anim_=アニメ分割フラグ
-// 副作用：3Dモデルの基底構築、各モーション（待機・走り・死亡・魔法攻撃）のアセット登録、および初期スケール適用
+/// @param filename=モデルパス, initPos=初期座標, hp=体力, speed=移動速度, HitSize=判定半径, Serch1~3=各種索敵半径, money=撃破報酬, is_separate_anim_=アニメ分割フラグ
+/// @details 3Dモデルの基底構築、各モーション（待機・走り・死亡・魔法攻撃）のアセット登録、および初期スケール適用
 Enemy3D::Enemy3D(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	: Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 {
@@ -39,9 +39,7 @@ Enemy3D::~Enemy3D()
 {
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：死亡時の消滅処理、または生存時における攻撃判定・移動物理計算・アニメーションフレーム更新とコライダー位置同期
+/// @details 死亡時の消滅処理、または生存時における攻撃判定・移動物理計算・アニメーションフレーム更新とコライダー位置同期
 void Enemy3D::Update()
 {
 	if (is_dead_)
@@ -67,9 +65,7 @@ void Enemy3D::Update()
 	}
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：3Dモデルの描画、およびデバッグモード有効時におけるコリジョン形状のワイヤーフレームオーバーレイ表示
+/// @details 3Dモデルの描画、およびデバッグモード有効時におけるコリジョン形状のワイヤーフレームオーバーレイ表示
 void Enemy3D::Draw()
 {
 	if (model_ != nullptr)
@@ -90,9 +86,7 @@ void Enemy3D::Draw()
 	}
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：攻撃アニメーションの開始、インターバルカウンターのリセット、および魔法弾オブジェクト（Magic_Ene）の動的生成
+/// @details 攻撃アニメーションの開始、インターバルカウンターのリセット、および魔法弾オブジェクト（Magic_Ene）の動的生成
 void Enemy3D::Attack()
 {
 	AnimationState now = model_->GetNowState();

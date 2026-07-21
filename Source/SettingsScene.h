@@ -10,24 +10,16 @@ public:
 	SettingsScene();
 	~SettingsScene();
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：設定用UI要素の座標・矩形領域の初期化
+/// @details 設定用UI要素の座標・矩形領域の初期化
 	void Initialize() override;
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：マウス入力による設定値の変更およびメニューのインタラクション制御
+/// @details マウス入力による設定値の変更およびメニューのインタラクション制御
 	void Update() override;
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：ヘッダー、各種設定項目（トグル・ボリュームバー）、および戻るボタンのレンダリング
+/// @details ヘッダー、各種設定項目（トグル・ボリュームバー）、および戻るボタンのレンダリング
 	void Draw() override;
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：設定画面専用リソースの破棄
+/// @details 設定画面専用リソースの破棄
 	void Finalize() override;
 
 private:
@@ -37,9 +29,7 @@ private:
 		int x, y, w, h;
 	};
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：マウス操作に基づいたトグル状態の変更や、ボリュームバーのドラッグ処理
+/// @details マウス操作に基づいたトグル状態の変更や、ボリュームバーのドラッグ処理
 	void HandleInput();
 
 	// 各描画レイヤーの分担処理
@@ -48,24 +38,24 @@ private:
 	void DrawSettingRows();
 	void DrawFooter();
 
-	// 入力：rect = 描画領域, enabled = ON/OFF状態, label = ラベル名
-	// 副作用：設定項目のトグルスイッチを描画
+/// @param rect = 描画領域, enabled = ON
+/// @details 設定項目のトグルスイッチを描画
 	void DrawToggle(const Rect& rect, bool enabled, const char* label);
 
-	// 入力：y = 縦位置, label = ラベル名, enabled = 有効状態, volume = 現在の音量値
-	// 副作用：ボリューム調整用のスライダーバーおよび現在値の描画
+/// @param y = 縦位置, label = ラベル名, enabled = 有効状態, volume = 現在の音量値
+/// @details ボリューム調整用のスライダーバーおよび現在値の描画
 	void DrawVolumeRow(int y, const char* label, bool enabled, int volume);
 
-	// 入力：rect = 描画領域, label = ボタン名, hover = ホバー判定フラグ
-	// 副作用：ボタンのインタラクティブな描画（マウスホバー時のハイライト等）
+/// @param rect = 描画領域, label = ボタン名, hover = ホバー判定フラグ
+/// @details ボタンのインタラクティブな描画（マウスホバー時のハイライト等）
 	void DrawButton(const Rect& rect, const char* label, bool hover);
 
-	// 入力：rect = 領域, mouseX/Y = 現在のマウス座標
-	// 出力：領域内にマウスがあれば true
+/// @param rect = 領域, mouseX
+/// @return 領域内にマウスがあれば true
 	bool IsMouseInRect(const Rect& rect, int mouseX, int mouseY) const;
 
-	// 入力：rect = バーの領域, mouseX = マウスX座標
-	// 出力：0-255の範囲にスケーリングされた音量値
+/// @param rect = バーの領域, mouseX = マウスX座標
+/// @return 0-255の範囲にスケーリングされた音量値
 	int GetVolumeFromMouseX(const Rect& rect, int mouseX) const;
 
 	// 各UI操作領域の定義

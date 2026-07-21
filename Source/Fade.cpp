@@ -1,13 +1,8 @@
-#include "Fade.h"
+ï»¿#include "Fade.h"
 #include "DxLib.h"
 
 
-/*
- * –Ú“IiFade‚ÌFadeˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Fadeã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 Fade::Fade() 
 	: state_(State::None)
 	, alpha_(0)
@@ -20,12 +15,7 @@ Fade::~Fade()
 }
 
 
-/*
- * –Ú“IiFade‚ÌInitializeˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Fadeã®åˆæœŸåŒ–å‡¦ç†
 void Fade::Initialize()
 {
 	state_ = State::None;
@@ -33,12 +23,7 @@ void Fade::Initialize()
 }
 
 
-/*
- * –Ú“IiFade‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Fadeã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void Fade::Update()
 {
 	if (state_ == State::FadeIn)
@@ -61,12 +46,7 @@ void Fade::Update()
 }
 
 
-/*
- * –Ú“IiFade‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Fadeã®æç”»å‡¦ç†
 void Fade::Draw()
 {
 	if (alpha_ > 0)
@@ -78,12 +58,7 @@ void Fade::Draw()
 }
 
 
-/*
- * –Ú“IiFade‚ÌStartFadeInˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Fadeã®StartFadeInå‡¦ç†
 void Fade::StartFadeIn()
 {
 	state_ = State::FadeIn;
@@ -91,12 +66,7 @@ void Fade::StartFadeIn()
 }
 
 
-/*
- * –Ú“IiFade‚ÌStartFadeOutˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Fadeã®StartFadeOutå‡¦ç†
 void Fade::StartFadeOut()
 {
 	state_ = State::FadeOut;

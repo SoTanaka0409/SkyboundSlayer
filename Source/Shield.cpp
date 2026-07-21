@@ -10,12 +10,7 @@
 
 
 
-/*
- * 目的（ShieldのShield処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Shieldの初期化（コンストラクタ）
 Shield::Shield(std::string filename, VECTOR initPos,int hp)
 	:Object3D(initPos)
 	,NewShield(true)
@@ -39,12 +34,7 @@ Shield::~Shield()
 }
 
 
-/*
- * 目的（ShieldのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Shieldの状態更新処理
 void Shield::Update()
 {
 	auto player_ = Master::player_;
@@ -53,12 +43,7 @@ void Shield::Update()
 }
 
 
-/*
- * 目的（ShieldのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Shieldの描画処理
 void Shield::Draw()
 {
 	DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 80.0f, 0.0f)),

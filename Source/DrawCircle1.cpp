@@ -7,12 +7,7 @@
 
 
 
-/*
- * 目的（DrawCircle1のDrawCircle1処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief DrawCircle1の初期化（コンストラクタ）
 DrawCircle1::DrawCircle1(std::string filename, VECTOR centerPos)
 	:Object3D(centerPos)
     ,radius(600)
@@ -43,24 +38,14 @@ DrawCircle1::~DrawCircle1()
 
 
 
-/*
- * 目的（DrawCircle1のUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief DrawCircle1の状態更新処理
 void DrawCircle1::Update()
 {
     
 }
 //`
 
-/*
- * 目的（DrawCircle1のDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief DrawCircle1の描画処理
 void DrawCircle1::Draw()
 {
     

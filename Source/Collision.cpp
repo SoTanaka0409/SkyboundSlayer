@@ -5,12 +5,7 @@
 
 
 
-/*
- * 目的（CollisionのCollision処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Collisionの初期化（コンストラクタ）
 Collision::Collision()
 {
 	//Master::scene_manager_->GetCurrentScene()->GetCollisionManager()
@@ -21,12 +16,7 @@ Collision::~Collision()
 }
 
 
-/*
- * 目的（CollisionのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Collisionの状態更新処理
 void Collision::Update()
 {
 	for (auto list = size_list_.begin(); list != size_list_.end(); list++)
@@ -37,12 +27,7 @@ void Collision::Update()
 }
 
 
-/*
- * 目的（CollisionのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Collisionの描画処理
 void Collision::Draw()
 {
 

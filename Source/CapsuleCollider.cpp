@@ -1,14 +1,9 @@
-#include "CapsuleCollider.h"
+ï»¿#include "CapsuleCollider.h"
 #include "SphereCollider.h"
 #include "Object3D.h"
 
 
-/*
- * –Ú“IiCapsuleCollider‚ÌCapsuleColliderˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief CapsuleColliderã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 CapsuleCollider::CapsuleCollider(Object3D* parent, VECTOR pos1, VECTOR pos2, float radius)
 	: Collider(parent)
 {
@@ -23,17 +18,12 @@ CapsuleCollider::~CapsuleCollider()
 }
 
 
-/*
- * –Ú“IiCapsuleCollider‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief CapsuleColliderã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void CapsuleCollider::Update(Collider* check)
 {
 	if (check != nullptr)
 	{
-		// ‘Šè‚ªƒJƒvƒZƒ‹‚Ìê‡
+		// ç›¸æ‰‹ãŒã‚«ãƒ—ã‚»ãƒ«ã®å ´åˆ
 		CapsuleCollider* capsule = dynamic_cast<CapsuleCollider*>(check);
 		
 		if (capsule != nullptr)
@@ -50,7 +40,7 @@ void CapsuleCollider::Update(Collider* check)
 			HitCheck(check, isHit);
 		}
 
-		// ‘Šè‚ªƒXƒtƒBƒA‚Ìê‡
+		// ç›¸æ‰‹ãŒã‚¹ãƒ•ã‚£ã‚¢ã®å ´åˆ
 		SphereCollider* sphere = dynamic_cast<SphereCollider*>(check);
 		if (sphere != nullptr)
 		{
@@ -68,12 +58,7 @@ void CapsuleCollider::Update(Collider* check)
 }
 
 
-/*
- * –Ú“IiCapsuleCollider‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief CapsuleColliderã®æç”»å‡¦ç†
 void CapsuleCollider::Draw()
 {
 	DrawCapsule3D(
@@ -88,36 +73,21 @@ void CapsuleCollider::Draw()
 }
 
 
-/*
- * –Ú“IiCapsuleCollider‚ÌOnEnterˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief CapsuleColliderã®OnEnterå‡¦ç†
 void CapsuleCollider::OnEnter()
 {
 
 }
 
 
-/*
- * –Ú“IiCapsuleCollider‚ÌOnTriggerˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief CapsuleColliderã®OnTriggerå‡¦ç†
 void CapsuleCollider::OnTrigger()
 {
 
 }
 
 
-/*
- * –Ú“IiCapsuleCollider‚ÌOnExitˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief CapsuleColliderã®OnExitå‡¦ç†
 void CapsuleCollider::OnExit()
 {
 

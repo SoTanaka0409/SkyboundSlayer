@@ -1,18 +1,13 @@
-#include"Scene.h"
+ï»¿#include"Scene.h"
 #include"ObjectManager.h"
 #include"Master.h"
 #include"ColliderManager.h"
 
 
-/*
- * –Ú“IiScene‚ÌSceneˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Sceneã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 Scene::Scene()
 {
-	//ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ì¶¬
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®ç”Ÿæˆ
 	object_manager_ = new ObjectManager();
 	collider_manager_ = new ColliderManager();
 }
@@ -25,15 +20,10 @@ Scene::~Scene()
 	}
 	
 }
-//•`‰æ
+//æç”»
 
 
-/*
- * –Ú“IiScene‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Sceneã®æç”»å‡¦ç†
 void Scene::Draw()
 {
 	if (object_manager_ != nullptr)
@@ -41,15 +31,10 @@ void Scene::Draw()
 		object_manager_->Draw();
 	}
 }
-//XV
+//æ›´æ–°
 
 
-/*
- * –Ú“IiScene‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Sceneã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void Scene::Update()
 {
 	if (object_manager_ != nullptr)

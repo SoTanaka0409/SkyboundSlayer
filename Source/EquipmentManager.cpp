@@ -3,12 +3,7 @@
 #include "InfClass.h"
 
 
-/*
- * 目的（EquipmentManagerのEquipmentManager処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EquipmentManagerの初期化（コンストラクタ）
 EquipmentManager::EquipmentManager()
 {
 }
@@ -18,34 +13,19 @@ EquipmentManager::~EquipmentManager()
 }
 
 
-/*
- * 目的（EquipmentManagerのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EquipmentManagerの描画処理
 void EquipmentManager::Draw()
 {
 }
 
 
-/*
- * 目的（EquipmentManagerのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EquipmentManagerの状態更新処理
 void EquipmentManager::Update()
 {
 }
 
 
-/*
- * 目的（EquipmentManagerのAddEquipment処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EquipmentManagerのAddEquipment処理
 void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 {
 	for (auto itr = date_list_.begin(); itr != date_list_.end(); itr++)
@@ -98,12 +78,7 @@ void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 }
 
 
-/*
- * 目的（EquipmentManagerのWearEquipment処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EquipmentManagerのWearEquipment処理
 void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 {
 	for (auto itr = date_list_.begin(); itr != date_list_.end(); itr++)
@@ -121,12 +96,7 @@ void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 }
 
 
-/*
- * 目的（EquipmentManagerのGetDamage処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EquipmentManagerのGetDamage処理
 float EquipmentManager::GetDamage()
 {
 	for (auto itr = date_list_.begin(); itr != date_list_.end(); itr++)

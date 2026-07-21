@@ -13,20 +13,16 @@ enum class CollisionTag
 class Collision
 {
 public:
-    // 入力: なし / 出力: なし
-    // 副作用: 衝突判定情報を初期化する
+/// @details 衝突判定情報を初期化する
     Collision();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 特になし
+/// @details 特になし
     virtual ~Collision();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 衝突マネージャー等の更新処理に伴い、判定位置や状態を更新する
+/// @details 衝突マネージャー等の更新処理に伴い、判定位置や状態を更新する
     virtual void Update();
 
-    // 入力: なし / 出力: なし
-    // 副作用: デバッグ表示として、現在の当たり判定範囲をスクリーン上に可視化する
+/// @details デバッグ表示として、現在の当たり判定範囲をスクリーン上に可視化する
     virtual void Draw();
 
     CollisionTag GetTag() const { return coll_tag_; }

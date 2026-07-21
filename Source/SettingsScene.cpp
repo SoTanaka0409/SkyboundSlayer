@@ -1,12 +1,11 @@
-#include "SettingsScene.h"
+ï»¿#include "SettingsScene.h"
 #include "Config.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
 #include "SoundManager.h"
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFUIƒŒƒCƒAƒEƒg—p‚ÌŠe‹éŒ`—Ìˆæ‚¨‚æ‚Ñ‰‰o—pƒAƒjƒ[ƒVƒ‡ƒ“•Ï”‚Ì‰Šú‰»
+/// @details UIãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆç”¨ã®å„çŸ©å½¢é ˜åŸŸãŠã‚ˆã³æ¼”å‡ºç”¨ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¤‰æ•°ã®åˆæœŸåŒ–
 SettingsScene::SettingsScene()
 	: bgm_toggle_rect_{ 720, 312, 150, 48 }
 	, bgm_bar_rect_{ 920, 320, 420, 30 }
@@ -23,23 +22,20 @@ SettingsScene::~SettingsScene()
 {
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFƒAƒjƒ[ƒVƒ‡ƒ“•Ï”‚ÌƒŠƒZƒbƒg
+/// @details ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¤‰æ•°ã®ãƒªã‚»ãƒƒãƒˆ
 void SettingsScene::Initialize()
 {
 	color_fade_ = 0;
 	color_flag_ = false;
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFƒ†[ƒU[“ü—Íiƒ}ƒEƒX‘€ìj‚ÌŒŸ’m‚Æİ’èó‘Ô‚ÌXV
+/// @details ãƒ¦ãƒ¼ã‚¶ãƒ¼å…¥åŠ›ï¼ˆãƒã‚¦ã‚¹æ“ä½œï¼‰ã®æ¤œçŸ¥ã¨è¨­å®šçŠ¶æ…‹ã®æ›´æ–°
 void SettingsScene::Update()
 {
 	HandleInput();
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFİ’èƒƒjƒ…[UI‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO–½—ß‚Ì”­s
+/// @details è¨­å®šãƒ¡ãƒ‹ãƒ¥ãƒ¼UIã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°å‘½ä»¤ã®ç™ºè¡Œ
 void SettingsScene::Draw()
 {
 	DrawBackground();
@@ -48,14 +44,11 @@ void SettingsScene::Draw()
 	DrawFooter();
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pF‚È‚µ
 void SettingsScene::Finalize()
 {
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFŠeUI‹éŒ`‚É‘Î‚·‚éƒ}ƒEƒXƒzƒo[/ƒNƒŠƒbƒN”»’è‚ÉŠî‚Ã‚«AMasterƒNƒ‰ƒX‚Ìİ’è’l‚ğXV
+/// @details å„UIçŸ©å½¢ã«å¯¾ã™ã‚‹ãƒã‚¦ã‚¹ãƒ›ãƒãƒ¼
 void SettingsScene::HandleInput()
 {
 	int mouseX, mouseY;
@@ -63,7 +56,7 @@ void SettingsScene::HandleInput()
 
 	if (!InputManager::CheckMouseClickLeft()) return;
 
-	// UXd—lF’¼Š´“I‚È‘€ìŠ´‚ğ’ñ‹Ÿ‚·‚é‚½‚ßAƒgƒOƒ‹ƒXƒCƒbƒ`‚¨‚æ‚Ñƒ{ƒŠƒ…[ƒ€ƒo[‚ÌƒNƒŠƒbƒN‚ğŒŸ’m‚µASE‚Å‘¦ƒtƒB[ƒhƒoƒbƒN‚ğ•Ô‚·
+	// UXä»•æ§˜ï¼šç›´æ„Ÿçš„ãªæ“ä½œæ„Ÿã‚’æä¾›ã™ã‚‹ãŸã‚ã€ãƒˆã‚°ãƒ«ã‚¹ã‚¤ãƒƒãƒãŠã‚ˆã³ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒãƒ¼ã®ã‚¯ãƒªãƒƒã‚¯ã‚’æ¤œçŸ¥ã—ã€SEã§å³æ™‚ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ã‚’è¿”ã™
 	if (IsMouseInRect(bgm_toggle_rect_, mouseX, mouseY))
 	{
 		Master::sound_manager_->ToggleBgmEnabled();
@@ -96,13 +89,12 @@ void SettingsScene::HandleInput()
 	}
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pF‰æ–Ê”wŒi‚¨‚æ‚Ñİ’èƒƒjƒ…[‚Ìƒpƒlƒ‹˜g‚ğ•`‰æ
+/// @details ç”»é¢èƒŒæ™¯ãŠã‚ˆã³è¨­å®šãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ‘ãƒãƒ«æ ã‚’æç”»
 void SettingsScene::DrawBackground()
 {
 	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(11, 14, 20), TRUE);
 
-	// ”wŒi‚Ì‘•üF’P’²‚³‚ğÁ‚·‚½‚ßA‰æ–Ê‚ğ‰¡Ø‚éƒ‰ƒCƒ“‚ğ•¡””z’u‚µ‚Ä‰œs‚«Š´‚ğ‰‰o
+	// èƒŒæ™¯ã®è£…é£¾ï¼šå˜èª¿ã•ã‚’æ¶ˆã™ãŸã‚ã€ç”»é¢ã‚’æ¨ªåˆ‡ã‚‹ãƒ©ã‚¤ãƒ³ã‚’è¤‡æ•°é…ç½®ã—ã¦å¥¥è¡Œãæ„Ÿã‚’æ¼”å‡º
 	for (int i = 0; i < 18; ++i)
 	{
 		int y = 74 + i * 52;
@@ -118,8 +110,7 @@ void SettingsScene::DrawBackground()
 	DrawLine(1450, 210, 1450, 710, GetColor(218, 178, 86), 2);
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFƒwƒbƒ_[ƒ‰ƒxƒ‹uSETTINGSv‚Æ‘€ìà–¾ƒeƒLƒXƒg‚Ì•`‰æ
+/// @details ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ©ãƒ™ãƒ«ã€ŒSETTINGSã€ã¨æ“ä½œèª¬æ˜ãƒ†ã‚­ã‚¹ãƒˆã®æç”»
 void SettingsScene::DrawHeader()
 {
 	SetFontSize(72);
@@ -131,8 +122,7 @@ void SettingsScene::DrawHeader()
 	SetFontSize(24);
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFBGMESE‚Ì‰¹—Êİ’ès‚¨‚æ‚ÑDebugƒ‚[ƒhØ‘Öƒ{ƒ^ƒ“‚Ì•`‰æ
+/// @details BGMãƒ»SEã®éŸ³é‡è¨­å®šè¡ŒãŠã‚ˆã³Debugãƒ¢ãƒ¼ãƒ‰åˆ‡æ›¿ãƒœã‚¿ãƒ³ã®æç”»
 void SettingsScene::DrawSettingRows()
 {
 	DrawVolumeRow(280, "BGM", Master::sound_manager_->IsBgmEnabled(), Master::sound_manager_->GetBgmVolume());
@@ -147,15 +137,14 @@ void SettingsScene::DrawSettingRows()
 	SetFontSize(24);
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pFƒtƒbƒ^[—Ìˆæi–ß‚éƒ{ƒ^ƒ“j‚Æ•ÏX‘¦“K—p‚ÉŠÖ‚·‚é’ˆÓ‘‚«‚Ì•`‰æ
+/// @details ãƒ•ãƒƒã‚¿ãƒ¼é ˜åŸŸï¼ˆæˆ»ã‚‹ãƒœã‚¿ãƒ³ï¼‰ã¨å¤‰æ›´å³æ™‚é©ç”¨ã«é–¢ã™ã‚‹æ³¨æ„æ›¸ãã®æç”»
 void SettingsScene::DrawFooter()
 {
 	int mouseX, mouseY;
 	InputManager::GetMousePos(mouseX, mouseY);
 	DrawButton(back_rect_, "BACK", IsMouseInRect(back_rect_, mouseX, mouseY));
 
-	// UXd—lFİ’è‚Í‘¦“K—p‚³‚ê‚é‚±‚Æ‚ğƒ†[ƒU[‚É¦‚µA•Û‘¶ƒ{ƒ^ƒ“‚ğ’T‚·èŠÔ‚ğÈ‚­
+	// UXä»•æ§˜ï¼šè¨­å®šã¯å³æ™‚é©ç”¨ã•ã‚Œã‚‹ã“ã¨ã‚’ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ç¤ºã—ã€ä¿å­˜ãƒœã‚¿ãƒ³ã‚’æ¢ã™æ‰‹é–“ã‚’çœã
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130 + color_fade_ / 2);
 	DrawBox(1330, 870, 1810, 918, GetColor(20, 24, 32), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -163,7 +152,7 @@ void SettingsScene::DrawFooter()
 	DrawFormatString(1370, 884, GetColor(200, 210, 220), "Settings are applied immediately");
 	SetFontSize(24);
 
-	// ‰‰oF’Ê’mƒGƒŠƒA‚ğüŠú“I‚É–¾–Å‚³‚¹Aƒ†[ƒU[‚Ì’ˆÓ‚ğˆø‚­
+	// æ¼”å‡ºï¼šé€šçŸ¥ã‚¨ãƒªã‚¢ã‚’å‘¨æœŸçš„ã«æ˜æ»…ã•ã›ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®æ³¨æ„ã‚’å¼•ã
 	if (color_flag_)
 	{
 		color_fade_ -= 3;
@@ -176,8 +165,8 @@ void SettingsScene::DrawFooter()
 	}
 }
 
-// “ü—ÍFrect = —Ìˆæ, enabled = ON/OFFó‘Ô, label = ƒ‰ƒxƒ‹
-// •›ì—pFó‘ÔiF‚Æ•¶šj‚ğ”½‰f‚µ‚½ƒgƒOƒ‹ƒXƒCƒbƒ`‚Ì•`‰æ
+/// @param rect = é ˜åŸŸ, enabled = ON
+/// @details çŠ¶æ…‹ï¼ˆè‰²ã¨æ–‡å­—ï¼‰ã‚’åæ˜ ã—ãŸãƒˆã‚°ãƒ«ã‚¹ã‚¤ãƒƒãƒã®æç”»
 void SettingsScene::DrawToggle(const Rect& rect, bool enabled, const char* label)
 {
 	const int fill = enabled ? GetColor(42, 92, 64) : GetColor(58, 42, 46);
@@ -194,8 +183,8 @@ void SettingsScene::DrawToggle(const Rect& rect, bool enabled, const char* label
 	DrawFormatString(rect.x + 82, rect.y + 13, GetColor(190, 200, 212), "%s", label);
 }
 
-// “ü—ÍFy = cˆÊ’u, label = ƒ‰ƒxƒ‹, enabled = ó‘Ô, volume = ‰¹—Ê
-// •›ì—pFƒ{ƒŠƒ…[ƒ€’²®—pƒo[iƒXƒ‰ƒCƒ_[j‚Ì•`‰æ
+/// @param y = ç¸¦ä½ç½®, label = ãƒ©ãƒ™ãƒ«, enabled = çŠ¶æ…‹, volume = éŸ³é‡
+/// @details ãƒœãƒªãƒ¥ãƒ¼ãƒ èª¿æ•´ç”¨ãƒãƒ¼ï¼ˆã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ï¼‰ã®æç”»
 void SettingsScene::DrawVolumeRow(int y, const char* label, bool enabled, int volume)
 {
 	Rect toggleRect = label[0] == 'B' ? bgm_toggle_rect_ : se_toggle_rect_;
@@ -216,8 +205,8 @@ void SettingsScene::DrawVolumeRow(int y, const char* label, bool enabled, int vo
 	DrawFormatString(barRect.x + barRect.w + 30, barRect.y - 2, enabled ? GetColor(245, 246, 248) : GetColor(130, 136, 146), "%3d%%", percent);
 }
 
-// “ü—ÍFrect = —Ìˆæ, label = ƒ{ƒ^ƒ“–¼, hover = ƒzƒo[’†‚©
-// •›ì—pFó‘Ô‚É‰‚¶‚½”zF‚Å‚Ìƒ{ƒ^ƒ“•`‰æ
+/// @param rect = é ˜åŸŸ, label = ãƒœã‚¿ãƒ³å, hover = ãƒ›ãƒãƒ¼ä¸­ã‹
+/// @details çŠ¶æ…‹ã«å¿œã˜ãŸé…è‰²ã§ã®ãƒœã‚¿ãƒ³æç”»
 void SettingsScene::DrawButton(const Rect& rect, const char* label, bool hover)
 {
 	const int fill = hover ? GetColor(48, 39, 18) : GetColor(20, 24, 32);
@@ -231,15 +220,15 @@ void SettingsScene::DrawButton(const Rect& rect, const char* label, bool hover)
 	SetFontSize(24);
 }
 
-// “ü—ÍFrect = —Ìˆæ, mouseX/Y = ƒ}ƒEƒXÀ•W
-// o—ÍF—Ìˆæ“à‚Å‚ ‚ê‚Î true
+/// @param rect = é ˜åŸŸ, mouseX
+/// @return é ˜åŸŸå†…ã§ã‚ã‚Œã° true
 bool SettingsScene::IsMouseInRect(const Rect& rect, int mouseX, int mouseY) const
 {
 	return mouseX >= rect.x && mouseX <= rect.x + rect.w && mouseY >= rect.y && mouseY <= rect.y + rect.h;
 }
 
-// “ü—ÍFrect = ƒo[—Ìˆæ, mouseX = ƒ}ƒEƒXXÀ•W
-// o—ÍF‰¹—Ê’l (0-255)
+/// @param rect = ãƒãƒ¼é ˜åŸŸ, mouseX = ãƒã‚¦ã‚¹Xåº§æ¨™
+/// @return éŸ³é‡å€¤ (0-255)
 int SettingsScene::GetVolumeFromMouseX(const Rect& rect, int mouseX) const
 {
 	int localX = mouseX - rect.x;

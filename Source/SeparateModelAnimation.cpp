@@ -2,8 +2,8 @@
 #include "DxLib.h"
 #include "SeparateModelAnimation.h"
 
-// 入力: modelHandle (対象の3Dモデルハンドル) / 出力: なし
-// 副作用: アニメーション管理用変数の初期化、および不正アクセスを防ぐための無効値(-1)セット
+/// @param modelHandle (対象の3Dモデルハンドル)
+/// @details アニメーション管理用変数の初期化、および不正アクセスを防ぐための無効値(-1)セット
 SeparateModelAnimation::SeparateModelAnimation(int modelHandle)
     : model_handle_(modelHandle)
     , animation_time_(0.0f)
@@ -20,8 +20,7 @@ SeparateModelAnimation::SeparateModelAnimation(int modelHandle)
 {
 }
 
-// 入力: なし / 出力: なし
-// 副作用: 動的確保したアニメーション情報およびDxLibの追加モデルハンドルの完全破棄（メモリリーク回避）
+/// @details 動的確保したアニメーション情報およびDxLibの追加モデルハンドルの完全破棄（メモリリーク回避）
 SeparateModelAnimation::~SeparateModelAnimation()
 {
     if (!animation_info_list_.empty())
@@ -41,8 +40,7 @@ SeparateModelAnimation::~SeparateModelAnimation()
     }
 }
 
-// 入力: なし / 出力: なし
-// 副作用: 再生時間の進行とループ制御、および旧モーションからの滑らかな遷移（ブレンド）計算の適用
+/// @details 再生時間の進行とループ制御、および旧モーションからの滑らかな遷移（ブレンド）計算の適用
 void SeparateModelAnimation::Update()
 {
     // モーション切り替え時の不自然なカクつきを防ぐため、徐々にブレンド率を上げる
@@ -102,8 +100,8 @@ void SeparateModelAnimation::Update()
     }
 }
 
-// 入力: state(遷移先状態), index(アタッチするアニメーション番号) / 出力: なし
-// 副作用: 旧モーション状態を退避しつつ新モーションをアタッチし、次フレームからのブレンド遷移を準備する
+/// @param state(遷移先状態), index(アタッチするアニメーション番号)
+/// @details 旧モーション状態を退避しつつ新モーションをアタッチし、次フレームからのブレンド遷移を準備する
 void SeparateModelAnimation::ChangeAnimation(AnimationState state, int index)
 {
     // 重複切り替えによるモーションの初期化（巻き戻り）を防ぐための早期リターン
@@ -135,8 +133,8 @@ void SeparateModelAnimation::ChangeAnimation(AnimationState state, int index)
     anim_blend_rate_ = (old_animation_index_ == -1 ? 1.0f : 0.0f);
 }
 
-// 入力: isBlend (ブレンド有効化フラグ) / 出力: なし
-// 副作用: false時は旧モーションをデタッチして破棄し、ブレンドなしの即時切り替え状態を強制する
+/// @param isBlend (ブレンド有効化フラグ)
+/// @details false時は旧モーションをデタッチして破棄し、ブレンドなしの即時切り替え状態を強制する
 void SeparateModelAnimation::SetAnimationBlend(bool isBlend)
 {
     if (isBlend)
@@ -156,8 +154,8 @@ void SeparateModelAnimation::SetAnimationBlend(bool isBlend)
     }
 }
 
-// 入力: state(紐づける状態), filename(ファイルパス) / 出力: なし
-// 副作用: 外部ファイルからモーションをロードし、NEUTRAL指定時は初期モーションとして自動適用する
+/// @param state(紐づける状態), filename(ファイルパス)
+/// @details 外部ファイルからモーションをロードし、NEUTRAL指定時は初期モーションとして自動適用する
 void SeparateModelAnimation::AddAnimation(AnimationState state, std::string filename)
 {
     int handle = Master::resource_manager_->LoadModel(filename.c_str());
@@ -179,8 +177,9 @@ void SeparateModelAnimation::AddAnimation(AnimationState state, std::string file
     }
 }
 
-// 入力: state (検索する状態) / 出力: 対応するモデルハンドル(-1で未登録)
-// 副作用: なし（状態とハンドルの紐付けリストからの単なる検索処理）
+/// @param state (検索する状態)
+/// @return 対応するモデルハンドル(-1で未登録)
+/// @details なし（状態とハンドルの紐付けリストからの単なる検索処理）
 int SeparateModelAnimation::GetAnimationHandle(AnimationState state)
 {
     if (animation_info_list_.empty())

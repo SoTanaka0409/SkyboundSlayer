@@ -7,23 +7,20 @@
 class DrawCircle1 : public Object3D
 {
 public:
-    // 入力: filename(テクスチャパス), centerPos(円の中心座標) / 出力: なし
-    // 副作用: エフェクト用画像ハンドルのVRAMロードおよび、円の初期サイズ・最大半径の設定
+/// @param filename(テクスチャパス), centerPos(円の中心座標)
+/// @details エフェクト用画像ハンドルのVRAMロードおよび、円の初期サイズ・最大半径の設定
     DrawCircle1(std::string filename, VECTOR centerPos);
 
-    // 入力: なし / 出力: なし
-    // 副作用: 動的確保した画像ハンドルの破棄（シーン遷移時のメモリリーク防止）
+/// @details 動的確保した画像ハンドルの破棄（シーン遷移時のメモリリーク防止）
     ~DrawCircle1();
 
-    // 入力: なし / 出力: なし
-    // 副作用: Maxradius（最大半径）に達するまでradiusを拡張させるアニメーション更新
+/// @details Maxradius（最大半径）に達するまでradiusを拡張させるアニメーション更新
     void Update() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: div(分割数)と現在のradiusに基づき頂点群を動的計算し、3D空間に円形ポリゴンを描画する
+/// @details div(分割数)と現在のradiusに基づき頂点群を動的計算し、3D空間に円形ポリゴンを描画する
     void Draw() override;
 
-    // 入力: なし / 出力: 基準となる3頂点の動的配列 / 副作用: なし
+/// @return 基準となる3頂点の動的配列
     // 外部から円の基本姿勢や、簡易的な当たり判定の基準となるポリゴン面を取得するために提供する
     std::vector<VERTEX3D> GetVertex()
     {

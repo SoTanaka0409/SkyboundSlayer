@@ -1,4 +1,4 @@
-#include "Coin.h"
+ï»¿#include "Coin.h"
 #include "Master.h"
 #include "SceneManager.h"
 #include "ObjectManager.h"
@@ -6,12 +6,7 @@
 #include "HaveMoneyClass.h"
 #include <math.h>
 
-/*
- * –Ú“IiCoin‚ÌCoinˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Coinã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 Coin::Coin(std::string filename, VECTOR pos, int value)
     : Object3D(pos)
     , value_(value)
@@ -20,7 +15,7 @@ Coin::Coin(std::string filename, VECTOR pos, int value)
     , age_(0)
 {
     SetTag(Object3D::Tag3D_Obj);
-    // ’n–Ê‚æ‚èã‚ÉoŒ»‚·‚é‚æ‚¤‚ÉYƒIƒtƒZƒbƒg‚ğ’Ç‰Á
+    // åœ°é¢ã‚ˆã‚Šä¸Šã«å‡ºç¾ã™ã‚‹ã‚ˆã†ã«Yã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¿½åŠ 
     position_.y += kSpawnOffsetY;
     model_ = new Model(filename, position_, false);
     model_->SetScale(VGet(kScale, kScale, kScale));
@@ -34,12 +29,7 @@ Coin::~Coin()
     }
 }
 
-/*
- * –Ú“IiCoin‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Coinã®æç”»å‡¦ç†
 void Coin::Draw()
 {
     if (model_) {
@@ -47,19 +37,14 @@ void Coin::Draw()
     }
 }
 
-/*
- * –Ú“IiCoin‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Coinã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void Coin::Update()
 {
     if (collected_) return;
 
     age_++;
     
-    // ‹”F«‚ğ‚‚ß‚é‚½‚ß‚ÉƒRƒCƒ“‚ğ‰ñ“]‚³‚¹‚é
+    // è¦–èªæ€§ã‚’é«˜ã‚ã‚‹ãŸã‚ã«ã‚³ã‚¤ãƒ³ã‚’å›è»¢ã•ã›ã‚‹
     rotation_.y += 0.1f;
     if (model_) {
         model_->SetRotation(rotation_);
@@ -69,27 +54,17 @@ void Coin::Update()
     UpdateSuckToPlayer();
 }
 
-/*
- * –Ú“IiCoin‚ÌUpdatePopPhysicsˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Coinã®UpdatePopPhysicså‡¦ç†
 void Coin::UpdatePopPhysics()
 {
-    // oŒ»‚Ì•¨—‹““®
+    // å‡ºç¾æ™‚ã®ç‰©ç†æŒ™å‹•
     if (age_ < kPopDuration) {
         position_.y += kPopSpeedY;
         if (model_) model_->SetPosition(position_);
     }
 }
 
-/*
- * –Ú“IiCoin‚ÌUpdateSuckToPlayerˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief Coinã®UpdateSuckToPlayerå‡¦ç†
 void Coin::UpdateSuckToPlayer()
 {
     if (age_ < kPopDuration) return; // Don't suck yet

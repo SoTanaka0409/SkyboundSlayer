@@ -23,7 +23,7 @@
 #include "Chat.h"
 #include "Save.h"
 
-// サービスロケーターとしてのマスタークラスの静的実体化
+// 繧ｵ繝ｼ繝薙せ繝ｭ繧ｱ繝ｼ繧ｿ繝ｼ縺ｨ縺励※縺ｮ繝槭せ繧ｿ繝ｼ繧ｯ繝ｩ繧ｹ縺ｮ髱咏噪螳滉ｽ灘喧
 Player3D* Master::player_ = nullptr;
 SceneManager* Master::scene_manager_ = new SceneManager();
 SoundManager* Master::sound_manager_ = new SoundManager();
@@ -55,17 +55,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetDoubleStartValidFlag(TRUE);
 	SetUseCharCodeFormat(DX_CHARCODEFORMAT_SHIFTJIS);
+	SetMainWindowText("Skybound Slayer");
 	if (DxLib_Init() == -1) return -1;
 
 	EffekseerManager::GetInstance()->Init();
 
-	// 環境光設定：3D空間全体を均一に照らし、暗部でのモデル視認性を確保するためのベースライト設定
+	// 迺ｰ蠅・・險ｭ螳夲ｼ・D遨ｺ髢灘・菴薙ｒ蝮・ｸ縺ｫ辣ｧ繧峨＠縲∵囓驛ｨ縺ｧ縺ｮ繝｢繝・Ν隕冶ｪ肴ｧ繧堤｢ｺ菫昴☆繧九◆繧√・繝吶・繧ｹ繝ｩ繧､繝郁ｨｭ螳・
 	SetLightEnable(TRUE);
 	SetLightAmbColor(GetColorF(0.6f, 0.6f, 0.6f, 1.0f));
 	SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
 	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
 
-	// 非同期読み込み：大量のアセットを抱える本作において、ロード中のフリーズを防ぐため非同期ロードを必須とする
+	// 髱槫酔譛溯ｪｭ縺ｿ霎ｼ縺ｿ・壼､ｧ驥上・繧｢繧ｻ繝・ヨ繧呈干縺医ｋ譛ｬ菴懊↓縺翫＞縺ｦ縲√Ο繝ｼ繝我ｸｭ縺ｮ繝輔Μ繝ｼ繧ｺ繧帝亟縺舌◆繧・撼蜷梧悄繝ｭ繝ｼ繝峨ｒ蠢・医→縺吶ｋ
 	SetUseASyncLoadFlag(TRUE);
 	Master::sound_manager_->Initialize();
 	Master::scene_manager_->Initialize();
@@ -82,7 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ClearDrawScreen();
 		int time = GetNowCount();
 
-		// ローディング監視：ロード完了までゲーム進行（Update）をロックし、遷移の不整合を防止
+		// 繝ｭ繝ｼ繝・ぅ繝ｳ繧ｰ逶｣隕厄ｼ壹Ο繝ｼ繝牙ｮ御ｺ・∪縺ｧ繧ｲ繝ｼ繝騾ｲ陦鯉ｼ・pdate・峨ｒ繝ｭ繝・け縺励・・遘ｻ縺ｮ荳肴紛蜷医ｒ髦ｲ豁｢
 		if (GetASyncLoadNum() > 0)
 		{
 			DrawFormatString(600, 360, GetColor(255, 255, 255), "NOW LOADING... %d", GetASyncLoadNum());
@@ -109,10 +110,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		ScreenFlip();
 
-		// アーキテクチャ設計：高リフレッシュレート環境でも物理演算が崩壊しないよう、デルタタイムに頼らず固定の17ms（約60FPS）ウェイトで同期を担保
+		// 繧｢繝ｼ繧ｭ繝・け繝√Ε險ｭ險茨ｼ夐ｫ倥Μ繝輔Ξ繝・す繝･繝ｬ繝ｼ繝育腸蠅・〒繧ら黄逅・ｼ皮ｮ励′蟠ｩ螢翫＠縺ｪ縺・ｈ縺・√ョ繝ｫ繧ｿ繧ｿ繧､繝縺ｫ鬆ｼ繧峨★蝗ｺ螳壹・17ms・育ｴ・0FPS・峨え繧ｧ繧､繝医〒蜷梧悄繧呈球菫・
 		while (GetNowCount() - time < 17) {}
 
-		// シーン遷移とメモリ掃除：メインループの最後で削除予約されたリソースをまとめて解放することで、Update/Draw中の不正アクセスを防ぐ
+		// 繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ縺ｨ繝｡繝｢繝ｪ謗・勁・壹Γ繧､繝ｳ繝ｫ繝ｼ繝励・譛蠕後〒蜑企勁莠育ｴ・＆繧後◆繝ｪ繧ｽ繝ｼ繧ｹ繧偵∪縺ｨ繧√※隗｣謾ｾ縺吶ｋ縺薙→縺ｧ縲ゞpdate/Draw荳ｭ縺ｮ荳肴ｭ｣繧｢繧ｯ繧ｻ繧ｹ繧帝亟縺・
 		if (GetASyncLoadNum() == 0)
 		{
 			Master::scene_manager_->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
@@ -122,7 +123,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 	}
 
-	// 終了処理：マネージャーのFinalizeとインスタンス削除
+	// 邨ゆｺ・・逅・ｼ壹・繝阪・繧ｸ繝｣繝ｼ縺ｮFinalize縺ｨ繧､繝ｳ繧ｹ繧ｿ繝ｳ繧ｹ蜑企勁
 	Master::scene_manager_->Finalize();
 	delete Master::scene_manager_;
 	Master::sound_manager_->Finalize();

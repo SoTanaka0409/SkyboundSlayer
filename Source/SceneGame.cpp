@@ -1,13 +1,8 @@
-#include "SceneGame.h"
+ï»¿#include "SceneGame.h"
 
 
 
-/*
- * –Ú“IiSceneGame‚ÌSceneGameˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SceneGameã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 SceneGame::SceneGame(GameManager::Difficulty diff)
 	: initial_difficulty_(diff)
 	, game_manager_(nullptr)
@@ -21,12 +16,7 @@ SceneGame::~SceneGame()
 
 
 
-/*
- * –Ú“IiSceneGame‚ÌInitializeˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SceneGameã®åˆæœŸåŒ–å‡¦ç†
 void SceneGame::Initialize()
 {
 	if (enemy_manager_ == nullptr)
@@ -41,12 +31,7 @@ void SceneGame::Initialize()
 
 
 
-/*
- * –Ú“IiSceneGame‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SceneGameã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void SceneGame::Update()
 {
 	if (!Master::is_cutscene_playing_) {
@@ -60,12 +45,7 @@ void SceneGame::Update()
 
 
 
-/*
- * –Ú“IiSceneGame‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SceneGameã®æç”»å‡¦ç†
 void SceneGame::Draw()
 {
 	Scene::Draw();
@@ -77,12 +57,7 @@ void SceneGame::Draw()
 
 
 
-/*
- * –Ú“IiSceneGame‚ÌFinalizeˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SceneGameã®Finalizeå‡¦ç†
 void SceneGame::Finalize()
 {
 	if (game_manager_)
@@ -99,12 +74,7 @@ void SceneGame::Finalize()
 
 
 
-/*
- * –Ú“IiSceneGame‚ÌIsShopPhaseˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SceneGameã®IsShopPhaseå‡¦ç†
 bool SceneGame::IsShopPhase() const
 {
 	if (!game_manager_) return false;
@@ -116,12 +86,7 @@ bool SceneGame::IsShopPhase() const
 
 
 
-/*
- * –Ú“IiSceneGame‚ÌIsBattlePhaseˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief SceneGameã®IsBattlePhaseå‡¦ç†
 bool SceneGame::IsBattlePhase() const
 {
 	if (!game_manager_) return false;

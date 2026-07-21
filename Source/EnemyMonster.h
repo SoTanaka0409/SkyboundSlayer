@@ -15,52 +15,46 @@ public:
         Landing
     };
 
-    // 入力: filename, 初期座標, ステータス群, 判定サイズ群, 所持金, アニメ分離フラグ
-    // 出力: なし / 副作用: 跳躍攻撃専用のステートマシン初期化と、着地衝撃波用コライダーの確保
+/// @param filename, 初期座標, ステータス群, 判定サイズ群, 所持金, アニメ分離フラグ
+/// @details 跳躍攻撃専用のステートマシン初期化と、着地衝撃波用コライダーの確保
     EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_);
 
-    // 入力: なし / 出力: なし
-    // 副作用: 専用で動的確保した着地攻撃用コライダー（landing_attack_collider_）を確実に破棄する
+/// @details 専用で動的確保した着地攻撃用コライダー（landing_attack_collider_）を確実に破棄する
     ~EnemyMonster();
 
-    // 入力: なし / 出力: なし
-    // 副作用: AttackStateに基づくジャンプ攻撃の進行（溜め→跳躍→着地）と、専用の物理挙動を毎フレーム更新する
+/// @details AttackStateに基づくジャンプ攻撃の進行（溜め→跳躍→着地）と、専用の物理挙動を毎フレーム更新する
     void Update() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: 自身のモデル描画に加え、ジャンプ攻撃時の予兆（足元の影の拡大やオーラ等）を描画バッファへ登録する
+/// @details 自身のモデル描画に加え、ジャンプ攻撃時の予兆（足元の影の拡大やオーラ等）を描画バッファへ登録する
     void Draw() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: プレイヤーとの距離を判定し、条件を満たした場合に跳躍攻撃の「溜め（Charging）」へステートを移行させる
+/// @details プレイヤーとの距離を判定し、条件を満たした場合に跳躍攻撃の「溜め（Charging）」へステートを移行させる
     void Attack() override;
 
-    // 入力: collider(自身の判定), check(相手の判定) / 出力: なし
-    // 副作用: 跳躍中（Jumping）の無敵判定処理や、着地硬直中の被ダメージボーナスなど特殊な接触判定を処理する
+/// @param collider(自身の判定), check(相手の判定)
+/// @details 跳躍中（Jumping）の無敵判定処理や、着地硬直中の被ダメージボーナスなど特殊な接触判定を処理する
     void OnTrigger(Collider* collider, Collider* check) override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: 死亡アニメーション（巨体が倒れ込む等）の再生を開始し、進行中のジャンプ攻撃ステートを強制キャンセルする
+/// @details 死亡アニメーション（巨体が倒れ込む等）の再生を開始し、進行中のジャンプ攻撃ステートを強制キャンセルする
     void DeathEnemy() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: 死亡演出の終了後、安全にインスタンスを破棄してメモリ管理マネージャーへ通知する
+/// @details 死亡演出の終了後、安全にインスタンスを破棄してメモリ管理マネージャーへ通知する
     void Delete() override;
 
 private:
-    // 入力: なし / 出力: なし / 副作用: 索敵状態の更新と、射程内に入った際の攻撃ステート移行発火
+/// @details 索敵状態の更新と、射程内に入った際の攻撃ステート移行発火
     void UpdateAttackIdle();
-    // 入力: なし / 出力: なし / 副作用: プレイヤーに回避の猶予を与える溜め演出を進行させ、満了時に跳躍を開始する
+/// @details プレイヤーに回避の猶予を与える溜め演出を進行させ、満了時に跳躍を開始する
     void UpdateAttackCharging();
-    // 入力: なし / 出力: なし / 副作用: 専用の重力計算により放物線軌道で座標を更新し、着地判定を監視する
+/// @details 専用の重力計算により放物線軌道で座標を更新し、着地判定を監視する
     void UpdateAttackJumping();
-    // 入力: なし / 出力: なし / 副作用: 着地時の衝撃波コライダーを有効化し、一定の硬直時間経過後にIdleへ戻す
+/// @details 着地時の衝撃波コライダーを有効化し、一定の硬直時間経過後にIdleへ戻す
     void UpdateAttackLanding();
-    // 入力: なし / 出力: 射程内か否か(bool) / 副作用: なし
+/// @return 射程内か否か(bool)
     bool IsPlayerInJumpRange() const;
-    // 入力: なし / 出力: なし / 副作用: 踏み切り時にターゲットへの方向ベクトルを算出し、空中でのホーミングを制限する
+/// @details 踏み切り時にターゲットへの方向ベクトルを算出し、空中でのホーミングを制限する
     void SetJumpDirectionToPlayer();
-    // 入力: なし / 出力: なし / 副作用: ジャンプ用の初速や多段ヒット防止フラグを初期化し、物理挙動を開始する
+/// @details ジャンプ用の初速や多段ヒット防止フラグを初期化し、物理挙動を開始する
     void StartJumpAttack();
 
     AttackState attack_state_;       // ジャンプ攻撃の一連のプロセス（溜め・跳躍・着地）を進行させるための内部ステート

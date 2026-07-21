@@ -17,9 +17,7 @@
 #include"Rock.h"
 #include"StageObject.h"
 
-// 入力: なし
-// 出力: なし
-// 副作用: 非同期ロード進行用フラグとタイマーの初期化
+/// @details 非同期ロード進行用フラグとタイマーの初期化
 Scene3D::Scene3D()
 	: load_timer_(500)     // ロード待機フレーム数
 	, load_count_(0)       // ロード完了アセット数
@@ -27,16 +25,11 @@ Scene3D::Scene3D()
 {
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: なし
 Scene3D::~Scene3D()
 {
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 3D環境の設定、アクター生成、ステージ情報のパース処理の実行
+/// @details 3D環境の設定、アクター生成、ステージ情報のパース処理の実行
 void Scene3D::Initialize()
 {
 	SceneGame::Initialize();
@@ -48,9 +41,7 @@ void Scene3D::Initialize()
 	Master::sound_manager_->PlayBGM(SoundManager::BGM_GAME);
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: DXライブラリのフォグ・環境光設定のグローバル変更
+/// @details DXライブラリのフォグ・環境光設定のグローバル変更
 void Scene3D::SetupEnvironment()
 {
 	// 空間の奥行きを表現し、遠方のモデル描画の境界を自然に馴染ませるためフォグを設定
@@ -65,9 +56,7 @@ void Scene3D::SetupEnvironment()
 	SetLightDirection(VNorm(VGet(-0.5f, -0.8f, 0.3f)));
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: プレイヤーやショップ等の必須アクターオブジェクトのヒープ確保
+/// @details プレイヤーやショップ等の必須アクターオブジェクトのヒープ確保
 void Scene3D::CreateInitialActors()
 {
 	new Player3D("Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
@@ -75,18 +64,14 @@ void Scene3D::CreateInitialActors()
 	new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3Dモデル/小物/焚き火/01_焚き火モデル.mv1", VGet(10.0f, 10.0f, 10.0f));
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 地形モデルおよび当たり判定モデルの生成
+/// @details 地形モデルおよび当たり判定モデルの生成
 void Scene3D::CreateStage()
 {
 	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", VGet(200.0f, 100.0f, 200.0f));
 	new Stage(Config::GetStageCenter(), "Resource/3Dモデル/ステージ/通常ステージ/01_通常ステージモデル.mv1", "Resource/3Dモデル/ステージ/通常ステージ/02_通常ステージ当たり判定モデル.mv1", VGet(3.0f, 0.3f, 3.0f));
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: CSVファイルからのデータ読み込みおよびステージオブジェクトの大量生成
+/// @details CSVファイルからのデータ読み込みおよびステージオブジェクトの大量生成
 void Scene3D::LoadStageObjectsFromCsv()
 {
 	std::ifstream file(L"Resource/データ/CSV/01_ステージ配置データ.csv");
@@ -145,9 +130,7 @@ void Scene3D::LoadStageObjectsFromCsv()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 天球ドームの生成とテクスチャの適用
+/// @details 天球ドームの生成とテクスチャの適用
 void Scene3D::CreateSkyBox()
 {
 	SkyBox* pSkyBox = new SkyBox("Resource/3Dモデル/背景/空/01_空ドームモデル.x", VGet(0, 0, -5000));
@@ -156,9 +139,7 @@ void Scene3D::CreateSkyBox()
 	pSkyBox->SetModelTexture("Resource/3Dモデル/背景/空/02_空テクスチャ.jpg");
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: ゲーム状態の更新およびリザルト画面への遷移
+/// @details ゲーム状態の更新およびリザルト画面への遷移
 void Scene3D::Update()
 {
 	SceneGame::Update();
@@ -197,9 +178,7 @@ void Scene3D::Update()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 3Dモデル、UI、デバッグ用グリッドの描画
+/// @details 3Dモデル、UI、デバッグ用グリッドの描画
 void Scene3D::Draw()
 {
 	SceneGame::Draw();
@@ -207,9 +186,7 @@ void Scene3D::Draw()
 	DrawDebugGrid();
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: 地面へのグリッド線の描画
+/// @details 地面へのグリッド線の描画
 void Scene3D::DrawDebugGrid()
 {
 	// マップ作成時やデバッグ時の座標スケール感を目視確認しやすくするための補助線
@@ -233,9 +210,7 @@ void Scene3D::DrawDebugGrid()
 	}
 }
 
-// 入力: なし
-// 出力: なし
-// 副作用: BGM停止と描画設定の初期化
+/// @details BGM停止と描画設定の初期化
 void Scene3D::Finalize()
 {
 	Master::sound_manager_->StopBGM();

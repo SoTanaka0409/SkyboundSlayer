@@ -16,8 +16,8 @@
 #include "SphereCollider.h"
 #include "CapsuleCollider.h"
 
-// 入力：filename=基本モデルパス, initPos=初期座標, hp=体力, speed=移動速度, HitSize=判定半径, Serch1~3=索敵・攻撃判定半径群, Attack=攻撃力, money=撃破報酬, is_separate_anim_=アニメ分割フラグ
-// 副作用：ベースモデルの読み込み、攻撃用のサーベル（3D武器モデル）の右手ボーンへのアタッチ、および各種モーションの登録
+/// @param filename=基本モデルパス, initPos=初期座標, hp=体力, speed=移動速度, HitSize=判定半径, Serch1~3=索敵・攻撃判定半径群, Attack=攻撃力, money=撃破報酬, is_separate_anim_=アニメ分割フラグ
+/// @details ベースモデルの読み込み、攻撃用のサーベル（3D武器モデル）の右手ボーンへのアタッチ、および各種モーションの登録
 Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float Attack, int money, bool is_separate_anim_)
 	: Enemy(filename, initPos, hp, speed, Attack, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 {
@@ -41,9 +41,7 @@ Enemy3D_AT::~Enemy3D_AT()
 {
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：死亡状態移行、または生存時における攻撃判定、移動・旋回の更新、および骨格アニメーションに対応したコリジョンの位置同期
+/// @details 死亡状態移行、または生存時における攻撃判定、移動・旋回の更新、および骨格アニメーションに対応したコリジョンの位置同期
 void Enemy3D_AT::Update()
 {
 	if (is_dead_)
@@ -69,9 +67,7 @@ void Enemy3D_AT::Update()
 	}
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：武器がアタッチされた敵モデルの描画、およびデバッグ用カプセル形状（実判定サイズ）のワイヤーフレーム表示
+/// @details 武器がアタッチされた敵モデルの描画、およびデバッグ用カプセル形状（実判定サイズ）のワイヤーフレーム表示
 void Enemy3D_AT::Draw()
 {
 	if (model_ != nullptr)

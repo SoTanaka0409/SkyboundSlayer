@@ -1,9 +1,7 @@
 ﻿#include"SoundManager.h"
 #include"DxLib.h"
 
-// 入力：なし
-// 出力：なし
-// 副作用：音量、有効化フラグ、および再生中トラックの初期状態のセットアップ
+/// @details 音量、有効化フラグ、および再生中トラックの初期状態のセットアップ
 SoundManager::SoundManager()
 	:now_playing_bgm_((SOUND_BGM)-1)  //初期状態は何も再生されていない状態
 	, now_playing_se_((SOUND_SE)-1)    //初期状態は何も再生されていない状態
@@ -14,16 +12,11 @@ SoundManager::SoundManager()
 {
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：なし
 SoundManager::~SoundManager()
 {
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：ゲーム全編で使用するBGMおよびSEファイルの一括ロードとメモリ展開
+/// @details ゲーム全編で使用するBGMおよびSEファイルの一括ロードとメモリ展開
 void SoundManager::Initialize()
 {
 	// アーキテクチャ設計：プレイ中のロードによるカクつき（処理落ち）や音ズレを防ぐため、起動時やシーン切り替え時の非同期ロード中に全音声アセットをオンメモリ化しておく
@@ -48,9 +41,7 @@ void SoundManager::Initialize()
 	LoadSE(SOUND_SE::SE_WINDOW, "Resource/音源/SE/11_メニュー効果音.mp3");
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：メモリ上に確保されたすべてのサウンドハンドルの安全な破棄
+/// @details メモリ上に確保されたすべてのサウンドハンドルの安全な破棄
 void SoundManager::Finalize()
 {
 	// BGMの破棄
@@ -65,9 +56,8 @@ void SoundManager::Finalize()
 	}
 }
 
-// 入力：bgm = 再生するBGMの列挙型ID, isTop = 曲の最初から強制的に再生し直すかどうかのフラグ
-// 出力：なし
-// 副作用：指定BGMのループ再生開始、および現在再生中のBGM状態更新
+/// @param bgm = 再生するBGMの列挙型ID, isTop = 曲の最初から強制的に再生し直すかどうかのフラグ
+/// @details 指定BGMのループ再生開始、および現在再生中のBGM状態更新
 void SoundManager::PlayBGM(SOUND_BGM bgm, bool isTop)
 {
 	if (!is_bgm_enabled_)
@@ -94,9 +84,8 @@ void SoundManager::PlayBGM(SOUND_BGM bgm, bool isTop)
 	}
 }
 
-// 入力：se = 再生するSEの列挙型ID
-// 出力：なし
-// 副作用：指定SEのバックグラウンド（多重）再生開始
+/// @param se = 再生するSEの列挙型ID
+/// @details 指定SEのバックグラウンド（多重）再生開始
 void SoundManager::PlaySE(SOUND_SE se)
 {
 	if (!is_se_enabled_)
@@ -117,9 +106,8 @@ void SoundManager::PlaySE(SOUND_SE se)
 	}
 }
 
-// 入力：bgm = 紐づける列挙型ID, filename = ファイルパス
-// 出力：なし
-// 副作用：音声データのロード、初期音量の適用、および管理用リストへの登録
+/// @param bgm = 紐づける列挙型ID, filename = ファイルパス
+/// @details 音声データのロード、初期音量の適用、および管理用リストへの登録
 void SoundManager::LoadBGM(SOUND_BGM bgm, std::string filename)
 {
 	bool check = false;
@@ -148,9 +136,8 @@ void SoundManager::LoadBGM(SOUND_BGM bgm, std::string filename)
 	bgm_handle_list_.push_back(std::pair<SOUND_BGM, int>(bgm, handle));
 }
 
-// 入力：se = 紐づける列挙型ID, filename = ファイルパス
-// 出力：なし
-// 副作用：音声データのロード、初期音量の適用、および管理用リストへの登録
+/// @param se = 紐づける列挙型ID, filename = ファイルパス
+/// @details 音声データのロード、初期音量の適用、および管理用リストへの登録
 void SoundManager::LoadSE(SOUND_SE se, std::string filename)
 {
 	bool check = false;
@@ -178,9 +165,7 @@ void SoundManager::LoadSE(SOUND_SE se, std::string filename)
 	se_handle_list_.push_back(std::pair<SOUND_SE, int>(se, handle));
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：現在再生中のBGMトラックの停止処理
+/// @details 現在再生中のBGMトラックの停止処理
 void SoundManager::StopBGM()
 {
 	for (auto it = bgm_handle_list_.begin(); it != bgm_handle_list_.end(); it++)
@@ -196,9 +181,8 @@ void SoundManager::StopBGM()
 	}
 }
 
-// 入力：enabled = 有効化フラグ
-// 出力：なし
-// 副作用：ミュート状態の切り替え。無効化時は即座に停止し、有効化時は現在のトラックをレジューム再生する
+/// @param enabled = 有効化フラグ
+/// @details ミュート状態の切り替え。無効化時は即座に停止し、有効化時は現在のトラックをレジューム再生する
 void SoundManager::SetBgmEnabled(bool enabled)
 {
 	is_bgm_enabled_ = enabled;
@@ -212,17 +196,15 @@ void SoundManager::SetBgmEnabled(bool enabled)
 	}
 }
 
-// 入力：enabled = 有効化フラグ
-// 出力：なし
-// 副作用：SEのミュート状態の切り替え
+/// @param enabled = 有効化フラグ
+/// @details SEのミュート状態の切り替え
 void SoundManager::SetSeEnabled(bool enabled)
 {
 	is_se_enabled_ = enabled;
 }
 
-// 入力：volume = 設定する音量（0-255）
-// 出力：なし
-// 副作用：クランプ処理を挟んだ音量変数の更新、およびロード済みの全BGMハンドルへの即時適用
+/// @param volume = 設定する音量（0-255）
+/// @details クランプ処理を挟んだ音量変数の更新、およびロード済みの全BGMハンドルへの即時適用
 void SoundManager::SetBgmVolume(int volume)
 {
 	bgm_volume_ = max(0, min(255, volume));
@@ -232,9 +214,8 @@ void SoundManager::SetBgmVolume(int volume)
 	}
 }
 
-// 入力：volume = 設定する音量（0-255）
-// 出力：なし
-// 副作用：クランプ処理を挟んだ音量変数の更新、およびロード済みの全SEハンドルへの即時適用
+/// @param volume = 設定する音量（0-255）
+/// @details クランプ処理を挟んだ音量変数の更新、およびロード済みの全SEハンドルへの即時適用
 void SoundManager::SetSeVolume(int volume)
 {
 	se_volume_ = max(0, min(255, volume));
@@ -244,17 +225,13 @@ void SoundManager::SetSeVolume(int volume)
 	}
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：BGMの有効/無効のトグル切り替え
+/// @details BGMの有効
 void SoundManager::ToggleBgmEnabled()
 {
 	SetBgmEnabled(!is_bgm_enabled_);
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：SEの有効/無効のトグル切り替え
+/// @details SEの有効
 void SoundManager::ToggleSeEnabled()
 {
 	SetSeEnabled(!is_se_enabled_);

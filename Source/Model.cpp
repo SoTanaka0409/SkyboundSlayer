@@ -3,12 +3,7 @@
 #include"Master.h"
 
 
-/*
- * 目的（ModelのModel処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Modelの初期化（コンストラクタ）
 Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
     : position_(initPos)
     , attachment_(nullptr)
@@ -32,12 +27,7 @@ Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
 }
 
 
-/*
- * 目的（ModelのAddAnimation処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのAddAnimation処理
 void Model::AddAnimation(AnimationState state, std::string filename)
 {
     if (separate_animation_ != nullptr)
@@ -79,12 +69,7 @@ Model::~Model()
 }
 
 
-/*
- * 目的（ModelのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Modelの状態更新処理
 void Model::Update()
 {
     if (animation_ != nullptr)
@@ -105,24 +90,14 @@ void Model::Update()
 }
 
 
-/*
- * 目的（ModelのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Modelの描画処理
 void Model::Draw()
 {
     MV1DrawModel(handle_);
 }
 
 
-/*
- * 目的（ModelのChangeAnimation処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのChangeAnimation処理
 void Model::ChangeAnimation(AnimationState state)
 {
     if (animation_ != nullptr)
@@ -136,12 +111,7 @@ void Model::ChangeAnimation(AnimationState state)
 }
 
 
-/*
- * 目的（ModelのSetLoop処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのSetLoop処理
 void Model::SetLoop(bool loop)
 {
     if (animation_ != nullptr)
@@ -155,12 +125,7 @@ void Model::SetLoop(bool loop)
 }
 
 
-/*
- * 目的（ModelのSetLoopFinishState処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのSetLoopFinishState処理
 void Model::SetLoopFinishState(AnimationState state)
 {
     if (animation_ != nullptr)
@@ -174,12 +139,7 @@ void Model::SetLoopFinishState(AnimationState state)
 }
 
 
-/*
- * 目的（ModelのSetAnimationBlend処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのSetAnimationBlend処理
 void Model::SetAnimationBlend(bool isBlend)
 {
     if (animation_ != nullptr)
@@ -193,12 +153,7 @@ void Model::SetAnimationBlend(bool isBlend)
 }
 
 
-/*
- * 目的（ModelのGetNowState処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのGetNowState処理
 AnimationState Model::GetNowState()
 {
     AnimationState ret = AnimationState::ANIMATION_MAX;
@@ -216,12 +171,7 @@ AnimationState Model::GetNowState()
 }
 
 
-/*
- * 目的（ModelのIsAnimationLoopFinish処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのIsAnimationLoopFinish処理
 bool Model::IsAnimationLoopFinish()
 {
 
@@ -241,12 +191,7 @@ bool Model::IsAnimationLoopFinish()
 
 
 
-/*
- * 目的（ModelのAddAttachment処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのAddAttachment処理
 void Model::AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos, VECTOR offsetRot)
 {
     if (attachment_ != nullptr)
@@ -262,12 +207,7 @@ void Model::AddAttachment(std::string filename, std::string attachFrameName, VEC
 }
 
 
-/*
- * 目的（ModelのGetAttachmentPosition_None処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのGetAttachmentPosition_None処理
 VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 {
     int frameIndex = MV1SearchFrame(handle_, attachFrameName.c_str());
@@ -282,12 +222,7 @@ VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 
 
 
-/*
- * 目的（ModelのGetAttachmentPosition処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのGetAttachmentPosition処理
 VECTOR Model::GetAttachmentPosition()
 {
     if (attachment_ != nullptr)
@@ -308,24 +243,14 @@ VECTOR Model::GetAttachmentPosition()
 
 
 
-/*
- * 目的（ModelのSetScale処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのSetScale処理
 void Model::SetScale(VECTOR scale)
 {
     MV1SetScale(handle_, scale);
 }
 
 
-/*
- * 目的（ModelのSetTexture処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ModelのSetTexture処理
 void Model::SetTexture(std::string filename, int index)
 {
     if (change_texture_handle_ != -1)

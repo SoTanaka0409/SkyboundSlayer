@@ -8,8 +8,8 @@
 #include "Magic_Ene.h"
 #include "CapsuleCollider.h"
 
-// 入力：filename = モデルパス, initPos = 初期座標, hp = 体力, speed = 移動速度, HitSize/Serch = コライダー半径, money = ドロップ額, is_separate_anim_ = アニメーション分離フラグ
-// 副作用：各種戦闘パラメータ（攻撃間隔等）の初期設定および着地判定用コライダーの生成
+/// @param filename = モデルパス, initPos = 初期座標, hp = 体力, speed = 移動速度, HitSize
+/// @details 各種戦闘パラメータ（攻撃間隔等）の初期設定および着地判定用コライダーの生成
 EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	: Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 	, attack_state_(AttackState::None)
@@ -41,9 +41,7 @@ EnemyMonster::~EnemyMonster()
 {
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：死亡時の演出進行、または攻撃ステートに応じた移動処理とモデル更新の同期
+/// @details 死亡時の演出進行、または攻撃ステートに応じた移動処理とモデル更新の同期
 void EnemyMonster::Update()
 {
 	if (is_dead_)
@@ -68,9 +66,7 @@ void EnemyMonster::Update()
 	}
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：モデルの描画。デバッグ時のみ物理コライダーと攻撃判定範囲を可視化
+/// @details モデルの描画。デバッグ時のみ物理コライダーと攻撃判定範囲を可視化
 void EnemyMonster::Draw()
 {
 	if (model_ != nullptr) model_->Draw();
@@ -84,9 +80,7 @@ void EnemyMonster::Draw()
 	}
 }
 
-// 入力：なし
-// 出力：なし
-// 副作用：現在の攻撃ステートに基づいた各フェーズ更新メソッドの実行
+/// @details 現在の攻撃ステートに基づいた各フェーズ更新メソッドの実行
 void EnemyMonster::Attack()
 {
 	switch (attack_state_)
@@ -194,8 +188,8 @@ void EnemyMonster::StartJumpAttack()
 	forward_speed_ = dist / jumpTime;
 }
 
-// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
-// 副作用：着地攻撃時にプレイヤーとの接触を確認し、ダメージ（2倍補正）を適用して被弾フラグを立てる
+/// @param collider = 自身の判定領域, check = 衝突相手のコライダー
+/// @details 着地攻撃時にプレイヤーとの接触を確認し、ダメージ（2倍補正）を適用して被弾フラグを立てる
 void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0) return;
@@ -214,8 +208,7 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 	Enemy::OnTrigger(collider, check);
 }
 
-// 入力：なし
-// 副作用：死亡アニメーションの再生と、完了後の報酬付与・オブジェクト削除
+/// @details 死亡アニメーションの再生と、完了後の報酬付与・オブジェクト削除
 void EnemyMonster::DeathEnemy()
 {
 	is_dead_ = true;
@@ -233,8 +226,7 @@ void EnemyMonster::DeathEnemy()
 	model_->Update();
 }
 
-// 入力：なし
-// 副作用：着地攻撃用コライダーの明示的な破棄
+/// @details 着地攻撃用コライダーの明示的な破棄
 void EnemyMonster::Delete()
 {
 	Enemy::Delete();

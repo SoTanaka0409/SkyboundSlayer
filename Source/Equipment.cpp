@@ -2,12 +2,7 @@
 
 
 
-/*
- * 目的（EquipmentのEquipment処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Equipmentの初期化（コンストラクタ）
 Equipment::Equipment()
 {
 
@@ -19,24 +14,14 @@ Equipment::~Equipment()
 }
 
 
-/*
- * 目的（EquipmentのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Equipmentの描画処理
 void Equipment::Draw()
 {
 
 }
 
 
-/*
- * 目的（EquipmentのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Equipmentの状態更新処理
 void Equipment::Update()
 {
 

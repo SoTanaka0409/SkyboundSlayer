@@ -5,12 +5,7 @@
 #include"Player3D.h"
 
 
-/*
- * 目的（HaveMoneyClassのHaveMoneyClass処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief HaveMoneyClassの初期化（コンストラクタ）
 HaveMoneyClass::HaveMoneyClass(int money)
 	:money_(money)
 	
@@ -25,36 +20,21 @@ HaveMoneyClass::~HaveMoneyClass()
 }
 
 
-/*
- * 目的（HaveMoneyClassのAddMoney処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief HaveMoneyClassのAddMoney処理
 void HaveMoneyClass::AddMoney(int money)
 {
 	money_ += money;
 }
 
 
-/*
- * 目的（HaveMoneyClassのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief HaveMoneyClassの状態更新処理
 void HaveMoneyClass::Update()
 {
 
 }
 
 
-/*
- * 目的（HaveMoneyClassのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief HaveMoneyClassの描画処理
 void HaveMoneyClass::Draw()
 {
 	const int panelX = 1564;
@@ -77,12 +57,7 @@ void HaveMoneyClass::Draw()
 	DrawFormatString(panelX + 186, panelY + 17, GetColor(238, 238, 238), "%d", money_);
 }
 
-/*
- * 目的（HaveMoneyClassのPullMoney処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief HaveMoneyClassのPullMoney処理
 void HaveMoneyClass::PullMoney(int money)
 {
 	auto player_ = Master::player_;

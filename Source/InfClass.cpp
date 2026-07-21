@@ -3,12 +3,7 @@
 #include"Master.h"
 
 
-/*
- * 目的（InfClassのInfClass処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief InfClassの初期化（コンストラクタ）
 InfClass::InfClass(int Log_timer,std::string Inf,int num)
 	:Object2D(VGet(0,0,0))
 	,LogNumber(num)
@@ -21,12 +16,7 @@ InfClass::InfClass(int Log_timer,std::string Inf,int num)
 }
 
 
-/*
- * 目的（InfClassのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief InfClassの描画処理
 void InfClass::Draw()
 {
 	int drawX = static_cast<int>(position_.x);
@@ -66,12 +56,7 @@ void InfClass::Draw()
 }
 
 
-/*
- * 目的（InfClassのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief InfClassの状態更新処理
 void InfClass::Update()
 {
 	LogCount++;

@@ -6,23 +6,20 @@
 class AttachmentModel :public Object3D
 {
 public:
-    // 入力: filename(パス), parentModelHandle(親モデル), parentFrameIndex(追従ボーン), offsetPos/Rot(微調整用オフセット)
-    // 出力: なし / 副作用: 追従用モデルのVRAMロードと、親モデル同期用パラメータの初期設定
+/// @param filename(パス), parentModelHandle(親モデル), parentFrameIndex(追従ボーン), offsetPos
+/// @details 追従用モデルのVRAMロードと、親モデル同期用パラメータの初期設定
     AttachmentModel(std::string filename, int parentModelHandle, int parentFrameIndex, VECTOR offsetPos = VGet(0.0f, 0.0f, 0.0f), VECTOR offsetRot = VGet(0.0f, 0.0f, 0.0f));
 
-    // 入力: なし / 出力: なし
-    // 副作用: 動的確保したアタッチ用モデルリソースを破棄し、親モデル破棄時などのメモリリークを防ぐ
+/// @details 動的確保したアタッチ用モデルリソースを破棄し、親モデル破棄時などのメモリリークを防ぐ
     ~AttachmentModel();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 親モデルの指定フレームの行列を取得し、オフセットを加味して自身の姿勢（座標・回転）を完全に同期する
+/// @details 親モデルの指定フレームの行列を取得し、オフセットを加味して自身の姿勢（座標・回転）を完全に同期する
     void Update() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: 親に同期した最新のトランスフォーム情報を用いて、モデルを描画バッファへ登録する
+/// @details 親に同期した最新のトランスフォーム情報を用いて、モデルを描画バッファへ登録する
     void Draw()override;
 
-    // 入力: なし / 出力: 自身のDxLibモデルハンドル / 副作用: なし
+/// @return 自身のDxLibモデルハンドル
     // 外部からマテリアル変更やシェーダー適用などを直接行うために解放する（所有権は渡さない）
     int GetHandle() { return handle_; }
 

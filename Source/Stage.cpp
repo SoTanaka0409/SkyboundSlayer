@@ -1,8 +1,8 @@
-#include"Stage.h"
+ï»¿#include"Stage.h"
 #include"Master.h"
 
-// “ü—Í: ‰ŠúÀ•W, •\Ž¦ƒ‚ƒfƒ‹–¼, “–‚½‚è”»’èƒ‚ƒfƒ‹–¼, ƒXƒP[ƒ‹, ƒeƒNƒXƒ`ƒƒ–¼ / o—Í: ‚È‚µ
-// •›ì—p: •`‰æ—p‚Æ”»’è—pi•s‰ÂŽ‹j‚Ìƒ‚ƒfƒ‹‚ð•ª—£‚µ‚Äƒ[ƒh‚µA–³Œø’l(-1)Žž‚ÍƒfƒtƒHƒ‹ƒgƒXƒP[ƒ‹‚ð“K—p‚·‚é
+/// @param åˆæœŸåº§æ¨™, è¡¨ç¤ºãƒ¢ãƒ‡ãƒ«å, å½“ãŸã‚Šåˆ¤å®šãƒ¢ãƒ‡ãƒ«å, ã‚¹ã‚±ãƒ¼ãƒ«, ãƒ†ã‚¯ã‚¹ãƒãƒ£å
+/// @details æç”»ç”¨ã¨åˆ¤å®šç”¨ï¼ˆä¸å¯è¦–ï¼‰ã®ãƒ¢ãƒ‡ãƒ«ã‚’åˆ†é›¢ã—ã¦ãƒ­ãƒ¼ãƒ‰ã—ã€ç„¡åŠ¹å€¤(-1)æ™‚ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚¹ã‚±ãƒ¼ãƒ«ã‚’é©ç”¨ã™ã‚‹
 Stage::Stage(VECTOR initPos, std::string stageModelName, std::string stageCollisionModelName, VECTOR scale, std::string textureFilename)
 	:Object3D(initPos)
 {
@@ -11,7 +11,7 @@ Stage::Stage(VECTOR initPos, std::string stageModelName, std::string stageCollis
 	model_handle_ = MV1LoadModel(stageModelName.c_str());
 	collision_handle_ = MV1LoadModel(stageCollisionModelName.c_str());
 
-	// ŒÄ‚Ño‚µŒ³‚©‚çƒXƒP[ƒ‹Žw’è‚ªÈ—ª‚³‚ê‚½ê‡‚ÍA]—ˆ‚ÌŒÅ’èƒXƒe[ƒWƒTƒCƒY(300.0f)‚ÅƒtƒH[ƒ‹ƒoƒbƒN‚·‚é
+	// å‘¼ã³å‡ºã—å…ƒã‹ã‚‰ã‚¹ã‚±ãƒ¼ãƒ«æŒ‡å®šãŒçœç•¥ã•ã‚ŒãŸå ´åˆã¯ã€å¾“æ¥ã®å›ºå®šã‚¹ãƒ†ãƒ¼ã‚¸ã‚µã‚¤ã‚º(300.0f)ã§ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹
 	if (scale.x == -1.0f && scale.y == -1.0f && scale.z == -1.0f) {
 		float StageSize = 300.0f;
 		MV1SetScale(model_handle_, VGet(StageSize, 50.0f, StageSize));
@@ -34,29 +34,27 @@ Stage::Stage(VECTOR initPos, std::string stageModelName, std::string stageCollis
 	}
 }
 
-// “ü—Í: ‚È‚µ / o—Í: ‚È‚µ
-// •›ì—p: VRAMã‚Ìƒ‚ƒfƒ‹ƒŠƒ\[ƒXi•`‰æ—pE”»’è—pj‚ð”jŠü‚µAƒV[ƒ“Ø‚è‘Ö‚¦Žž‚Ìƒƒ‚ƒŠƒŠ[ƒN‚ð–h‚®
+/// @details VRAMä¸Šã®ãƒ¢ãƒ‡ãƒ«ãƒªã‚½ãƒ¼ã‚¹ï¼ˆæç”»ç”¨ãƒ»åˆ¤å®šç”¨ï¼‰ã‚’ç ´æ£„ã—ã€ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚ã®ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’é˜²ã
 Stage::~Stage()
 {
 	MV1DeleteModel(model_handle_);
 	MV1DeleteModel(collision_handle_);
 }
 
-// “ü—Í: ‚È‚µ / o—Í: ‚È‚µ
-// •›ì—p: ‚È‚µi”wŒiƒXƒe[ƒW“™‚ÌÃ“I‚ÈŠÂ‹«ƒIƒuƒWƒFƒNƒg‚ð‘z’è‚µ‚Ä‚¢‚é‚½‚ßA“®“I‚Èó‘ÔXV‚Ís‚í‚È‚¢j
+/// @details ãªã—ï¼ˆèƒŒæ™¯ã‚¹ãƒ†ãƒ¼ã‚¸ç­‰ã®é™çš„ãªç’°å¢ƒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æƒ³å®šã—ã¦ã„ã‚‹ãŸã‚ã€å‹•çš„ãªçŠ¶æ…‹æ›´æ–°ã¯è¡Œã‚ãªã„ï¼‰
 void Stage::Update()
 {
 }
 
-// “ü—Í: ‚È‚µ / o—Í: ‚È‚µ
-// •›ì—p: ƒvƒŒƒCƒ„[‚ÉŽ‹”F‚³‚¹‚é‚½‚ß‚Ì•`‰æ—pƒ‚ƒfƒ‹‚Ì‚Ý‚ð•`‰æƒoƒbƒtƒ@‚Ö“o˜^‚·‚é
+/// @details ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¦–èªã•ã›ã‚‹ãŸã‚ã®æç”»ç”¨ãƒ¢ãƒ‡ãƒ«ã®ã¿ã‚’æç”»ãƒãƒƒãƒ•ã‚¡ã¸ç™»éŒ²ã™ã‚‹
 void Stage::Draw()
 {
 	MV1DrawModel(model_handle_);
 }
 
-// “ü—Í: pos1, pos2 (ƒJƒvƒZƒ‹‚ÌŽn“_EI“_), r (”¼Œa) / o—Í: Õ“Ë‚Ì—L–³(bool)
-// •›ì—p: ƒfƒoƒbƒO—LŒøŽž‚ÍÕ“Ëƒ|ƒŠƒSƒ“‚ð‰ÂŽ‹‰»•`‰æ‚µA”»’èŒã‚ÍDxLib‘¤‚Ìƒƒ‚ƒŠ(result)‚ðŠmŽÀ‚É‰ð•ú‚·‚é
+/// @param pos1, pos2 (ã‚«ãƒ—ã‚»ãƒ«ã®å§‹ç‚¹ãƒ»çµ‚ç‚¹), r (åŠå¾„)
+/// @return è¡çªã®æœ‰ç„¡(bool)
+/// @details ãƒ‡ãƒãƒƒã‚°æœ‰åŠ¹æ™‚ã¯è¡çªãƒãƒªã‚´ãƒ³ã‚’å¯è¦–åŒ–æç”»ã—ã€åˆ¤å®šå¾Œã¯DxLibå´ã®ãƒ¡ãƒ¢ãƒª(result)ã‚’ç¢ºå®Ÿã«è§£æ”¾ã™ã‚‹
 bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 {
 	MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_Capsule(collision_handle_, -1, pos1, pos2, r);
@@ -78,14 +76,15 @@ bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 		}
 	}
 
-	// DxLib‚ÌŽd—lãAŽæ“¾‚µ‚½ƒ|ƒŠƒSƒ“î•ñ‚Í–¾Ž¦“I‚É”jŠü‚µ‚È‚¢‚Æƒƒ‚ƒŠƒŠ[ƒN‚ð‹N‚±‚·‚½‚ß•K{
+	// DxLibã®ä»•æ§˜ä¸Šã€å–å¾—ã—ãŸãƒãƒªã‚´ãƒ³æƒ…å ±ã¯æ˜Žç¤ºçš„ã«ç ´æ£„ã—ãªã„ã¨ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’èµ·ã“ã™ãŸã‚å¿…é ˆ
 	MV1CollResultPolyDimTerminate(result);
 
 	return(result.HitNum >= 1);
 }
 
-// “ü—Í: pos1, pos2 (ƒŒƒC‚ÌŽn“_EI“_) / o—Í: Õ“Ë‚µ‚½‹óŠÔÀ•Wi–¢ƒqƒbƒgŽž‚Íƒ[ƒƒxƒNƒgƒ‹j
-// •›ì—p: ‚È‚µiƒŒƒCƒLƒƒƒXƒg‚É‚æ‚é’…’e“_‚ÌŒvŽZ‚âAŽËü‚ª’Ê‚Á‚Ä‚¢‚é‚©‚Ì”»’è‚È‚Ç‚ÉŽg—p‚·‚éj
+/// @param pos1, pos2 (ãƒ¬ã‚¤ã®å§‹ç‚¹ãƒ»çµ‚ç‚¹)
+/// @return è¡çªã—ãŸç©ºé–“åº§æ¨™ï¼ˆæœªãƒ’ãƒƒãƒˆæ™‚ã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ï¼‰
+/// @details ãªã—ï¼ˆãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã«ã‚ˆã‚‹ç€å¼¾ç‚¹ã®è¨ˆç®—ã‚„ã€å°„ç·šãŒé€šã£ã¦ã„ã‚‹ã‹ã®åˆ¤å®šãªã©ã«ä½¿ç”¨ã™ã‚‹ï¼‰
 VECTOR Stage::CheckHit_Line(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
@@ -99,8 +98,9 @@ VECTOR Stage::CheckHit_Line(VECTOR pos1, VECTOR pos2)
 	return ret;
 }
 
-// “ü—Í: pos1, pos2 (ƒŒƒC‚ÌŽn“_EI“_) / o—Í: Õ“Ë‚µ‚½‹óŠÔÀ•Wi–¢ƒqƒbƒgŽž‚Íƒ[ƒƒxƒNƒgƒ‹j
-// •›ì—p: ‰æ–Êã‚Éƒqƒbƒg‚µ‚½À•WƒeƒLƒXƒgA‚Ü‚½‚Í–¢ƒqƒbƒg‚ÌŒxUI‚ð•`‰æ‚·‚éiƒfƒoƒbƒO—p“rj
+/// @param pos1, pos2 (ãƒ¬ã‚¤ã®å§‹ç‚¹ãƒ»çµ‚ç‚¹)
+/// @return è¡çªã—ãŸç©ºé–“åº§æ¨™ï¼ˆæœªãƒ’ãƒƒãƒˆæ™‚ã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ï¼‰
+/// @details ç”»é¢ä¸Šã«ãƒ’ãƒƒãƒˆã—ãŸåº§æ¨™ãƒ†ã‚­ã‚¹ãƒˆã€ã¾ãŸã¯æœªãƒ’ãƒƒãƒˆã®è­¦å‘ŠUIã‚’æç”»ã™ã‚‹ï¼ˆãƒ‡ãƒãƒƒã‚°ç”¨é€”ï¼‰
 VECTOR Stage::CheckHit_LineDebug(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);

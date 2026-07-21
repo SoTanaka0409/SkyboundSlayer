@@ -1,4 +1,4 @@
-#include"DrawHp.h"
+ï»¿#include"DrawHp.h"
 #include"Enemy3D.h"
 #include"Enemy.h"
 #include"Master.h"
@@ -10,12 +10,7 @@
 #include"Scene.h"
 #include"Player3D.h"
 
-/*
- * –Ú“IiDrawHp‚ÌDrawHpˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief DrawHpã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 DrawHp::DrawHp()
 {
 }
@@ -24,23 +19,13 @@ DrawHp::~DrawHp()
 {
 }
 
-/*
- * –Ú“IiDrawHp‚ÌUpdateˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief DrawHpã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void DrawHp::Update()
 {
 	UpdateHpBars();
 }
 
-/*
- * –Ú“IiDrawHp‚ÌUpdateHpBarsˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief DrawHpã®UpdateHpBarså‡¦ç†
 void DrawHp::UpdateHpBars()
 {
 	const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
@@ -55,12 +40,7 @@ void DrawHp::UpdateHpBars()
 	}
 }
 
-/*
- * –Ú“IiDrawHp‚ÌDrawSingleHpBarˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief DrawHpã®DrawSingleHpBarå‡¦ç†
 void DrawHp::DrawSingleHpBar(Enemy* pEne)
 {
 	VECTOR DrawHpBar3D = VAdd(pEne->GetPosition(), VGet(0.0f, kHpBarOffsetY, 0.0f));
@@ -79,12 +59,7 @@ void DrawHp::DrawSingleHpBar(Enemy* pEne)
 	}
 }
 
-/*
- * –Ú“IiDrawHp‚ÌDrawˆ—‚ğs‚¤‚½‚ßj
- * [“ü—Í] ˆø”QÆ
- * [o—Í] –ß‚è’lQÆ
- * [•›ì—p] ƒNƒ‰ƒX“à•”ó‘Ô‚Ì•ÏX‚È‚Ç
- */
+/// @brief DrawHpã®æç”»å‡¦ç†
 void DrawHp::Draw()
 {
 }

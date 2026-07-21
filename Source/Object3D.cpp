@@ -1,4 +1,4 @@
-#include "Object3D.h"
+ï»¿#include "Object3D.h"
 #include "Master.h"
 #include "ObjectManager.h"
 #include "Scene3D.h"
@@ -8,9 +8,8 @@
 #include "Stage.h"
 #include "wall.h"
 
-// “ü—ÍFinitPos = ‰ŠúÀ•W
-// o—ÍF‚È‚µ
-// •›ì—pF¶¬‚³‚ê‚½ƒCƒ“ƒXƒ^ƒ“ƒX‚ðŒ»Ý‚ÌƒV[ƒ“‚ÌƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ö“o˜^
+/// @param initPos = åˆæœŸåº§æ¨™
+/// @details ç”Ÿæˆã•ã‚ŒãŸã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã¸ç™»éŒ²
 Object3D::Object3D(VECTOR initPos)
 	: position_(initPos)
 	, rotation_(VGet(0.0f, 0.0f, 0.0f))
@@ -25,45 +24,40 @@ Object3D::~Object3D()
 {
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pF‚È‚µ
 void Object3D::Draw()
 {
 }
 
-// “ü—ÍF‚È‚µ
-// •›ì—pF‚È‚µ
 void Object3D::Update()
 {
 }
 
-// “ü—ÍFcollider = Ž©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘ŠŽè‚ÌƒRƒ‰ƒCƒ_[
-// •›ì—pFÕ“ËŠJŽnŽž‚Ìˆ—i•K—v‚É‰ž‚¶‚Ä”h¶ƒNƒ‰ƒX‚ÅƒI[ƒo[ƒ‰ƒCƒhj
+/// @param collider = è‡ªèº«ã®åˆ¤å®šé ˜åŸŸ, check = è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @details è¡çªé–‹å§‹æ™‚ã®å‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 void Object3D::OnEnter(Collider* collider, Collider* check)
 {
 }
 
-// “ü—ÍFcollider = Ž©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘ŠŽè‚ÌƒRƒ‰ƒCƒ_[
-// •›ì—pFÕ“ËŒp‘±Žž‚Ìˆ—i•K—v‚É‰ž‚¶‚Ä”h¶ƒNƒ‰ƒX‚ÅƒI[ƒo[ƒ‰ƒCƒhj
+/// @param collider = è‡ªèº«ã®åˆ¤å®šé ˜åŸŸ, check = è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @details è¡çªç¶™ç¶šæ™‚ã®å‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 void Object3D::OnTrigger(Collider* collider, Collider* check)
 {
 }
 
-// “ü—ÍFcollider = Ž©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘ŠŽè‚ÌƒRƒ‰ƒCƒ_[
-// •›ì—pFÕ“ËI—¹Žž‚Ìˆ—i•K—v‚É‰ž‚¶‚Ä”h¶ƒNƒ‰ƒX‚ÅƒI[ƒo[ƒ‰ƒCƒhj
+/// @param collider = è‡ªèº«ã®åˆ¤å®šé ˜åŸŸ, check = è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @details è¡çªçµ‚äº†æ™‚ã®å‡¦ç†ï¼ˆå¿…è¦ã«å¿œã˜ã¦æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 void Object3D::OnExit(Collider* collider, Collider* check)
 {
 }
 
-// “ü—ÍFƒJƒvƒZƒ‹/ƒ‰ƒCƒ“”»’è—pƒpƒ‰ƒ[ƒ^, gravity = d—Í’l
-// o—ÍF‚È‚µ
-// •›ì—pFŒ»Ý‚ÌÀ•Wiposition_j‚ðƒXƒe[ƒW‚Ì‚‚³‚ÉƒXƒiƒbƒvA‚Ü‚½‚ÍáŠQ•¨‚Æ‚ÌÕ“Ë‚É‚æ‚éÀ•W‰Ÿ‚µo‚µ
+/// @param ã‚«ãƒ—ã‚»ãƒ«
+/// @details ç¾åœ¨ã®åº§æ¨™ï¼ˆposition_ï¼‰ã‚’ã‚¹ãƒ†ãƒ¼ã‚¸ã®é«˜ã•ã«ã‚¹ãƒŠãƒƒãƒ—ã€ã¾ãŸã¯éšœå®³ç‰©ã¨ã®è¡çªã«ã‚ˆã‚‹åº§æ¨™æŠ¼ã—å‡ºã—
 void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float capsuleRadius, float lineTopY, float lineBottomY, float gravity)
 {
 	VECTOR hit_pos_ = VGet(0.0f, 0.0f, 0.0f);
 	bool isHit = false;
 
-	// ƒA[ƒLƒeƒNƒ`ƒƒÝŒvF‘SƒIƒuƒWƒFƒNƒg‚ª‹¤’Ê‚µ‚Ä—˜—p‚Å‚«‚é’nŒ`’Ç]ˆ—‚ðŠî’êƒNƒ‰ƒX‚ÉW–ñ‚·‚é‚±‚Æ‚ÅAƒLƒƒƒ‰ƒNƒ^[‚ÌÚ’nˆ—‚âáŠQ•¨‚Ì‚ß‚èž‚Ý–hŽ~‚ðŠeƒNƒ‰ƒX‚ÅÄŽÀ‘•‚·‚éŽèŠÔ‚ðÈ‚­
+	// ã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£è¨­è¨ˆï¼šå…¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå…±é€šã—ã¦åˆ©ç”¨ã§ãã‚‹åœ°å½¢è¿½å¾“å‡¦ç†ã‚’åŸºåº•ã‚¯ãƒ©ã‚¹ã«é›†ç´„ã™ã‚‹ã“ã¨ã§ã€ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æŽ¥åœ°å‡¦ç†ã‚„éšœå®³ç‰©ã®ã‚ã‚Šè¾¼ã¿é˜²æ­¢ã‚’å„ã‚¯ãƒ©ã‚¹ã§å†å®Ÿè£…ã™ã‚‹æ‰‹é–“ã‚’çœã
 	const auto& objList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
 	for (int i = 0; i < objList.size(); i++)
 	{
@@ -81,7 +75,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 		}
 	}
 
-	// •¨—‹““®FÚ’n”»’èŽž‚Í’nŒ`‚Ì‚‚³‚ð”½‰f‚µA”ñÚ’nŽž‚Íd—Í‚É‚æ‚é—Ž‰ºˆ—‚ð“K—p‚·‚é‚±‚Æ‚ÅA•¨—ƒGƒ“ƒWƒ“‚È‚µ‚Å‚àŽ©‘R‚ÈÚ’nŠ´‚ð’S•Û
+	// ç‰©ç†æŒ™å‹•ï¼šæŽ¥åœ°åˆ¤å®šæ™‚ã¯åœ°å½¢ã®é«˜ã•ã‚’åæ˜ ã—ã€éžæŽ¥åœ°æ™‚ã¯é‡åŠ›ã«ã‚ˆã‚‹è½ä¸‹å‡¦ç†ã‚’é©ç”¨ã™ã‚‹ã“ã¨ã§ã€ç‰©ç†ã‚¨ãƒ³ã‚¸ãƒ³ãªã—ã§ã‚‚è‡ªç„¶ãªæŽ¥åœ°æ„Ÿã‚’æ‹…ä¿
 	if (isHit)
 	{
 		position_.y = hit_pos_.y;
@@ -96,7 +90,7 @@ void Object3D::TerrainFollow(float capsuleBottomY, float capsuleTopY, float caps
 		}
 	}
 
-	// Õ“Ë‰ðŒˆFƒXƒe[ƒWƒIƒuƒWƒFƒNƒgi¬•¨‚È‚Çj‚Æ‚Ì•¨—“I‚Èd‚È‚è‚ðŒŸ’m‚µA‹——£‚Ì‹t”‚ð—p‚¢‚½‰Ÿ‚µo‚µˆ—‚ÅƒIƒuƒWƒFƒNƒg“¯Žm‚Ì‚ß‚èž‚Ý‚ð‘¦À‚É‰ðÁ
+	// è¡çªè§£æ±ºï¼šã‚¹ãƒ†ãƒ¼ã‚¸ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆå°ç‰©ãªã©ï¼‰ã¨ã®ç‰©ç†çš„ãªé‡ãªã‚Šã‚’æ¤œçŸ¥ã—ã€è·é›¢ã®é€†æ•°ã‚’ç”¨ã„ãŸæŠ¼ã—å‡ºã—å‡¦ç†ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒå£«ã®ã‚ã‚Šè¾¼ã¿ã‚’å³åº§ã«è§£æ¶ˆ
 	if (tag_ != Object3D::Tag3D_Object && tag_ != Object3D::Tag3D_Stage)
 	{
 		const auto& objs = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);

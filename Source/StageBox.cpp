@@ -2,12 +2,7 @@
 
 
 
-/*
- * 目的（StageBoxのStageBox処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageBoxの初期化（コンストラクタ）
 StageBox::StageBox(VECTOR centerPos,VECTOR centerPos2, VECTOR topLeft, VECTOR bottomRight,int color1_,int color2_,int color3_,int color4_)
 
 {
@@ -100,12 +95,7 @@ StageBox::~StageBox()
 }
 
 
-/*
- * 目的（StageBoxのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageBoxの描画処理
 void StageBox::Draw()
 {
 	DrawPolygon3D(vertex_, 8, DX_NONE_GRAPH,true);
@@ -113,12 +103,7 @@ void StageBox::Draw()
 }
 
 
-/*
- * 目的（StageBoxのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageBoxの状態更新処理
 void StageBox::Update()
 {
 

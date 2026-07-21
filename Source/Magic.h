@@ -12,40 +12,35 @@ class CapsuleCollider;
 class Magic : public Object3D
 {
 public:
-    // 入力: filename, initPos(初期座標), r(判定半径), damage(攻撃力), speed, movevec(進行方向), count(初期時間), time(寿命)
-    // 出力: なし / 副作用: 魔法の視覚リソースをロードし、空間に対して着弾判定用のSphereColliderを動的配置する
+/// @param filename, initPos(初期座標), r(判定半径), damage(攻撃力), speed, movevec(進行方向), count(初期時間), time(寿命)
+/// @details 魔法の視覚リソースをロードし、空間に対して着弾判定用のSphereColliderを動的配置する
     Magic(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time);
 
-    // 入力: なし / 出力: なし
-    // 副作用: 動的確保したコライダーやグラフィックハンドルを破棄し、弾幕展開時のメモリリークを確実に防ぐ
+/// @details 動的確保したコライダーやグラフィックハンドルを破棄し、弾幕展開時のメモリリークを確実に防ぐ
     ~Magic();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 生存タイマーを進行させ、寿命（DeleteTime）超過時にDeath()を呼び出して自身を破棄予約状態にする
+/// @details 生存タイマーを進行させ、寿命（DeleteTime）超過時にDeath()を呼び出して自身を破棄予約状態にする
     void Update();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 最新のワールド座標に追従させて、魔法のエフェクト画像（またはモデル）を描画バッファへ登録する
+/// @details 最新のワールド座標に追従させて、魔法のエフェクト画像（またはモデル）を描画バッファへ登録する
     void Draw();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 進行方向(move_vec_)と速度(speed_)に基づき座標を更新する（派生クラスでホーミング等の軌道計算を上書き想定）
+/// @details 進行方向(move_vec_)と速度(speed_)に基づき座標を更新する（派生クラスでホーミング等の軌道計算を上書き想定）
     virtual void Move();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 着弾エフェクトの生成トリガーを発火し、マネージャーに対して自身の安全な破棄リクエスト(delete_)を送信する
+/// @details 着弾エフェクトの生成トリガーを発火し、マネージャーに対して自身の安全な破棄リクエスト(delete_)を送信する
     virtual void Death();
 
-    // 入力: collider(自身の判定), check(相手の判定) / 出力: なし
-    // 副作用: 敵や地形への着弾を検知し、対象へのダメージ適用と自身の消滅フラグを立てる
+/// @param collider(自身の判定), check(相手の判定)
+/// @details 敵や地形への着弾を検知し、対象へのダメージ適用と自身の消滅フラグを立てる
     virtual void OnEnter(Collider* collider, Collider* check) override;
 
-    // 入力: collider(自身の判定), check(相手の判定) / 出力: なし
-    // 副作用: 貫通弾など、接触中の継続ダメージ処理が必要な場合に使用する（基本は空実装）
+/// @param collider(自身の判定), check(相手の判定)
+/// @details 貫通弾など、接触中の継続ダメージ処理が必要な場合に使用する（基本は空実装）
     virtual void OnTrigger(Collider* collider, Collider* check) override;
 
-    // 入力: collider(自身の判定), check(相手の判定) / 出力: なし
-    // 副作用: 判定から抜けた際の特殊処理（基本は空実装）
+/// @param collider(自身の判定), check(相手の判定)
+/// @details 判定から抜けた際の特殊処理（基本は空実装）
     virtual void OnExit(Collider* collider, Collider* check) override;
 
 protected:

@@ -1,12 +1,7 @@
 ﻿#include"BuffManager.h"
 
 
-/*
- * 目的（BuffManagerのBuffManager処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief BuffManagerの初期化（コンストラクタ）
 BuffManager::BuffManager()
 {
 
@@ -18,24 +13,14 @@ BuffManager::~BuffManager()
 }
 
 
-/*
- * 目的（BuffManagerのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief BuffManagerの描画処理
 void BuffManager::Draw()
 {
 
 }
 
 
-/*
- * 目的（BuffManagerのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief BuffManagerの状態更新処理
 void BuffManager::Update()
 {
 	for (auto b : buffList)
@@ -47,12 +32,7 @@ void BuffManager::Update()
 }
 
 
-/*
- * 目的（BuffManagerのAddBuff処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief BuffManagerのAddBuff処理
 void BuffManager::AddBuff(Buff* date)
 {
 	
@@ -76,12 +56,7 @@ void BuffManager::AddBuff(Buff* date)
 }
 
 
-/*
- * 目的（BuffManagerのDeleteList処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief BuffManagerのDeleteList処理
 void BuffManager::DeleteList()
 {
 	for (auto b=buffList.begin();b!=buffList.end();)
@@ -100,12 +75,7 @@ void BuffManager::DeleteList()
 }
 
 
-/*
- * 目的（BuffManagerのGetBuff処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief BuffManagerのGetBuff処理
 float BuffManager::GetBuff(Object3D::StatusState state)
 {
 	for (auto b : buffList)

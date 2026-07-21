@@ -6,12 +6,7 @@
 #include"InputManager.h"
 
 
-/*
- * 目的（haikeiのhaikei処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief haikeiの初期化（コンストラクタ）
 haikei::haikei(VECTOR initPos, std::string filename)
 	:Object2D(initPos)
 
@@ -23,12 +18,7 @@ haikei::~haikei()
 }
 
 
-/*
- * 目的（haikeiのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief haikeiの状態更新処理
 void haikei::Update()
 {
 	Object2D::Update();
@@ -36,12 +26,7 @@ void haikei::Update()
 }
 
 
-/*
- * 目的（haikeiのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief haikeiの描画処理
 void haikei::Draw()
 {
 	texture_->Draw();

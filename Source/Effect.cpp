@@ -2,12 +2,7 @@
 
 
 
-/*
- * 目的（EffectのEffect処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Effectの初期化（コンストラクタ）
 Effect::Effect()
 {
 	effect_ = new EffectInfo();
@@ -16,12 +11,7 @@ Effect::Effect()
 }
 
 
-/*
- * 目的（EffectのPlay処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffectのPlay処理
 void Effect::Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime)
 {
 	active_ = true;
@@ -55,12 +45,7 @@ Effect::~Effect()
 
 
 
-/*
- * 目的（EffectのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Effectの状態更新処理
 void Effect::Update()
 {
 	bool isEnd = true;
@@ -111,12 +96,7 @@ void Effect::Update()
 }
 
 
-/*
- * 目的（EffectのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Effectの描画処理
 void Effect::Draw()
 {
 	SetUseZBufferFlag(TRUE);

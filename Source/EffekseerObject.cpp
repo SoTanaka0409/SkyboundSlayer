@@ -2,12 +2,7 @@
 #include "EffekseerManager.h"
 
 
-/*
- * 目的（EffekseerObjectのEffekseerObject処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffekseerObjectの初期化（コンストラクタ）
 EffekseerObject::EffekseerObject(const std::string& name, const char* filepath, VECTOR initPos, Object3D* parent, bool isFollow, float magnification, float speed)
 	: Object3D(initPos)
 	, parent_(parent)
@@ -41,12 +36,7 @@ EffekseerObject::~EffekseerObject()
 }
 
 
-/*
- * 目的（EffekseerObjectのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffekseerObjectの状態更新処理
 void EffekseerObject::Update()
 {
 	if (playing_handle_ == -1 || !EffekseerManager::GetInstance()->IsPlaying(playing_handle_))
@@ -73,12 +63,7 @@ void EffekseerObject::Update()
 }
 
 
-/*
- * 目的（EffekseerObjectのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief EffekseerObjectの描画処理
 void EffekseerObject::Draw()
 {
 	// Handled by EffekseerManager::Draw()

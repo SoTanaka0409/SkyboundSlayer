@@ -11,26 +11,22 @@ private:
     static EffectPool* sInstance;
 
 public:
-    // 入力: なし / 出力: シングルトンインスタンス / 副作用: なし
+/// @return シングルトンインスタンス
     static EffectPool* GetInstance();
 
-    // 入力: なし / 出力: なし
-    // 副作用: POOL_SIZE分のエフェクトインスタンスを事前に動的確保し、待機状態にする
+/// @details POOL_SIZE分のエフェクトインスタンスを事前に動的確保し、待機状態にする
     EffectPool();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 確保した全エフェクトインスタンスを破棄し、メモリリークを防ぐ
+/// @details 確保した全エフェクトインスタンスを破棄し、メモリリークを防ぐ
     ~EffectPool();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 使用中の全エフェクトの生存時間をカウントし、寿命が尽きたものを非アクティブ（待機状態）へ戻す
+/// @details 使用中の全エフェクトの生存時間をカウントし、寿命が尽きたものを非アクティブ（待機状態）へ戻す
     void Update();
 
-    // 入力: なし / 出力: なし
-    // 副作用: アクティブな全てのエフェクトインスタンスを描画バッファへ順次登録する
+/// @details アクティブな全てのエフェクトインスタンスを描画バッファへ順次登録する
     void Draw();
 
-    // 入力: initPos, filename, Changecolor, Size, VisibleTime / 出力: なし
-    // 副作用: プール内の未使用エフェクトを検索し、指定パラメータで初期化してアクティブ状態へ切り替える
+/// @param initPos, filename, Changecolor, Size, VisibleTime
+/// @details プール内の未使用エフェクトを検索し、指定パラメータで初期化してアクティブ状態へ切り替える
     void Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor, float Size, float VisibleTime);
 };

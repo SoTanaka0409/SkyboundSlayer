@@ -29,41 +29,36 @@ private:
     bool is_new_enemy_flag_;// 生成直後の初期化処理（落下アニメーション等）の実行状態を管理するフラグ
 
 public:
-    // 入力: filename, 初期座標, HP, 移動速度, 攻撃力, 判定サイズ, 索敵半径群, 所持金, アニメ分離フラグ
-    // 出力: なし / 副作用: 敵の3Dモデルや各用途（索敵・攻撃等）のコライダー群の動的確保と初期化
+/// @param filename, 初期座標, HP, 移動速度, 攻撃力, 判定サイズ, 索敵半径群, 所持金, アニメ分離フラグ
+/// @details 敵の3Dモデルや各用途（索敵・攻撃等）のコライダー群の動的確保と初期化
     Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_);
     virtual ~Enemy();
 
     virtual void Draw() override;
     virtual void Update() override;
 
-    // 入力: なし / 出力: なし
-    // 副作用: 現在のAIステート（待機・追跡等）に基づく目標座標への移動ベクトルの算出と座標更新
+/// @details 現在のAIステート（待機・追跡等）に基づく目標座標への移動ベクトルの算出と座標更新
     virtual void Move();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 移動方向へモデルの向きを補間計算し、急な振り向きによる不自然な描画を防ぐ
+/// @details 移動方向へモデルの向きを補間計算し、急な振り向きによる不自然な描画を防ぐ
     virtual void RotationByMove();
 
-    // 入力: damage(被ダメージ量) / 出力: なし
-    // 副作用: HPの減算処理および、0以下になった際の死亡ステート（is_dead_）への移行発火
+/// @param damage(被ダメージ量)
+/// @details HPの減算処理および、0以下になった際の死亡ステート（is_dead_）への移行発火
     virtual void Damage(float damage);
 
     virtual void AttackList();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 攻撃インターバルの進行と、条件合致時におけるプレイヤーへのダメージ判定の生成
+/// @details 攻撃インターバルの進行と、条件合致時におけるプレイヤーへのダメージ判定の生成
     virtual void Attack();
 
     virtual void Delete();
     virtual void DeathColliderPosition();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 死亡アニメーションの再生開始や、不要になった索敵・攻撃コライダーの無効化を行う
+/// @details 死亡アニメーションの再生開始や、不要になった索敵・攻撃コライダーの無効化を行う
     virtual void DeathEnemy();
 
-    // 入力: なし / 出力: なし
-    // 副作用: 死亡時に確率計算を行い、プレイヤーへ所持金(have_money_)やドロップアイテムを付与する
+/// @details 死亡時に確率計算を行い、プレイヤーへ所持金(have_money_)やドロップアイテムを付与する
     virtual void GiveRewards();
 
     virtual void UpdateColliderPosition();
@@ -93,8 +88,8 @@ public:
 
     bool IsHitSearchFlag() const { return is_hit_search_flag_; }
 
-    // 入力: collider(自身の判定), check(相手の判定) / 出力: なし
-    // 副作用: 索敵コライダーにプレイヤーが侵入した際、待機から追跡ステートへAIを切り替える
+/// @param collider(自身の判定), check(相手の判定)
+/// @details 索敵コライダーにプレイヤーが侵入した際、待機から追跡ステートへAIを切り替える
     virtual void OnEnter(Collider* collider, Collider* check) override;
     virtual void OnTrigger(Collider* collider, Collider* check) override;
     virtual void OnExit(Collider* collider, Collider* check) override;

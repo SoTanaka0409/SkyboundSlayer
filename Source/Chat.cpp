@@ -4,12 +4,7 @@
 
 
 
-/*
- * 目的（ChatのChat処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Chatの初期化（コンストラクタ）
 Chat::Chat()
     :first_font_(0)
 {
@@ -22,12 +17,7 @@ Chat::~Chat()
 }
 
 
-/*
- * 目的（ChatのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief Chatの描画処理
 void Chat::Draw(std::string chatdate)
 {
    
@@ -40,12 +30,7 @@ void Chat::Draw(std::string chatdate)
    
 }
 
-/*
- * 目的（ChatのReset処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ChatのReset処理
 void Chat::Reset()
 {
     (fontsize);

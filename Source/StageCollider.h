@@ -10,44 +10,31 @@ class CapsuleCollider;
 class StageCollider : public Object3D
 {
 public:
-	// 入力：なし
-	// 出力：なし
-	// 副作用：ボスエリア移行用の判定コライダーおよび演出用テクスチャリソースの動的生成
+/// @details ボスエリア移行用の判定コライダーおよび演出用テクスチャリソースの動的生成
 	StageCollider();
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：確保したコライダーとテクスチャリソースの安全な解放
+/// @details 確保したコライダーとテクスチャリソースの安全な解放
 	~StageCollider();
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：プレイヤーが判定内にいる際の「警告」や「画面フェード」など、移行演出レイヤーの2Dオーバーレイ描画
+/// @details プレイヤーが判定内にいる際の「警告」や「画面フェード」など、移行演出レイヤーの2Dオーバーレイ描画
 	void Draw() override;
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：トランジション演出用のタイマー（Count/Time）の進行と、コライダー座標の同期処理
+/// @details トランジション演出用のタイマー（Count
 	void Update() override;
 
-	// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
-	// 出力：なし
-	// 副作用：プレイヤーの侵入検知時の初期処理（フェード演出タイマーの起動など）
+/// @param collider = 自身の判定領域, check = 衝突相手のコライダー
+/// @details プレイヤーの侵入検知時の初期処理（フェード演出タイマーの起動など）
 	virtual void OnEnter(Collider* collider, Collider* check) override;
 
-	// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
-	// 出力：なし
-	// 副作用：プレイヤーが判定内に留まっている間、ゲームマネージャーへボスフェーズへの移行シグナルを送信する
+/// @param collider = 自身の判定領域, check = 衝突相手のコライダー
+/// @details プレイヤーが判定内に留まっている間、ゲームマネージャーへボスフェーズへの移行シグナルを送信する
 	virtual void OnTrigger(Collider* collider, Collider* check) override;
 
-	// 入力：collider = 自身の判定領域, check = 衝突相手のコライダー
-	// 出力：なし
-	// 副作用：プレイヤーが判定から離脱した際の演出キャンセルや状態変数のリセット
+/// @param collider = 自身の判定領域, check = 衝突相手のコライダー
+/// @details プレイヤーが判定から離脱した際の演出キャンセルや状態変数のリセット
 	virtual void OnExit(Collider* collider, Collider* check) override;
 
-	// 入力：なし
-	// 出力：なし
-	// 副作用：地形の移動等に合わせて、トリガーコライダーの空間座標を最新の位置へ追従更新する
+/// @details 地形の移動等に合わせて、トリガーコライダーの空間座標を最新の位置へ追従更新する
 	void ColliderUpdate();
 
 private:

@@ -9,12 +9,7 @@
 #include"Player3D.h"
 
 
-/*
- * 目的（StageColliderのStageCollider処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageColliderの初期化（コンストラクタ）
 StageCollider::StageCollider()
 	:Object3D(VGet(0,1000,0))
 	,Time(50)
@@ -43,12 +38,7 @@ StageCollider::~StageCollider()
 }
 
 
-/*
- * 目的（StageColliderのDraw処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageColliderの描画処理
 void StageCollider::Draw()
 {
 	
@@ -56,24 +46,14 @@ void StageCollider::Draw()
 }
 
 
-/*
- * 目的（StageColliderのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageColliderの状態更新処理
 void StageCollider::Update()
 {
 
 }
 
 
-/*
- * 目的（StageColliderのOnEnter処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageColliderのOnEnter処理
 void StageCollider::OnEnter(Collider* collider, Collider* check)
 {
 	
@@ -82,12 +62,7 @@ void StageCollider::OnEnter(Collider* collider, Collider* check)
 }
 
 
-/*
- * 目的（StageColliderのOnTrigger処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageColliderのOnTrigger処理
 void StageCollider::OnTrigger(Collider* collider, Collider* check)
 {
 	
@@ -114,24 +89,14 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 }
 
 
-/*
- * 目的（StageColliderのOnExit処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageColliderのOnExit処理
 void StageCollider::OnExit(Collider* collider, Collider* check)
 {
 	
 }
 
 
-/*
- * 目的（StageColliderのColliderUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief StageColliderのColliderUpdate処理
 void StageCollider::ColliderUpdate()
 {
 	

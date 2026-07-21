@@ -6,12 +6,7 @@
 #include"Player3D.h"
 
 
-/*
- * 目的（ItemManagerのItemManager処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ItemManagerの初期化（コンストラクタ）
 ItemManager::ItemManager()
 {
 }
@@ -20,23 +15,13 @@ ItemManager::~ItemManager()
 }
 
 
-/*
- * 目的（ItemManagerのUpdate処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ItemManagerの状態更新処理
 void ItemManager::Update()
 {
 }
 
 
-/*
- * 目的（ItemManagerのAddItem処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ItemManagerのAddItem処理
 void ItemManager::AddItem(Item::ItemInformation* mItem)
 {
     if (mItem == nullptr) return;
@@ -104,12 +89,7 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 }
 
 
-/*
- * 目的（ItemManagerのUseItem処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ItemManagerのUseItem処理
 void ItemManager::UseItem(Item::ItemID id)
 {
 	auto mpplayer = Master::player_;
@@ -139,12 +119,7 @@ void ItemManager::UseItem(Item::ItemID id)
 }
 
 
-/*
- * 目的（ItemManagerのEffect処理を行うため）
- * [入力] 引数参照
- * [出力] 戻り値参照
- * [副作用] クラス内部状態の変更など
- */
+/// @brief ItemManagerのEffect処理
 void ItemManager::Effect(Item::ItemID id)
 {
     auto mpplayer = Master::player_;
