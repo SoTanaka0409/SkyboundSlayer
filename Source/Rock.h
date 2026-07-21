@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"dxlib.h"
 #include"Object3D.h"
 #include"string"
@@ -21,12 +21,8 @@ public:
 
   
 	void Update();
-
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnEnter(Collider* collider, Collider* check);
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnTrigger(Collider* collider, Collider* check);
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual void OnExit(Collider* collider, Collider* check);
 private:
 	Model* model_;

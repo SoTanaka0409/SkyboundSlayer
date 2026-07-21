@@ -1,38 +1,43 @@
 ﻿#pragma once
-#include"Item.h"
-#include"vector"
-#include"list"
-#include<map>
+#include "DxLib.h"
+#include "Item.h"
+#include <list>
+#include <map>
+#include <vector>
 
+/// @brief インベントリ内の所持アイテムの追加・使用・効果適用を一括管理するクラス
 class ItemManager
 {
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	/// @brief ItemManagerのコンストラクタ
 	ItemManager();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	/// @brief ItemManagerのデストラクタ
 	~ItemManager();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	/// @brief アイテム状態や使用タイマー等の毎フレーム更新処理を行う
 	void Update();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	/// @brief 新しいアイテムを所持リストに追加（または所持数を増加）する
+	/// @param mItem 追加するアイテム情報構造体へのポインタ
 	void AddItem(Item::ItemInformation* mItem);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+	/// @brief 指定したIDのアイテムを1つ消費・使用する
+	/// @param id 使用するアイテムの識別ID
 	void UseItem(Item::ItemID id);
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	/// @brief アイテムの獲得フラグ状態を取得する
+	/// @return bool アイテムを獲得した場合はtrue
 	bool GetItemFlag() { return get_itemflag_; }
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+	/// @brief アイテム使用時の実際のステータス回復・バフ付与等の効果処理を実行する
+	/// @param id 効果を適用するアイテムの識別ID
 	void Effect(Item::ItemID id);
 
+public:
+	std::list<Item::ItemInformation*> item_list_; ///< 所持しているアイテム情報のリスト
+	Item::ItemInformation Information;             ///< 作業・参照用アイテム情報構造体
 
-	std::list<Item::ItemInformation*>item_list_;
-	Item::ItemInformation Information;
 private:
-
-	bool get_itemflag_;
-
-
-
+	bool get_itemflag_;                            ///< アイテム獲得イベント発生検知フラグ
 };

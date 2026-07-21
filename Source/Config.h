@@ -21,12 +21,10 @@ public:
 	static constexpr float StageBossWallDistance = 4000.0f;
 
 	// ステージ中心座標
-    // [入力] なし [出力] VECTOR: ステージ中心座標 [副作用] なし
 	static VECTOR GetStageCenter()
 	{
 		return VGet(-1500.0f, 0.0f, -5000.0f);
 	}
-    // [入力] なし [出力] VECTOR: ボスステージ中心座標 [副作用] なし	
 	static VECTOR GetStageBossCenter()
 	{
 		return VGet(0, 5040, -20000);

@@ -1,4 +1,4 @@
-#include"Tree.h"
+ï»¿#include"Tree.h"
 #include"ObjectManager.h"
 #include"Scene3D.h"
 #include"SceneManager.h"
@@ -9,7 +9,7 @@
 
 Tree::Tree(std::string filename, VECTOR initPos,float Size,float getSize,bool HitFlag)
 	:Object3D(initPos)
-	,size_(getSize)//ã‚ãŸã‚Šåˆ¤å®šãEã£ã‚µã‚¤ã‚º
+	,size_(getSize)
 {
 	model_ = new Model(filename, initPos);
 	model_->SetScale(VGet(Size, Size, Size));
@@ -24,25 +24,13 @@ Tree::~Tree()
 	delete model_;
 }
 
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
 void Tree::Update()
 {
-	// åœ°å½¢ã«æ²¿ãEEçE
+	
 	TerrainFollow();
 
 }
 
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
 void Tree::Draw()
 {
 	
@@ -56,32 +44,14 @@ void Tree::Draw()
 	model_->Draw();
 }
 
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
 void Tree::OnEnter(Collider* collider, Collider* check)
 {
 	
 }
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
 void Tree::OnTrigger(Collider* collider, Collider* check)
 {
 
 }
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
 void Tree::OnExit(Collider* collider, Collider* check)
 {
 

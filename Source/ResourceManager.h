@@ -33,12 +33,9 @@ class ResourceManager
 {
 public:
     // コンストラクタ
-// [入力] なし [出力] なし [副作用] メンバ変数の初期化
 	ResourceManager();
     // コンストラクタ
-// [入力] なし [出力] なし [副作用] メンバ変数の初期化
     // デストラクタ
-// [入力] なし [出力] なし [副作用] リソースの解放
 	~ResourceManager();
 
 	int LoadModel(std::string pathName);	// モデルリソース生成
@@ -46,7 +43,6 @@ public:
 	DivGraphData* LoadDivGraphics(std::string pathName, int allNum, int numX, int numY);	// 分割されたグラフィックリソース生成
 
     // 現在読み込んでいるリソースの総数を取得する
-// [入力] なし [出力] int: リソース数 [副作用] なし
 	int GetTotalResource() { return static_cast<int>(resourceMapList.size() + graphicResourceMapList.size() + divGraphicResourceMapList.size()); }
 
 private:

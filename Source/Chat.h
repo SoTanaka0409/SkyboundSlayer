@@ -1,22 +1,24 @@
 ﻿#pragma once
-#include"dxlib.h"
-#include"string"
-#include"Texture.h"
+#include "DxLib.h"
+#include "Texture.h"
+#include <string>
 
+/// @brief 会話ウィンドウ・テキストメッセージ（チャットUI）の描画および制御を行うクラス
 class Chat
 {
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Chat();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Chat();
-	
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+	/// @brief 指定した文字列メッセージをチャットUI枠内に描画する
+	/// @param chatdate 表示するテキスト文字列
 	void Draw(std::string chatdate);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+
+	/// @brief チャット描画設定やタイマー状態をリセットする
 	void Reset();
-private: 
-	Texture* texture_;
-	int first_font_;
-	int fontsize;
+
+private:
+	Texture* texture_; ///< 会話ウィンドウ背景枠等のテクスチャポインタ
+	int first_font_;    ///< 描画に使用するフォントハンドル
+	int fontsize;       ///< フォントサイズ
 };

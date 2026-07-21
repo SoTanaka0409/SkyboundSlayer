@@ -6,22 +6,14 @@
 class SeparateModelAnimation
 {
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     SeparateModelAnimation(int modelHandle);   // コンストラクタ
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     ~SeparateModelAnimation();  // デストラクタ
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void Update();  // 更新
-
-   
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void ChangeAnimation(AnimationState state, int index = 0); // モーション切り替え処理
 
    
     // モーションデータの追加
     // note: 分割されているモーションをデータとして登録する。
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void AddAnimation(AnimationState state, std::string filename);
 
    
@@ -29,28 +21,20 @@ public:
     // note: vector配列にデータが格納されているため、
     //       毎回ハンドルを検索する手間が出てきてしまうので、
     //       それを行うための関数。
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     int GetAnimationHandle(AnimationState state);
 
 
     // ループ設定
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void SetLoop(bool isLoop) { loop_ = isLoop; }
     // ループ終了時に再生するモーション
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void SetLoopFinishState(AnimationState state) { loop_finish_state_ = state; }
     // モーションのブレンド設定
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void SetAnimationBlend(bool isBlend);
 
     // 現在再生されているモーションの取得
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     AnimationState GetNowState() { return state_; }
     // モーションのループが終了しているかどうか
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     bool IsLoopFinish() { return loop_finish_; }
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
     void SetAnimationCount(float count) { animation_count_ = count; }
 
 private:
@@ -71,7 +55,7 @@ private:
     AnimationState loop_finish_state_;   // ループが終わった時に再生したいモーション番号
     bool loop_finish_;      // モーションループが終わったかどうか
 
-    // ★New★
+  
     // モーションデータのリスト
     std::vector<AnimationInfo*> animation_info_list_;
 };

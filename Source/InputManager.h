@@ -1,37 +1,42 @@
 ﻿#pragma once
+#include "DxLib.h"
+
+/// @brief キーボードおよびマウスの入力状態（押下・離脱・ホールド判定）を一括管理する静的クラス
 class InputManager
 {
 public:
-    // コンストラクタ
-// [入力] なし [出力] なし [副作用] なし
+	/// @brief InputManagerのコンストラクタ
 	InputManager();
 
-    // コンストラクタ
-// [入力] なし [出力] なし [副作用] なし
-    // デストラクタ
-// [入力] なし [出力] なし [副作用] なし
+	/// @brief InputManagerのデストラクタ
 	~InputManager();
 
-	// 指定されたキーが押された瞬間だけ 1 を返す関数
+	/// @brief 指定されたキーが押された瞬間だけ1（真）を返す
+	/// @param KeyCode DxLibのキーコード（例: KEY_INPUT_SPACE）
+	/// @return int 押された瞬間であれば1、それ以外は0
 	static int CheckDownKey(int KeyCode);
 
-	// 指定されたキーが離された瞬間だけ 1 を返す関数
+	/// @brief 指定されたキーが離された瞬間だけ1（真）を返す
+	/// @param KeyCode DxLibのキーコード
+	/// @return int 離された瞬間であれば1、それ以外は0
 	static int CheckUpKey(int KeyCode);
 
-	// 指定されたキーを押し続けている間１を返す関数
+	/// @brief 指定されたキーが押され続けている間1（真）を返す
+	/// @param KeyCode DxLibのキーコード
+	/// @return int 押下中であれば1、それ以外は0
 	static int CheckPressKey(int KeyCode);
 
-	// 左マウスクリック（タップ）された瞬間だけ 1 を返す関数
+	/// @brief マウスの左クリック（タップ）が発生した瞬間だけ1（真）を返す
+	/// @return int クリックされた瞬間であれば1、それ以外は0
 	static int CheckMouseClickLeft();
 
-	// マウスカーソルの現在座標を取得する関数
-    // マウス座標を取得する
-// [入力] int& x, int& y [出力] なし [副作用] 引数への代入
+	/// @brief マウスカーソルの現在の画面座標を取得する
+	/// @param x X座標の格納先参照
+	/// @param y Y座標の格納先参照
 	static void GetMousePos(int& x, int& y);
 
 private:
-	static int mouse_down_buffer_;
-
-	static int down_buffer_[256];
-	static int up_buffer_[256];
+	static int mouse_down_buffer_;    ///< 前回フレームのマウス左ボタン押下状態バッファ
+	static int down_buffer_[256];     ///< 各キーの押下瞬間判定用状態バッファ
+	static int up_buffer_[256];       ///< 各キーの離脱瞬間判定用状態バッファ
 };

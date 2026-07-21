@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 #include"Object3D.h"
 #include<vector>
@@ -7,17 +7,14 @@
 class Wall :public Object3D
 {
 public:
-	//centerPos,,,’†SÀ•W
-	//topLeft... ¶ãÀ•W
-	//bottomRight...‰E‰ºÀ•W
-	Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottomRight);//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//centerPos,,,ä¸­å¿ƒåº§æ¨™
+	//topLeft... å·¦ä¸Šåº§æ¨™
+	//bottomRight...å³ä¸‹åº§æ¨™
+	Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottomRight);//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
-	~Wall();//ƒfƒXƒgƒ‰ƒNƒ^
-
-// [“ü—Í]  [o—Í]  [•›ì—p] 
-	void Update()override;//XV
-// [“ü—Í]  [o—Í]  [•›ì—p] 
-	void Draw()override;//•`‰æ
+	~Wall();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	void Update()override;//æ›´æ–°
+	void Draw()override;//æç”»
 
 	std::vector<VERTEX3D>GetVertex()
 	{
@@ -33,9 +30,9 @@ public:
 	}
 
 private:
-	int graph_handle_; //‰æ‘œƒnƒ“ƒhƒ‹
+	int graph_handle_; //ç”»åƒãƒãƒ³ãƒ‰ãƒ«
 
-	VERTEX3D vertex_[4];//’¸“_î•ñ(ÅI“I‚ÉlŠp‚Å•`‚­‚Ì‚Å4‚Â)
+	VERTEX3D vertex_[4];//é ‚ç‚¹æƒ…å ±(æœ€çµ‚çš„ã«å››è§’ã§æãã®ã§4ã¤)
 
 
 

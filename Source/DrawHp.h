@@ -1,27 +1,21 @@
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 #include"Object3D.h"
 #include<vector>
 #include"Enemy3D.h"
 
-class Enemy; // ‘O•ûéŒ¾
+class Enemy; // å‰æ–¹å®£è¨€
 
 class DrawHp 
 {
 public:
-	//centerPos,,,’†SÀ•W
-	//topLeft... ¶ãÀ•W
-	//bottomRight...‰E‰ºÀ•W
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-	DrawHp();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-	~DrawHp();//ƒfƒXƒgƒ‰ƒNƒ^
-
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-	void Update();//XV
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-	void Draw();//•`‰æ
+	//centerPos,,,ä¸­å¿ƒåº§æ¨™
+	//topLeft... å·¦ä¸Šåº§æ¨™
+	//bottomRight...å³ä¸‹åº§æ¨™
+	DrawHp();//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~DrawHp();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	void Update();//æ›´æ–°
+	void Draw();//æç”»
 
 private:
 	void UpdateHpBars();

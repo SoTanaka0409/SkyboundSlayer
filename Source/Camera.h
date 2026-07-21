@@ -1,108 +1,116 @@
-#pragma once
-#include"DxLib.h"
-#include"Model.h"
-#include"TitleScene.h"
-//ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
+ï»¿#pragma once
+#include "DxLib.h"
+#include "Model.h"
+#include "TitleScene.h"
+
 class Object3D;
 
+/// @brief ä¸‰äººç§°è¿½å¾“ãƒ»ã‚«ãƒƒãƒˆã‚·ãƒ¼ãƒ³ãƒ»ç”»é¢æºã‚Œï¼ˆã‚·ã‚§ã‚¤ã‚¯ï¼‰ç­‰ã‚’ç®¡ç†ã™ã‚‹3Dã‚«ãƒ¡ãƒ©ã‚¯ãƒ©ã‚¹
 class Camera
 {
 public:
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
-	Camera();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	Camera();
+	~Camera();
 
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
-    // ƒfƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
-	~Camera();//ƒfƒXƒgƒ‰ƒNƒ^
+	/// @brief ã‚«ãƒ¡ãƒ©ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŠã‚ˆã³å„ç¨®å¤‰æ•°ã‚’åˆæœŸåŒ–ã™ã‚‹
+	void Initialize();
 
-
-    // ƒJƒƒ‰‚Ì‰Šúİ’è‚ğs‚¤
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒJƒƒ‰À•W‚Æ‰ñ“]‚Ì‰Šú‰»
-	void Initialize();//‰Šú‰»
-
-    // ƒJƒƒ‰‚ÌI—¹ˆ—‚ğs‚¤
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	/// @brief ã‚«ãƒ¡ãƒ©ã®çµ‚äº†å‡¦ç†ã‚’è¡Œã†
 	void Finalize();
 
-    // ƒJƒƒ‰‚ÌXVˆ—‚ğs‚¤
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] —h‚ê‚â’Ç]‚ÌŒvZ
-	void Update(); // XV
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
-    // 3lÌ‹“_ƒJƒƒ‰‚ÌXV‚ğs‚¤
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒvƒŒƒCƒ„[À•W‚ÉŠî‚Ã‚­’Ç]ˆ—
-	void UpdateThirdPersonCamera(); // OlÌƒJƒƒ‰XVˆ—
+	/// @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚«ãƒ¡ãƒ©åº§æ¨™ãƒ»æ³¨è¦–ç‚¹ã®æ›´æ–°ã‚’è¡Œã†
+	void Update();
 
-    // ƒ}ƒEƒX“ü—Í‚É‚æ‚éƒJƒƒ‰‰ñ“]‚ğXV‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] target_rot_ ‚ÌXV
-	void UpdateRotation();//‰ñ“]ˆ—
+	/// @brief ä¸‰äººç§°è¦–ç‚¹ï¼ˆTPSï¼‰ç”¨ã‚«ãƒ¡ãƒ©ã®è¿½å¾“ãƒ»ä½ç½®è¨ˆç®—ã‚’è¡Œã†
+	void UpdateThirdPersonCamera();
 
-    // ƒJƒƒ‰‚ÌŒ»İÀ•W‚ğæ“¾‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] VECTOR [•›ì—p] ‚È‚µ
-	VECTOR GetPosition() { return position_; }//À•Wæ“¾
-	VECTOR GetlookAtPosition() { return mvLookAtPosition; }//’‹“_æ“¾
+	/// @brief ãƒã‚¦ã‚¹å…¥åŠ›ç­‰ã«åŸºã¥ãã‚«ãƒ¡ãƒ©ã®å›è»¢è§’è¨ˆç®—ã‚’è¡Œã†
+	void UpdateRotation();
 
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+	/// @brief ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—ã™ã‚‹
+	/// @return VECTOR ã‚«ãƒ¡ãƒ©ã®åº§æ¨™
+	VECTOR GetPosition() { return position_; }
+
+	/// @brief ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹åº§æ¨™ã‚’å–å¾—ã™ã‚‹
+	/// @return VECTOR æ³¨è¦–ç‚¹ã®åº§æ¨™
+	VECTOR GetlookAtPosition() { return mvLookAtPosition; }
+
+	/// @brief å‚ç›´æ–¹å‘ï¼ˆä»°ä¿¯è§’ï¼‰ã®å›è»¢è§’åº¦ã‚’å–å¾—ã™ã‚‹
+	/// @return float å‚ç›´è§’åº¦
 	float GetLookCamera() { return vertical_angle_; }
+
+	/// @brief æ°´å¹³æ–¹å‘ã®å›è»¢è§’åº¦ã‚’åŠ ç®—ã™ã‚‹
+	/// @param angle åŠ ç®—ã™ã‚‹è§’åº¦
 	void AddHorizontalAngle(float angle) { horizontal_angle_ += angle; }
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+
+	/// @brief å‚ç›´æ–¹å‘ã®å›è»¢è§’åº¦ã‚’è¨­å®šã™ã‚‹
+	/// @param hor è¨­å®šã™ã‚‹å‚ç›´è§’åº¦
 	void SetLookCamera(float hor) { vertical_angle_ = hor; }
 
-	VECTOR GetLookCamera2() { return dir; }//VECTORƒo[ƒWƒ‡ƒ“
-	void SetLookCamera2(VECTOR dir2) { dir = dir2; }	void SetCutsceneMode(bool isCutscene) { is_cutscene_mode_ = isCutscene; }
+	/// @brief ã‚«ãƒ¡ãƒ©ã®è¦–ç·šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—ã™ã‚‹
+	/// @return VECTOR è¦–ç·šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+	VECTOR GetLookCamera2() { return dir; }
+
+	/// @brief ã‚«ãƒ¡ãƒ©ã®è¦–ç·šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨­å®šã™ã‚‹
+	/// @param dir2 è¨­å®šã™ã‚‹è¦–ç·šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+	void SetLookCamera2(VECTOR dir2) { dir = dir2; }
+
+	/// @brief ã‚«ãƒƒãƒˆã‚·ãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+	/// @param isCutscene æœ‰åŠ¹ã«ã™ã‚‹å ´åˆã¯true
+	void SetCutsceneMode(bool isCutscene) { is_cutscene_mode_ = isCutscene; }
+
+	/// @brief ã‚«ãƒƒãƒˆã‚·ãƒ¼ãƒ³æ™‚ã«æ³¨è¦–ã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåº§æ¨™ã‚’è¨­å®šã™ã‚‹
+	/// @param pos æ³¨è¦–ã™ã‚‹ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
 	void SetCutsceneTarget(VECTOR pos) { mCutsceneTargetPos = pos; }
 
-	// šNewš
-	// ‰æ–Ê—h‚ê
-    // ƒJƒƒ‰‚Ì—h‚êiƒVƒFƒCƒNjŒvZ‚ğs‚¤
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] draw_pos_ ‚Æ draw_target_ ‚Ìˆê“I‚ÈƒIƒtƒZƒbƒg
+	/// @brief ç”»é¢æºã‚Œï¼ˆã‚«ãƒ¡ãƒ©ã‚·ã‚§ã‚¤ã‚¯ï¼‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆåº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹
 	void Shake();
-    // ƒJƒƒ‰‚Ì—h‚êƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚é
-// [“ü—Í] float time, float width, float angleSpeed, float stepTime [o—Í] ‚È‚µ [•›ì—p] ƒVƒFƒCƒN•Ï”‚Ì‰Šú‰»
+
+	/// @brief ç”»é¢æºã‚Œï¼ˆã‚«ãƒ¡ãƒ©ã‚·ã‚§ã‚¤ã‚¯ï¼‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šãƒ»åˆæœŸåŒ–ã™ã‚‹
+	/// @param time æºã‚Œã®ç¶™ç¶šæ™‚é–“
+	/// @param width æºã‚Œã®æŒ¯å¹…ï¼ˆå¹…ï¼‰
+	/// @param angleSpeed å‘¨æœŸå›è»¢é€Ÿåº¦
+	/// @param stepTime æ™‚é–“çµŒéä¿‚æ•°ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ: 1.0fï¼‰
 	void SetupShake(float time, float width, float angleSpeed, float stepTime = 1.0f);
 
 private:
-	// ’‹“_‚ÌŒvZˆ—
+	/// @brief ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåº§æ¨™ã«åŸºã¥ãæ³¨è¦–ç‚¹ï¼ˆLookAtï¼‰åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
+	/// @param targetPos åŸºæº–ã¨ãªã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåº§æ¨™
 	void UpdateLookAtPosition(VECTOR targetPos);
-	// ƒJƒƒ‰À•W‚ÌŒvZEİ’èˆ—
+
+	/// @brief è¨ˆç®—ã•ã‚ŒãŸè§’åº¦ã¨è·é›¢ã«åŸºã¥ãã‚«ãƒ¡ãƒ©ã®ä½ç½®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
 	void UpdateCameraPosition();
 
-	// === ’è” ===
-	static constexpr float kTargetOffsetY = 240.0f;
-	static constexpr float kDefaultOffsetY = 160.0f;
-	static constexpr float kCameraDistance = 500.0f;
-	static constexpr float kCameraCalcRadius = 400.0f;
-	static constexpr float kMouseSensitivity = 0.05f;
+	// === å®šæ•°ï¼ˆæ„Ÿåº¦ã‚„è·é›¢ä»¥å¤–ã®ä¸å¤‰ãªã‚‚ã®ï¼‰ ===
+	static constexpr float kTargetOffsetY = 240.0f;   ///< ã‚¿ãƒ¼ã‚²ãƒƒãƒˆæ³¨è¦–ç‚¹ã®Yè»¸ã‚ªãƒ•ã‚»ãƒƒãƒˆé‡
+	static constexpr float kDefaultOffsetY = 160.0f;  ///< é€šå¸¸æ™‚ã®ã‚«ãƒ¡ãƒ©Yè»¸ã‚ªãƒ•ã‚»ãƒƒãƒˆé‡
+	static constexpr float kCameraCalcRadius = 400.0f; ///< ã‚«ãƒ¡ãƒ©ä½ç½®è¨ˆç®—ç”¨ã®çƒä½“åŠå¾„ï¼ˆè·é›¢ï¼‰
 
-	bool is_cutscene_mode_ = false;
-	VECTOR mCutsceneTargetPos = VGet(0.0f, 0.0f, 0.0f);
-	float horizontal_angle_;  //…•½•ûŒüƒAƒ“ƒOƒ‹
-	float vertical_angle_;   // ‚’¼•ûŒüƒAƒ“ƒOƒ‹
+	// â€» kMouseSensitivity ã¨ kCameraDistance ã¯è¨­å®šã‹ã‚‰å³æ™‚å–å¾—ã™ã‚‹ãŸã‚å®šæ•°ã‹ã‚‰å¤–ã—ã¾ã™
 
-	VECTOR position_; //ƒJƒƒ‰À•W
-	VECTOR mvLookAtPosition;   //ƒJƒƒ‰‚Ì’ˆÚ“]À•W   À•WŒÅ’è (¡‰ñ‚Í)
-	VECTOR dir;
+	bool is_cutscene_mode_ = false;       ///< ã‚«ãƒƒãƒˆã‚·ãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+	VECTOR mCutsceneTargetPos;            ///< ã‚«ãƒƒãƒˆã‚·ãƒ¼ãƒ³æ™‚ã«æ³¨è¦–ã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåº§æ¨™
+	float horizontal_angle_;              ///< æ°´å¹³æ–¹å‘ã®å›è»¢è§’åº¦ï¼ˆæ–¹ä½è§’ï¼‰
+	float vertical_angle_;                ///< å‚ç›´æ–¹å‘ã®å›è»¢è§’åº¦ï¼ˆä»°ä¿¯è§’ï¼‰
 
-	Object3D* target_;    //ƒJƒƒ‰‚ğŒü‚¯‚é‘ÎÛ
-	Model* model_;
+	VECTOR position_;                     ///< ã‚«ãƒ¡ãƒ©ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰ä½ç½®åº§æ¨™
+	VECTOR mvLookAtPosition;              ///< ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
+	VECTOR dir;                           ///< ã‚«ãƒ¡ãƒ©ã®è¦–ç·šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 
+	Object3D* target_;                    ///< è¿½å¾“å¯¾è±¡ã®3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	Model* model_;                        ///< é–¢é€£ãƒ¢ãƒ‡ãƒ«ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
-	int centerX = 640;
-	int centerY = 360;
-	const float ROTATE_SPEED = 0.2f;//‰ñ“]‘¬“x
-	float target_angle_;//–Ú•W‚Ì‰ñ“]’n
-	float angle_;//Œ»İ‚Ì‰ñ“]’n
+	int centerX = 640;                    ///< ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«å›ºå®šãƒ»å·®åˆ†è¨ˆç®—åŸºæº–ã®ç”»é¢ä¸­å¤®Xåº§æ¨™
+	int centerY = 360;                    ///< ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«å›ºå®šãƒ»å·®åˆ†è¨ˆç®—åŸºæº–ã®ç”»é¢ä¸­å¤®Yåº§æ¨™
+	const float ROTATE_SPEED = 0.2f;      ///< ã‚«ãƒ¡ãƒ©ã®å›è»¢è£œé–“é€Ÿåº¦å®šæ•°
+	float target_angle_;                  ///< è£œé–“ç›®æ¨™ã¨ã™ã‚‹å›è»¢è§’åº¦
+	float angle_;                         ///< ç¾åœ¨ã®è£œé–“è¨ˆç®—ç”¨å›è»¢è§’åº¦
 
-	float shake_angle_;
-	float shake_time_counter_;
-	float shake_time_;
-	float shake_width_;
-	float shake_angle_speed_;
-	float step_time_;
-	VECTOR mvShakePosition;
+	float shake_angle_;                   ///< ã‚·ã‚§ã‚¤ã‚¯è¨ˆç®—ç”¨ã‚µã‚¤ãƒ³æ³¢ã®ç¾åœ¨è§’åº¦
+	float shake_time_counter_;            ///< ã‚·ã‚§ã‚¤ã‚¯å‡¦ç†ã®çµŒéæ™‚é–“ã‚«ã‚¦ãƒ³ã‚¿
+	float shake_time_;                    ///< ã‚·ã‚§ã‚¤ã‚¯ã®ç·ç¶™ç¶šæ™‚é–“
+	float shake_width_;                   ///< ã‚·ã‚§ã‚¤ã‚¯ã®æŒ¯å¹…ï¼ˆæºã‚Œå¹…ï¼‰
+	float shake_angle_speed_;             ///< ã‚·ã‚§ã‚¤ã‚¯ã®å‘¨æœŸé€Ÿåº¦
+	float step_time_;                     ///< ã‚·ã‚§ã‚¤ã‚¯ã®ã‚¹ãƒ†ãƒƒãƒ—é€²è¡Œæ™‚é–“
+	VECTOR mvShakePosition;               ///< ã‚«ãƒ¡ãƒ©åº§æ¨™ã«åŠ ç®—ã•ã‚Œã‚‹ã‚·ã‚§ã‚¤ã‚¯ç”¨ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆãƒ™ã‚¯ãƒˆãƒ«
 };

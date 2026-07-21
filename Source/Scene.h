@@ -1,43 +1,46 @@
-#pragma once
-#include"DxLib.h"
+ï»¿#pragma once
+#include "DxLib.h"
 
-//‘O•ûéŒ¾
+// å‰æ–¹å®£è¨€
 class ObjectManager;
 class ColliderManager;
-//ƒV[ƒ“‚ÌŠî’êƒNƒ‰ƒX
-// ƒ^ƒCƒgƒ‹AƒQ[ƒ€AƒŠƒUƒ‹ƒg‰æ–Ê‚È‚Ç
-// ‰æ–Ê‚ğì‚éÛ‚Í‚±‚ÌƒNƒ‰ƒX‚ğŒp³‚·‚é
+
+/// @brief å…¨ã¦ã®ç”»é¢ï¼ˆã‚¿ã‚¤ãƒˆãƒ«ã€ã‚²ãƒ¼ãƒ æœ¬ç·¨ã€ãƒªã‚¶ãƒ«ãƒˆç­‰ï¼‰ã®åŸºåº•ã¨ãªã‚‹æŠ½è±¡ã‚·ãƒ¼ãƒ³ã‚¯ãƒ©ã‚¹
+/// @details æ–°ã—ã„ã‚·ãƒ¼ãƒ³ç”»é¢ã‚’ä½œæˆã™ã‚‹å ´åˆã¯æœ¬ã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã¦å®Ÿè£…ã™ã‚‹
 class Scene
 {
 public:
+	/// @brief Sceneã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Scene();
 
-   
-    	Scene();
+	/// @brief Sceneã‚¯ãƒ©ã‚¹ã®ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	virtual ~Scene();
 
-  
-    	virtual ~Scene();
+	/// @brief ã‚·ãƒ¼ãƒ³ã®åˆæœŸåŒ–å‡¦ç†ï¼ˆç´”ç²‹ä»®æƒ³é–¢æ•°ï¼‰
+	/// @details ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚„å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã‚’è¡Œã†
+	virtual void Initialize() = 0;
 
-	//‰Šú‰»
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-    	virtual void Initialize() = 0;
-	//XV
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-    	virtual void Update();
-	//•`‰æ
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-    	virtual void Draw();
-	//I—¹ˆ—
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-    	virtual void Finalize() = 0;
+	/// @brief ã‚·ãƒ¼ãƒ³ã®æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°å‡¦ç†
+	/// @details ç™»éŒ²ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç­‰ã®æ›´æ–°ã‚’å‘¼ã³å‡ºã™
+	virtual void Update();
 
+	/// @brief ã‚·ãƒ¼ãƒ³ã®æç”»å‡¦ç†
+	/// @details ç™»éŒ²ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç­‰ã®æç”»ã‚’å‘¼ã³å‡ºã™
+	virtual void Draw();
 
-	//ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ìæ“¾
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-    	ObjectManager* GetObjectManager() { return object_manager_; }
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
-    	ColliderManager* GetCollisionManager() { return collider_manager_; }
+	/// @brief ã‚·ãƒ¼ãƒ³ã®çµ‚äº†ãƒ»è§£æ”¾å‡¦ç†ï¼ˆç´”ç²‹ä»®æƒ³é–¢æ•°ï¼‰
+	/// @details ã‚·ãƒ¼ãƒ³ç ´æ£„æ™‚ã®ãƒªã‚½ãƒ¼ã‚¹è§£æ”¾å‡¦ç†ã‚’è¡Œã†
+	virtual void Finalize() = 0;
+
+	/// @brief ã‚·ãƒ¼ãƒ³ã«ç´ã¥ãObjectManagerã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã™ã‚‹
+	/// @return ObjectManager* ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç®¡ç†ã‚¯ãƒ©ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	ObjectManager* GetObjectManager() { return object_manager_; }
+
+	/// @brief ã‚·ãƒ¼ãƒ³ã«ç´ã¥ãColliderManagerã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã™ã‚‹
+	/// @return ColliderManager* ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ç®¡ç†ã‚¯ãƒ©ã‚¹ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	ColliderManager* GetCollisionManager() { return collider_manager_; }
 
 private:
-	ObjectManager* object_manager_;  //ƒIƒuƒWƒFƒNƒgŠÇ—ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
-	ColliderManager* collider_manager_;
+	ObjectManager* object_manager_;     ///< ã“ã®ã‚·ãƒ¼ãƒ³ã«æ‰€å±ã™ã‚‹3D/2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä¸€æ‹¬ç®¡ç†ã™ã‚‹ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
+	ColliderManager* collider_manager_; ///< ã“ã®ã‚·ãƒ¼ãƒ³ã®è¡çªåˆ¤å®šã‚’ä¸€æ‹¬ç®¡ç†ã™ã‚‹ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 };

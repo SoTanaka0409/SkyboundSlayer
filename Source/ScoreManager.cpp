@@ -2,13 +2,6 @@
 #include"ScoreManager.h"
 #include"DxLib.h"
 
-/*
- * スコア管理クラスのコンストラクタ
- * [入力] float score: 初期スコア
- * [出力] なし
- * [副作用] 各スコア変数を初期値で設定
- */
-
 /// @brief ScoreManagerのコンストラクタ
 /// @param float score
 /// @details 各種変数の初期化
@@ -21,25 +14,11 @@ ScoreManager::ScoreManager(float score)
 
 }
 
-/*
- * スコア管理クラスのデストラクタ
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
-
 /// @brief ScoreManagerのデストラクタ
 ScoreManager::~ScoreManager()
 {
 
 }
-
-/*
- * 初期化処理
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
 
 /// @brief 初期化処理
 /// @details スコアの読み込み
@@ -48,25 +27,11 @@ void ScoreManager::Initialize()
 
 }
 
-/*
- * 更新処理
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
-
 /// @brief スコアの更新処理
 void ScoreManager::Update()
 {
 
 }
-
-/*
- * 描画処理
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
 
 /// @brief スコアの描画処理
 /// @details 画面描画
@@ -75,13 +40,6 @@ void ScoreManager::Draw()
 
 }
 
-/*
- * セーブデータ出力（未実装）
- * [入力] SaveDate date: 表示データ
- * [出力] なし
- * [副作用] なし
- */
-
 /// @brief セーブデータの情報を表示するため
 /// @param SaveDate date
 /// @details 画面描画
@@ -89,13 +47,6 @@ void ScoreManager::PrintSaveDate(SaveDate date)
 {
 
 }
-
-/*
- * ハイスコアのファイル保存
- * [入力] なし
- * [出力] なし
- * [副作用] savedate.txt にスコアランキングを書き込む
- */
 
 /// @brief ハイスコアをファイルに保存するため
 /// @details テキストファイルへの書き込み
@@ -143,13 +94,6 @@ void ScoreManager::SaveHighScore()
 	fclose(fp);
 }
 
-/*
- * ハイスコアのファイル読み込み
- * [入力] なし
- * [出力] なし
- * [副作用] savedate.txt からスコアランキングを読み込みメンバ変数を更新
- */
-
 /// @brief ハイスコアをファイルから読み込むため
 /// @details ファイル読み込みと変数の更新
 void ScoreManager::LoadHighScore()
@@ -180,38 +124,17 @@ void ScoreManager::LoadHighScore()
 	fclose(fp);
 }
 
-/*
- * 名前保存（未実装）
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
-
 /// @brief 名前をファイルに保存するため
 /// @details テキストファイルへの書き込み
 void ScoreManager::SaveName()
 {
 }
 
-/*
- * 名前読み込み（未実装）
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
-
 /// @brief 名前をファイルから読み込むため
 /// @details ファイル読み込みと変数の更新
 void ScoreManager::LoadName()
 {
 }
-
-/*
- * 終了処理
- * [入力] なし
- * [出力] なし
- * [副作用] なし
- */
 
 /// @brief スコアの終了処理
 /// @details スコアの保存

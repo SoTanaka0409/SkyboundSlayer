@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include <iostream>
@@ -6,28 +6,22 @@
 class ScoreManager
 {
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	// [“ü—Í] float score: ‰ŠúƒXƒRƒA [o—Í] ‚È‚µ [•›ì—p] ƒƒ“ƒo•Ï”‚Ì‰Šú‰»
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	ScoreManager(float score);
 	
-	// ƒfƒXƒgƒ‰ƒNƒ^
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~ScoreManager();
 
-	// ‰Šú‰»
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// åˆæœŸåŒ–
 	void Initialize();
 	
-	// XV
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// æ›´æ–°
 	void Update();
 	
-	// •`‰æ
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// æç”»
 	void Draw();
 	
-	// I—¹ˆ—
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// çµ‚äº†å‡¦ç†
 	void Finalize();
 
 	struct SaveDate
@@ -36,26 +30,22 @@ public:
 		float score;
 	};
 
-	// ƒZ[ƒuƒf[ƒ^•\¦
-	// [“ü—Í] SaveDate date: •\¦ƒf[ƒ^ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿è¡¨ç¤º
 	void PrintSaveDate(SaveDate date);
 
-	// ƒXƒRƒA‰ÁZ
-	// [“ü—Í] float add: ‰ÁZ—Ê [o—Í] ‚È‚µ [•›ì—p] score_ ‚É‰ÁZ
+	// ã‚¹ã‚³ã‚¢åŠ ç®—
 	void AddScore(float add)
 	{
 		score_ += add;
 	}
 
-	// ƒXƒRƒAæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] int: Œ»İ‚ÌƒXƒRƒA [•›ì—p] ‚È‚µ
+	// ã‚¹ã‚³ã‚¢å–å¾—
 	int GetScore()
 	{
 		return static_cast<int>(score_);
 	}
 
-	// ƒXƒRƒAƒŠƒZƒbƒg
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒXƒRƒA‚ÆíÑ‚ğ‰Šú‰»
+	// ã‚¹ã‚³ã‚¢ãƒªã‚»ãƒƒãƒˆ
 	void ResetScore()
 	{
 		score_ = 0;
@@ -63,88 +53,73 @@ public:
 		ResetStats();
 	}
 
-	// ƒnƒCƒXƒRƒAæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] int: ƒnƒCƒXƒRƒA1ˆÊ [•›ì—p] ‚È‚µ
+	// ãƒã‚¤ã‚¹ã‚³ã‚¢å–å¾—
 	int GetHighScore()
 	{
 		return static_cast<int>(high_score_);
 	}
 
-	// ƒnƒCƒXƒRƒAæ“¾2
-	// [“ü—Í] ‚È‚µ [o—Í] int: ƒnƒCƒXƒRƒA2ˆÊ [•›ì—p] ‚È‚µ
+	// ãƒã‚¤ã‚¹ã‚³ã‚¢å–å¾—2
 	int GetHighScore2()
 	{
 		return static_cast<int>(high_score2_);
 	}
 
-	// ƒnƒCƒXƒRƒAæ“¾3
-	// [“ü—Í] ‚È‚µ [o—Í] int: ƒnƒCƒXƒRƒA3ˆÊ [•›ì—p] ‚È‚µ
+	// ãƒã‚¤ã‚¹ã‚³ã‚¢å–å¾—3
 	int GetHighScore3()
 	{
 		return static_cast<int>(high_score3_);
 	}
 
-	// –¼‘OIDæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] int: –¼‘OID [•›ì—p] ‚È‚µ
+	// åå‰IDå–å¾—
 	int Getname()
 	{
 		return name_id_;
 	}
 
-	// –¼‘Oæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] std::string: –¼‘O1ˆÊ [•›ì—p] ‚È‚µ
+	// åå‰å–å¾—
 	std::string GetName()
 	{
 		return name_;
 	}
 
-	// –¼‘Oæ“¾1
-	// [“ü—Í] ‚È‚µ [o—Í] std::string: –¼‘O [•›ì—p] ‚È‚µ
+	// åå‰å–å¾—1
 	std::string GetName1()
 	{
 		return name1_;
 	}
 
-	// –¼‘Oæ“¾2
-	// [“ü—Í] ‚È‚µ [o—Í] std::string: –¼‘O2ˆÊ [•›ì—p] ‚È‚µ
+	// åå‰å–å¾—2
 	std::string GetName2()
 	{
 		return name2_;
 	}
 
-	// –¼‘Oæ“¾3
-	// [“ü—Í] ‚È‚µ [o—Í] std::string: –¼‘O3ˆÊ [•›ì—p] ‚È‚µ
+	// åå‰å–å¾—3
 	std::string GetName3()
 	{
 		return name3_;
 	}
 
-	// ƒnƒCƒXƒRƒA•Û‘¶
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«‚İ
+	// ãƒã‚¤ã‚¹ã‚³ã‚¢ä¿å­˜
 	void SaveHighScore();
 	
-	// ƒnƒCƒXƒRƒA“Ç‚İ‚İ
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒeƒLƒXƒgƒtƒ@ƒCƒ‹‚©‚ç‚Ì“Ç‚İ‚İ‚Æƒƒ“ƒoXV
+	// ãƒã‚¤ã‚¹ã‚³ã‚¢èª­ã¿è¾¼ã¿
 	void LoadHighScore();
 
-	// ƒtƒ‰ƒOİ’è
-	// [“ü—Í] bool flag [o—Í] ‚È‚µ [•›ì—p] is_normal_flag_ ‚ğXV
+	// ãƒ•ãƒ©ã‚°è¨­å®š
 	void SetDoFlag(bool flag) { is_normal_flag_ = flag; }
 	
-	// ƒtƒ‰ƒOæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] bool: ƒtƒ‰ƒOó‘Ô [•›ì—p] ‚È‚µ
+	// ãƒ•ãƒ©ã‚°å–å¾—
 	bool IsDoFlag() { return is_normal_flag_; }
 
-	// –¼‘O•Û‘¶
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// åå‰ä¿å­˜
 	void SaveName();
 	
-	// –¼‘O“Ç‚İ‚İ
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+	// åå‰èª­ã¿è¾¼ã¿
 	void LoadName();
 
-	// íÑƒŠƒZƒbƒg
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] íÑŠÖ˜Aƒƒ“ƒo•Ï”‚ğ‰Šú‰»
+	// æˆ¦ç¸¾ãƒªã‚»ãƒƒãƒˆ
 	void ResetStats()
 	{
 		defeated_enemies_ = 0;
@@ -155,24 +130,19 @@ public:
 		is_result_victory_ = true;
 	}
 
-	// “G“¢”°”‰ÁZ
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] defeated_enemies_ ‰ÁZ
+	// æ•µè¨ä¼æ•°åŠ ç®—
 	void AddDefeatedEnemy() { defeated_enemies_++; }
 	
-	// “G“¢”°”æ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] int: “¢”°” [•›ì—p] ‚È‚µ
+	// æ•µè¨ä¼æ•°å–å¾—
 	int GetDefeatedEnemies() const { return defeated_enemies_; }
 
-	// ƒ|[ƒVƒ‡ƒ“g—p‰ñ”‰ÁZ
-	// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] used_potions_ ‰ÁZ
+	// ãƒãƒ¼ã‚·ãƒ§ãƒ³ä½¿ç”¨å›æ•°åŠ ç®—
 	void AddUsedPotion() { used_potions_++; }
 	
-	// ƒ|[ƒVƒ‡ƒ“g—p‰ñ”æ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] int: g—p‰ñ” [•›ì—p] ‚È‚µ
+	// ãƒãƒ¼ã‚·ãƒ§ãƒ³ä½¿ç”¨å›æ•°å–å¾—
 	int GetUsedPotions() const { return used_potions_; }
 
-	// ÅIƒXƒe[ƒ^ƒXİ’è
-	// [“ü—Í] float hp, float atk, float spd [o—Í] ‚È‚µ [•›ì—p] ƒXƒe[ƒ^ƒXƒƒ“ƒoXV
+	// æœ€çµ‚ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¨­å®š
 	void SetFinalStats(float hp, float atk, float spd)
 	{
 		final_hp_ = hp;
@@ -180,39 +150,36 @@ public:
 		final_speed_ = spd;
 	}
 	
-	// ÅIHPæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] float: HP [•›ì—p] ‚È‚µ
+	// æœ€çµ‚HPå–å¾—
 	float GetFinalHp() const { return final_hp_; }
 	
-	// ÅIUŒ‚—Íæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] float: UŒ‚—Í [•›ì—p] ‚È‚µ
+	// æœ€çµ‚æ”»æ’ƒåŠ›å–å¾—
 	float GetFinalAttack() const { return final_attack_; }
 	
-	// ÅIƒXƒs[ƒhæ“¾
-	// [“ü—Í] ‚È‚µ [o—Í] float: ƒXƒs[ƒh [•›ì—p] ‚È‚µ
+	// æœ€çµ‚ã‚¹ãƒ”ãƒ¼ãƒ‰å–å¾—
 	float GetFinalSpeed() const { return final_speed_; }
 
 	void SetResultVictory(bool isWin) { is_result_victory_ = isWin; }
 	bool IsResultVictory() const { return is_result_victory_; }
 
 private:
-	int name_id_;
-	float score_;
-	std::string name_;
-	std::string name1_;
-	std::string name2_;
-	std::string name3_;
+	int name_id_;                 ///< ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åè­˜åˆ¥ç”¨ã®IDãƒãƒ³ãƒ‰ãƒ«
+	float score_;                 ///< ç¾åœ¨ã®ã‚²ãƒ¼ãƒ ã‚¹ã‚³ã‚¢
+	std::string name_;            ///< ç™»éŒ²ã•ã‚ŒãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å
+	std::string name1_;           ///< ãƒ©ãƒ³ã‚­ãƒ³ã‚°1ä½ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å
+	std::string name2_;           ///< ãƒ©ãƒ³ã‚­ãƒ³ã‚°2ä½ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å
+	std::string name3_;           ///< ãƒ©ãƒ³ã‚­ãƒ³ã‚°3ä½ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å
 
-	float high_score_;
-	float high_score2_;
-	float high_score3_;
+	float high_score_;            ///< ãƒã‚¤ã‚¹ã‚³ã‚¢ï¼ˆ1ä½ã®ã‚¹ã‚³ã‚¢ï¼‰
+	float high_score2_;           ///< 2ä½ã®ãƒã‚¤ã‚¹ã‚³ã‚¢
+	float high_score3_;           ///< 3ä½ã®ãƒã‚¤ã‚¹ã‚³ã‚¢
 
-	bool is_normal_flag_;
+	bool is_normal_flag_;         ///< é€šå¸¸ãƒ¢ãƒ¼ãƒ‰ãƒ»é€šå¸¸é›£æ˜“åº¦åˆ¤å®šãƒ•ãƒ©ã‚°
 
-	int defeated_enemies_ = 0;
-	int used_potions_ = 0;
-	float final_hp_ = 0.0f;
-	float final_attack_ = 0.0f;
-	float final_speed_ = 0.0f;
-	bool is_result_victory_ = true;
+	int defeated_enemies_ = 0;    ///< å€’ã—ãŸæ•µã®ç·æ•°ï¼ˆæ’ƒç ´æ•°ï¼‰
+	int used_potions_ = 0;        ///< ä½¿ç”¨ã—ãŸãƒãƒ¼ã‚·ãƒ§ãƒ³ã®å€‹æ•°
+	float final_hp_ = 0.0f;       ///< çµ‚äº†æ™‚ã®æœ€çµ‚ä½“åŠ›ï¼ˆHPï¼‰
+	float final_attack_ = 0.0f;   ///< çµ‚äº†æ™‚ã®æœ€çµ‚æ”»æ’ƒåŠ›
+	float final_speed_ = 0.0f;    ///< çµ‚äº†æ™‚ã®æœ€çµ‚ç§»å‹•é€Ÿåº¦
+	bool is_result_victory_ = true; ///< ãƒªã‚¶ãƒ«ãƒˆçµæœã®å‹æ•—ãƒ•ãƒ©ã‚°ï¼ˆtrue: å‹åˆ©, false: æ•—åŒ—ï¼‰
 };

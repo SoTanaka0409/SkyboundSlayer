@@ -1,68 +1,65 @@
 ﻿#pragma once
-#include"DxLib.h"
-#include"Object3D.h"
+#include "DxLib.h"
+#include "Object3D.h"
+#include <string>
 
-
+/// @brief パーティクルベースの簡易エフェクト生成および描画管理を行うクラス
 class Effect
 {
 public:
-	static const int PARTICLE_NUM = 256; //パーティクルの最大数
-	//パーティクルの構造体
-	//粒一つ一つのデータ
+	static const int PARTICLE_NUM = 256; ///< パーティクルの最大数
+
+	/// @brief 粒ひとつひとつの個別データ構造体
 	struct ParticleInfo
 	{
-		VECTOR pos;  //座標
-		VECTOR dir;  //進行方向
-		float speed;  //速度
-		float size;  //大きさ
-		float alpha; //負透明度
-		float visibleTime;//表示時間
-
-
-
+		VECTOR pos;         ///< パーティクルのワールド座標
+		VECTOR dir;         ///< 進行方向ベクトル
+		float speed;        ///< 移動速度
+		float size;         ///< 描画サイズ（半径・スケール）
+		float alpha;        ///< 不透明度（アルファ値）
+		float visibleTime;  ///< 生存時間・表示制限時間
 	};
-	//effect情報
-	//粒をまとめた１つのエフェクトとしてのデータ
+
+	/// @brief 複数のパーティクルをまとめたひとつのエフェクトとしての全体データ構造体
 	struct EffectInfo
 	{
-		COLOR_U8 color; //エフェクトの色
-		ParticleInfo particle[PARTICLE_NUM];//パーティクルデータ駆動設計（Data-Driven Design）への移行情報
+		COLOR_U8 color;                       ///< エフェクト全体のカラー（RGB・アルファ）
+		ParticleInfo particle[PARTICLE_NUM];  ///< パーティクルデータの配列
 	};
 
-
-
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	Effect();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	void Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime);
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
-	bool IsActive() const { return active_; }
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~Effect();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	/// @brief エフェクトの生成および再生を開始する
+	/// @param initPos 発生の起点となるワールド座標
+	/// @param filename 使用する画像テクスチャのファイルパス
+	/// @param Changecolor エフェクトの指定カラー
+	/// @param Size パーティクルの基本サイズスケール
+	/// @param VisibleTime 表示の継続時間係数
+	void Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor, float Size, float VisibleTime);
+
+	/// @brief エフェクトが現在アクティブ（再生中）かどうかを取得する
+	/// @return bool 再生中ならtrue
+	bool IsActive() const { return active_; }
+
+	/// @brief パーティクルの移動・減衰・タイマー等の更新処理を行う
 	void Update();
 
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
+	/// @brief アクティブなパーティクル群の3D描画処理を行う
 	void Draw();
 
 private:
-	bool active_;
+	bool active_;             ///< エフェクトが有効・再生中かどうかを示すフラグ
+	int graph_handle_;        ///< パーティクル描画用画像グラフィックハンドル
+	EffectInfo* effect_;      ///< 動的確保されたエフェクトデータ構造体へのポインタ
 
-	int graph_handle_;  //画像ハンドル
-	EffectInfo* effect_;  //エフェクトのデータ
+	const int SPEED_RAND_MAX = 550;        ///< 移動速度計算用の最大乱数値
+	const int SPEED_RAND_MIN = 200;        ///< 移動速度計算用の最小乱数値
 
-	const int SPEED_RAND_MAX = 550;//速度の最大乱数地
-	const int SPEED_RAND_MIN = 200;//策殿最小覧数値
+	const int SIZE_RAND_MAX = 1600;        ///< パーティクルサイズ計算用の最大乱数値
+	const int SIZE_RAND_MIN = 800;         ///< パーティクルサイズ計算用の最小乱数値
 
-	const int SIZE_RAND_MAX = 1600;//サイズの最大乱数地
-	const int SIZE_RAND_MIN = 800;//サイズの最小乱数地
-
-	const int VISIBLE_TIME_RAND_MAX = 30;//表示時間の最大乱数地
-	const int VISIBLE_TIME_RAND_MIN = 5;//表示時間の最小乱数地
-
-
-
+	const int VISIBLE_TIME_RAND_MAX = 30;  ///< 表示持続時間計算用の最大乱数値
+	const int VISIBLE_TIME_RAND_MIN = 5;   ///< 表示持続時間計算用の最小乱数値
 };

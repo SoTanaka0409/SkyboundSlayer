@@ -39,18 +39,10 @@ public:
 	};
 
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	EnemyManager();
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~EnemyManager();
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void NewEnemyList(enemydate date);
 	
 	
@@ -59,8 +51,6 @@ public:
 private:
 	enemydate date_;
 	enemy_tag tag_;
-	
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	/*std::vector<Enemy*> GetEnemyVec() { return enemyVec; }
 	std::vector<Enemy*> enemyVec;*/
 	

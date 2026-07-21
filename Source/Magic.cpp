@@ -1,20 +1,24 @@
-#include"Magic.h"
-#include"SphereCollider.h"
-#include"CapsuleCollider.h"
-#include"Master.h"
-#include"SceneManager.h"
-#include"ObjectManager.h"
-#include"Effect.h"
+ï»¿#include "Magic.h"
+#include "SphereCollider.h"
+#include "CapsuleCollider.h"
+#include "Master.h"
+#include "SceneManager.h"
+#include "ObjectManager.h"
+#include "Effect.h"
 #include "EffectPool.h"
 
-/*
- * –‚–@’e‚Ì‰Šú‰»‚ğs‚¤B
- * [“ü—Í] filename:‰æ‘œƒpƒX, initPos:‰ŠúˆÊ’u, r:•\¦ƒTƒCƒY‚Æ”»’è”¼Œa, damage:UŒ‚—Í, speed:ˆÚ“®‘¬“x, movevec:ˆÚ“®•ûŒü, count:‰Šúõ–½, time:Å‘åõ–½
- * [o—Í] ‚È‚µ
- * [•›ì—p] ‰æ‘œ‚Æ“–‚½‚è”»’è‚ğ¶¬‚·‚é
- */
+/// @brief Magicã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @param filename ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+/// @param initPos åˆæœŸç”Ÿæˆåº§æ¨™
+/// @param r é­”æ³•å¼¾ã®åˆ¤å®šã‚µã‚¤ã‚ºï¼ˆåŠå¾„ï¼‰
+/// @param damage æ”»æ’ƒåŠ›ãƒ»ãƒ€ãƒ¡ãƒ¼ã‚¸é‡
+/// @param speed ç§»å‹•é€Ÿåº¦
+/// @param movevec ç§»å‹•æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+/// @param count å‰Šé™¤ã‚«ã‚¦ãƒ³ãƒˆåˆæœŸå€¤
+/// @param time å‰Šé™¤ï¼ˆå¯¿å‘½ï¼‰ã¾ã§ã®åˆ¶é™ãƒ•ãƒ¬ãƒ¼ãƒ æ™‚é–“
+/// @details æç”»ç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ãŠã‚ˆã³çƒä½“å½“ãŸã‚Šåˆ¤å®šï¼ˆSphereColliderï¼‰ã®ç”Ÿæˆã‚’è¡Œã†
 Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time)
-	:Object3D(initPos)
+	: Object3D(initPos)
 	, speed_(speed)
 	, mfAttack_chara(damage)
 	, magic_size_(r)
@@ -28,17 +32,15 @@ Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float 
 	hit_collider_ = new SphereCollider(this, position_, magic_size_);
 }
 
+/// @brief Magicã‚¯ãƒ©ã‚¹ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @details ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾å‡¦ç†ã‚’è¡Œã†
 Magic::~Magic()
 {
 	DeleteGraph(graph_handle_);
 }
 
-/*
- * –‚–@’e‚ğƒrƒ‹ƒ{[ƒh‚Æ‚µ‚Ä•`‰æ‚·‚éB
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] •`‰æƒuƒŒƒ“ƒhƒ‚[ƒh‚ğˆê“I‚É•ÏX‚·‚é
- */
+/// @brief é­”æ³•å¼¾ã®3Dãƒ“ãƒ«ãƒœãƒ¼ãƒ‰æç”»å‡¦ç†ã‚’è¡Œã†
+/// @details åŠ ç®—åˆæˆï¼ˆDX_BLENDMODE_ADDï¼‰ã‚’é©ç”¨ã—ã¦ç™ºå…‰æ„Ÿã‚’æ¼”å‡ºã—ã¦æç”»ã™ã‚‹
 void Magic::Draw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
@@ -46,12 +48,8 @@ void Magic::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-/*
- * –‚–@’e‚Ìõ–½‚ÆˆÚ“®‚ğXV‚·‚éB
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] õ–½“’B‚É©g‚ğíœ‘ÎÛ‚É‚·‚é
- */
+/// @brief æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ›´æ–°å‡¦ç†ã‚’è¡Œã†
+/// @details ç”Ÿå­˜ã‚¿ã‚¤ãƒãƒ¼ã®åŠ ç®—ã€ç§»å‹•è¨ˆç®—ã‚’è¡Œã„ã€å¯¿å‘½è¶…éæ™‚ã«æ­»äº¡ï¼ˆç€å¼¾ãƒ»æ¶ˆæ»…ï¼‰å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 void Magic::Update()
 {
 	DeleteCount++;
@@ -62,23 +60,15 @@ void Magic::Update()
 	}
 }
 
-/*
- * –‚–@’e‚ğis•ûŒü‚ÖˆÚ“®‚³‚¹‚éB
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] position_‚ğXV‚·‚é
- */
+/// @brief é­”æ³•å¼¾ã®ç§»å‹•å‡¦ç†ã‚’è¡Œã†
+/// @details ç§»å‹•æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆmove_vec_ï¼‰ã¨é€Ÿåº¦ï¼ˆspeed_ï¼‰ã«åŸºã¥ãåº§æ¨™ã‚’åŠ ç®—æ›´æ–°ã™ã‚‹
 void Magic::Move()
 {
 	position_ = VAdd(position_, VScale(move_vec_, speed_));
 }
 
-/*
- * –‚–@’e‚ğíœ‘ÎÛ‚É‚·‚éB
- * [“ü—Í] ‚È‚µ
- * [o—Í] ‚È‚µ
- * [•›ì—p] ’…’eƒGƒtƒFƒNƒg‚ğÄ¶‚µA©g‚Æ“–‚½‚è”»’è‚Ìíœƒtƒ‰ƒO‚ğ—§‚Ä‚é
- */
+/// @brief é­”æ³•å¼¾ã®ç€å¼¾ãƒ»æ¶ˆæ»…å‡¦ç†ã‚’è¡Œã†
+/// @details æ¶ˆæ»…æ™‚ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å†ç”Ÿã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè‡ªèº«ã®ç ´æ£„ãƒ•ãƒ©ã‚°ãŠã‚ˆã³ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ç ´æ£„ãƒ•ãƒ©ã‚°ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹
 void Magic::Death()
 {
 	EffectPool::GetInstance()->Play(position_, Filename, GetColorU8(255, 0, 0, 0), magic_size_, 0.1f);
@@ -86,32 +76,23 @@ void Magic::Death()
 	hit_collider_->SetDeleteFlag(true);
 }
 
-/*
- * ÚGŠJn‚ÌÕ“Ëˆ—‚ğs‚¤B
- * [“ü—Í] collider:©•ª‚Ì“–‚½‚è”»’è, check:ÚG‘Šè
- * [o—Í] ‚È‚µ
- * [•›ì—p] ‚È‚µ
- */
+/// @brief ä»–ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨æ¥è§¦ã—ãŸç¬é–“ã®ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
+/// @param collider è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @param check æ¥è§¦ã—ãŸç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 void Magic::OnEnter(Collider* collider, Collider* check)
 {
 }
 
-/*
- * ÚG’†‚ÌÕ“Ëˆ—‚ğs‚¤B
- * [“ü—Í] collider:©•ª‚Ì“–‚½‚è”»’è, check:ÚG‘Šè
- * [o—Í] ‚È‚µ
- * [•›ì—p] ‚È‚µ
- */
+/// @brief ä»–ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨æ¥è§¦ã—ç¶šã‘ã¦ã„ã‚‹é–“ã®ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
+/// @param collider è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @param check æ¥è§¦ã—ãŸç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 void Magic::OnTrigger(Collider* collider, Collider* check)
 {
 }
 
-/*
- * ÚGI—¹‚ÌÕ“Ëˆ—‚ğs‚¤B
- * [“ü—Í] collider:©•ª‚Ì“–‚½‚è”»’è, check:ÚG‘Šè
- * [o—Í] ‚È‚µ
- * [•›ì—p] ‚È‚µ
- */
+/// @brief ä»–ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‹ã‚‰é›¢ã‚ŒãŸç¬é–“ã®ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
+/// @param collider è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @param check é›¢ã‚ŒãŸç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 void Magic::OnExit(Collider* collider, Collider* check)
 {
 }

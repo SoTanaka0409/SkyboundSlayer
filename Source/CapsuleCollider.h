@@ -1,24 +1,15 @@
-#pragma once
+ï»¿#pragma once
 #include "Collider.h"
 
 class CapsuleCollider : public Collider
 {
 public:
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	CapsuleCollider(Object3D* parent, VECTOR pos1, VECTOR pos2, float radius);
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	virtual ~CapsuleCollider();
-
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Update(Collider* check) override;
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void Draw() override;
-
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void OnEnter() override;
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void OnTrigger() override;
-    // [“ü—Í] ˆø”QÆ [o—Í] –ß‚è’lQÆ [•›ì—p] ó‘Ô•ÏX
 	void OnExit() override;
 
 };

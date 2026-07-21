@@ -7,18 +7,11 @@
 class StageBox
 {
 public:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	StageBox(VECTOR centerpos,VECTOR centorPos2,VECTOR TopLeft,VECTOR BottomRightint,int color1_,int color2_,int color3_,int mnColoe4);
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	~StageBox();
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Draw();
-
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	void Update();
-	std::vector<VERTEX3D>GEtVertex()
+	std::vector<VERTEX3D>GetVertex()
 	{
 		std::vector<VERTEX3D>result;
   
@@ -34,7 +27,6 @@ public:
 	}
 
 private:
-    // [入力] 引数参照 [出力] 戻り値参照 [副作用] 状態変更
 	VERTEX3D vertex_[8];//頂点情報(最終的に四角で描くので4つ)
 
 	/*int color1_;

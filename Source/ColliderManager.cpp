@@ -1,8 +1,8 @@
-#include "ColliderManager.h"
+ï»¿#include "ColliderManager.h"
 #include "Collider.h"
 #include"Master.h"
 
-// Ã“Iƒƒ“ƒo•Ï”’è‹`
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°å®šç¾©
 ColliderManager* ColliderManager::instance_ = nullptr;
 
 
@@ -16,13 +16,7 @@ ColliderManager::~ColliderManager()
 
 }
 
-// XV
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
+// æ›´æ–°
 void ColliderManager::Update()
 {
     for (auto itr = collider_list_.begin(); itr != collider_list_.end(); ++itr)
@@ -37,13 +31,7 @@ void ColliderManager::Update()
     }
 }
 
-// •`‰æ
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
+// æç”»
 void ColliderManager::Draw()
 {
     for (auto itr = collider_list_.begin(); itr != collider_list_.end(); itr++)
@@ -55,66 +43,48 @@ void ColliderManager::Draw()
     }
 }
 
-// ColliderƒIƒuƒWƒFƒNƒg‚Ì’Ç‰Á
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
+// Colliderã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¿½åŠ 
 void ColliderManager::AddCollider(Collider* Collider)
 {
     collider_list_.push_back(Collider);
 }
 
-// ColliderƒIƒuƒWƒFƒNƒg‚Ì‘Síœ
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
+// Colliderã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å…¨å‰Šé™¤
 void ColliderManager::DeleteAllCollider()
 {
-    for (auto itr = collider_list_.begin(); itr != collider_list_.end(); /*‚±‚±‚Í‹ó‚Á‚Û‚È‚Ì‚Å’ˆÓ*/)
+    for (auto itr = collider_list_.begin(); itr != collider_list_.end(); /*ã“ã“ã¯ç©ºã£ã½ãªã®ã§æ³¨æ„*/)
     {
         Collider* temp = *itr;
 
-        // ƒŠƒXƒg‚©‚çíœ
+        // ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
         itr = collider_list_.erase(itr);
 
-        // ƒIƒuƒWƒFƒNƒg‚»‚Ì‚à‚Ì‚ğíœ
+        // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãã®ã‚‚ã®ã‚’å‰Šé™¤
         delete temp;
         temp = nullptr;
     }
 }
 
-// íœ‚·‚é•K—v‚Ì‚ ‚éƒIƒuƒWƒFƒNƒg‚ª‚ ‚ê‚Îíœ‚·‚é
-/*
- * [–Ú“I] 
- * [“ü—Í] 
- * [o—Í] 
- * [•›ì—p] 
- */
+// å‰Šé™¤ã™ã‚‹å¿…è¦ã®ã‚ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Œã°å‰Šé™¤ã™ã‚‹
 void ColliderManager::DeleteAllColliderIfNeeded()
 {
-    for (auto itr = collider_list_.begin(); itr != collider_list_.end(); /*‚±‚±‚Í‹ó‚Á‚Û‚È‚Ì‚Å’ˆÓ*/)
+    for (auto itr = collider_list_.begin(); itr != collider_list_.end(); /*ã“ã“ã¯ç©ºã£ã½ãªã®ã§æ³¨æ„*/)
     {
-        // ”jŠüƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚ê‚Îíœ‚·‚é
+        // ç ´æ£„ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚Œã°å‰Šé™¤ã™ã‚‹
         if ((*itr)->IsDeleteFlag())
         {
             Collider* temp = *itr;
 
-            // ƒŠƒXƒg‚©‚çíœ
+            // ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
             itr = collider_list_.erase(itr);
 
-            // ƒIƒuƒWƒFƒNƒg‚»‚Ì‚à‚Ì‚ğíœ
+            // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãã®ã‚‚ã®ã‚’å‰Šé™¤
             delete temp;
             temp = nullptr;
         }
         else
         {
-            // Ÿ‚Ì—v‘f‚Öi‚ß‚é
+            // æ¬¡ã®è¦ç´ ã¸é€²ã‚ã‚‹
             itr++;
         }
     }

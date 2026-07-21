@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 #include <string>
 #include "EnemyManager.h"
@@ -9,14 +9,14 @@
 
 class GameManager {
 public:
-    // ƒQ[ƒ€“ïˆÕ“xi“G‚ÌƒXƒe[ƒ^ƒX”{—¦‚É‰e‹¿j
+    // ã‚²ãƒ¼ãƒ é›£æ˜“åº¦ï¼ˆæ•µã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å€ç‡ã«å½±éŸ¿ï¼‰
     enum class Difficulty {
         kEasy,
         kNormal,
         kHard
     };
 
-    // ƒQ[ƒ€‚ÌisƒtƒF[ƒYó‘Ô
+    // ã‚²ãƒ¼ãƒ ã®é€²è¡Œãƒ•ã‚§ãƒ¼ã‚ºçŠ¶æ…‹
     enum class Phase {
         kPhase1,
         kShop1,
@@ -40,80 +40,55 @@ private:
     EnemyManager* enemy_manager_;
     VECTOR boss_portal_pos_;
 
-// ƒ{ƒXoŒ»ƒJƒbƒgƒV[ƒ“‚ÌXV
-// [“ü—Í] ‚È‚µ [o—Í] bool: ƒJƒbƒgƒV[ƒ“Š®—¹ƒtƒ‰ƒO [•›ì—p] ƒJƒƒ‰À•W‚ÆƒQ[ƒ€ó‘Ô‚ÌXV
+// ãƒœã‚¹å‡ºç¾ã‚«ãƒƒãƒˆã‚·ãƒ¼ãƒ³ã®æ›´æ–°
     bool UpdateBossCutscene();
-// ƒ{ƒX‘JˆÚ‚ÌƒtƒF[ƒhXV
-// [“ü—Í] ‚È‚µ [o—Í] bool: ƒtƒF[ƒhŠ®—¹ƒtƒ‰ƒO [•›ì—p] ƒtƒF[ƒhƒAƒ‹ƒtƒ@’l‚ÌXV
+// ãƒœã‚¹é·ç§»æ™‚ã®ãƒ•ã‚§ãƒ¼ãƒ‰æ›´æ–°
     bool UpdateBossFade();
-// ƒVƒ‡ƒbƒvƒtƒF[ƒY‚ÌXV
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒVƒ‡ƒbƒvƒ^ƒCƒ}[‚ÌXV‚ÆƒtƒF[ƒYˆÚs
+// ã‚·ãƒ§ãƒƒãƒ—ãƒ•ã‚§ãƒ¼ã‚ºã®æ›´æ–°
     void UpdateShopPhase();
-// ƒoƒgƒ‹ƒtƒF[ƒY‚ÌXV
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] “G‚ÌoŒ»ŠÇ—‚ÆƒtƒF[ƒYˆÚs
+// ãƒãƒˆãƒ«ãƒ•ã‚§ãƒ¼ã‚ºã®æ›´æ–°
     void UpdateBattlePhase();
-// ƒVƒ‡ƒbƒvƒtƒF[ƒY‚Ö‚ÌˆÚsˆ—
-// [“ü—Í] Phase nextPhase: Ÿ‚ÌƒtƒF[ƒY [o—Í] ‚È‚µ [•›ì—p] ƒtƒF[ƒY•ÏXAƒVƒ‡ƒbƒvƒ^ƒCƒ}[‚ÌƒŠƒZƒbƒg
+// ã‚·ãƒ§ãƒƒãƒ—ãƒ•ã‚§ãƒ¼ã‚ºã¸ã®ç§»è¡Œå‡¦ç†
     void StartShopPhase(Phase nextPhase);
-// ƒ{ƒXƒtƒF[ƒY‚Ö‚Ì‘JˆÚŠJn
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒtƒF[ƒY‚Ì•ÏX‚ÆƒtƒF[ƒhó‘Ô‚Ì‰Šú‰»
+// ãƒœã‚¹ãƒ•ã‚§ãƒ¼ã‚ºã¸ã®é·ç§»é–‹å§‹
     void StartBossTransition();
-// ƒ{ƒXƒQ[ƒgoŒ»‚ÌƒJƒbƒgƒV[ƒ“ŠJn
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒJƒƒ‰ƒtƒ‰ƒO‚ÌØ‚è‘Ö‚¦
+// ãƒœã‚¹ã‚²ãƒ¼ãƒˆå‡ºç¾ã®ã‚«ãƒƒãƒˆã‚·ãƒ¼ãƒ³é–‹å§‹
     void StartBossGateCutscene();
-// ƒVƒ‡ƒbƒvNPC‚ğƒtƒB[ƒ‹ƒh‚ÉoŒ»‚³‚¹‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] StatShopƒIƒuƒWƒFƒNƒg‚Ì¶¬‚ÆˆÚ“®
+// ã‚·ãƒ§ãƒƒãƒ—NPCã‚’ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«å‡ºç¾ã•ã›ã‚‹
     void SendShopsIn();
-// ƒVƒ‡ƒbƒvNPC‚ğ‘Şê‚³‚¹‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] StatShopƒIƒuƒWƒFƒNƒg‚Ì‘Şêƒtƒ‰ƒOİ’è
+// ã‚·ãƒ§ãƒƒãƒ—NPCã‚’é€€å ´ã•ã›ã‚‹
     void SendShopsOut();
-// ƒVƒ‡ƒbƒvNPC‚ª“’…‚µ‚½‚©”»’è‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] bool: “’…”»’è [•›ì—p] ‚È‚µ
+// ã‚·ãƒ§ãƒƒãƒ—NPCãŒåˆ°ç€ã—ãŸã‹åˆ¤å®šã™ã‚‹
     bool AreShopsArrived() const;
-// Œ»İƒVƒ‡ƒbƒvƒtƒF[ƒY‚©”»’è‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] bool: ƒVƒ‡ƒbƒvƒtƒF[ƒY‚È‚çtrue [•›ì—p] ‚È‚µ
+// ç¾åœ¨ã‚·ãƒ§ãƒƒãƒ—ãƒ•ã‚§ãƒ¼ã‚ºã‹åˆ¤å®šã™ã‚‹
     bool IsShopPhase() const;
-// Œ»İƒ{ƒX‚Ö‚ÌƒtƒF[ƒh‘JˆÚ’†‚©”»’è‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] bool: ‘JˆÚ’†‚È‚çtrue [•›ì—p] ‚È‚µ
+// ç¾åœ¨ãƒœã‚¹ã¸ã®ãƒ•ã‚§ãƒ¼ãƒ‰é·ç§»ä¸­ã‹åˆ¤å®šã™ã‚‹
     bool IsBossFadePhase() const;
-// ƒvƒŒƒCƒ„[‚ªƒ{ƒXƒ|[ƒ^ƒ‹‚ÉG‚ê‚½‚©”»’è‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] bool: G‚ê‚Ä‚¢‚ê‚Îtrue [•›ì—p] ‚È‚µ
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãƒœã‚¹ãƒãƒ¼ã‚¿ãƒ«ã«è§¦ã‚ŒãŸã‹åˆ¤å®šã™ã‚‹
     bool IsBossGateTouched() const;
-// Œ»İ‚ÌƒtƒF[ƒY–¼‚ğæ“¾‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] const char*: ƒtƒF[ƒY‚Ì•¶š—ñ [•›ì—p] ‚È‚µ
+// ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºåã‚’å–å¾—ã™ã‚‹
     const char* GetPhaseLabel() const;
-// Œ»İ‚ÌƒtƒF[ƒY‚ÌƒTƒuƒ‰ƒxƒ‹iisó‹µ‚È‚Çj‚ğæ“¾‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] const char*: ƒTƒuƒ‰ƒxƒ‹‚Ì•¶š—ñ [•›ì—p] ‚È‚µ
+// ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºã®ã‚µãƒ–ãƒ©ãƒ™ãƒ«ï¼ˆé€²è¡ŒçŠ¶æ³ãªã©ï¼‰ã‚’å–å¾—ã™ã‚‹
     const char* GetPhaseSubLabel() const;
-// Œ»İ‚Ì“G‚Ì¶‘¶”‚ğæ“¾‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] int: “G‚Ì” [•›ì—p] ‚È‚µ
+// ç¾åœ¨ã®æ•µã®ç”Ÿå­˜æ•°ã‚’å–å¾—ã™ã‚‹
     int GetEnemyCount() const;
-// ƒtƒF[ƒYî•ñ‚ÌHUD‚ğ•`‰æ‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
+// ãƒ•ã‚§ãƒ¼ã‚ºæƒ…å ±ã®HUDã‚’æç”»ã™ã‚‹
     void DrawPhaseHud();
-// ƒVƒ‡ƒbƒvƒtƒF[ƒY‚Ìc‚èŠÔƒoƒi[‚ğ•`‰æ‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
+// ã‚·ãƒ§ãƒƒãƒ—ãƒ•ã‚§ãƒ¼ã‚ºã®æ®‹ã‚Šæ™‚é–“ãƒãƒŠãƒ¼ã‚’æç”»ã™ã‚‹
     void DrawShopBanner();
-// ƒ{ƒX‘JˆÚ‚ÌƒtƒF[ƒh‚ğ•`‰æ‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
+// ãƒœã‚¹é·ç§»æ™‚ã®ãƒ•ã‚§ãƒ¼ãƒ‰ã‚’æç”»ã™ã‚‹
     void DrawBossFade();
-// ƒfƒoƒbƒO‹@”\‚ÌƒL[“ü—ÍXV
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒtƒF[ƒY‚Ì‹­§•ÏX‚È‚Ç
+// ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã®ã‚­ãƒ¼å…¥åŠ›æ›´æ–°
     void UpdateDebugControls();
-// ƒfƒoƒbƒO—pUI‚ğ•`‰æ‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
+// ãƒ‡ãƒãƒƒã‚°ç”¨UIã‚’æç”»ã™ã‚‹
     void DrawDebugPanel();
-// ƒfƒoƒbƒO‹@”\FŒ»İ‚Ì“G‚ğ‘S–Å‚³‚¹‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] “GHP‚ğƒ[ƒ‚É‚·‚é
+// ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ï¼šç¾åœ¨ã®æ•µã‚’å…¨æ»…ã•ã›ã‚‹
     void DebugKillEnemies();
-// ƒfƒoƒbƒO‹@”\Fƒ{ƒXí‚Ö’¼s‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ƒ{ƒXƒtƒF[ƒY‚Ö‚Ì‹­§•ÏX
+// ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ï¼šãƒœã‚¹æˆ¦ã¸ç›´è¡Œã™ã‚‹
     void DebugGoBoss();
-// ƒfƒoƒbƒOƒRƒ“ƒgƒ[ƒ‹‚ª—LŒø‚©”»’è‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] bool: —LŒøƒtƒ‰ƒO [•›ì—p] ‚È‚µ
+// ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãŒæœ‰åŠ¹ã‹åˆ¤å®šã™ã‚‹
     bool IsDebugControlsEnabled() const;
-// Œ»İ‚ÌƒtƒF[ƒY‚É‰‚¶‚½“G‚ğƒXƒ|[ƒ“‚³‚¹‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] EnemyƒIƒuƒWƒFƒNƒg‚Ì¶¬
+// ç¾åœ¨ã®ãƒ•ã‚§ãƒ¼ã‚ºã«å¿œã˜ãŸæ•µã‚’ã‚¹ãƒãƒ¼ãƒ³ã•ã›ã‚‹
     void SpawnPhaseEnemies();
     void SpawnPhase1Enemies(const VECTOR& centerPos);
     void SpawnPhase2Enemies(const VECTOR& centerPos);
@@ -142,34 +117,26 @@ private:
     void DrawMinimapShops(float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const;
     void DrawMinimapEnemies(float mapX, float mapY, float mapSize, float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const;
     void DrawMinimapPlayer(float mapCenterX, float mapCenterY) const;
-// “ïˆÕ“x‚É‰‚¶‚Ä“G‚ÌƒXƒe[ƒ^ƒX‚É”{—¦‚ğ‚©‚¯‚é
-// [“ü—Í] EnemyManager::enemydate& e: “Gƒf[ƒ^ [o—Í] ‚È‚µ [•›ì—p] e“à‚Ìƒpƒ‰ƒ[ƒ^•ÏX
+// é›£æ˜“åº¦ã«å¿œã˜ã¦æ•µã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã«å€ç‡ã‚’ã‹ã‘ã‚‹
     void ApplyDifficultyMultipliers(EnemyManager::enemydate& e);
 
 public:
-// GameManager‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] EnemyManager* enemyManager, Difficulty diff [o—Í] ‚È‚µ [•›ì—p] •Ï”‚Ì‰Šú‰»
+// GameManagerã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     GameManager(EnemyManager* enemyManager, Difficulty diff = Difficulty::kNormal);
-// GameManager‚ÌƒfƒXƒgƒ‰ƒNƒ^
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‚È‚µ
+// GameManagerã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     ~GameManager();
 
-// ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[‚ÌXVˆ—
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ó‘ÔXVAƒtƒF[ƒY‘JˆÚˆ—
+// ã‚²ãƒ¼ãƒ ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®æ›´æ–°å‡¦ç†
     void Update();
-// ƒQ[ƒ€ƒ}ƒl[ƒWƒƒ[‚Ì•`‰æˆ—iHUD‚È‚Çj
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
+// ã‚²ãƒ¼ãƒ ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®æç”»å‡¦ç†ï¼ˆHUDãªã©ï¼‰
     void Draw();
-// ƒ~ƒjƒ}ƒbƒv‚ğ•`‰æ‚·‚é
-// [“ü—Í] ‚È‚µ [o—Í] ‚È‚µ [•›ì—p] ‰æ–Ê•`‰æ
+// ãƒŸãƒ‹ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹
     void DrawMinimap();
 
-    // Œ»İ‚ÌƒQ[ƒ€ƒtƒF[ƒY‚ğæ“¾‚·‚é
-    // [“ü—Í] ‚È‚µ [o—Í] Phase: Œ»İ‚ÌƒtƒF[ƒY [•›ì—p] ‚È‚µ
+    // ç¾åœ¨ã®ã‚²ãƒ¼ãƒ ãƒ•ã‚§ãƒ¼ã‚ºã‚’å–å¾—ã™ã‚‹
     Phase GetCurrentPhase() const { return current_phase_; }
 
-    // ƒVƒ‡ƒbƒvƒtƒF[ƒY‚Ìc‚èƒtƒŒ[ƒ€”‚ğæ“¾‚·‚é
-    // [“ü—Í] ‚È‚µ [o—Í] int: c‚èƒ^ƒCƒ}[ [•›ì—p] ‚È‚µ
+    // ã‚·ãƒ§ãƒƒãƒ—ãƒ•ã‚§ãƒ¼ã‚ºã®æ®‹ã‚Šãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã‚’å–å¾—ã™ã‚‹
     int GetShopTimer() const { return shop_timer_; }
 };
 
