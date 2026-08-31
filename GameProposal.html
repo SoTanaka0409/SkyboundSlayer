@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>企画書_SkyboundSlayer</title>
+    <style>
+        body {
+            font-family: 'Meiryo', 'Segoe UI', sans-serif;
+            color: #333;
+            background: #fff;
+            margin: 0;
+            padding: 40px;
+            box-sizing: border-box;
+            width: 210mm;
+            height: 297mm;
+        }
+        h1 {
+            font-size: 36px;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 20px;
+        }
+        h2 {
+            font-size: 24px;
+            color: #2980b9;
+            border-left: 6px solid #2980b9;
+            padding-left: 12px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+        .catchphrase {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            color: #e74c3c;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .box {
+            width: 30%;
+            background: #f8f9fa;
+            border: 2px solid #bdc3c7;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+        .box strong {
+            display: block;
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .arrow {
+            font-size: 30px;
+            color: #7f8c8d;
+        }
+        ul {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        li {
+            margin-bottom: 12px;
+        }
+        .image-placeholder-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .image-placeholder {
+            width: 48%;
+            height: 180px;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            border: 2px dashed #999;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .tech-box {
+            background: #e8f6f3;
+            border-left: 5px solid #1abc9c;
+            padding: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>企画書：Skybound Slayer<br><span style="font-size: 20px; color: #7f8c8d;">(プロジェクト名: LevelMonster)</span></h1>
+    
+    <div class="catchphrase">「回避からの一撃！爽快アクション × 自由なキャラビルド」</div>
+
+    <div class="section">
+        <h2>1. 基本情報</h2>
+        <ul>
+            <li><strong>ジャンル：</strong> 3DアクションRPG</li>
+            <li><strong>ターゲット層：</strong> アクションの手触りと育成要素を好むコア〜ミドルゲーマー</li>
+            <li><strong>プラットフォーム：</strong> PC (Windows)</li>
+            <li><strong>開発環境：</strong> C++ / DxLib / Effekseer</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>2. コアゲームサイクル</h2>
+        <p style="font-size: 16px; margin-bottom: 10px;">プレイヤーはステージを探索して敵と戦い、得た報酬で自身を強化し、最終的に強力なボスを討伐します。</p>
+        <div class="flex-container">
+            <div class="box">
+                <strong>【探索・戦闘】</strong><br>
+                3Dステージを進行し、通常エネミーを多彩なアクションで撃破
+            </div>
+            <div class="arrow">▶</div>
+            <div class="box">
+                <strong>【報酬・強化】</strong><br>
+                敵から得た資金でステータスや装備をショップで強化
+            </div>
+            <div class="arrow">▶</div>
+            <div class="box">
+                <strong>【ボス討伐】</strong><br>
+                強化したキャラとプレイヤースキルで強大なボスに挑む
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>3. 本作の3つの魅力 (USP)</h2>
+        <ul>
+            <li><strong>① プレイヤーのスキルが光る多彩な3Dアクション</strong><br>
+            コンボ攻撃、ジャンプ攻撃、スライドアタックに加え、無敵時間を活用した回避アクションを実装。敵の隙を突き、連続攻撃を叩き込む爽快感を追求しています。</li>
+            <li><strong>② 戦略の幅を広げるショップシステム (キャラビルド)</strong><br>
+            敵を倒して集めた資金を使い、「最大HP」「攻撃力」「移動速度」「回避性能」などを自由に強化可能。プレイヤーの好みに合わせたキャラクター育成が楽しめます。</li>
+            <li><strong>③ 手応えのあるボスバトルとリッチなエフェクト演出</strong><br>
+            魔法攻撃や広範囲攻撃など、複数のパターンを持つボスとの緊張感あるバトル。Effekseerによる華麗なエフェクトがバトルの臨場感をさらに高めます。</li>
+        </ul>
+        <div class="image-placeholder-container">
+            <div class="image-placeholder">【ここにバトル画面のスクショを挿入】</div>
+            <div class="image-placeholder">【ここにショップ/育成画面のスクショを挿入】</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4. アピールポイント (技術面)</h2>
+        <div class="tech-box">
+            <p style="margin: 0; line-height: 1.6;">
+                本作は、既存のゲームエンジンを使用せず、C++とDxLibを用いて基盤から開発しています。<br><br>
+                特に<strong>「独自の当たり判定（コリジョン）システム」</strong>と、<strong>「アニメーションと同期した状態遷移（ステート）管理」</strong>に注力し、アクションゲームの根幹である「気持ちいい手触り」をゼロから実装した技術力が最大の強みです。
+            </p>
+        </div>
+    </div>
+</body>
+</html>
