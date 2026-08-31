@@ -1,4 +1,4 @@
-#ifndef _TEXTURE_H_
+ï»¿#ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
 #include <string>
@@ -7,30 +7,28 @@
 class Texture
 {
 public:
-    Texture(std::string filename, VECTOR centerPosition, int transFlag);  // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    Texture(std::string filename, VECTOR centerPosition, int transFlag);  // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    ~Texture(); // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    void Draw();    // æç”»
+    void Update();  // æ›´æ–°
 
-    ~Texture(); // ƒfƒXƒgƒ‰ƒNƒ^
+    // ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•° //
+    // ãƒã‚¸ã‚·ãƒ§ãƒ³è¨­å®š
+    void SetPosition(VECTOR centerPosition) { position_ = centerPosition; }
 
-    void Draw();    // •`‰æ
-    void Update();  // XV
-
-    // ƒZƒbƒ^[ŠÖ” //
-    // ƒ|ƒWƒVƒ‡ƒ“İ’è
-    void SetPosition(VECTOR centerPosition) { mvPosition = centerPosition; }
-
-    // ƒQƒbƒ^[ŠÖ” //
-    // ƒ|ƒWƒVƒ‡ƒ“æ“¾
-    VECTOR GetPosition() { return mvPosition; }
-    // ƒTƒCƒYæ“¾
-    int GetSizeX() { return mnSizeX; }
-    int GetSizeY() { return mnSizeY; }
+    // ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•° //
+    // ãƒã‚¸ã‚·ãƒ§ãƒ³å–å¾—
+    VECTOR GetPosition() { return position_; }
+    // ã‚µã‚¤ã‚ºå–å¾—
+    int GetSizeX() { return size_x_; }
+    int GetSizeY() { return size_y_; }
 
 private:
-    int mnHandle;       // “Ç‚İ‚ñ‚¾‰æ‘œ‚Ìƒnƒ“ƒhƒ‹
-    VECTOR mvPosition;  // ƒ|ƒWƒVƒ‡ƒ“
-    int mnSizeX;        // ‰æ‘œ‚Ì•
-    int mnSizeY;        // ‰æ‘œ‚Ì‚‚³
-    int mnTransFlag;    // ‰æ‘œ‚Ì“§‰ß‚ğ—LŒø‚É‚·‚é‚©
+    int handle_;       // èª­ã¿è¾¼ã‚“ã ç”»åƒã®ãƒãƒ³ãƒ‰ãƒ«
+    VECTOR position_;  // ãƒã‚¸ã‚·ãƒ§ãƒ³
+    int size_x_;        // ç”»åƒã®å¹…
+    int size_y_;        // ç”»åƒã®é«˜ã•
+    int trans_flag_;    // ç”»åƒã®é€éã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹
 };
 
 #endif

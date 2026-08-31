@@ -1,80 +1,84 @@
-#pragma once
+﻿#pragma once
 #include "DxLib.h"
 #include <string>
 #include "ModelUtility.h"
 #include "ModelAnimation.h"
 #include "SeparateModelAnimation.h"
 
-// �O���錾
 class AttachmentModel;
 
-
+// DxLibの3Dモデル表示をラップし、姿勢制御、武器などのボーン追従（アタッチメント）、およびアニメーション管理を統括するクラス
 class Model
 {
 public:
-
-    // ��New��
-    // �R���X�g���N�^
-    // note: �����A�j���[�V�������g�����ǂ����̐ݒ��ǉ��B
+/// @param filename(モデルパス), initPos(初期座標), isSeparateAnimation(分離アニメ管理フラグ)
+/// @details 3DモデルのVRAMロードと、アニメーションデータが本体同梱か別ファイルかに応じた管理クラスの初期化を行う
     Model(std::string filename, VECTOR initPos, bool isSeparateAnimation = false);
-    ~Model();   // �f�X�g���N�^
 
-    void Update();  // �X�V
-    void Draw();    // �`��
+/// @details アニメーション管理インスタンスやアタッチメントモデル、自身のモデルハンドルを破棄しメモリリークを防ぐ
+    ~Model();
 
-    // �A�j���[�V�����؂�ւ�
+/// @details アニメーションの再生時間を進め、アタッチメント（武器等）の座標を親モデルの指定ボーン位置に同期させる
+    void Update();
+
+/// @details 更新された座標・姿勢・アニメーション情報を適用し、3Dモデルを描画バッファへ登録する
+    void Draw();
+
+/// @param state (再生したいアニメーション状態)
+/// @details 待機から走りなどへアニメーションを切り替える（ブレンド有効時はフレーム間を補間して滑らかに遷移させる）
     void ChangeAnimation(AnimationState state);
-    // ���[�v�ݒ�
+
     void SetLoop(bool loop);
     void SetLoopFinishState(AnimationState state);
-    // �A�j���[�V�����̃u�����h�ݒ�
+
+/// @param isBlend (補間の有効化フラグ)
+/// @details モーション切り替え時の急な姿勢変化（カクつき）を防ぐためのブレンド処理のON
     void SetAnimationBlend(bool isBlend);
-    // ���ݍĐ�����Ă���A�j���[�V�����̎擾
+
     AnimationState GetNowState();
-    // �A�j���[�V�����̃��[�v���I�����Ă��邩�ǂ��� 
+
+/// @return ループ終了済みか(bool)
+    // 攻撃モーションの終了検知など、次のアクションへステートを遷移させるための同期トリガーとして使用する
     bool IsAnimationLoopFinish();
 
+/// @param filename(アタッチするモデルのパス), attachFrameName(追従先ボーン名), offsetPos, offsetRot
+/// @details キャラクターの右手（指定フレーム）などに連動して動く武器や装飾品モデルを動的生成し、親子関係を構築する
+    void AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos = VGet(0.0f, 0.0f, 0.0f), VECTOR offsetRot = VGet(0.0f, 0.0f, 0.0f));
 
-    // �A�^�b�`���f���֘A //
-    // �A�^�b�`�����g��ǉ�
-    void AddAttachment(std::string filename, std::string attachFrameName);
-    
-   
-    // �A�^�b�`���f���̍��W�擾
+/// @return アタッチメントの現在ワールド座標
+    // 剣の切っ先の位置を取得して攻撃判定（コライダー）を生成する際などに使用する
     VECTOR GetAttachmentPosition();
     VECTOR GetAttachmentPosition_None(std::string attachFrameName);
 
+    VECTOR GetPosition() { return position_; }
+    void SetPosition(VECTOR pos) { position_ = pos; }
 
-    VECTOR GetPosition() { return mvPosition; } // ���W�擾
-    void SetPosition(VECTOR pos) { mvPosition = pos; }  // ���W�ݒ�
-
-    VECTOR GetRotation() { return mvRotation; } // ��]�擾
-    void SetRotation(VECTOR rot) { mvRotation = rot; }  // ��]�ݒ�
+    VECTOR GetRotation() { return rotation_; }
+    void SetRotation(VECTOR rot) { rotation_ = rot; }
 
     void SetScale(VECTOR scale);
+
+/// @param filename(テクスチャパス), index(マテリアル番号)
+/// @details 被ダメージ時の点滅や、状態異常時の色変えなどを行うため、指定マテリアルのテクスチャを動的に差し替える
     void SetTexture(std::string filename, int index = 0);
 
-    bool GetIsSeparate() { return isSeparate; }
+    bool GetIsSeparate() { return is_separate_; }
 
-    // ��New��
-    // �A�j���[�V�����f�[�^�̒ǉ�
-    // note: SeparateModelAnimation �N���X�ւ̋��n���֐�
+/// @param state(割り当てる状態), filename(モーションファイルのパス)
+/// @details 分離アニメーション形式の場合、指定した外部モーションファイル(.mv1)を読み込みステートに紐付ける
     void AddAnimation(AnimationState state, std::string filename);
 
-    // �����ǂݍ��݃o�[�W�����̃��f���A�j���[�V�����N���X�̃|�C���^
-    SeparateModelAnimation* mpSeparateAnimation;
-    ModelAnimation* mpAnimation;    // ���f���A�j���[�V�����N���X�̃|�C���^
+    SeparateModelAnimation* separate_animation_; // モーションが別ファイルに分離されている場合のアニメーション管理クラス
+    ModelAnimation* animation_;                  // モデル本体にモーションが同梱されている場合のアニメーション管理クラス
+
 private:
-    int mnHandle;   // �ǂݍ��񂾃��f���̃n���h��
-    VECTOR mvPosition;  // ���W
-    VECTOR mvRotation;  // ��]
-    VECTOR mvScale;
-    int mnChangeTextureHandle;
+    int handle_;                   // DxLib側でロードされた3Dモデルの実体ハンドル
+    VECTOR position_;              // ワールド空間上でのモデルの中心座標
+    VECTOR rotation_;              // モデルのY軸などを基準とした回転（姿勢）
+    VECTOR mvScale;                // モデルの描画スケール（初期サイズ調整や演出での拡縮に使用）
+    int change_texture_handle_;    // 動的差し替え用にロードされたテクスチャのハンドル（破棄管理用）
 
-    bool isSeparate;
+    bool is_separate_;             // アニメーションデータが別ファイルに分かれているモデルかどうかのフラグ
 
-    // ��New��
-   
-
-    AttachmentModel* mpAttachment;  // �A�^�b�`���f���i���������������ꍇ�� std::vector ��z��ŊǗ�����Ɨǂ��j
+    AttachmentModel* attachment_;  // 武器など、特定のボーンに追従させる別モデル（現状単一だが拡張時はvectorを推奨）
 };

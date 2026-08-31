@@ -1,61 +1,68 @@
-#include"InfClass.h"
+ï»¿#include"InfClass.h"
 #include"ItemManager.h"
-#include"WeaponManager.h"
 #include"Master.h"
 
+
+/// @brief InfClassã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 InfClass::InfClass(int Log_timer,std::string Inf,int num)
 	:Object2D(VGet(0,0,0))
 	,LogNumber(num)
 	
 {
 	LogCount = 0;
-	mbElaseFlag = false;
+	elase_flag_ = false;
 	LogTime = Log_timer;
 	LogDate = Inf;
 }
 
+
+/// @brief InfClassã®æç”»å‡¦ç†
 void InfClass::Draw()
 {
+	int drawX = static_cast<int>(position_.x);
+	int drawY = static_cast<int>(position_.y);
 	if (LogNumber == 1)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%s‚ğŠl“¾‚µ‚½", LogDate.c_str());
+		DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "%sã‚’ç²å¾—ã—ãŸ", LogDate.c_str());
 	}
 	else if (LogNumber == 2)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%s‚ğg—p‚µ‚½", LogDate.c_str());
+		DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "%sã‚’ä½¿ç”¨ã—ãŸ", LogDate.c_str());
 	}
 	else if (LogNumber == 3)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%s‚ªŒ»‚ê‚½", LogDate.c_str());
+		DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "%sãŒç¾ã‚ŒãŸ", LogDate.c_str());
 	}
 	else if (LogNumber == 4)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%s‚Íg—p‚Å‚«‚Ü‚¹‚ñ", LogDate.c_str());
+		DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "%sã¯ä½¿ç”¨ã§ãã¾ã›ã‚“", LogDate.c_str());
 	}
 	else if(LogNumber==5)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%s", LogDate.c_str());
+		DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "%s", LogDate.c_str());
 	}
 	else
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "–¢Šm”F‚ÈƒƒO‚Å‚·");
+		DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "æœªç¢ºèªãªãƒ­ã‚°ã§ã™");
 	}
 
 	
 
 /*	if (IsDrawFlag == false)
 	{
-		DrawFormatString(mvPosition.x, mvPosition.y, GetColor(255, 255, 255), "%s‚ğŠl“¾‚µ‚½", LogDate.c_str());
+		DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "%sã‚’ç²å¾—ã—ãŸ", LogDate.c_str());
 	}
 	*/
 }
 
+
+/// @brief InfClassã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void InfClass::Update()
 {
 	LogCount++;
 	if (LogTime <LogCount)
 	{
-		mbElaseFlag = true;
+		elase_flag_ = true;
 		SetDeleteFlag(true);
 		SetDrawFlag(false);
 	}

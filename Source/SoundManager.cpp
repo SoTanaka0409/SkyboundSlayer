@@ -1,163 +1,238 @@
-#include"SoundManager.h"
+﻿#include"SoundManager.h"
 #include"DxLib.h"
 
+/// @details 音量、有効化フラグ、および再生中トラックの初期状態のセットアップ
 SoundManager::SoundManager()
-	:mnNowPlayingBgm((SOUND_BGM)-1)  //������Ԃ͉����Đ�����Ă��Ȃ����
-	, mnNowPlayingSe((SOUND_SE)-1)    //������Ԃ͉����Đ�����Ă��Ȃ����
+	:now_playing_bgm_((SOUND_BGM)-1)  //初期状態は何も再生されていない状態
+	, now_playing_se_((SOUND_SE)-1)    //初期状態は何も再生されていない状態
+	, is_bgm_enabled_(true)
+	, is_se_enabled_(true)
+	, bgm_volume_(200)
+	, se_volume_(220)
 {
-
-
 }
+
 SoundManager::~SoundManager()
 {
-
 }
 
+/// @details ゲーム全編で使用するBGMおよびSEファイルの一括ロードとメモリ展開
 void SoundManager::Initialize()
 {
-	//BGM�̓ǂݍ���
-	LoadBGM(SOUND_BGM::BGM_TITLE, "Resource/BGM/natsuyasuminotanken.mp3");
-	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/BGM/MusMus-BGM-081.mp3");//���₵�����ꍇ
-	LoadBGM(SOUND_BGM::BGM_RESULT, "Resource/BGM/MusMus-BGM-084.mp3");
-	
+	// アーキテクチャ設計：プレイ中のロードによるカクつき（処理落ち）や音ズレを防ぐため、起動時やシーン切り替え時の非同期ロード中に全音声アセットをオンメモリ化しておく
+	// BGMの読み込み
+	LoadBGM(SOUND_BGM::BGM_TITLE, "Resource/音源/BGM/01_タイトル画面BGM.mp3");
+	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/音源/BGM/02_ゲーム中BGM.mp3"); //増やしたい場合
+	LoadBGM(SOUND_BGM::BGM_RESULT, "Resource/音源/BGM/03_リザルト画面BGM.mp3");
 
-	//SE�̓ǂݍ���
-	LoadSE(SOUND_SE::SE_FIRE, "Resource/SE/se_fire_magic01.mp3");
-	LoadSE(SOUND_SE::SE_ATTACK, "Resource/SE/se_swing13-1.mp3");
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/SE/se_sword6.mp3");
-	LoadSE(SOUND_SE::SE_SLIDE, "Resource/SE/�o�^���Ɠ|���.mp3");
-	LoadSE(SOUND_SE::SE_HEAL, "Resource/SE/�񕜖��@2.mp3");
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/SE/se_sword6.mp3");
-	LoadSE(SOUND_SE::SE_JUMP, "Resource/SE/�W�����v.mp3");
-	LoadSE(SOUND_SE::SE_WARP, "Resource/SE/���[�v.mp3");
-	LoadSE(SOUND_SE::SE_POWER, "Resource/SE/�X�e�[�^�X�㏸���@2.mp3");
-	LoadSE(SOUND_SE::SE_SHOP, "Resource/SE/���W�X�^�[�Ő��Z.mp3");
-	LoadSE(SOUND_SE::SE_SELECT, "Resource/SE/����{�^��������7.mp3");
-	LoadSE(SOUND_SE::SE_WINDOW, "Resource/SE/���j���[���J��4.mp3");
-	LoadSE(SOUND_SE::SE_LEVELUP, "Resource/SE/levelUp.mp3");
+	// SEの読み込み
+	LoadSE(SOUND_SE::SE_FIRE, "Resource/音源/SE/01_火魔法効果音.mp3");
+	LoadSE(SOUND_SE::SE_ATTACK, "Resource/音源/SE/02_通常攻撃効果音.mp3");
+	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/音源/SE/03_スライド攻撃効果音.mp3");
+	LoadSE(SOUND_SE::SE_SLIDE, "Resource/音源/SE/04_スライド移動効果音.mp3");
+	LoadSE(SOUND_SE::SE_HEAL, "Resource/音源/SE/05_回復効果音.mp3");
+	
+	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/音源/SE/03_スライド攻撃効果音.mp3");
+	LoadSE(SOUND_SE::SE_JUMP, "Resource/音源/SE/06_ジャンプ効果音.mp3");
+	LoadSE(SOUND_SE::SE_WARP, "Resource/音源/SE/07_ワープ効果音.mp3");
+	LoadSE(SOUND_SE::SE_POWER, "Resource/音源/SE/08_能力上昇効果音.mp3");
+	LoadSE(SOUND_SE::SE_SHOP, "Resource/音源/SE/09_購入効果音.mp3");
+	LoadSE(SOUND_SE::SE_SELECT, "Resource/音源/SE/10_決定効果音.mp3");
+	LoadSE(SOUND_SE::SE_WINDOW, "Resource/音源/SE/11_メニュー効果音.mp3");
 }
 
-
-
+/// @details メモリ上に確保されたすべてのサウンドハンドルの安全な破棄
 void SoundManager::Finalize()
 {
-	//BGm�̔j���v
-	for (auto it = mnBgmHandleList.begin(); it != mnBgmHandleList.end(); it++)
+	// BGMの破棄
+	for (auto it = bgm_handle_list_.begin(); it != bgm_handle_list_.end(); it++)
 	{
 		DeleteSoundMem(it->second);
 	}
-	//Se�̔j��
-	for (auto it = mnSeHandleList.begin(); it != mnSeHandleList.end(); it++)
+	// SEの破棄
+	for (auto it = se_handle_list_.begin(); it != se_handle_list_.end(); it++)
 	{
 		DeleteSoundMem(it->second);
 	}
 }
 
+/// @param bgm = 再生するBGMの列挙型ID, isTop = 曲の最初から強制的に再生し直すかどうかのフラグ
+/// @details 指定BGMのループ再生開始、および現在再生中のBGM状態更新
 void SoundManager::PlayBGM(SOUND_BGM bgm, bool isTop)
 {
-	//���ݍĐ�����Ă���BGM���A�ŏ�����̍Đ��o�Ȃ��̂Ȃ�return����
-	if (mnNowPlayingBgm == bgm && !isTop)
+	if (!is_bgm_enabled_)
+	{
+		now_playing_bgm_ = bgm;
+		return;
+	}
+
+	// UX仕様：既に同じBGMが再生中の場合は処理をスキップし、シーン遷移等で曲が不自然に途切れたり頭出しされたりするのを防ぐ
+	if (now_playing_bgm_ == bgm && !isTop)
 	{
 		return;
 	}
 
-	//BGm�̔j���v
-	for (auto it = mnBgmHandleList.begin(); it != mnBgmHandleList.end(); it++)
+	for (auto it = bgm_handle_list_.begin(); it != bgm_handle_list_.end(); it++)
 	{
 		if (it->first == bgm)
 		{
+			ChangeVolumeSoundMem(bgm_volume_, it->second);
 			PlaySoundMem(it->second, DX_PLAYTYPE_LOOP, isTop);
-			//���݂̍Đ���ނ��X�V
-			mnNowPlayingBgm = bgm;
-
+			now_playing_bgm_ = bgm;
 			break;
 		}
 	}
 }
 
+/// @param se = 再生するSEの列挙型ID
+/// @details 指定SEのバックグラウンド（多重）再生開始
 void SoundManager::PlaySE(SOUND_SE se)
 {
-	for (auto it = mnSeHandleList.begin(); it != mnSeHandleList.end(); it++)
+	if (!is_se_enabled_)
+	{
+		return;
+	}
+
+	// UX仕様：アクションゲームにおいて効果音（剣の振りや被弾音）は頻繁に重複するため、DX_PLAYTYPE_BACK を指定して音の同時発音・重畳を担保する
+	for (auto it = se_handle_list_.begin(); it != se_handle_list_.end(); it++)
 	{
 		if (it->first == se)
 		{
+			ChangeVolumeSoundMem(se_volume_, it->second);
 			PlaySoundMem(it->second, DX_PLAYTYPE_BACK);
-			//���݂̍Đ���ނ��X�V
-			mnNowPlayingSe = se;
-
+			now_playing_se_ = se;
 			break;
 		}
 	}
 }
 
+/// @param bgm = 紐づける列挙型ID, filename = ファイルパス
+/// @details 音声データのロード、初期音量の適用、および管理用リストへの登録
 void SoundManager::LoadBGM(SOUND_BGM bgm, std::string filename)
 {
-	bool check = false;//�d�����ēǂݍ���ł��邩�ǂ���
-	for (auto it = mnBgmHandleList.begin(); it != mnBgmHandleList.end(); it++)
+	bool check = false;
+
+	// アーキテクチャ設計：同一ファイルの重複ロードによるメモリリークや無駄なRAM消費を防ぐため、リスト内を走査して登録済みなら即座にスキップするガード処理
+	for (auto it = bgm_handle_list_.begin(); it != bgm_handle_list_.end(); it++)
 	{
 		if (it->first == bgm)
 		{
 			check = true;
-
 			break;
 		}
 	}
-	//�d�����ēǂݍ��܂�Ă����牽�����Ȃ�
 	if (check)
 	{
 		return;
 	}
 
-	//�t�@�C���ǂݍ���
 	int handle = LoadSoundMem(filename.c_str());
 	if (handle == -1)
 	{
-		return;  //�ǂݍ��ݎ��s�����牽�����Ȃ�
+		return;
 	}
 
-	//�ǂݍ��񂾃n���h�������X�g�ɒǉ�
-	mnBgmHandleList.push_back(std::pair<SOUND_BGM, int>(bgm, handle));
+	ChangeVolumeSoundMem(bgm_volume_, handle);
+	bgm_handle_list_.push_back(std::pair<SOUND_BGM, int>(bgm, handle));
 }
 
+/// @param se = 紐づける列挙型ID, filename = ファイルパス
+/// @details 音声データのロード、初期音量の適用、および管理用リストへの登録
 void SoundManager::LoadSE(SOUND_SE se, std::string filename)
 {
-	bool check = false;//�d�����ēǂݍ���ł��邩�ǂ���
-	for (auto it = mnSeHandleList.begin(); it != mnSeHandleList.end(); it++)
+	bool check = false;
+
+	for (auto it = se_handle_list_.begin(); it != se_handle_list_.end(); it++)
 	{
 		if (it->first == se)
 		{
 			check = true;
-
 			break;
 		}
 	}
-	//�d�����ēǂݍ��܂�Ă����牽�����Ȃ�
 	if (check)
 	{
 		return;
 	}
 
-	//�t�@�C���ǂݍ���
 	int handle = LoadSoundMem(filename.c_str());
 	if (handle == -1)
 	{
-		return;  //�ǂݍ��ݎ��s�����牽�����Ȃ�
+		return;
 	}
 
-	//�ǂݍ��񂾃n���h�������X�g�ɒǉ�
-	mnSeHandleList.push_back(std::pair<SOUND_SE, int>(se, handle));
+	ChangeVolumeSoundMem(se_volume_, handle);
+	se_handle_list_.push_back(std::pair<SOUND_SE, int>(se, handle));
 }
+
+/// @details 現在再生中のBGMトラックの停止処理
 void SoundManager::StopBGM()
 {
-	for (auto it = mnBgmHandleList.begin(); it != mnBgmHandleList.end(); it++)
+	for (auto it = bgm_handle_list_.begin(); it != bgm_handle_list_.end(); it++)
 	{
-		if (it->first == mnNowPlayingBgm)
+		if (it->first == now_playing_bgm_)
 		{
 			if (CheckSoundMem(it->second))
 			{
-				StopSoundMem(it->second);//BGm���~
+				StopSoundMem(it->second);
 				break;
 			}
 		}
 	}
+}
+
+/// @param enabled = 有効化フラグ
+/// @details ミュート状態の切り替え。無効化時は即座に停止し、有効化時は現在のトラックをレジューム再生する
+void SoundManager::SetBgmEnabled(bool enabled)
+{
+	is_bgm_enabled_ = enabled;
+	if (!is_bgm_enabled_)
+	{
+		StopBGM();
+	}
+	else if (now_playing_bgm_ != (SOUND_BGM)-1)
+	{
+		PlayBGM(now_playing_bgm_, false);
+	}
+}
+
+/// @param enabled = 有効化フラグ
+/// @details SEのミュート状態の切り替え
+void SoundManager::SetSeEnabled(bool enabled)
+{
+	is_se_enabled_ = enabled;
+}
+
+/// @param volume = 設定する音量（0-255）
+/// @details クランプ処理を挟んだ音量変数の更新、およびロード済みの全BGMハンドルへの即時適用
+void SoundManager::SetBgmVolume(int volume)
+{
+	bgm_volume_ = max(0, min(255, volume));
+	for (auto it = bgm_handle_list_.begin(); it != bgm_handle_list_.end(); it++)
+	{
+		ChangeVolumeSoundMem(bgm_volume_, it->second);
+	}
+}
+
+/// @param volume = 設定する音量（0-255）
+/// @details クランプ処理を挟んだ音量変数の更新、およびロード済みの全SEハンドルへの即時適用
+void SoundManager::SetSeVolume(int volume)
+{
+	se_volume_ = max(0, min(255, volume));
+	for (auto it = se_handle_list_.begin(); it != se_handle_list_.end(); it++)
+	{
+		ChangeVolumeSoundMem(se_volume_, it->second);
+	}
+}
+
+/// @details BGMの有効
+void SoundManager::ToggleBgmEnabled()
+{
+	SetBgmEnabled(!is_bgm_enabled_);
+}
+
+/// @details SEの有効
+void SoundManager::ToggleSeEnabled()
+{
+	SetSeEnabled(!is_se_enabled_);
 }

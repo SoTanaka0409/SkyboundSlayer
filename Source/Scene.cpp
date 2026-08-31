@@ -1,36 +1,45 @@
-#include"Scene.h"
+﻿#include"Scene.h"
 #include"ObjectManager.h"
 #include"Master.h"
 #include"ColliderManager.h"
+
+
+/// @brief Sceneの初期化（コンストラクタ）
 Scene::Scene()
 {
-	//�I�u�W�F�N�g�}�l�[�W���[�̐���
-	mpObjectManager = new ObjectManager();
-	mpColliderManager = new ColliderManager();
+	//オブジェクトマネージャーの生成
+	object_manager_ = new ObjectManager();
+	collider_manager_ = new ColliderManager();
 }
 
 Scene::~Scene()
 {
-	if (mpObjectManager != nullptr)
+	if (object_manager_ != nullptr)
 	{
-		delete mpObjectManager;
+		delete object_manager_;
 	}
 	
 }
-//�`��
+//描画
+
+
+/// @brief Sceneの描画処理
 void Scene::Draw()
 {
-	if (mpObjectManager != nullptr)
+	if (object_manager_ != nullptr)
 	{
-		mpObjectManager->Draw();
+		object_manager_->Draw();
 	}
 }
-//�X�V
+//更新
+
+
+/// @brief Sceneの状態更新処理
 void Scene::Update()
 {
-	if (mpObjectManager != nullptr)
+	if (object_manager_ != nullptr)
 	{
 		
-		mpObjectManager->Update();
+		object_manager_->Update();
 	}
 }

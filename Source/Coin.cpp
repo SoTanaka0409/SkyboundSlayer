@@ -1,4 +1,4 @@
-#include "Coin.h"
+﻿#include "Coin.h"
 #include "Master.h"
 #include "SceneManager.h"
 #include "ObjectManager.h"
@@ -6,58 +6,70 @@
 #include "HaveMoneyClass.h"
 #include <math.h>
 
+/// @brief Coinの初期化（コンストラクタ）
 Coin::Coin(std::string filename, VECTOR pos, int value)
     : Object3D(pos)
-    , mValue(value)
-    , mIsSucking(false)
-    , mCollected(false)
-    , mAge(0)
+    , value_(value)
+    , is_sucking_(false)
+    , collected_(false)
+    , age_(0)
 {
     SetTag(Object3D::Tag3D_Obj);
-    // Add Y offset so it spawns above ground
-    mvPosition.y += 30.0f;
-    mpModel = new Model(filename, mvPosition, false);
-    mpModel->SetScale(VGet(150.0f, 150.0f, 150.0f)); // Make it larger to be visible
+    // 地面より上に出現するようにYオフセットを追加
+    position_.y += kSpawnOffsetY;
+    model_ = new Model(filename, position_, false);
+    model_->SetScale(VGet(kScale, kScale, kScale));
 }
 
 Coin::~Coin()
 {
-    if (mpModel) {
-        delete mpModel;
-        mpModel = nullptr;
+    if (model_) {
+        delete model_;
+        model_ = nullptr;
     }
 }
 
+/// @brief Coinの描画処理
 void Coin::Draw()
 {
-    if (mpModel) {
-        mpModel->Draw();
+    if (model_) {
+        model_->Draw();
     }
 }
 
+/// @brief Coinの状態更新処理
 void Coin::Update()
 {
-    if (mCollected) return;
+    if (collected_) return;
 
-    mAge++;
+    age_++;
     
-    // Rotate the coin for visibility
-    mvRotation.y += 0.1f;
-    if (mpModel) {
-        mpModel->SetRotation(mvRotation);
+    // 視認性を高めるためにコインを回転させる
+    rotation_.y += 0.1f;
+    if (model_) {
+        model_->SetRotation(rotation_);
     }
 
-    // Initial pop physics
-    if (mAge < 20) {
-        mvPosition.y += 2.0f;
-        if (mpModel) mpModel->SetPosition(mvPosition);
-        return; // Don't suck yet
+    UpdatePopPhysics();
+    UpdateSuckToPlayer();
+}
+
+/// @brief CoinのUpdatePopPhysics処理
+void Coin::UpdatePopPhysics()
+{
+    // 出現時の物理挙動
+    if (age_ < kPopDuration) {
+        position_.y += kPopSpeedY;
+        if (model_) model_->SetPosition(position_);
     }
+}
 
-    auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-    if (!mpPlayer) return;
+/// @brief CoinのUpdateSuckToPlayer処理
+void Coin::UpdateSuckToPlayer()
+{
+    if (age_ < kPopDuration) return; // Don't suck yet
 
-    Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+    auto player = Master::player_;
     if (!player) return;
 
     VECTOR pPos = player->GetPosition();
@@ -70,26 +82,25 @@ void Coin::Update()
     float dz = pPos.z - myPos.z;
     float dist = sqrt(dx*dx + dy*dy + dz*dz);
 
-    if (dist < 600.0f) {
-        mIsSucking = true;
+    if (dist < kSuckRadius) {
+        is_sucking_ = true;
     }
 
-    if (mIsSucking) {
-        float speed = 30.0f; // Faster suck
+    if (is_sucking_) {
         if (dist > 0.0f) {
-            myPos.x += (dx / dist) * speed;
-            myPos.y += (dy / dist) * speed;
-            myPos.z += (dz / dist) * speed;
+            myPos.x += (dx / dist) * kSuckSpeed;
+            myPos.y += (dy / dist) * kSuckSpeed;
+            myPos.z += (dz / dist) * kSuckSpeed;
             SetPosition(myPos);
-            if (mpModel) {
-                mpModel->SetPosition(myPos);
+            if (model_) {
+                model_->SetPosition(myPos);
             }
         }
     }
 
-    if (dist < 80.0f && !mCollected) {
-        player->mpHaveMoney->AddMoney(mValue);
-        mCollected = true;
+    if (dist < kCollectRadius && !collected_) {
+        player->have_money_->AddMoney(value_);
+        collected_ = true;
         SetDeleteFlag(true);
     }
 }

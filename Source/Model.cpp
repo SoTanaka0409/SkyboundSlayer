@@ -1,271 +1,261 @@
-#include"Model.h"
-#include"AttachmentModel.h"
-#include"Master.h"
+ï»¿#include "Model.h"
+#include "AttachmentModel.h"
+#include "Master.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+/// @brief Modelã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @param filename 3Dãƒ¢ãƒ‡ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+/// @param initPos åˆæœŸé…ç½®åº§æ¨™
+/// @param isSeparateAnimation ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆ†é›¢ã—ã¦èª­ã¿è¾¼ã‚€ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+/// @details 3Dãƒ¢ãƒ‡ãƒ«ãƒªã‚½ãƒ¼ã‚¹ã®ãƒ­ãƒ¼ãƒ‰ãŠã‚ˆã³ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ¶å¾¡ã‚¯ãƒ©ã‚¹ï¼ˆModelAnimationã¾ãŸã¯SeparateModelAnimationï¼‰ã®åˆæœŸåŒ–ã‚’è¡Œã†
 Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
-    : mvPosition(initPos)
-    , mpAttachment(nullptr)
-    , mvScale(VGet(1.0f, 1.0f, 1.0f))
-    , mnChangeTextureHandle(-1)
-    ,isSeparate(isSeparateAnimation)
+	: position_(initPos)
+	, attachment_(nullptr)
+	, mvScale(VGet(1.0f, 1.0f, 1.0f))
+	, change_texture_handle_(-1)
+	, is_separate_(isSeparateAnimation)
 {
-    // ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
-    mnHandle = Master::mpResourceManager->LoadModel(filename.c_str());
+	handle_ = Master::resource_manager_->LoadModel(filename.c_str());
 
-    //ƒTƒCƒYİ’è
-
-    // šNewš
-    // ğŒ•ªŠò‚ğ’Ç‰Á
-    if (isSeparateAnimation)
-    {
-        // •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì¶¬
-        mpSeparateAnimation = new SeparateModelAnimation(mnHandle);
-        mpAnimation = nullptr;
-    }
-    else
-    {
-        // ’ÊíƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì¶¬
-        mpAnimation = new ModelAnimation(mnHandle);
-        mpSeparateAnimation = nullptr;
-    }
+	if (isSeparateAnimation)
+	{
+		separate_animation_ = new SeparateModelAnimation(handle_);
+		animation_ = nullptr;
+	}
+	else
+	{
+		animation_ = new ModelAnimation(handle_);
+		separate_animation_ = nullptr;
+	}
 }
 
-// ƒAƒjƒ[ƒVƒ‡ƒ“’Ç‰Á
-void Model::AddAnimation(AnimationState state, std::string filename)
-{
-    if (mpSeparateAnimation != nullptr)
-    {
-        mpSeparateAnimation->AddAnimation(state, filename);
-    }
-}
-
-// ƒfƒXƒgƒ‰ƒNƒ^
+/// @brief Modelã‚¯ãƒ©ã‚¹ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @details å‹•çš„ç¢ºä¿ã—ãŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆãƒ¢ãƒ‡ãƒ«ã€å·®åˆ†ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€3Dãƒ¢ãƒ‡ãƒ«æœ¬ä½“ã®è§£æ”¾å‡¦ç†ã‚’è¡Œã†
 Model::~Model()
 {
-    // ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì”jŠü
-    if (mpAnimation != nullptr)
-    {
-        delete mpAnimation;
-    }
+	if (separate_animation_ != nullptr)
+	{
+		delete separate_animation_;
+		separate_animation_ = nullptr;
+	}
+	if (animation_ != nullptr)
+	{
+		delete animation_;
+		animation_ = nullptr;
+	}
 
-    // šNewš
-    // •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚Ì”jŠü
-    if (mpSeparateAnimation != nullptr)
-    {
-        delete mpSeparateAnimation;
-    }
+	if (attachment_ != nullptr)
+	{
+		attachment_->SetDeleteFlag(true);
+	}
 
-    // ƒAƒ^ƒbƒ`ƒ‚ƒfƒ‹ƒNƒ‰ƒX‚Ì”jŠü
-    if (mpAttachment != nullptr)
-    {
-        mpAttachment->SetDeleteFlag(true);
-    }
+	if (change_texture_handle_ != -1)
+	{
+		DeleteGraph(change_texture_handle_);
+		change_texture_handle_ = -1;
+	}
 
-    // ƒeƒNƒXƒ`ƒƒ‚ğØ‚è‘Ö‚¦‚Ä‚¢‚éê‡‚Í‚»‚ÌƒeƒNƒXƒ`ƒƒ‚Ì”jŠü
-    if (mnChangeTextureHandle != -1)
-    {
-        DeleteGraph(mnChangeTextureHandle);
-    }
-
-    // “Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚Ìíœ
-    // note: “Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚ÍŸè‚É”jŠü‚µ‚Ä‚­‚ê‚È‚¢‚Ì‚ÅA•K—v‚È‚­‚È‚Á‚½‚çè“®‚Å”jŠü‚·‚é
-    MV1DeleteModel(mnHandle);
+	if (handle_ != -1)
+	{
+		MV1DeleteModel(handle_);
+		handle_ = -1;
+	}
 }
 
-// XV
+/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®è¿½åŠ ç™»éŒ²ã‚’è¡Œã†ï¼ˆåˆ†é›¢ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚ã®ã¿æœ‰åŠ¹ï¼‰
+/// @param state ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è­˜åˆ¥ç”¨ã‚¹ãƒ†ãƒ¼ãƒˆ
+/// @param filename ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+void Model::AddAnimation(AnimationState state, std::string filename)
+{
+	if (separate_animation_ != nullptr)
+	{
+		separate_animation_->AddAnimation(state, filename);
+	}
+}
+
+/// @brief ãƒ¢ãƒ‡ãƒ«ã®çŠ¶æ…‹æ›´æ–°å‡¦ç†ã‚’è¡Œã†
+/// @details ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é€²è¡Œæ›´æ–°ãŠã‚ˆã³DxLibã®ãƒ¢ãƒ‡ãƒ«ä½ç½®ãƒ»å›è»¢ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å†è¨­å®šã‚’è¡Œã†
 void Model::Update()
 {
-    if (mpAnimation != nullptr)
-    {
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXV
-        mpAnimation->Update();
-    }
+	if (animation_ != nullptr)
+	{
+		animation_->Update();
+	}
 
-    // šNewš
-    // •ªŠ„ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌXV
-    if (mpSeparateAnimation != nullptr)
-    {
-        mpSeparateAnimation->Update();
-    }
+	if (separate_animation_ != nullptr)
+	{
+		separate_animation_->Update();
+	}
 
-    // À•Wİ’è
-    MV1SetPosition(mnHandle, mvPosition);
-
-    
-
-    // ‰ñ“]İ’è
-    MV1SetRotationXYZ(mnHandle, mvRotation);
+	MV1SetPosition(handle_, position_);
+	MV1SetRotationXYZ(handle_, rotation_);
 }
 
-// •`‰æ
+/// @brief 3Dãƒ¢ãƒ‡ãƒ«ã®æç”»å‡¦ç†ã‚’è¡Œã†
 void Model::Draw()
 {
-    // ƒ‚ƒfƒ‹‚Ì•`‰æ
-    MV1DrawModel(mnHandle);
+	MV1DrawModel(handle_);
 }
 
-// ƒAƒjƒƒVƒ‡ƒ“Ø‚è‘Ö‚¦
+/// @brief å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹
+/// @param state ç§»è¡Œå…ˆã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
 void Model::ChangeAnimation(AnimationState state)
 {
-    // šNewš
-    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
-    if (mpAnimation != nullptr)
-    {
-        mpAnimation->ChangeAnimation(state);
-    }
-    if (mpSeparateAnimation != nullptr)
-    {
-        mpSeparateAnimation->ChangeAnimation(state);
-    }
+	if (animation_ != nullptr)
+	{
+		animation_->ChangeAnimation(state);
+	}
+	if (separate_animation_ != nullptr)
+	{
+		separate_animation_->ChangeAnimation(state);
+	}
 }
 
+/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ«ãƒ¼ãƒ—å†ç”Ÿãƒ•ãƒ©ã‚°ã‚’è¨­å®šã™ã‚‹
+/// @param loop ãƒ«ãƒ¼ãƒ—å†ç”Ÿã‚’è¡Œã†å ´åˆã¯true
 void Model::SetLoop(bool loop)
 {
-    // šNewš
-    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
-    if (mpAnimation != nullptr)
-    {
-        mpAnimation->SetLoop(loop);
-    }
-    if (mpSeparateAnimation != nullptr)
-    {
-        mpSeparateAnimation->SetLoop(loop);
-    }
+	if (animation_ != nullptr)
+	{
+		animation_->SetLoop(loop);
+	}
+	if (separate_animation_ != nullptr)
+	{
+		separate_animation_->SetLoop(loop);
+	}
 }
 
+/// @brief éãƒ«ãƒ¼ãƒ—ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†å¾Œã®çŠ¶æ…‹åˆ‡ã‚Šæ›¿ãˆã‚’è¨­å®šã™ã‚‹
+/// @param state ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿçµ‚äº†æ™‚ã«ç§»è¡Œã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆ
 void Model::SetLoopFinishState(AnimationState state)
 {
-    // šNewš
-    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
-    if (mpAnimation != nullptr)
-    {
-        mpAnimation->SetLoopFinishState(state);
-    }
-    if (mpSeparateAnimation != nullptr)
-    {
-        mpSeparateAnimation->SetLoopFinishState(state);
-    }
+	if (animation_ != nullptr)
+	{
+		animation_->SetLoopFinishState(state);
+	}
+	if (separate_animation_ != nullptr)
+	{
+		separate_animation_->SetLoopFinishState(state);
+	}
 }
 
+/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ¬ãƒ³ãƒ‰ï¼ˆæ»‘ã‚‰ã‹ãªåˆ‡ã‚Šæ›¿ãˆï¼‰ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®šã™ã‚‹
+/// @param isBlend ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚’è¡Œã†å ´åˆã¯true
 void Model::SetAnimationBlend(bool isBlend)
 {
-    // šNewš
-     // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
-    if (mpAnimation != nullptr)
-    {
-        mpAnimation->SetAnimationBlend(isBlend);
-    }
-    if (mpSeparateAnimation != nullptr)
-    {
-        mpSeparateAnimation->SetAnimationBlend(isBlend);
-    }
+	if (animation_ != nullptr)
+	{
+		animation_->SetAnimationBlend(isBlend);
+	}
+	if (separate_animation_ != nullptr)
+	{
+		separate_animation_->SetAnimationBlend(isBlend);
+	}
 }
 
+/// @brief ç¾åœ¨å†ç”Ÿã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—ã™ã‚‹
+/// @return AnimationState ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
 AnimationState Model::GetNowState()
 {
-    // šNewš
-    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
-    // note: i‚Ù‚Ú‚ ‚è‚¦‚È‚¢‚ªj‚à‚µ‚Ç‚¿‚ç‚à–³‚¯‚ê‚ÎA“Á‚Éİ’è‚Ì‚È‚¢Å‘å’l‚ğ•Ô‚·‚æ‚¤‚É‚·‚é
-    AnimationState ret = AnimationState::ANIMATION_MAX;
+	AnimationState ret = AnimationState::ANIMATION_MAX;
 
-    if (mpAnimation != nullptr)
-    {
-        ret = mpAnimation->GetNowState();
-    }
-    if (mpSeparateAnimation != nullptr)
-    {
-        ret = mpSeparateAnimation->GetNowState();
-    }
+	if (animation_ != nullptr)
+	{
+		ret = animation_->GetNowState();
+	}
+	if (separate_animation_ != nullptr)
+	{
+		ret = separate_animation_->GetNowState();
+	}
 
-    return ret;
+	return ret;
 }
 
+/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒæœ€å¾Œã¾ã§å†ç”Ÿå®Œäº†ã—ãŸã‹åˆ¤åˆ¥ã™ã‚‹
+/// @return bool å†ç”Ÿå®Œäº†ã—ãŸå ´åˆã¯true
 bool Model::IsAnimationLoopFinish()
 {
-    // šNewš
-    // ’Êí or •ªŠ„‚Ì‚Ç‚¿‚ç‚©‚ğg‚Á‚Ä‚¢‚é‚©‚Å•ªŠò
-    // note: i‚Ù‚Ú‚ ‚è‚¦‚È‚¢‚ªj‚à‚µ‚Ç‚¿‚ç‚à–³‚¯‚ê‚ÎAfalse ‚ğ•Ô‚·‚æ‚¤‚É‚µ‚Ä‚¨‚­
+	bool ret = false;
 
-    bool ret = false;
+	if (animation_ != nullptr)
+	{
+		ret = animation_->IsLoopFinish();
+	}
+	if (separate_animation_ != nullptr)
+	{
+		ret = separate_animation_->IsLoopFinish();
+	}
 
-    if (mpAnimation != nullptr)
-    {
-        ret = mpAnimation->IsLoopFinish();
-    }
-    if (mpSeparateAnimation != nullptr)
-    {
-        ret = mpSeparateAnimation->IsLoopFinish();
-    }
-
-    return ret;
+	return ret;
 }
 
-
-// ƒAƒ^ƒbƒ`ƒƒ“ƒg‚ğ’Ç‰Á
-void Model::AddAttachment(std::string filename, std::string attachFrameName)
+/// @brief æ­¦å™¨ãªã©ã®ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆãƒ¢ãƒ‡ãƒ«ã‚’ãƒœãƒ¼ãƒ³ï¼ˆãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰ã«çµåˆãƒ»ç™»éŒ²ã™ã‚‹
+/// @param filename ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆã®3Dãƒ¢ãƒ‡ãƒ«ãƒ‘ã‚¹
+/// @param attachFrameName çµåˆå¯¾è±¡ã®ãƒœãƒ¼ãƒ³ï¼ˆãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰å
+/// @param offsetPos ãƒœãƒ¼ãƒ³ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆä½ç½®
+/// @param offsetRot ãƒœãƒ¼ãƒ³ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆå›è»¢è§’
+void Model::AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos, VECTOR offsetRot)
 {
-   if(mpAttachment!=nullptr) mpAttachment->SetDeleteFlag(true);
-    // ƒAƒ^ƒbƒ`æ‚ÌƒtƒŒ[ƒ€”Ô†‚ğæ“¾
-    int frameIndex = MV1SearchFrame(mnHandle, attachFrameName.c_str());
-
-    // ƒAƒ^ƒbƒ`ƒƒ“ƒgƒ‚ƒfƒ‹‚Ì¶¬
-    mpAttachment = new AttachmentModel(filename, mnHandle, frameIndex);
+	if (attachment_ != nullptr)
+	{
+		attachment_->SetDeleteFlag(true);
+		attachment_ = nullptr;
+	}
+	int frameIndex = MV1SearchFrame(handle_, attachFrameName.c_str());
+	if (frameIndex != -1)
+	{
+		attachment_ = new AttachmentModel(filename, handle_, frameIndex, offsetPos, offsetRot);
+	}
 }
 
+/// @brief ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆéä¾å­˜ã§ã€æŒ‡å®šãƒœãƒ¼ãƒ³ï¼ˆãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—ã™ã‚‹
+/// @param attachFrameName å–å¾—ã—ãŸã„ãƒœãƒ¼ãƒ³ï¼ˆãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰å
+/// @return VECTOR ãƒœãƒ¼ãƒ³ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ï¼ˆè¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯åˆæœŸé«˜ã•åº§æ¨™ï¼‰
 VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 {
-    if (this != nullptr)
-    {
-        int frameIndex = MV1SearchFrame(mnHandle, attachFrameName.c_str());
-        VECTOR pos = VGet(0.0f, 30.0f, 0.0f);
-        pos = MV1GetFramePosition(mnHandle, frameIndex);
-        return pos;
-    }
+	int frameIndex = MV1SearchFrame(handle_, attachFrameName.c_str());
+	if (frameIndex != -1)
+	{
+		return MV1GetFramePosition(handle_, frameIndex);
+	}
+	return VGet(0.0f, 30.0f, 0.0f);
 }
 
-
-
-
-// ƒAƒ^ƒbƒ`ƒ‚ƒfƒ‹‚ÌÀ•Wæ“¾
+/// @brief ç™»éŒ²æ¸ˆã¿ã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆã®ç¾åœ¨ã®å…ˆç«¯ãƒ»ã‚ªãƒ•ã‚»ãƒƒãƒˆé©ç”¨å¾Œã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—ã™ã‚‹
+/// @return VECTOR è¨ˆç®—ã•ã‚ŒãŸã‚¢ã‚¿ãƒƒãƒãƒ¡ãƒ³ãƒˆã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
 VECTOR Model::GetAttachmentPosition()
 {
-    if (mpAttachment != nullptr)
-    {
-        VECTOR vec = VGet(0.0f, -50.0f, 0.0f);
+	if (attachment_ != nullptr)
+	{
+		VECTOR vec = VGet(0.0f, -50.0f, 0.0f);
 
-        // s—ñ‚Ìæ“¾
-        MATRIX matrix = MV1GetFrameLocalWorldMatrix(mpAttachment->GetHandle(), 0);
+		MATRIX matrix = MV1GetFrameLocalWorldMatrix(attachment_->GetHandle(), 0);
 
-        // s—ñî•ñ‚ğ‚à‚Æ‚ÉÀ•W•ÏŠ·‚·‚é
-        vec = VTransform(vec, matrix);
+		vec = VTransform(vec, matrix);
 
-        return vec;
-    }
+		return vec;
+	}
 
-    // ƒAƒ^ƒbƒ`ƒƒ“ƒg‚ª–³‚¢ê‡‚ÍŒ´“_‚ğ•Ô‚µ‚Ä‚¨‚­
-    return VGet(0.0f, 0.0f, 0.0f);
+	return VGet(0.0f, 0.0f, 0.0f);
 }
 
-
-
-
+/// @brief ãƒ¢ãƒ‡ãƒ«ã®æ‹¡å¤§ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è¨­å®šã™ã‚‹
+/// @param scale å„è»¸ã®å€ç‡ãƒ™ã‚¯ãƒˆãƒ«
 void Model::SetScale(VECTOR scale)
 {
-    MV1SetScale(mnHandle, scale);
+	MV1SetScale(handle_, scale);
 }
 
+/// @brief ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å‹•çš„ã«å·®ã—æ›¿ãˆã‚‹
+/// @param filename å·®ã—æ›¿ãˆç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç”»åƒãƒ‘ã‚¹
+/// @param index å·®ã—æ›¿ãˆã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·
 void Model::SetTexture(std::string filename, int index)
 {
-    // ƒeƒNƒXƒ`ƒƒ‚ğ‚·‚Å‚ÉØ‚è‘Ö‚¦‚Ä‚¢‚éê‡‚Í‚»‚ÌƒeƒNƒXƒ`ƒƒ‚Ì”jŠü
-    if (mnChangeTextureHandle != -1)
-    {
-        DeleteGraph(mnChangeTextureHandle);
-    }
+	if (change_texture_handle_ != -1)
+	{
+		DeleteGraph(change_texture_handle_);
+	}
 
-    // ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ
-    mnChangeTextureHandle = Master::mpResourceManager->LoadGraphics(filename);
+	change_texture_handle_ = Master::resource_manager_->LoadGraphics(filename);
 
-    // “Ç‚İ‚ñ‚¾ƒeƒNƒXƒ`ƒƒ‚Ì”½‰f
-    MV1SetTextureGraphHandle(mnHandle, index, mnChangeTextureHandle, FALSE);
+	MV1SetTextureGraphHandle(handle_, index, change_texture_handle_, FALSE);
 }

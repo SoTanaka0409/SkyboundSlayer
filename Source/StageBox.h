@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<vector>
 #include"Object3D.h"
 #include"Dxlib.h"
@@ -7,33 +7,31 @@
 class StageBox
 {
 public:
-	StageBox(VECTOR centerpos,VECTOR centorPos2,VECTOR TopLeft,VECTOR BottomRightint,int mnColor1,int mnColor2,int mnColor3,int mnColoe4);
-
+	StageBox(VECTOR centerpos,VECTOR centorPos2,VECTOR TopLeft,VECTOR BottomRightint,int color1_,int color2_,int color3_,int mnColoe4);
 	~StageBox();
-
 	void Draw();
-
 	void Update();
-	std::vector<VERTEX3D>GEtVertex()
+	std::vector<VERTEX3D>GetVertex()
 	{
 		std::vector<VERTEX3D>result;
-		result.push_back(mVertex[0]);
-		result.push_back(mVertex[1]);
-		result.push_back(mVertex[2]);
-		result.push_back(mVertex[3]);
-		result.push_back(mVertex[4]);
-		result.push_back(mVertex[5]);
-		result.push_back(mVertex[6]);
-		result.push_back(mVertex[7]);
+  
+		result.push_back(vertex_[0]);
+		result.push_back(vertex_[1]);
+		result.push_back(vertex_[2]);
+		result.push_back(vertex_[3]);
+		result.push_back(vertex_[4]);
+		result.push_back(vertex_[5]);
+		result.push_back(vertex_[6]);
+  		result.push_back(vertex_[7]);
 		return result;
 	}
 
 private:
-	VERTEX3D mVertex[8];//’¸“_î•ñ(ÅI“I‚ÉlŠp‚Å•`‚­‚Ì‚Å4‚Â)
+	VERTEX3D vertex_[8];//é ‚ç‚¹æƒ…å ±(æœ€çµ‚çš„ã«å››è§’ã§æãã®ã§4ã¤)
 
-	/*int mnColor1;
-	int mnColor2;
-	int mnColor3;
-	int mnColor4;*/
+	/*int color1_;
+	int color2_;
+	int color3_;
+	int color4_;*/
 
 };

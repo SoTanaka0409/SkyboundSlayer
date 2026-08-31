@@ -1,33 +1,27 @@
-#pragma once
-#pragma once
+ï»¿#pragma once
 #include"DxLib.h"
 #include"Object3D.h"
 #include<vector>
 #include"Enemy3D.h"
 
+class Enemy; // å‰æ–¹å®£è¨€
 
 class DrawHp 
 {
 public:
-	//centerPos,,,’†SÀ•W
-	//topLeft... ¶ãÀ•W
-	//bottomRight...‰E‰ºÀ•W
-	DrawHp();//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-
-	~DrawHp();//ƒfƒXƒgƒ‰ƒNƒ^
-
-	void Update();//XV
-	void Draw();//•`‰æ
-
+	//centerPos,,,ä¸­å¿ƒåº§æ¨™
+	//topLeft... å·¦ä¸Šåº§æ¨™
+	//bottomRight...å³ä¸‹åº§æ¨™
+	DrawHp();//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~DrawHp();//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	void Update();//æ›´æ–°
+	void Draw();//æç”»
 
 private:
-	
+	void UpdateHpBars();
+	void DrawSingleHpBar(Enemy* pEne);
 
-	
-
-
-
-
-
-
+	static constexpr float kHpBarOffsetY = 250.0f;
+	static constexpr int kHpBarWidth = 60;
+	static constexpr int kHpBarHeight = 10;
 };

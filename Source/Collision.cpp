@@ -1,27 +1,33 @@
-#include "Collision.h"
+﻿#include "Collision.h"
 #include"Master.h"
 #include"SceneManager.h"
 
 
 
+
+/// @brief Collisionの初期化（コンストラクタ）
 Collision::Collision()
 {
-	//Master::mpSceneManager->GetCurrentScene()->GetCollisionManager()
+	//Master::scene_manager_->GetCurrentScene()->GetCollisionManager()
 }
 Collision::~Collision()
 {
 
 }
 
+
+/// @brief Collisionの状態更新処理
 void Collision::Update()
 {
-	for (auto list = mSizeList.begin(); list != mSizeList.end(); list++)
+	for (auto list = size_list_.begin(); list != size_list_.end(); list++)
 	{
 
 	}
 
 }
 
+
+/// @brief Collisionの描画処理
 void Collision::Draw()
 {
 

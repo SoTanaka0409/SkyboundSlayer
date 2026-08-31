@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Dxlib.h"
 #include"Object3D.h"
 #include"list"
@@ -27,35 +27,30 @@ public:
 		VECTOR initPos;
 		float hp;//hp
 		float speed;//speed
-		float attack;//UŒ‚—Í
-		float HitSize;//‚ ‚½‚è”»’è‚ÌƒTƒCƒY
-		float Serch1;//“G‚ğƒT[ƒ`‚·‚é‘å‚«‚³
-		float Serch2;//“G‚ÉUŒ‚‚µn‚ß‚éƒTƒCƒY
-		float Serch3;//“G‚É‹ß‚¸‚«‚·‚¬‚½‚Æ‚«‚É—§‚¿~‚Ü‚é
-		float xp;//“|‚³‚ê‚½‚Æ‚«‚Éplayer‚ªŠl“¾‚·‚éxp
-		bool isSeparateAnim;//ƒZƒpƒŒ[ƒgƒAƒjƒ[ƒVƒ‡ƒ“‚ğ‚·‚é‚©‚Ç‚¤‚©
-		int MaxEnemyCount;//stage‚ÌÅ‘å•¦‚«”
+		float attack;//æ”»æ’ƒåŠ›
+		float HitSize;//ã‚ãŸã‚Šåˆ¤å®šã®ã‚µã‚¤ã‚º
+		float Serch1;//æ•µã‚’ã‚µãƒ¼ãƒã™ã‚‹å¤§ãã•
+		float Serch2;//æ•µã«æ”»æ’ƒã—å§‹ã‚ã‚‹ã‚µã‚¤ã‚º
+		float Serch3;//æ•µã«è¿‘ãšãã™ããŸã¨ãã«ç«‹ã¡æ­¢ã¾ã‚‹
+		bool is_separate_anim_;//ã‚»ãƒ‘ãƒ¬ãƒ¼ãƒˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã™ã‚‹ã‹ã©ã†ã‹
+		int MaxEnemyCount;//stageã®æœ€å¤§æ²¸ãæ•°
 		int money;
-		int Count;//“G‚Ì”
+		int Count;//æ•µã®æ•°
 	};
 
 public:
 	EnemyManager();
-
 	~EnemyManager();
-
 	void Draw();
 	void Update();
-
 	void NewEnemyList(enemydate date);
 	
 	
 
-	std::list<Enemy*>mpEneList;
+	std::list<Enemy*>ene_list_;
 private:
-	enemydate mpDate;
-	enemy_tag mnTag;
-	
+	enemydate date_;
+	enemy_tag tag_;
 	/*std::vector<Enemy*> GetEnemyVec() { return enemyVec; }
 	std::vector<Enemy*> enemyVec;*/
 	

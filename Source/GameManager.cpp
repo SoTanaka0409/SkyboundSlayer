@@ -1,314 +1,1035 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 #include "Player3D.h"
 #include "Enemy.h"
+#include "StatShop.h"
 #include <cmath>
 #include <DxLib.h>
+#include "Stage.h"
+#include "StageObject.h"
+#include "Tree.h"
+#include "InputManager.h"
+#include "EffekseerObject.h"
 
-GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
-    : mpEnemyManager(enemyManager), mDifficulty(diff), mCurrentPhase(Phase::PHASE_1), mShopTimer(0)
+namespace
 {
-    // Start the first wave
-    SpawnPhaseEnemies();
+	/// @brief デバッグ用ボタンの領域情報を保持する構造体
+	struct DebugButton
+	{
+		int x;           ///< ボタン左上X座標
+		int y;           ///< ボタン左上Y座標
+		int w;           ///< ボタンの幅
+		int h;           ///< ボタンの高さ
+		const char* label; ///< ボタンに表示するラベル文字列
+	};
+
+	/// @brief マウスカーソルがデバッグボタンの領域内にあるか判定する
+	/// @param button 判定対象のボタン構造体
+	/// @param mouseX マウスのX座標
+	/// @param mouseY マウスのY座標
+	/// @return bool ボタン領域内にある場合はtrue
+	bool IsMouseInButton(const DebugButton& button, int mouseX, int mouseY)
+	{
+		return mouseX >= button.x &&
+			mouseX <= button.x + button.w &&
+			mouseY >= button.y &&
+			mouseY <= button.y + button.h;
+	}
+
+	/// @brief デバッグ用ボタンを描画する
+	/// @param button 描画対象のボタン構造体
+	/// @param hover マウスホバー中かどうかのフラグ
+	void DrawDebugButton(const DebugButton& button, bool hover)
+	{
+		const int bg = hover ? GetColor(55, 46, 32) : GetColor(24, 23, 26);
+		const int edge = hover ? GetColor(235, 188, 82) : GetColor(116, 86, 40);
+		const int text = hover ? GetColor(255, 238, 164) : GetColor(230, 216, 184);
+
+		DrawBox(button.x, button.y, button.x + button.w, button.y + button.h, bg, true);
+		DrawBox(button.x, button.y, button.x + button.w, button.y + button.h, edge, false);
+		DrawFormatString(button.x + 14, button.y + 10, text, "%s", button.label);
+	}
 }
 
+/// @brief GameManagerのコンストラクタ
+/// @param enemyManager 敵オブジェクトの管理を担当するマネージャーポインタ
+/// @param diff ゲームの難易度設定
+/// @details 各種変数の初期化、フェーズ1の開始およびポータル・エフェクトの生成を行う
+GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
+	: enemy_manager_(enemyManager), difficulty_(diff), current_phase_(Phase::kPhase1), shop_timer_(0), fade_alpha_(0), boss_portal_pos_(VGet(0, 0, 0)), boss_cutscene_timer_(0), cutscene_start_pos_(VGet(0, 0, 0))
+{
+	// 最初のウェーブの敵を生成
+	SpawnPhaseEnemies();
+
+	// ゲーム開始時にプレイヤーの反対側にボス用のポータル座標を計算して初期化
+	VECTOR playerStartPos = VGet(-1200.0f, 20.0f, -1000.0f);
+	VECTOR center = Config::GetStageCenter();
+	VECTOR dir = VSub(playerStartPos, center);
+	dir.y = 0.0f;
+	if (VSize(dir) < 1.0f) dir = VGet(0.0f, 0.0f, 1.0f);
+	else dir = VNorm(dir);
+	boss_portal_pos_ = VAdd(center, VScale(dir, -5000.0f));
+
+	// ポータルの土台モデルを生成
+	float portalSize = 100.0f;
+	new Stage(VAdd(boss_portal_pos_, VGet(0.0f, -570.0f, 0.0f)), "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", VGet(portalSize, portalSize, portalSize));
+
+	// ポータル上の魔法陣エフェクトを生成
+	new EffekseerObject("Mahoujin", "Resource/エフェクト_魔法陣/02_魔法陣エフェクト発生用.efk", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
+}
+
+/// @brief GameManagerのデストラクタ
 GameManager::~GameManager()
 {
 }
 
+/// @brief 毎フレームの更新処理を行う
+/// @details フェーズ移行、ボスカットシーン、ショップ進行、バトルフェーズの管理を統合処理する
 void GameManager::Update()
 {
-    // DEBUG: Press '0' to wipe out all enemies in the current phase
-    if (CheckHitKey(KEY_INPUT_0)) {
-        auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-        for (auto enemy : enemies)
-		{
-			Enemy* e = dynamic_cast<Enemy*>(enemy);
-            if (e) {
-                e->Damage(e->GetMaxHp()); // Deal max HP damage to trigger death animation
-            }
-        }
-    }
+	UpdateDebugControls();
 
-    if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3)
-    {
-        if (mCurrentPhase != Phase::SHOP_3) {
-            mShopTimer--;
-            if (mShopTimer <= 0) {
-                if (mCurrentPhase == Phase::SHOP_1) {
-                    mCurrentPhase = Phase::PHASE_2;
-                } else if (mCurrentPhase == Phase::SHOP_2) {
-                    mCurrentPhase = Phase::PHASE_3;
-                }
-                SpawnPhaseEnemies();
-            }
-        } 
-        else
-        {
-            // SHOP_3: No time limit. Wait for player to enter teleporter.
-            auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-            if (p) {
-                Player3D* player = dynamic_cast<Player3D*>(p);
-                VECTOR playerPos = player->GetPosition();
-                
-                // Placeholder teleporter position (center of stage, offset)
-                VECTOR teleporterPos = VAdd(Config::GetStageCenter(), VGet(0.0f, 0.0f, 800.0f));
-                
-                float dist = VSize(VSub(playerPos, teleporterPos));
-                if (dist < 150.0f) { // 150 radius to enter
-                    mCurrentPhase = Phase::BOSS;
-                    SpawnPhaseEnemies();
-                }
-            }
-        }
-    } else {
-        auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-        if (enemies.empty())
-        {
-            if (mCurrentPhase == Phase::PHASE_1) {
-                mCurrentPhase = Phase::SHOP_1;
-                mShopTimer = 60 * 20; // 20秒
-            } else if (mCurrentPhase == Phase::PHASE_2) {
-                mCurrentPhase = Phase::SHOP_2;
-                mShopTimer = 60 * 20; // 20秒
-            } else if (mCurrentPhase == Phase::PHASE_3) {
-                mCurrentPhase = Phase::SHOP_3;
-                mShopTimer = 60 * 20; // 20秒
-            } else if (mCurrentPhase == Phase::BOSS) {
-                mCurrentPhase = Phase::CLEAR;
-            }
-        }
-    }
+	if (UpdateBossCutscene())
+	{
+		return;
+	}
+
+	if (UpdateBossFade())
+	{
+		return;
+	}
+
+	if (IsShopPhase())
+	{
+		UpdateShopPhase();
+	}
+	else
+	{
+		UpdateBattlePhase();
+	}
 }
 
+/// @brief ボスカットシーン中のカメラ座標やタイマーを更新する
+/// @return bool カットシーン処理中の場合はtrue、完了・非再生時はfalse
+/// @details カメラの注視点移動およびイージング処理を行う
+bool GameManager::UpdateBossCutscene()
+{
+	if (!Master::is_cutscene_playing_)
+	{
+		return false;
+	}
+
+	boss_cutscene_timer_++;
+
+	float t = static_cast<float>(boss_cutscene_timer_) / 180.0f;
+	if (t > 1.0f)
+	{
+		t = 1.0f;
+	}
+
+	float easeT = t * t * (3.0f - 2.0f * t);
+	VECTOR currentPos = VAdd(VScale(cutscene_start_pos_, 1.0f - easeT), VScale(boss_portal_pos_, easeT));
+	Master::camera_->SetCutsceneTarget(currentPos);
+
+	if (boss_cutscene_timer_ > 240)
+	{
+		Master::is_cutscene_playing_ = false;
+		Master::camera_->SetCutsceneMode(false);
+	}
+
+	return true;
+}
+
+/// @brief ボス戦前後の画面暗転・フェード処理を更新する
+/// @return bool フェード処理中の場合はtrue
+/// @details fade_alpha_の増減を行い、暗転完了時にボス戦マップへのワープと敵生成を実行する
+bool GameManager::UpdateBossFade()
+{
+	if (current_phase_ == Phase::kFadeOutToBoss)
+	{
+		fade_alpha_ += 5;
+		if (fade_alpha_ >= 255)
+		{
+			fade_alpha_ = 255;
+			current_phase_ = Phase::kBoss;
+			SpawnPhaseEnemies();
+
+			current_phase_ = Phase::kFadeInBoss;
+			Master::player_->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0.0f, -2000.0f)));
+
+			if (Master::sound_manager_)
+			{
+				Master::sound_manager_->PlaySE(SoundManager::SE_WARP);
+			}
+		}
+
+		return true;
+	}
+
+	if (current_phase_ == Phase::kFadeInBoss)
+	{
+		fade_alpha_ -= 5;
+		if (fade_alpha_ <= 0)
+		{
+			fade_alpha_ = 0;
+			current_phase_ = Phase::kBoss;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+/// @brief ショップフェーズのタイマーおよび退場判定を管理する
+/// @details 制限時間の減算を行い、0になったらショップNPCを退場させて次の戦闘フェーズへ移行する
+void GameManager::UpdateShopPhase()
+{
+	if (current_phase_ == Phase::kShop3)
+	{
+		if (IsBossGateTouched())
+		{
+			SendShopsOut();
+			StartBossTransition();
+		}
+
+		return;
+	}
+
+	if (AreShopsArrived())
+	{
+		shop_timer_--;
+	}
+
+	if (shop_timer_ > 0)
+	{
+		return;
+	}
+
+	SendShopsOut();
+
+	if (current_phase_ == Phase::kShop1)
+	{
+		current_phase_ = Phase::kPhase2;
+	}
+	else if (current_phase_ == Phase::kShop2)
+	{
+		current_phase_ = Phase::kPhase3;
+	}
+
+	SpawnPhaseEnemies();
+}
+
+/// @brief バトルフェーズの全滅検知・フェーズ進行を管理する
+/// @details フィールド上の敵が全滅した場合、ショップフェーズまたはボス戦への移行処理を開始する
+void GameManager::UpdateBattlePhase()
+{
+	if (GetEnemyCount() > 0)
+	{
+		return;
+	}
+
+	if (current_phase_ == Phase::kPhase1)
+	{
+		StartShopPhase(Phase::kShop1);
+	}
+	else if (current_phase_ == Phase::kPhase2)
+	{
+		StartShopPhase(Phase::kShop2);
+	}
+	else if (current_phase_ == Phase::kPhase3)
+	{
+		StartShopPhase(Phase::kShop3);
+		StartBossGateCutscene();
+	}
+	else if (current_phase_ == Phase::kBoss)
+	{
+		current_phase_ = Phase::kClear;
+	}
+}
+
+/// @brief ショップフェーズへの移行を開始する
+/// @param nextPhase 移行先のショップフェーズ（kShop1〜kShop3）
+/// @details 制限時間タイマーをセットし、ショップNPCに入場を開始させる
+void GameManager::StartShopPhase(Phase nextPhase)
+{
+	current_phase_ = nextPhase;
+	shop_timer_ = 60 * 20;
+	SendShopsIn();
+}
+
+/// @brief ボス戦前暗転フェード演出を開始する
+/// @details フェーズをフェードアウト状態にし、アルファ値を初期化する
+void GameManager::StartBossTransition()
+{
+	current_phase_ = Phase::kFadeOutToBoss;
+	fade_alpha_ = 0;
+}
+
+/// @brief ボスゲート出現時のカメラカットシーンを開始する
+/// @details プレイヤーの操作を制限し、ゲート位置へカメラを向けるカットシーンフラグを有効化する
+void GameManager::StartBossGateCutscene()
+{
+	Master::is_cutscene_playing_ = true;
+	boss_cutscene_timer_ = 0;
+	cutscene_start_pos_ = Master::player_->GetPosition();
+	Master::camera_->SetCutsceneMode(true);
+}
+
+/// @brief ショップNPC群をフィールド内へ入場させる
+void GameManager::SendShopsIn()
+{
+	const auto& shops = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+	for (auto s : shops)
+	{
+		StatShop* shop = s->CastTo<StatShop>();
+		if (shop)
+		{
+			shop->StartWalkingIn();
+		}
+	}
+}
+
+/// @brief ショップNPC群をフィールドから退場させる
+void GameManager::SendShopsOut()
+{
+	const auto& shops = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+	for (auto s : shops)
+	{
+		StatShop* shop = s->CastTo<StatShop>();
+		if (shop)
+		{
+			shop->StartWalkingOut();
+		}
+	}
+}
+
+/// @brief 全てのショップNPCが所定の目標位置へ到着したか判別する
+/// @return bool 全て到着していればtrue、移動中があればfalse
+bool GameManager::AreShopsArrived() const
+{
+	const auto& shops = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+	for (auto s : shops)
+	{
+		StatShop* shop = s->CastTo<StatShop>();
+		if (shop && !shop->IsArrived())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/// @brief 現在のフェーズがショップフェーズ（1〜3）かどうか判定する
+/// @return bool ショップフェーズであればtrue
+bool GameManager::IsShopPhase() const
+{
+	return current_phase_ == Phase::kShop1 || current_phase_ == Phase::kShop2 || current_phase_ == Phase::kShop3;
+}
+
+/// @brief 現在ボス戦への暗転フェード中（フェードイン/アウト）かどうか判定する
+/// @return bool フェード中であればtrue
+bool GameManager::IsBossFadePhase() const
+{
+	return current_phase_ == Phase::kFadeOutToBoss || current_phase_ == Phase::kFadeInBoss;
+}
+
+/// @brief プレイヤーがボスワープ用のポータルに接触したか判定する
+/// @return bool 接触範囲内（150 unit以内）にいればtrue
+bool GameManager::IsBossGateTouched() const
+{
+	if (!Master::player_)
+	{
+		return false;
+	}
+
+	Player3D* player = Master::player_->CastTo<Player3D>();
+	if (!player)
+	{
+		return false;
+	}
+
+	float dist = VSize(VSub(player->GetPosition(), boss_portal_pos_));
+	return dist < 150.0f;
+}
+
+/// @brief デバッグ操作が有効化されているか判定する
+/// @return bool デバッグフラグが真であればtrue
+bool GameManager::IsDebugControlsEnabled() const
+{
+	return Master::debug_ != nullptr && Master::debug_->Getdebug();
+}
+
+/**
+ * @brief 開発・デバッグ用の専用入力・キー操作処理
+ * @details デバッグフラグが有効な場合のみ、F5（全滅）やF6（ボス即時移行）などのショートカットやUI操作を許可する
+ */
+void GameManager::UpdateDebugControls()
+{
+	if (!IsDebugControlsEnabled())
+	{
+		return;
+	}
+
+	int mouseX = 0;
+	int mouseY = 0;
+	InputManager::GetMousePos(mouseX, mouseY);
+
+	const DebugButton killButton = { 28, 104, 164, 40, "KILL ENEMIES" };
+	const DebugButton bossButton = { 202, 104, 132, 40, "GO BOSS" };
+	const bool clicked = InputManager::CheckMouseClickLeft() != 0;
+
+	if ((clicked && IsMouseInButton(killButton, mouseX, mouseY)) ||
+		InputManager::CheckDownKey(KEY_INPUT_F5) != 0)
+	{
+		DebugKillEnemies();
+	}
+
+	if ((clicked && IsMouseInButton(bossButton, mouseX, mouseY)) ||
+		InputManager::CheckDownKey(KEY_INPUT_F6) != 0)
+	{
+		DebugGoBoss();
+	}
+}
+
+/// @brief デバッグ機能：フィールド上の全ての敵を即座に死亡させる
+void GameManager::DebugKillEnemies()
+{
+	if (Master::scene_manager_ == nullptr ||
+		Master::scene_manager_->GetCurrentScene() == nullptr ||
+		Master::scene_manager_->GetCurrentScene()->GetObjectManager() == nullptr)
+	{
+		return;
+	}
+
+	const auto enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	for (auto obj : enemies)
+	{
+		if (obj == nullptr || obj->IsDeleteFlag()) continue;
+
+		Enemy* enemy = obj->CastTo<Enemy>();
+		if (enemy == nullptr || enemy->IsDead()) continue;
+
+		enemy->Damage(999999.0f);
+	}
+}
+
+/// @brief デバッグ機能：強制的にボス戦フェーズへ移行する
+void GameManager::DebugGoBoss()
+{
+	if (current_phase_ == Phase::kBoss ||
+		current_phase_ == Phase::kFadeOutToBoss ||
+		current_phase_ == Phase::kFadeInBoss)
+	{
+		return;
+	}
+
+	Master::is_cutscene_playing_ = false;
+	if (Master::camera_)
+	{
+		Master::camera_->SetCutsceneMode(false);
+	}
+
+	if (Master::scene_manager_ == nullptr ||
+		Master::scene_manager_->GetCurrentScene() == nullptr ||
+		Master::scene_manager_->GetCurrentScene()->GetObjectManager() == nullptr)
+	{
+		return;
+	}
+
+	const auto enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	for (auto obj : enemies)
+	{
+		if (obj == nullptr || obj->IsDeleteFlag()) continue;
+
+		Enemy* enemy = obj->CastTo<Enemy>();
+		if (enemy != nullptr)
+		{
+			enemy->Delete();
+		}
+
+		obj->SetDeleteFlag(true);
+	}
+
+	SendShopsOut();
+	StartBossTransition();
+}
+
+/// @brief GameManagerに関連するHUD・ミニマップ等の描画を一括で行う
 void GameManager::Draw()
 {
-    int fontSize = GetFontSize();
-    SetFontSize(30);
-
-    const char* phaseStr = "";
-    switch (mCurrentPhase) {
-    case Phase::PHASE_1: phaseStr = "Phase 1"; break;
-    case Phase::PHASE_2: phaseStr = "Phase 2"; break;
-    case Phase::PHASE_3: phaseStr = "Phase 3"; break;
-    case Phase::BOSS:    phaseStr = "BOSS Phase"; break;
-    case Phase::SHOP_1:  phaseStr = "Shop 1"; break;
-    case Phase::SHOP_2:  phaseStr = "Shop 2"; break;
-    case Phase::SHOP_3:  phaseStr = "Shop 3"; break;
-    case Phase::CLEAR:   phaseStr = "CLEAR!"; break;
-    }
-
-    auto enemies = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-    int enemyCount = (int)enemies.size();
-
-    DrawFormatString(20, 100, GetColor(255, 255, 255), "Current Phase: %s", phaseStr);
-    DrawFormatString(20, 140, GetColor(255, 255, 255), "Enemies Remaining: %d", enemyCount);
-
-    SetFontSize(fontSize);
-
-    if (mCurrentPhase == Phase::SHOP_1 || mCurrentPhase == Phase::SHOP_2 || mCurrentPhase == Phase::SHOP_3) {
-        if (mCurrentPhase != Phase::SHOP_3) {
-            int seconds = mShopTimer / 60;
-            DrawFormatString(1920 / 2 - 150, 50, GetColor(255, 255, 0), "SHOP PHASE - Next Wave in %d s", seconds);
-        } else {
-            DrawFormatString(1920 / 2 - 350, 50, GetColor(0, 255, 255), "SHOP PHASE - Enter the blue teleporter to start BOSS BATTLE");
-            
-            // Draw placeholder teleporter
-            VECTOR teleporterPos = VAdd(Config::GetStageCenter(), VGet(0.0f, 0.0f, 800.0f));
-            DrawCapsule3D(teleporterPos, VAdd(teleporterPos, VGet(0.0f, 200.0f, 0.0f)), 150.0f, 32, GetColor(0, 150, 255), GetColor(0, 150, 255), FALSE);
-            DrawSphere3D(VAdd(teleporterPos, VGet(0.0f, 50.0f, 0.0f)), 100.0f, 32, GetColor(0, 255, 255), GetColor(0, 255, 255), FALSE);
-        }
-    }
+	DrawPhaseHud();
+	DrawMinimap();
+	DrawShopBanner();
+	DrawBossFade();
+	DrawDebugPanel();
 }
 
+/// @brief デバッグ用操作パネルおよびボタンを画面上に描画する
+void GameManager::DrawDebugPanel()
+{
+	if (!IsDebugControlsEnabled())
+	{
+		return;
+	}
+
+	int mouseX = 0;
+	int mouseY = 0;
+	InputManager::GetMousePos(mouseX, mouseY);
+
+	const int panelX = 22;
+	const int panelY = 96;
+	const int panelW = 318;
+	const int panelH = 56;
+	const DebugButton killButton = { 28, 104, 164, 40, "KILL ENEMIES" };
+	const DebugButton bossButton = { 202, 104, 132, 40, "GO BOSS" };
+
+	int fontSize = GetFontSize();
+	SetFontSize(18);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 165);
+	DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(0, 0, 0), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(92, 68, 30), false);
+	DrawFormatString(panelX + 8, panelY - 18, GetColor(190, 170, 120), "DEBUG  F5 / F6");
+
+	DrawDebugButton(killButton, IsMouseInButton(killButton, mouseX, mouseY));
+	DrawDebugButton(bossButton, IsMouseInButton(bossButton, mouseX, mouseY));
+
+	SetFontSize(fontSize);
+}
+
+/// @brief 現在の進行フェーズに対応するメイン表示テキストを取得する
+/// @return const char* フェーズ名文字列（"PHASE 1", "SHOP" など）
+const char* GameManager::GetPhaseLabel() const
+{
+	switch (current_phase_)
+	{
+	case Phase::kPhase1:
+		return "PHASE 1";
+	case Phase::kPhase2:
+		return "PHASE 2";
+	case Phase::kPhase3:
+		return "PHASE 3";
+	case Phase::kBoss:
+		return "BOSS";
+	case Phase::kShop1:
+	case Phase::kShop2:
+		return "SHOP";
+	case Phase::kShop3:
+		return "BOSS GATE";
+	case Phase::kClear:
+		return "CLEAR";
+	default:
+		return "READY";
+	}
+}
+
+/// @brief 現在の進行フェーズに対応するサブ説明テキストを取得する
+/// @return const char* サブ説明文字列（"HUNT ALL", "PREPARE NEXT WAVE" など）
+const char* GameManager::GetPhaseSubLabel() const
+{
+	switch (current_phase_)
+	{
+	case Phase::kPhase1:
+	case Phase::kPhase2:
+		return "HUNT ALL";
+	case Phase::kPhase3:
+		return "BOSS GATE SOON";
+	case Phase::kBoss:
+		return "FINAL BATTLE";
+	case Phase::kShop1:
+	case Phase::kShop2:
+		return "PREPARE NEXT WAVE";
+	case Phase::kShop3:
+		return "ENTER TELEPORTER";
+	case Phase::kClear:
+		return "QUEST COMPLETE";
+	default:
+		return "";
+	}
+}
+
+/// @brief フィールド上に生存している敵の現在の総数を取得する
+/// @return int 敵の残り生存数
+int GameManager::GetEnemyCount() const
+{
+	const auto& enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	return static_cast<int>(enemies.size());
+}
+
+/// @brief 画面右上にフェーズ名および敵残数を表示するHUDを描画する
+void GameManager::DrawPhaseHud()
+{
+	int fontSize = GetFontSize();
+	SetFontSize(24);
+
+	const int panelX = Config::ScreenWidth - 356;
+	const int panelY = 28;
+	const int panelW = 328;
+	const int panelH = 82;
+	const int panel = GetColor(18, 17, 20);
+	const int panelLight = GetColor(46, 42, 45);
+	const int gold = GetColor(198, 154, 64);
+	const int goldDark = GetColor(98, 73, 32);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 185);
+	DrawBox(panelX - 6, panelY - 4, panelX + panelW + 6, panelY + panelH + 6, GetColor(0, 0, 0), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, panel, true);
+	DrawBox(panelX + 6, panelY + 6, panelX + panelW - 6, panelY + 13, panelLight, true);
+	DrawLine(panelX, panelY, panelX + panelW, panelY, gold, 1);
+	DrawLine(panelX, panelY + panelH, panelX + panelW, panelY + panelH, goldDark, 1);
+	DrawLine(panelX, panelY, panelX, panelY + panelH, goldDark, 1);
+	DrawLine(panelX + panelW, panelY, panelX + panelW, panelY + panelH, gold, 1);
+	DrawFormatString(panelX + 18, panelY + 19, GetColor(245, 226, 174), "%s", GetPhaseLabel());
+	DrawFormatString(panelX + 18, panelY + 48, GetColor(205, 210, 216), "%s", GetPhaseSubLabel());
+	DrawFormatString(panelX + 230, panelY + 48, GetColor(238, 238, 238), "x%02d", GetEnemyCount());
+
+	SetFontSize(fontSize);
+}
+
+/// @brief ショップフェーズ中のタイマー・アナウンス用上部バナーを描画する
+void GameManager::DrawShopBanner()
+{
+	if (!IsShopPhase())
+	{
+		return;
+	}
+
+	int fontSize = GetFontSize();
+	SetFontSize(28);
+
+	const int bannerW = 700;
+	const int bannerX = Config::ScreenWidth / 2 - bannerW / 2;
+	const int bannerY = 26;
+	const int gold = GetColor(198, 154, 64);
+	const int goldDark = GetColor(98, 73, 32);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
+	DrawBox(bannerX, bannerY, bannerX + bannerW, bannerY + 54, GetColor(0, 0, 0), true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawLine(bannerX, bannerY, bannerX + bannerW, bannerY, gold, 1);
+	DrawLine(bannerX, bannerY + 54, bannerX + bannerW, bannerY + 54, goldDark, 1);
+
+	if (current_phase_ != Phase::kShop3)
+	{
+		int seconds = shop_timer_ / 60;
+		DrawFormatString(bannerX + 210, bannerY + 14, GetColor(255, 238, 156), "NEXT WAVE IN %d", seconds);
+	}
+	else
+	{
+		DrawFormatString(bannerX + 108, bannerY + 14, GetColor(141, 239, 255), "ENTER THE BLUE TELEPORTER TO START BOSS");
+	}
+
+	SetFontSize(fontSize);
+}
+
+/// @brief ボス戦遷移時のブラックアウト・暗転演出を描画する
+void GameManager::DrawBossFade()
+{
+	if (!IsBossFadePhase())
+	{
+		return;
+	}
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fade_alpha_);
+	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(0, 0, 0), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+/// @brief 難易度設定に基づき、生成する敵のステータスやスポーン数の補正倍率を適用する
+/// @param e 補正値を書き込む対象の敵設定構造体への参照
 void GameManager::ApplyDifficultyMultipliers(EnemyManager::enemydate& e)
 {
-    float statMultiplier = 1.0f;
-    float countMultiplier = 1.0f;
+	float statMultiplier = 1.0f;
+	float countMultiplier = 1.0f;
 
-    switch (mDifficulty) {
-    case Difficulty::EASY:
-        statMultiplier = 0.8f;
-        countMultiplier = 0.8f;
-        break;
-    case Difficulty::NORMAL:
-        statMultiplier = 1.0f;
-        countMultiplier = 1.0f;
-        break;
-    case Difficulty::HARD:
-        statMultiplier = 1.5f;
-        countMultiplier = 1.5f;
-        break;
-    }
+	switch (difficulty_)
+	{
+	case Difficulty::kEasy:
+		statMultiplier = 0.8f;
+		countMultiplier = 0.8f;
+		break;
+	case Difficulty::kNormal:
+		statMultiplier = 1.0f;
+		countMultiplier = 1.0f;
+		break;
+	case Difficulty::kHard:
+		statMultiplier = 1.5f;
+		countMultiplier = 1.5f;
+		break;
+	}
 
-    e.hp = static_cast<int>(e.hp * statMultiplier);
-    e.attack = static_cast<int>(e.attack * statMultiplier);
-    // boss count should remain 1 usually
-    if (e.tag != EnemyManager::boss_stage1) {
-        e.Count = static_cast<int>(std::ceil(e.Count * countMultiplier));
-        if (e.Count < 1) e.Count = 1;
-    }
+	e.hp = e.hp * statMultiplier;
+	e.attack = e.attack * statMultiplier;
+
+	// ボスの数は難易度に関わらず常に1体を維持
+	if (e.tag != EnemyManager::boss_stage1)
+	{
+		e.Count = static_cast<int>(std::ceil(e.Count * countMultiplier));
+		if (e.Count < 1)
+		{
+			e.Count = 1;
+		}
+	}
 }
 
+/// @brief 現在のフェーズに対応する敵キャラクター群をスポーン（生成）させる
 void GameManager::SpawnPhaseEnemies()
 {
-    auto p = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-    Player3D* player = dynamic_cast<Player3D*>(p);
-    // 敵がステージから外れて落下・埋没しないように、Configのステージ中心座標を湧き位置の基準とする
-    VECTOR centerPos = Config::GetStageCenter();
-    if (player != nullptr)
-    {
-        VECTOR playercenterPos = player->GetPosition();
-    }
-    VECTOR centerbackPos = VAdd(Config::GetStageCenter(), VGet(0, 0, -2000));
+	VECTOR centerPos = Config::GetStageCenter();
 
-    if (mCurrentPhase == Phase::PHASE_1) {
-        // Wave 1
-        EnemyManager::enemydate e;
-        e.filename = "Resource/Model/T.mv1";
-        e.spawnCenter = centerPos;
-        e.initPos = VGet(3000.0f, 100.0f, 3000.0f);
-        e.hp = 20;
-        e.speed = 3.0f;
-        e.attack = 2.0f;
-        e.HitSize = 60.0f;
-        e.Serch1 = 1000.0f;
-        e.Serch2 = 100.0f;
-        e.Serch3 = 100.0f;
-        e.isSeparateAnim = true;
-        e.xp = 30.0f;
-        e.money = 200;
-        e.tag = EnemyManager::night_stage1;
-        e.Count = 10;
-        
-        ApplyDifficultyMultipliers(e);
-        mpEnemyManager->NewEnemyList(e);
-    }
-    else if (mCurrentPhase == Phase::PHASE_2) {
-        // Wave 2: 魔法兵士
-        EnemyManager::enemydate e1;
-        e1.filename = "Resource/Model/T.mv1";
-        e1.spawnCenter = centerPos;
-        e1.initPos = VGet(8000.0f, 100.0f, 8000.0f);
-        e1.hp = 20;
-        e1.speed = 3.0f;
-        e1.attack = 2.0f;
-        e1.HitSize = 60.0f;
-        e1.money = 200;
-        e1.Serch1 = 2000.0f;
-        e1.Serch2 = 1000.0f;
-        e1.Serch3 = 1000.0f;
-        e1.isSeparateAnim = true;
-        e1.xp = 30.0f;
-        e1.tag = EnemyManager::archerl_stage1;
-        e1.Count = 8;
-        
-        ApplyDifficultyMultipliers(e1);
-        mpEnemyManager->NewEnemyList(e1);
+	switch (current_phase_)
+	{
+	case Phase::kPhase1:
+		SpawnPhase1Enemies(centerPos);
+		break;
+	case Phase::kPhase2:
+		SpawnPhase2Enemies(centerPos);
+		break;
+	case Phase::kPhase3:
+		SpawnPhase3Enemies(centerPos);
+		break;
+	case Phase::kBoss:
+		SpawnBossEnemy();
+		break;
+	default:
+		break;
+	}
+}
 
-        // Wave 2: 近接剣士
-        EnemyManager::enemydate e2;
-        e2.filename = "Resource/Model/T.mv1";
-        e2.spawnCenter = centerPos;
-        e2.initPos = VGet(2000.0f, 100.0f, 2000.0f);
-        e2.hp = 20;
-        e2.speed = 4.0f;
-        e2.attack = 3.0f;
-        e2.HitSize = 60.0f;
-        e2.Serch1 = 1000.0f;
-        e2.Serch2 = 100.0f;
-        e2.Serch3 = 100.0f;
-        e2.isSeparateAnim = true;
-        e2.xp = 30.0f;
-        e2.money = 200;
-        e2.tag = EnemyManager::night_stage1;
-        e2.Count = 6;
+/// @brief フェーズ1用の敵構成を生成する
+/// @param centerPos 基準となる中心座標
+void GameManager::SpawnPhase1Enemies(const VECTOR& centerPos)
+{
+	AddEnemy(MakeEnemyData(
+		EnemyManager::night_stage1,
+		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		centerPos,
+		VGet(3000.0f, 100.0f, 3000.0f),
+		20,
+		3.0f,
+		2.0f,
+		60.0f,
+		1000.0f,
+		100.0f,
+		100.0f,
+		true,
+		200,
+		10));
+}
 
-        ApplyDifficultyMultipliers(e2);
-        mpEnemyManager->NewEnemyList(e2);
-    }
-    else if (mCurrentPhase == Phase::PHASE_3) {
-        // Wave 3: 重量級代用
-        EnemyManager::enemydate e_heavy;
-        e_heavy.filename = "Resource/Model/monster.mv1";
-        e_heavy.spawnCenter = centerPos;
-        e_heavy.initPos = VGet(12000.0f, 100.0f, 12000.0f);
-        e_heavy.hp = 100;
-        e_heavy.speed = 2.0f;
-        e_heavy.attack = 5.0f;
-        e_heavy.HitSize = 100.0f;
-        e_heavy.Serch1 = 1000.0f;
-        e_heavy.Serch2 = 100.0f;
-        e_heavy.Serch3 = 100.0f;
-        e_heavy.isSeparateAnim = true;
-        e_heavy.xp = 100.0f;
-        e_heavy.money = 500;
-        e_heavy.tag = EnemyManager::monster_stage1;
-        e_heavy.Count = 5;
+/// @brief フェーズ2用の敵構成を生成する
+/// @param centerPos 基準となる中心座標
+void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
+{
+	AddEnemy(MakeEnemyData(
+		EnemyManager::archerl_stage1,
+		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		centerPos,
+		VGet(8000.0f, 100.0f, 8000.0f),
+		20,
+		3.0f,
+		2.0f,
+		60.0f,
+		2000.0f,
+		1000.0f,
+		1000.0f,
+		true,
+		200,
+		8));
 
-        ApplyDifficultyMultipliers(e_heavy);
-        mpEnemyManager->NewEnemyList(e_heavy);
+	AddEnemy(MakeEnemyData(
+		EnemyManager::night_stage1,
+		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		centerPos,
+		VGet(2000.0f, 100.0f, 2000.0f),
+		20,
+		4.0f,
+		3.0f,
+		60.0f,
+		1000.0f,
+		100.0f,
+		100.0f,
+		true,
+		200,
+		6));
+}
 
-        // Wave 3: 魔法兵士
-        EnemyManager::enemydate e_magic;
-        e_magic.filename = "Resource/Model/T.mv1";
-        e_magic.spawnCenter = centerPos;
-        e_magic.initPos = VGet(6000.0f,100.0f, 6000.0f);
-        e_magic.hp = 20;
-        e_magic.speed = 3.0f;
-        e_magic.attack = 2.0f;
-        e_magic.HitSize = 60.0f;
-        e_magic.Serch1 = 2000.0f;
-        e_magic.Serch2 = 1000.0f;
-        e_magic.Serch3 = 1000.0f;
-        e_magic.isSeparateAnim = true;
-        e_magic.xp = 30.0f;
-        e_magic.money = 200;
-        e_magic.tag = EnemyManager::archerl_stage1;
-        e_magic.Count = 5;
+/// @brief フェーズ3用の敵構成を生成する
+/// @param centerPos 基準となる中心座標
+void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
+{
+	AddEnemy(MakeEnemyData(
+		EnemyManager::monster_stage1,
+		"Resource/3Dモデル/キャラクターとアニメーション/02_敵モンスターモデル.mv1",
+		centerPos,
+		VGet(12000.0f, 100.0f, 12000.0f),
+		100,
+		2.0f,
+		5.0f,
+		100.0f,
+		1000.0f,
+		100.0f,
+		100.0f,
+		true,
+		500,
+		5));
 
-        ApplyDifficultyMultipliers(e_magic);
-        mpEnemyManager->NewEnemyList(e_magic);
+	AddEnemy(MakeEnemyData(
+		EnemyManager::archerl_stage1,
+		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		centerPos,
+		VGet(6000.0f, 100.0f, 6000.0f),
+		20,
+		3.0f,
+		2.0f,
+		60.0f,
+		2000.0f,
+		1000.0f,
+		1000.0f,
+		true,
+		200,
+		5));
 
-        // Wave 3: 近接兵士
-        EnemyManager::enemydate e_melee;
-        e_melee.filename = "Resource/Model/T.mv1";
-        e_melee.spawnCenter = centerPos;
-        e_melee.initPos = VGet(6000.0f, 100.0f, 6000.0f);
-        e_melee.hp = 20;
-        e_melee.speed = 3.0f;
-        e_melee.attack = 2.0f;
-        e_melee.HitSize = 60.0f;
-        e_melee.Serch1 = 1000.0f;
-        e_melee.Serch2 = 100.0f;
-        e_melee.Serch3 = 100.0f;
-        e_melee.isSeparateAnim = true;
-        e_melee.xp = 30.0f;
-        e_melee.money = 200;
-        e_melee.tag = EnemyManager::night_stage1;
-        e_melee.Count = 5;
+	AddEnemy(MakeEnemyData(
+		EnemyManager::night_stage1,
+		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		centerPos,
+		VGet(6000.0f, 100.0f, 6000.0f),
+		20,
+		3.0f,
+		2.0f,
+		60.0f,
+		1000.0f,
+		100.0f,
+		100.0f,
+		true,
+		200,
+		5));
+}
 
-        ApplyDifficultyMultipliers(e_melee);
-        mpEnemyManager->NewEnemyList(e_melee);
-    }
-    else if (mCurrentPhase == Phase::BOSS) {
-        EnemyManager::enemydate e2;
-        e2.filename = "Resource/3D/Boss1.mv1";
-        e2.spawnCenter = centerPos;
-        e2.initPos = VGet(4000.0f, 100.0f, 4000.0f);
-        e2.hp = 300;
-        e2.speed = 10.0f;
-        e2.attack = 20.0f;
-        e2.HitSize = 300.0f;
-        e2.Serch1 = 2000.0f;
-        e2.Serch2 = 1000.0f;
-        e2.Serch3 = 1000.0f;
-        e2.money = 3000;
-        e2.isSeparateAnim = true;
-        e2.xp = 300.0f;
-        e2.tag = EnemyManager::boss_stage1;
-        e2.Count = 1;
+/// @brief ボスキャラクターを生成する
+void GameManager::SpawnBossEnemy()
+{
+	VECTOR bossCenter = Config::GetStageBossCenter();
+	AddEnemy(MakeEnemyData(
+		EnemyManager::boss_stage1,
+		"Resource/3Dモデル/キャラクターとアニメーション/03_ボスモデル.mv1",
+		bossCenter,
+		VAdd(bossCenter, VGet(-500.0f, 0.0f, 2000.0f)),
+		300,
+		10.0f,
+		20.0f,
+		300.0f,
+		2000.0f,
+		1000.0f,
+		1000.0f,
+		true,
+		3000,
+		1));
+}
 
-        ApplyDifficultyMultipliers(e2);
-        mpEnemyManager->NewEnemyList(e2);
-    }
+/// @brief 敵生成パラメータをまとめた構造体データを生成する補助関数
+/// @param tag 敵の種別識別タグ
+/// @param filename 使用する3Dモデルのパス
+/// @param spawnCenter スポーン基準中心座標
+/// @param initPos 初期配置座標
+/// @param hp 最大体力
+/// @param speed 移動速度
+/// @param attack 攻撃力
+/// @param hitSize 当たり判定サイズ
+/// @param search1 索敵範囲1
+/// @param search2 索敵範囲2
+/// @param search3 索敵範囲3
+/// @param isSeparateAnim アニメーション分離フラグ
+/// @param money 倒した際の獲得資金
+/// @param count 一括生成する個体数
+/// @return EnemyManager::enemydate 作成された敵データ構造体
+EnemyManager::enemydate GameManager::MakeEnemyData(
+	EnemyManager::enemy_tag tag,
+	const std::string& filename,
+	const VECTOR& spawnCenter,
+	const VECTOR& initPos,
+	float hp,
+	float speed,
+	float attack,
+	float hitSize,
+	float search1,
+	float search2,
+	float search3,
+	bool isSeparateAnim,
+	int money,
+	int count) const
+{
+	EnemyManager::enemydate enemyData = {};
+	enemyData.tag = tag;
+	enemyData.filename = filename;
+	enemyData.spawnCenter = spawnCenter;
+	enemyData.initPos = initPos;
+	enemyData.hp = hp;
+	enemyData.speed = speed;
+	enemyData.attack = attack;
+	enemyData.HitSize = hitSize;
+	enemyData.Serch1 = search1;
+	enemyData.Serch2 = search2;
+	enemyData.Serch3 = search3;
+	enemyData.is_separate_anim_ = isSeparateAnim;
+	enemyData.money = money;
+	enemyData.Count = count;
+	return enemyData;
+}
+
+/// @brief 難易度補正を計算した上で敵リストに追加・登録する
+/// @param enemyData 追加する敵データの設定構造体
+void GameManager::AddEnemy(EnemyManager::enemydate enemyData)
+{
+	ApplyDifficultyMultipliers(enemyData);
+	enemy_manager_->NewEnemyList(enemyData);
+}
+
+/// @brief 画面上にミニマップUIおよび各種アイコンを描画する
+void GameManager::DrawMinimap()
+{
+	const float mapSize = 220.0f;
+	const float mapX = Config::ScreenWidth - mapSize - 28.0f;
+	const float mapY = 198.0f;
+	const float mapCenterX = mapX + mapSize / 2.0f;
+	const float mapCenterY = mapY + mapSize / 2.0f;
+	const float viewRange = 6000.0f;
+	const float maxDistance = mapSize / 2.0f;
+
+	VECTOR playerPos = VGet(0, 0, 0);
+	if (Master::player_ != nullptr)
+	{
+		playerPos = Master::player_->GetPosition();
+	}
+
+	DrawMinimapFrame(mapX, mapY, mapSize);
+	DrawMinimapPortal(mapCenterX, mapCenterY, playerPos, viewRange, maxDistance);
+	DrawMinimapShops(mapCenterX, mapCenterY, playerPos, viewRange, maxDistance);
+	DrawMinimapEnemies(mapX, mapY, mapSize, mapCenterX, mapCenterY, playerPos, viewRange, maxDistance);
+	DrawMinimapPlayer(mapCenterX, mapCenterY);
+}
+
+/// @brief ミニマップの背景外枠パネルを描画する
+/// @param mapX マップ描画開始X座標
+/// @param mapY マップ描画開始Y座標
+/// @param mapSize マップの1辺のピクセルサイズ
+void GameManager::DrawMinimapFrame(float mapX, float mapY, float mapSize) const
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+	DrawBox((int)mapX, (int)mapY, (int)(mapX + mapSize), (int)(mapY + mapSize), GetColor(0, 0, 0), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawBox((int)mapX, (int)mapY, (int)(mapX + mapSize), (int)(mapY + mapSize), GetColor(255, 255, 255), FALSE);
+}
+
+/// @brief プレイヤー座標からの相対位置からミニマップ上の表示オフセットピクセル値を計算する
+/// @param pos 判定対象オブジェクトのワールド座標
+/// @param playerPos プレイヤーのワールド座標
+/// @param viewRange マップに収めるワールド空間の表示視野距離
+/// @param maxDistance ミニマップの中心から端までの最大ピクセル距離
+/// @return VECTOR ミニマップ中心からのオフセットピクセル座標（X, Y）
+VECTOR GameManager::GetMinimapOffset(VECTOR pos, VECTOR playerPos, float viewRange, float maxDistance) const
+{
+	const float diffX = pos.x - playerPos.x;
+	const float diffZ = pos.z - playerPos.z;
+	const float mapRelX = (diffX / viewRange) * maxDistance;
+	const float mapRelY = (-diffZ / viewRange) * maxDistance;
+	return VGet(mapRelX, mapRelY, 0.0f);
+}
+
+/// @brief ミニマップ外にハミ出るアイコンの描画オフセットを枠線上にクランプ固定する
+/// @param offset 算出されたマップ中心からのオフセットピクセル値
+/// @param maxDistance 枠線の最大半径ピクセル値
+/// @return VECTOR クランプ補正後の表示オフセット座標
+VECTOR GameManager::ClampMinimapOffset(VECTOR offset, float maxDistance) const
+{
+	if (fabsf(offset.x) <= maxDistance && fabsf(offset.y) <= maxDistance)
+	{
+		return offset;
+	}
+
+	const float scaleX = fabsf(offset.x) > 0.001f ? maxDistance / fabsf(offset.x) : 999.0f;
+	const float scaleY = fabsf(offset.y) > 0.001f ? maxDistance / fabsf(offset.y) : 999.0f;
+	const float scale = (scaleX < scaleY) ? scaleX : scaleY;
+	return VGet(offset.x * scale, offset.y * scale, 0.0f);
+}
+
+/// @brief ミニマップ上にボス用ポータルの位置アイコンを描画する
+/// @param mapCenterX ミニマップ中心X座標
+/// @param mapCenterY ミニマップ中心Y座標
+/// @param playerPos プレイヤー座標
+/// @param viewRange 視野表示範囲
+/// @param maxDistance 最大描画半径
+void GameManager::DrawMinimapPortal(float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const
+{
+	VECTOR portalOffset = GetMinimapOffset(boss_portal_pos_, playerPos, viewRange, maxDistance);
+	const bool portalFar = (fabsf(portalOffset.x) > maxDistance || fabsf(portalOffset.y) > maxDistance);
+	VECTOR portalClamped = ClampMinimapOffset(portalOffset, maxDistance);
+
+	DrawCircle((int)(mapCenterX + portalClamped.x), (int)(mapCenterY + portalClamped.y), 6, GetColor(0, 255, 255), TRUE);
+	if (portalFar)
+	{
+		DrawCircle((int)(mapCenterX + portalClamped.x), (int)(mapCenterY + portalClamped.y), 9, GetColor(0, 255, 255), FALSE);
+	}
+}
+
+/// @brief ミニマップ上にショップNPCの位置アイコンを描画する
+/// @param mapCenterX ミニマップ中心X座標
+/// @param mapCenterY ミニマップ中心Y座標
+/// @param playerPos プレイヤー座標
+/// @param viewRange 視野表示範囲
+/// @param maxDistance 最大描画半径
+void GameManager::DrawMinimapShops(float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const
+{
+	const auto& shops = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Shop);
+	for (auto obj : shops)
+	{
+		VECTOR shopOffset = GetMinimapOffset(obj->GetPosition(), playerPos, viewRange, maxDistance);
+		VECTOR shopClamped = ClampMinimapOffset(shopOffset, maxDistance);
+		DrawCircle((int)(mapCenterX + shopClamped.x), (int)(mapCenterY + shopClamped.y), 5, GetColor(255, 255, 0), TRUE);
+	}
+}
+
+/// @brief ミニマップ上に敵キャラクターの位置アイコンを描画する（枠外クリッピング対応）
+/// @param mapX マップ左上X座標
+/// @param mapY マップ左上Y座標
+/// @param mapSize マップの一辺サイズ
+/// @param mapCenterX ミニマップ中心X座標
+/// @param mapCenterY ミニマップ中心Y座標
+/// @param playerPos プレイヤー座標
+/// @param viewRange 視野表示範囲
+/// @param maxDistance 最大描画半径
+void GameManager::DrawMinimapEnemies(float mapX, float mapY, float mapSize, float mapCenterX, float mapCenterY, VECTOR playerPos, float viewRange, float maxDistance) const
+{
+	SetDrawArea((int)mapX, (int)mapY, (int)(mapX + mapSize), (int)(mapY + mapSize));
+
+	const auto& enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	for (auto obj : enemies)
+	{
+		VECTOR enemyOffset = GetMinimapOffset(obj->GetPosition(), playerPos, viewRange, maxDistance);
+		DrawCircle((int)(mapCenterX + enemyOffset.x), (int)(mapCenterY + enemyOffset.y), 4, GetColor(255, 0, 0), TRUE);
+	}
+
+	SetDrawArea(0, 0, 1920, 1080);
+}
+
+/// @brief ミニマップの中心に自プレイヤーの自機アイコンおよび向きベクトルを描画する
+/// @param mapCenterX ミニマップ中心X座標
+/// @param mapCenterY ミニマップ中心Y座標
+void GameManager::DrawMinimapPlayer(float mapCenterX, float mapCenterY) const
+{
+	if (Master::player_ == nullptr)
+	{
+		return;
+	}
+
+	DrawCircle((int)mapCenterX, (int)mapCenterY, 5, GetColor(0, 255, 0), TRUE);
+
+	const float playerAngle = Master::player_->GetAngle();
+	const float dirX = sinf(playerAngle) * 15.0f;
+	const float dirY = -cosf(playerAngle) * 15.0f;
+	DrawLine((int)mapCenterX, (int)mapCenterY, (int)(mapCenterX + dirX), (int)(mapCenterY + dirY), GetColor(0, 255, 0), 2);
 }

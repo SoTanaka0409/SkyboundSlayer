@@ -1,140 +1,144 @@
-
-#define _CRT_SECURE_NO_WARNINGS
+ï»¿#define _CRT_SECURE_NO_WARNINGS
 #include"ScoreManager.h"
 #include"DxLib.h"
 
+/// @brief ScoreManagerã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @param float score
+/// @details å„ç¨®å¤‰æ•°ã®åˆæœŸåŒ–
 ScoreManager::ScoreManager(float score)
-	:mnScore(score)//Žæ“¾ƒXƒRƒA
-	, mnHighScore(score)//ƒnƒCƒXƒR‚ 
-	, mnHighScore2(score)//‚Q”Ô–Ú
-	, mnHighScore3(score)//ŽO”Ô–Ú
+	:score_(score)
+	, high_score_(score)
+	, high_score2_(score)
+	, high_score3_(score)
 {
 
 }
+
+/// @brief ScoreManagerã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 ScoreManager::~ScoreManager()
 {
 
 }
+
+/// @brief åˆæœŸåŒ–å‡¦ç†
+/// @details ã‚¹ã‚³ã‚¢ã®èª­ã¿è¾¼ã¿
 void ScoreManager::Initialize()
 {
 
 }
+
+/// @brief ã‚¹ã‚³ã‚¢ã®æ›´æ–°å‡¦ç†
 void ScoreManager::Update()
 {
 
 }
+
+/// @brief ã‚¹ã‚³ã‚¢ã®æç”»å‡¦ç†
+/// @details ç”»é¢æç”»
 void ScoreManager::Draw()
 {
 
-
-
-
-	////‚Ps‚¸‚Â“Ç‚Ýž‚Þ
-	//char strBuffer[256] = "";//1s“Ç‚Ýž‚Þ‚½‚ß‚Ìƒoƒbƒtƒ@
-
-
-	////ƒtƒ@ƒCƒ‹‚ð•Â‚¶‚é
-
-	////ƒoƒCƒiƒŠƒtƒ@ƒCƒ‹‚Ì‘‚«ž‚Ý
-
-
-	////‘‚«ž‚Ý
-
-	////ƒtƒ@ƒCƒ‹‚­‚ë[ƒY
 }
 
+/// @brief ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®æƒ…å ±ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚
+/// @param SaveDate date
+/// @details ç”»é¢æç”»
 void ScoreManager::PrintSaveDate(SaveDate date)
 {
 
 }
+
+/// @brief ãƒã‚¤ã‚¹ã‚³ã‚¢ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹ãŸã‚
+/// @details ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿
 void ScoreManager::SaveHighScore()
 {
-	/*GameScene_Bonus* pScore = new GameScene_Bonus;
-	if (pScore->SetDoScoreFlag(true))
-	{
-	}*/
-
-
 	FILE* fp = NULL;
-	//fopen(ƒŒƒNƒgƒŠ/ƒtƒ@ƒCƒ‹–¼BŠg’£ŽqAƒI[ƒvƒ“ƒtƒB[ƒ‹ƒh
-	fp = fopen("savedate.txt", "w");  //‘‚«ž‚Ýê—p‚Åƒtƒ@ƒCƒ‹‚ðŠJ‚­
+	fp = fopen("savedate.txt", "w");
 
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãªã‘ã‚Œã°çµ‚äº†
 	if (fp == NULL)
 	{
 		return;
 	}
 
-	if (mnScore > mnHighScore)//Œ»Ý‚ÌƒXƒRƒA‚ª‚P”Ô‚‚©‚Á‚½‚ç
+	// 1ä½æ›´æ–°æ™‚ã®å‡¦ç†
+	if (score_ > high_score_)
 	{
-		fprintf(fp, "SCORE;%d\n",(int) mnScore);//ˆê”Ôã‚ÉŽ‚Á‚Ä‚­‚é
-
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
-		fprintf(fp, "NAME ;%s\n",msName.c_str());
-		fprintf(fp, "NAME ;%s\n", msName1.c_str());
-		fprintf(fp, "NAME ;%s\n", msName2.c_str());
+		fprintf(fp, "SCORE;%d\n",(int)score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
+		fprintf(fp, "NAME ;%s\n", name_.c_str());
+		fprintf(fp, "NAME ;%s\n", name1_.c_str());
+		fprintf(fp, "NAME ;%s\n", name2_.c_str());
 	}
-	if (mnScore > mnHighScore2 && mnScore < mnHighScore)//Œ»Ý‚ÌƒXƒRƒA‚ª“ñ”Ô–Ú‚É‚‚©‚Á‚½‚ç
+	// 2ä½æ›´æ–°æ™‚ã®å‡¦ç†
+	else if (score_ > high_score2_ && score_ < high_score_)
 	{
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
-
-		fprintf(fp, "SCORE;%d\n", (int)mnScore);
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
-		fprintf(fp, "NAME ;%s\n", msName1.c_str());
-		fprintf(fp, "NAME ;%s\n", msName.c_str());
-		fprintf(fp, "NAME ;%s\n", msName2.c_str());
-
+		fprintf(fp, "SCORE;%d\n", (int)high_score_);
+		fprintf(fp, "SCORE;%d\n", (int)score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
+		fprintf(fp, "NAME ;%s\n", name1_.c_str());
+		fprintf(fp, "NAME ;%s\n", name_.c_str());
+		fprintf(fp, "NAME ;%s\n", name2_.c_str());
 	}
-	if (mnScore > mnHighScore3 && mnScore < mnHighScore2)//Œ»Ý‚ÌƒXƒRƒA‚ªŽO”Ô–Ú‚¾‚Á‚½‚ç
+	// 3ä½æ›´æ–°æ™‚ã®å‡¦ç†
+	else if (score_ > high_score3_ && score_ < high_score2_)
 	{
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore);
-
-		fprintf(fp, "SCORE;%d\n", (int)mnHighScore2);
-		fprintf(fp, "SCORE;%d\n", (int)mnScore);
-		fprintf(fp, "NAME ;%s\n", msName1.c_str()); //c_str...string=char‚É‚·‚é
-		fprintf(fp, "NAME ;%s\n", msName2.c_str());
-		fprintf(fp, "NAME ;%s\n", msName.c_str());
+		fprintf(fp, "SCORE;%d\n", (int)high_score_);
+		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
+		fprintf(fp, "SCORE;%d\n", (int)score_);
+		fprintf(fp, "NAME ;%s\n", name1_.c_str());
+		fprintf(fp, "NAME ;%s\n", name2_.c_str());
+		fprintf(fp, "NAME ;%s\n", name_.c_str());
 	}
 	fclose(fp);
-
 }
+
+/// @brief ãƒã‚¤ã‚¹ã‚³ã‚¢ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€ãŸã‚
+/// @details ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ã¨å¤‰æ•°ã®æ›´æ–°
 void ScoreManager::LoadHighScore()
 {
 	FILE* fp = NULL;
 
-	//fopen(ƒŒƒNƒgƒŠ/ƒtƒ@ƒCƒ‹–¼BŠg’£ŽqAƒI[ƒvƒ“ƒtƒB[ƒ‹ƒh
-	fp = fopen("savedate.txt", "r");  //“Ç‚Ýž‚Ýê—p‚Åƒtƒ@ƒCƒ‹‚ðŠJ‚­
+	fp = fopen("savedate.txt", "r");
+	
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã‘ã‚Œã°çµ‚äº†
 	if (fp == NULL)
 	{
 		return;
 	}
 
-	fscanf(fp, "SCORE:%d\n", (int)&mnHighScore);
-	fscanf(fp, "SCORE:%d\n", (int)&mnHighScore2);
-	fscanf(fp, "SCORE:%d\n", (int)&mnHighScore3);
+	int s1 = 0, s2 = 0, s3 = 0;
+	fscanf(fp, "SCORE:%d\n", &s1); high_score_ = (float)s1;
+	fscanf(fp, "SCORE:%d\n", &s2); high_score2_ = (float)s2;
+	fscanf(fp, "SCORE:%d\n", &s3); high_score3_ = (float)s3;
 
-	char name[256];
-	fscanf(fp, "NAME :%s\n", name);
-	msName = name;
-	fscanf(fp, "NAME :%s\n", name);
-	msName2 = name;
-	fscanf(fp, "NAME :%s\n", name);
-	msName3 = name;
-
-
-	/*fscanf(fp, "NAME ;%s\n", name);
-	msName3= name;*/
-	/*fscanf(fp, "NAME ;%s\n", name);
-	msName1 = name;*/
-
+	char name_buf[256];
+	fscanf(fp, "NAME :%s\n", name_buf);
+	name_ = name_buf;
+	fscanf(fp, "NAME :%s\n", name_buf);
+	name2_ = name_buf;
+	fscanf(fp, "NAME :%s\n", name_buf);
+	name3_ = name_buf;
 
 	fclose(fp);
-
-
 }
 
+/// @brief åå‰ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹ãŸã‚
+/// @details ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿
+void ScoreManager::SaveName()
+{
+}
+
+/// @brief åå‰ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€ãŸã‚
+/// @details ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ã¨å¤‰æ•°ã®æ›´æ–°
+void ScoreManager::LoadName()
+{
+}
+
+/// @brief ã‚¹ã‚³ã‚¢ã®çµ‚äº†å‡¦ç†
+/// @details ã‚¹ã‚³ã‚¢ã®ä¿å­˜
 void ScoreManager::Finalize()
 {
-
 
 }

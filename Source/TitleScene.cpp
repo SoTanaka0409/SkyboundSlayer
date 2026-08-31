@@ -1,185 +1,295 @@
-#include"TitleScene.h"
-#include"Texture.h"
-#include"InputManager.h"
-#include"Master.h"
-#include"SceneManager.h"
-#include"Object3D.h"
-#include"ObjectManager.h"
-#include"ColliderManager.h"
+﻿#include "TitleScene.h"
+#include "InputManager.h"
+#include "Master.h"
+#include "SceneManager.h"
+#include "ObjectManager.h"
+#include "ColliderManager.h"
+#include <math.h>
+#include <fstream>
+#include <sstream>
+#include "Stage.h"
+#include "StageObject.h"
+#include "SkyBox.h"
+#include "Config.h"
 
+/// @brief TitleSceneのコンストラクタ
+/// @details UI点滅アニメーション用パラメータおよびカメラ角度の初期化を行う
 TitleScene::TitleScene()
-:mnPause(0)
-, C(false)
-, S(false)
-, E(false)
-,T(false)
-, C_Enter(false)
-, S_Enter(false)
-, E_Enter(false)
-, Color1(1)
-, Colorflag(false)
+	: color_fade_(1), color_flag_(false), camera_angle_(0.0f)
 {
-	mnPause = 1;
 }
 
+/// @brief TitleSceneのデストラクタ
 TitleScene::~TitleScene()
 {
-
 }
 
+/// @brief タイトルシーンの初期化処理
+/// @details カメラ・進行度・コライダーの初期化、BGM再生、およびタイトル専用3D背景・ステージオブジェクトの生成を行う
 void TitleScene::Initialize()
 {
-	{/////////���Z�b�g///////////
-		Master::TutorialFlag = false;
-		Master::TutorialCount = 0;
-		Master::mpCamera->Initialize();//�ŏ��ɃJ����������ʒu��ύX
-		Master::GameClearCount = 0;
-		ColliderManager::GetInstance()->DeleteAllCollider();
+	SetMouseDispFlag(true);
+	Master::camera_->Initialize();
+	// 周回プレイ時の不具合を防ぐため、タイトルに戻った時点でクリア回数とコライダー情報をリセットする
+	Master::game_clear_count_ = 0;
+	ColliderManager::GetInstance()->DeleteAllCollider();
+
+	Master::score_manager_->LoadHighScore();
+	Master::sound_manager_->PlayBGM(SoundManager::BGM_TITLE);
+
+	// 一枚絵ではなく、実際のゲームプレイと同じ3Dモデルを配置してカメラを回すことでシームレスな世界観を演出する
+	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", VGet(200.0f, 100.0f, 200.0f));
+	new Stage(Config::GetStageCenter(), "Resource/3Dモデル/ステージ/通常ステージ/01_通常ステージモデル.mv1", "Resource/3Dモデル/ステージ/通常ステージ/02_通常ステージ当たり判定モデル.mv1", VGet(3.0f, 0.3f, 3.0f));
+
+	// 配置データのハードコーディングを避け、CSVから読み込むことでプランナーの調整工数を削減する
+	std::ifstream file(L"Resource/データ/CSV/01_ステージ配置データ.csv");
+	if (file.is_open())
+	{
+		std::string line;
+		std::getline(file, line); // ヘッダー行をスキップしてパースエラーを回避
+		while (std::getline(file, line))
+		{
+			if (line.empty()) continue; // 空行によるクラッシュを防止
+			std::stringstream ss(line);
+			std::string type, model, xStr, yStr, zStr, sxStr, syStr, szStr, texture, colSizeStr, isRelativeStr;
+			std::getline(ss, type, ',');
+			std::getline(ss, model, ',');
+			std::getline(ss, xStr, ',');
+			std::getline(ss, yStr, ',');
+			std::getline(ss, zStr, ',');
+			std::getline(ss, sxStr, ',');
+			std::getline(ss, syStr, ',');
+			std::getline(ss, szStr, ',');
+			std::getline(ss, texture, ',');
+			std::getline(ss, colSizeStr, ',');
+			std::getline(ss, isRelativeStr, ',');
+
+			float x = std::stof(xStr);
+			float y = std::stof(yStr);
+			float z = std::stof(zStr);
+			float sx = std::stof(sxStr);
+			float sy = std::stof(syStr);
+			float sz = std::stof(szStr);
+			int isRelative = 0;
+			if (!isRelativeStr.empty()) isRelative = std::stoi(isRelativeStr);
+
+			VECTOR pos = VGet(x, y, z);
+			if (isRelative == 1) { pos = VAdd(Config::GetStageCenter(), pos); }
+			VECTOR scale = VGet(sx, sy, sz);
+
+			if (type == "StageObject") {
+				float colSize = 0.0f;
+				if (!colSizeStr.empty()) colSize = std::stof(colSizeStr);
+				new StageObject(pos, model, scale, "", colSize);
+			}
+			else if (type == "Stage") {
+				new Stage(pos, model, model, scale, texture);
+			}
+		}
+		file.close();
 	}
-	
-	mpTexture=new Texture("Resource/Title", VGet(500,420, 0), true);
-	Master::mpSoundManager->PlayBGM(SoundManager::BGM_TITLE);
-	
+
+	SkyBox* pSkyBox = new SkyBox("Resource/3Dモデル/背景/空/01_空ドームモデル.x", VGet(0, 0, -5000));
+	float scale = 13.0f;
+	pSkyBox->SetScale(VGet(scale, scale, scale));
+	pSkyBox->SetModelTexture("Resource/3Dモデル/背景/空/02_空テクスチャ.jpg");
+
+	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", VGet(3.0f, 3.0f, 3.0f));
+	camera_angle_ = 0.0f;
 }
 
-void TitleScene::Draw()
-{
-	
-	if (Colorflag == true)
-	{
-		Color1 -= 4;
-		if (Color1 <= 0)
-		{
-			Color1 = 0;
-			Colorflag = false;
-		}
-	}
-	if (Color1 >= 0 && Colorflag == false)
-	{
-
-		Color1 += 4;
-		if (Color1 >= 255)
-		{
-			Color1 = 255;
-			Colorflag = true;
-		}
-	}
-	
-	
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255); // 0�`255�i128��50%�����j
-		Scene::Draw();
-		DrawBox(0, 0, 1000, 1000, GetColor(0, 0, 0), true);
-
-		SetFontSize(60);
-		DrawFormatString(300, 10, GetColor(255, 255, 255), "Dino&Hunter");
-		mpTexture->Draw();
-		C = false;
-		E = false;
-		S = false;
-		T = false;
-		/*C_Enter = false;
-		S_Enter = false;
-		E_Enter = false;*/
-		int Color = GetColor(255, 255, 255);
-		Master::mpScoreManager->LoadHighScore();
-	
-
-		if (InputManager::CheckDownKey(KEY_INPUT_W))
-		{
-			mnPause--;
-			Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//���ʉ�
-			if (mnPause < 1)
-			{
-				mnPause = 3;
-			}
-		}
-		if (InputManager::CheckDownKey(KEY_INPUT_S))
-		{
-			mnPause++;
-			Master::mpSoundManager->PlaySE(SoundManager::SE_SELECT);//���ʉ�
-			if (mnPause > 3)
-			{
-				mnPause = 1;
-			}
-		}
-		switch (mnPause)
-		{
-			SetFontSize(35);
-		case 1:
-			
-			DrawFormatString(50, 750, GetColor(0, 255, 255), "GameStart!");
-			
-			C = true;
-			if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
-			{
-				Master::mpSceneManager->SetNextScene(SceneManager::SCENE_3D);
-			}
-
-			break;
-		case 2:
-			
-			DrawFormatString(50, 810, GetColor(0, 255, 255), "������@");
-			
-			S = true;
-			if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
-			{
-				Master::mpSceneManager->SetNextScene(SceneManager::SCENE_OPERATION);
-			}
-			break;
-		
-		case 3:
-			(35);
-			DrawFormatString(50, 870, GetColor(0, 255, 255), "�`���[�g���A��");
-			
-			T = true;
-			if (InputManager::CheckDownKey(KEY_INPUT_RETURN))
-			{
-				Master::mpSceneManager->SetNextScene(SceneManager::SCENE_TUTORIAL);
-			}
-			break;
-		}
-		
-		if (C_Enter == true)
-		{
-
-
-		}
-		if (S_Enter == true)
-		{
-
-
-		}
-
-		SetFontSize(20);
-			if (C == false)
-			{
-				DrawFormatString(50, 770, GetColor(255, 255, 255), "1:GameStart!");
-			}
-			if (S == false)
-			{
-				DrawFormatString(50, 820, GetColor(255, 255, 255), "2:������@");
-			}
-			
-			if (T == false)
-			{
-				DrawFormatString(50, 870, GetColor(255, 255, 255), "3:�`���[�g���A��");
-			}
-		
-			DrawFormatString(750, 960, GetColor(255, 255, 255), "ENTER�Ō���:WS�őI��");
-
-
-
-		SetFontSize(size);
-	
-}
-
+/// @brief タイトルシーンの毎フレーム更新処理
+/// @details カメラアングルの更新とマウス入力による画面遷移判定を行う
 void TitleScene::Update()
 {
 	Scene::Update();
-	
+	UpdateTitleCamera();
+	HandleMenuInput();
 }
 
+/// @brief タイトル背景を周回するカメラ座標の計算および適用を行う
+void TitleScene::UpdateTitleCamera()
+{
+	// 浮動小数点精度の低下によるカメラのカクつきを防ぐため、2πラジアンを超えたらリセットする
+	camera_angle_ += 0.002f;
+	if (camera_angle_ >= DX_PI_F * 2.0f) camera_angle_ -= DX_PI_F * 2.0f;
+
+	VECTOR camPos = VGet(cosf(camera_angle_) * 3000.0f, 2000.0f, sinf(camera_angle_) * 3000.0f);
+	VECTOR camTarget = VGet(0.0f, 1000.0f, 0.0f);
+	SetCameraPositionAndTarget_UpVecY(camPos, camTarget);
+}
+
+/// @brief メニュー選択のマウス入力およびシーン切り替え処理を行う
+void TitleScene::HandleMenuInput()
+{
+	int mx, my;
+	InputManager::GetMousePos(mx, my);
+
+	// 無駄な当たり判定計算を省くため、左クリックされていないフレームは早期リターン
+	if (!InputManager::CheckMouseClickLeft()) return;
+
+	if (IsHoverStart(mx, my))
+	{
+		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::scene_manager_->SetNextScene(SceneManager::kGameScene);
+	}
+	else if (IsHoverRule(mx, my))
+	{
+		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::scene_manager_->SetNextScene(SceneManager::kSceneRule);
+	}
+	else if (IsHoverSettings(mx, my))
+	{
+		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::scene_manager_->SetNextScene(SceneManager::kSceneSettings);
+	}
+}
+
+/// @brief マウスカーソルが「GAME START」ボタン上にあるか判定する
+/// @param mx マウスのX座標
+/// @param my マウスのY座標
+/// @return bool ボタンの判定領域内であればtrue
+bool TitleScene::IsHoverStart(int mx, int my) const
+{
+	return mx >= 96 && mx <= 416 && my >= 732 && my <= 794;
+}
+
+/// @brief マウスカーソルが「RULE」ボタン上にあるか判定する
+/// @param mx マウスのX座標
+/// @param my マウスのY座標
+/// @return bool ボタンの判定領域内であればtrue
+bool TitleScene::IsHoverRule(int mx, int my) const
+{
+	return mx >= 96 && mx <= 416 && my >= 792 && my <= 854;
+}
+
+/// @brief マウスカーソルが「SETTINGS」ボタン上にあるか判定する
+/// @param mx マウスのX座標
+/// @param my マウスのY座標
+/// @return bool ボタンの判定領域内であればtrue
+bool TitleScene::IsHoverSettings(int mx, int my) const
+{
+	return mx >= 96 && mx <= 416 && my >= 872 && my <= 934;
+}
+
+/// @brief タイトルシーンの全画面描画処理を行う
+/// @details 背景・ロゴ・各ボタンUI・案内プロンプトの描画を行う
+void TitleScene::Draw()
+{
+	UpdatePromptBlink();
+	DrawSceneBackground();
+	DrawTitlePanel();
+	DrawMenuPanel();
+	DrawPrompt();
+}
+
+/// @brief プロンプトテキスト（案内表示）の点滅用アルファ値を計算更新する
+void TitleScene::UpdatePromptBlink()
+{
+	// 透明度を徐々に増減させ、ユーザーの視線を誘導するための滑らかな明滅アニメーションを作る
+	if (color_flag_)
+	{
+		color_fade_ -= 4;
+		if (color_fade_ <= 0) { color_fade_ = 0; color_flag_ = false; }
+	}
+	else
+	{
+		color_fade_ += 4;
+		if (color_fade_ >= 255) { color_fade_ = 255; color_flag_ = true; }
+	}
+}
+
+/// @brief 3D背景モデルの描画およびUI視認性を高める暗転幕の描画を行う
+void TitleScene::DrawSceneBackground()
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+	Scene::Draw();
+
+	// 昼背景など明度の高い3Dモデルが来たい場合でも、手前の白文字UIが読めなくなるのを防ぐ
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
+	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(15, 18, 25), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+/// @brief ゲームタイトルロゴパネルおよびドロップシャドウ付きタイトルの描画を行う
+void TitleScene::DrawTitlePanel()
+{
+	const int accentGold = GetColor(218, 178, 86);
+	const int accentGoldDark = GetColor(98, 73, 32);
+	const int mainPanel = GetColor(30, 35, 45);
+	const int panelLight = GetColor(47, 52, 65);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawBox(58, 70, 760, 250, mainPanel, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	DrawLine(70, 70, 760, 70, accentGold, 2);
+	DrawLine(70, 250, 760, 250, accentGoldDark, 2);
+	DrawLine(70, 70, 70, 250, accentGoldDark, 2);
+	DrawLine(760, 70, 760, 250, accentGold, 2);
+	DrawBox(84, 88, 746, 98, panelLight, TRUE);
+
+	SetFontSize(76);
+	// 右下にずらして黒文字を描画することで、アウトライン/影付きフォントを疑似的に表現する
+	DrawFormatString(99, 119, GetColor(10, 8, 4), "Skybound Slayer");
+	DrawFormatString(94, 114, GetColor(255, 231, 155), "Skybound Slayer");
+	SetFontSize(24);
+}
+
+/// @brief メニューパネルおよびホバー状態に応じたボタンの描画を行う
+void TitleScene::DrawMenuPanel()
+{
+	int mx, my;
+	InputManager::GetMousePos(mx, my);
+
+	bool hoverStart = IsHoverStart(mx, my);
+	bool hoverRule = IsHoverRule(mx, my);
+	bool hoverSettings = IsHoverSettings(mx, my);
+	const int accentGold = GetColor(218, 178, 86);
+	const int accentGoldDark = GetColor(98, 73, 32);
+	const int mainPanel = GetColor(30, 35, 45);
+	const int menuBtn = GetColor(20, 24, 32);
+	const int panelLight = GetColor(47, 52, 65);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawBox(70, 694, 448, 976, mainPanel, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	DrawLine(70, 694, 448, 694, accentGold, 1);
+	DrawLine(70, 976, 448, 976, accentGoldDark, 1);
+	DrawLine(70, 694, 70, 976, accentGoldDark, 1);
+	DrawLine(448, 694, 448, 976, accentGold, 1);
+	DrawBox(84, 708, 434, 722, panelLight, TRUE);
+
+	SetFontSize(34);
+	DrawBox(96, 712, 416, 774, hoverStart ? GetColor(48, 39, 18) : menuBtn, TRUE);
+	DrawLine(96, 712, 416, 712, hoverStart ? accentGold : accentGoldDark, 1);
+	DrawFormatString(126, 728, hoverStart ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sGAME START", hoverStart ? "> " : "  ");
+
+	DrawBox(96, 792, 416, 854, hoverRule ? GetColor(48, 39, 18) : menuBtn, TRUE);
+	DrawLine(96, 792, 416, 792, hoverRule ? accentGold : accentGoldDark, 1);
+	DrawFormatString(126, 808, hoverRule ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sRULE", hoverRule ? "> " : "  ");
+
+	DrawBox(96, 872, 416, 934, hoverSettings ? GetColor(48, 39, 18) : menuBtn, TRUE);
+	DrawLine(96, 872, 416, 872, hoverSettings ? accentGold : accentGoldDark, 1);
+	DrawFormatString(126, 888, hoverSettings ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sSETTINGS", hoverSettings ? "> " : "  ");
+}
+
+/// @brief 画面下部の点滅案内プロンプトを描画する
+void TitleScene::DrawPrompt()
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + color_fade_ / 3);
+	DrawBox(Config::ScreenWidth / 2 - 210, Config::ScreenHeight - 76, Config::ScreenWidth / 2 + 210, Config::ScreenHeight - 34, GetColor(30, 35, 45), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetFontSize(22);
+	DrawFormatString(Config::ScreenWidth / 2 - 156, Config::ScreenHeight - 66, GetColor(214, 220, 224), "CLICK A COMMAND TO BEGIN");
+	SetFontSize(24);
+}
+
+/// @brief タイトルシーンの終了処理を行う
+/// @details BGMの停止処理を実行する
 void TitleScene::Finalize()
 {
-	Master::mpSoundManager->StopBGM();
+	Master::sound_manager_->StopBGM();
 }

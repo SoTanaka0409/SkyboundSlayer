@@ -1,123 +1,127 @@
-#include"SceneManager.h"
-#include"Scene3D.h"
-#include "TestCollisionScene.h"
-#include"TitleScene.h"
-#include"Scene.h"
-//#include"TitleScene.h"
-//#include"GameScene.h"
-#include"ResultScene.h"
-#include"Rule.h"
-#include"OperationScene.h"
-#include"ResultWin.h"
-#include"NameScene.h"
-#include"TutorialScene.h"
-#include"ResetScene.h"
+﻿#include "SceneManager.h"
+#include "Fade.h"
+#include "GameScene.h"
+#include "TitleScene.h"
+#include "Scene.h"
+#include "Rule.h"
+#include "SettingsScene.h"
+#include "ResultScene.h"
+#include "ColliderManager.h"
 
-
+/// @brief SceneManagerのコンストラクタ
+/// @details 各種メンバ変数およびシーンタイプの初期化を行う
 SceneManager::SceneManager()
-	:mnSceneType(SCENE_TYPE::SCENE_NONE)
-	, mnNextSceneType(SCENE_TYPE::SCENE_NONE)
-	, mpCurrentScene(nullptr)
-	,SceneHard(false)//�n�[�h�V�[�����ǂ���
-	,SceneNormal(false)//�m�[�}���V�[�����ǂ���
+	: scene_type_(SceneType::kSceneNone)
+	, next_scene_type_(SceneType::kSceneNone)
+	, current_scene_(nullptr)
 {
-
 }
 
+/// @brief SceneManagerのデストラクタ
+/// @details リソース解放などの終了処理を行う
 SceneManager::~SceneManager()
 {
-
 }
+
+/// @brief シーンマネージャーの初期化処理
+/// @details 初期シーン（タイトル画面）を設定し、最初のシーン生成と初期化を実行する
 void SceneManager::Initialize()
 {
-	////�����V�[���̐ݒ�
-
-	mnNextSceneType = SCENE_TYPE::SCENE_3D;
-
-	//�V�[���J�ڂ�����
+	next_scene_type_ = SceneType::kSceneTitle;
 	ChangeSceneIfNeeded();
-
 }
 
-
-
+/// @brief シーンマネージャーの状態更新処理
+/// @details 現在アクティブなシーンおよびフェード処理の更新を毎フレーム実行する
 void SceneManager::Update()
 {
-	//�V�[���̍X�V
-	mpCurrentScene->Update();
+	current_scene_->Update();
+	Fade::GetInstance()->Update();
 }
 
+/// @brief シーンマネージャーの描画処理
+/// @details 現在アクティブなシーンおよび画面上のフェード効果を描画する
 void SceneManager::Draw()
 {
-	//�V�[���̕`��
-	mpCurrentScene->Draw();
+	current_scene_->Draw();
+	Fade::GetInstance()->Draw();
 }
 
+/// @brief シーンマネージャーの終了処理
+/// @details アプリケーション終了時などに呼ばれる最終的な解放処理を行う
 void SceneManager::Finalize()
 {
-
 }
 
+/// @brief 必要に応じてシーンの切り替え・生成・破棄を行う処理
+/// @details フェードアウト・フェードインを制御し、古いシーンの破棄と新しいシーンの生成・初期化を行う
 void SceneManager::ChangeSceneIfNeeded()
 {
-	//���݂̃V�[���Ǝ��̃V�[�����ꏏ�ł���Ή������Ȃ�
-	if (mnSceneType == mnNextSceneType)
+	if (scene_type_ == next_scene_type_)
 	{
 		return;
 	}
-	if (mpCurrentScene != nullptr)
-	{
-		//���݂̃V�[���̏I������������
-		mpCurrentScene->Finalize();
 
-		//��U�V�[�����̂��j�����Ă���
-		delete mpCurrentScene;
-		mpCurrentScene = nullptr;
+	if (scene_type_ != SceneType::kSceneNone)
+	{
+		if (!Fade::GetInstance()->IsFading())
+		{
+			Fade::GetInstance()->StartFadeOut();
+			return;
+		}
+
+		if (Fade::GetInstance()->GetState() == Fade::State::FadeOut && !Fade::GetInstance()->IsFadeOutFinished())
+		{
+			return;
+		}
 	}
 
-	//���̃V�[���ɂ��邽�߃V�[���^�C�v���X�V
-	mnSceneType = mnNextSceneType;
-
-	//mnSceneType�ɉ����ăV�[���𐶐�����
-	switch (mnSceneType)
+	if (current_scene_ != nullptr)
 	{
-	case SCENE_TYPE::SCENE_TEST_COLLISION:
-		mpCurrentScene = new TestCollisionScene();
-		break;
-	case SCENE_TYPE::SCENE_TITLE:
-		mpCurrentScene = new TitleScene();
-		break;
-	/*case SCENE_TYPE::SCENE_GAME:
-		mpCurrentScene = new GameScene(0);
-		break;*/
-	case SCENE_TYPE::SCENE_RULE:
-		mpCurrentScene = new Rule();
-		break;
-	case SCENE_TYPE::SCENE_RESULT:
-		mpCurrentScene = new ResultScene();
-		break;
-	case SCENE_TYPE::SCENE_3D:
-		mpCurrentScene = new Scene3D();
-		break;
-	case SCENE_TYPE::SCENE_TUTORIAL:
-		mpCurrentScene = new TutorialScene();
-		break;
-	case SCENE_TYPE::SCENE_OPERATION:
-		mpCurrentScene = new  OperationScene();
-		break;
-	case SCENE_TYPE::SCENE_RESULTWIN:
-		mpCurrentScene = new ResultWin();
-		break;
-	case SCENE_TYPE::SCENE_NAME:
-		mpCurrentScene = new NameScene();	
-		break;
-	case SCENE_TYPE::SCENE_RESET:
-		mpCurrentScene = new ResetScene();
-		break;
-	//default:
-		
-	}
-	//�V�[���̐���������Ă���͂��Ȃ̂ŁA������������ǂ�ł���
-	mpCurrentScene->Initialize();
+		current_scene_->Finalize();
+		delete current_scene_;
+		current_scene_ = nullptr;
 
+		ColliderManager::GetInstance()->DeleteAllCollider();
+	}
+
+	scene_type_ = next_scene_type_;
+
+	switch (scene_type_)
+	{
+	case SceneType::kSceneTitle:
+		current_scene_ = new TitleScene();
+		break;
+	case SceneType::kSceneRule:
+		current_scene_ = new Rule();
+		break;
+	case SceneType::kSceneSettings:
+		current_scene_ = new SettingsScene();
+		break;
+	case SceneType::kGameScene:
+		current_scene_ = new GameScene();
+		break;
+	case SceneType::kSceneResultScene:
+		current_scene_ = new ResultScene();
+		break;
+	default:
+		current_scene_ = new TitleScene();
+		scene_type_ = SceneType::kSceneTitle;
+		break;
+	}
+
+	current_scene_->Initialize();
+
+	if (scene_type_ != SceneType::kSceneNone)
+	{
+		Fade::GetInstance()->StartFadeIn();
+	}
+}
+
+/// @brief 現在のシーンをSceneGame型へキャストして取得する
+/// @return SceneGame* ゲームシーンへのポインタ（対象でない場合はnullptr）
+/// @details 現在のシーンがゲーム本編であればポインタを返し、それ以外ではnullptrを返す
+SceneGame* SceneManager::GetSceneGame()
+{
+	return dynamic_cast<SceneGame*>(current_scene_);
 }

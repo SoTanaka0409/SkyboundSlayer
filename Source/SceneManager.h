@@ -1,65 +1,59 @@
-#pragma once
+﻿#pragma once
 
 class Scene;
+class SceneGame;
 
+/// @brief シーンの遷移管理や、現在アクティブなシーンの実行（更新・描画）を統括するマネージャー類
 class SceneManager
 {
 public:
-
-	enum SCENE_TYPE
+	/// @brief シーンの種類を識別する列挙型
+	enum SceneType
 	{
-		SCENE_NONE = 0,
-		SCENE_RESET,
-		SCENE_NAME,
-		SCENE_TITLE,
-		SCENE_OPERATION,
-		SCENE_RULE,//�^�C�g��
-		SCENE_TUTORIAL,
-		SCENE_LEVEL,
-		SCENE_GAME,    //�Q�[��
-		SCENE_3DHARD,
-		SCENE_RESULT,   //���U���g
-		SCENE_RESULTWIN,
-		SCENE_NORMALRESULTSCENE,//�Q�[���I�[�o�[
-		SCENE_3D, SCENE_TEST_COLLISION
-
+		kSceneNone = 0,     ///< シーン未設定状態
+		kSceneTitle,        ///< タイトル画面シーン
+		kSceneRule,         ///< ルール説明画面シーン
+		kSceneSettings,     ///< 設定画面シーン
+		kGameScene,           ///< 3Dゲーム本編（メインゲーム）シーン
+		kSceneResultScene   ///< リザルト画面シーン
 	};
-public:
+
 	SceneManager();
-	
 	~SceneManager();
 
-
+	/// @brief 初期シーンの構築および管理用パラメータの初期化を行う
 	void Initialize();
 
-	void Draw();
-
+	/// @brief 現在アクティブなシーンの毎フレームの更新処理およびシーン遷移チェックを行う
 	void Update();
 
+	/// @brief 現在アクティブなシーンの描画処理を呼び出す
+	void Draw();
+
+	/// @brief シーンマネージャーの終了処理および現在シーンのメモリ解放を行う
 	void Finalize();
-	//�V�[���J�ځi�؂�ւ������j���K�v�ȏ�ԂȂ�J�ڏ���������
+
+	/// @brief 次のシーンへの遷移要求（next_scene_type_）がある場合、シーンの切り替えを実行する
 	void ChangeSceneIfNeeded();
-	//���Ɉړ�����J�ڂ���V�[���̐ݒ�
-	//note:�V�[���J�ڂ��������ꍇ�́A�K�����̏������o�R���đJ�ڂ�����
-	void SetNextScene(SCENE_TYPE next) { mnNextSceneType = next; }
 
-	void SetSceneHard(bool Hard) { SceneHard = Hard; }
-	bool GetSceneHard() { return SceneHard; }
+	/// @brief 次に遷移するシーンの種類を設定する
+	/// @param next 遷移先のSceneType
+	void SetNextScene(SceneType next) { next_scene_type_ = next; }
 
-	void SetSceneNormal(bool Normal) {SceneNormal=Normal; }
-	bool GetSceneNormal() { return SceneNormal; }
-	
+	/// @brief 現在アクティブなシーンのポインタを取得する
+	/// @return Scene* 現在のシーンポインタ
+	Scene* GetCurrentScene() { return current_scene_; }
 
-	//���݂̃V�[���̎擾
-	Scene* GetCurrentScene() { return mpCurrentScene; }
+	/// @brief 現在のシーンの種類（SceneType）を取得する
+	/// @return SceneType 現在のシーン識別タイプ
+	SceneType GetCurrentSceneType() { return scene_type_; }
+
+	/// @brief ゲーム本編シーン（SceneGame）のポインタを取得する
+	/// @return SceneGame* ゲーム本編シーンポインタ（他シーンの場合はnullptr）
+	SceneGame* GetSceneGame();
 
 private:
-	SCENE_TYPE mnSceneType;     //���݂̃V�[���̃^�C�v
-	SCENE_TYPE mnNextSceneType;//���̃V�[���̃^�C�v
-	Scene* mpCurrentScene;    //���݃V�[���̃|�C���^
-	Scene* mp;
-
-	bool SceneHard;
-	bool SceneNormal;
-
+	SceneType scene_type_;        ///< 現在実行中のシーン識別タイプ
+	SceneType next_scene_type_;   ///< 次フレームで遷移予約されているシーン識別タイプ
+	Scene* current_scene_;        ///< 現在アクティブなシーンオブジェクトへのポインタ
 };

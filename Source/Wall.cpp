@@ -1,68 +1,68 @@
-#include"Wall.h"
+ï»¿#include"Wall.h"
 
 
 Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottomRight)
 	:Object3D(centerPos)
 {
-	//ƒ^ƒOİ’è
+	//ã‚¿ã‚°è¨­å®š
 	SetTag(Object3D::Tag3D_Wall3D);
 
 
-	//‰æ‘œ‚Ì“Ç‚İ‚İ
-	mnGraphHandle = LoadGraph(filename.c_str());
+	//ç”»åƒã®èª­ã¿è¾¼ã¿
+	graph_handle_ = LoadGraph(filename.c_str());
 
-	//4’¸“_•ª‚Ìƒf[ƒ^‚ğƒZƒbƒg
+	//4é ‚ç‚¹åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆ
 
-	//¶ã
-	mVertex[0].pos = VAdd(centerPos, topLeft);
-	mVertex[0].norm = VGet(1.0f, 0.0f, 0.0f);//Œã‚ÅŒvZ‚·‚é
-	mVertex[0].dif = GetColorU8(255, 255, 255, 255);
-	mVertex[0].spc = GetColorU8(0, 0, 0, 0);
-	mVertex[0].u = 0.0f;
-	mVertex[0].v = 0.0f;
-	mVertex[0].su = 0.0f;
-	mVertex[0].sv = 0.0f;
+	//å·¦ä¸Š
+	vertex_[0].pos = VAdd(centerPos, topLeft);
+	vertex_[0].norm = VGet(1.0f, 0.0f, 0.0f);//å¾Œã§è¨ˆç®—ã™ã‚‹
+	vertex_[0].dif = GetColorU8(255, 255, 255, 255);
+	vertex_[0].spc = GetColorU8(0, 0, 0, 0);
+	vertex_[0].u = 0.0f;
+	vertex_[0].v = 0.0f;
+	vertex_[0].su = 0.0f;
+	vertex_[0].sv = 0.0f;
 
-	//‰Eã
-	mVertex[1].pos = VAdd(centerPos, VGet(bottomRight.x, topLeft.y, bottomRight.z));
-	mVertex[1].norm = VGet(1.0f, 0.0f, 0.0f);//Œã‚ÅŒvZ‚·‚é
-	mVertex[1].dif = GetColorU8(255, 255, 255, 255);
-	mVertex[1].spc = GetColorU8(0, 0, 0, 0);
-	mVertex[1].u = 1.0f;
-	mVertex[1].v = 0.0f;
-	mVertex[1].su = 1.0f;
-	mVertex[1].sv = 0.0f;
+	//å³ä¸Š
+	vertex_[1].pos = VAdd(centerPos, VGet(bottomRight.x, topLeft.y, bottomRight.z));
+	vertex_[1].norm = VGet(1.0f, 0.0f, 0.0f);//å¾Œã§è¨ˆç®—ã™ã‚‹
+	vertex_[1].dif = GetColorU8(255, 255, 255, 255);
+	vertex_[1].spc = GetColorU8(0, 0, 0, 0);
+	vertex_[1].u = 1.0f;
+	vertex_[1].v = 0.0f;
+	vertex_[1].su = 1.0f;
+	vertex_[1].sv = 0.0f;
 
-	//¶‰º
-	mVertex[2].pos = VAdd(centerPos, VGet(topLeft.x, bottomRight.y, topLeft.z));
-	mVertex[2].norm = VGet(1.0f, 0.0f, 0.0f);//Œã‚ÅŒvZ‚·‚é
-	mVertex[2].dif = GetColorU8(255, 255, 255, 255);
-	mVertex[2].spc = GetColorU8(0, 0, 0, 0);
-	mVertex[2].u = 0.0f;
-	mVertex[2].v = 1.0f;
-	mVertex[2].su = 0.0f;
-	mVertex[2].sv = 1.0f;
-	//‰E‰º
-	mVertex[3].pos = VAdd(centerPos, bottomRight);
-	mVertex[3].norm = VGet(1.0f, 0.0f, 0.0f);//Œã‚ÅŒvZ‚·‚é
-	mVertex[3].dif = GetColorU8(255, 255, 255, 255);
-	mVertex[3].spc = GetColorU8(0, 0, 0, 0);
-	mVertex[3].u = 1.0f;
-	mVertex[3].v = 1.0f;
-	mVertex[3].su = 1.0f;
-	mVertex[3].sv = 1.0f;
-
-
+	//å·¦ä¸‹
+	vertex_[2].pos = VAdd(centerPos, VGet(topLeft.x, bottomRight.y, topLeft.z));
+	vertex_[2].norm = VGet(1.0f, 0.0f, 0.0f);//å¾Œã§è¨ˆç®—ã™ã‚‹
+	vertex_[2].dif = GetColorU8(255, 255, 255, 255);
+	vertex_[2].spc = GetColorU8(0, 0, 0, 0);
+	vertex_[2].u = 0.0f;
+	vertex_[2].v = 1.0f;
+	vertex_[2].su = 0.0f;
+	vertex_[2].sv = 1.0f;
+	//å³ä¸‹
+	vertex_[3].pos = VAdd(centerPos, bottomRight);
+	vertex_[3].norm = VGet(1.0f, 0.0f, 0.0f);//å¾Œã§è¨ˆç®—ã™ã‚‹
+	vertex_[3].dif = GetColorU8(255, 255, 255, 255);
+	vertex_[3].spc = GetColorU8(0, 0, 0, 0);
+	vertex_[3].u = 1.0f;
+	vertex_[3].v = 1.0f;
+	vertex_[3].su = 1.0f;
+	vertex_[3].sv = 1.0f;
 
 
 
-	//–@ü‚Ìİ’è
-	VECTOR norm = VCross(VSub(mVertex[0].pos, mVertex[1].pos), VSub(mVertex[0].pos, mVertex[2].pos));
-	norm = VNorm(norm);//³‹K‰»iƒxƒNƒgƒ‹‚Ì‘å‚«‚³‚ğ‚P‚É‚·‚é
-	mVertex[0].norm = norm;
-	mVertex[1].norm = norm;
-	mVertex[2].norm = norm;
-	mVertex[3].norm = norm;
+
+
+	//æ³•ç·šã®è¨­å®š
+	VECTOR norm = VCross(VSub(vertex_[0].pos, vertex_[1].pos), VSub(vertex_[0].pos, vertex_[2].pos));
+	norm = VNorm(norm);//æ­£è¦åŒ–ï¼ˆãƒ™ã‚¯ãƒˆãƒ«ã®å¤§ãã•ã‚’ï¼‘ã«ã™ã‚‹
+	vertex_[0].norm = norm;
+	vertex_[1].norm = norm;
+	vertex_[2].norm = norm;
+	vertex_[3].norm = norm;
 
 }
 
@@ -71,23 +71,23 @@ Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottom
 Wall::~Wall()
 {
 
-	//‰æ‘œ‚Ì”jŠü
-	DeleteGraph(mnGraphHandle);
+	//ç”»åƒã®ç ´æ£„
+	DeleteGraph(graph_handle_);
 }
 
 
-//XV
+//æ›´æ–°
 void Wall::Update()
 {
 
 }
-//•`‰æ
+//æç”»
 void Wall::Draw()
 {
 	WORD index[6];
 
-	//2ƒ|ƒŠƒSƒ“•ª‚ÌƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚ğİ’è
-	//‰E•Ó‚Í’¸“_ƒf[ƒ^‚Ì”z—ñ”Ô†
+	//2ãƒãƒªã‚´ãƒ³åˆ†ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
+	//å³è¾ºã¯é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®é…åˆ—ç•ªå·
 	index[0] = 0;
 	index[1] = 1;
 	index[2] = 2;
@@ -97,8 +97,8 @@ void Wall::Draw()
 
 	SetUseLighting(false);
 
-	//2‚Â‚ÌOŠpŒ`ƒ|ƒŠƒSƒ“‚Ì‚Ñ‚å‚¤‚ª@
-	DrawPolygonIndexed3D(mVertex, 4, index, 2, mnGraphHandle, true);
+	//2ã¤ã®ä¸‰è§’å½¢ãƒãƒªã‚´ãƒ³ã®ã³ã‚‡ã†ãŒã€€
+	DrawPolygonIndexed3D(vertex_, 4, index, 2, graph_handle_, true);
 
 	SetUseLighting(true);
 }

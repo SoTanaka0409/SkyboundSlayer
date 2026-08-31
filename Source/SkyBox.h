@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 class Model;
 
 #include "Object3D.h"
@@ -6,34 +6,14 @@ class Model;
 class SkyBox : public Object3D
 {
 public:
-	SkyBox(std::string filename,VECTOR pos);		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~SkyBox();							// ƒfƒXƒgƒ‰ƒNƒ^
-
-	void Update() override;	// XVˆ—
-	void Draw() override;	// •`‰æˆ—
-
-	void SetScale(VECTOR scale);									// Šg‘å’liƒXƒP[ƒ‹’lj‚ÌÝ’èiModelƒNƒ‰ƒX‚Ö‚Ì‹´“n‚µj
-	void SetModelTexture(std::string filename, int index = 0);	// ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ•ÏXiModelƒNƒ‰ƒX‚Ö‚Ì‹´“n‚µj
+	SkyBox(std::string filename,VECTOR pos);		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~SkyBox();							// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	void Update() override;	// æ›´æ–°å‡¦ç†
+	void Draw() override;	// æç”»å‡¦ç†
+	void SetScale(VECTOR scale);									// æ‹¡å¤§å€¤ï¼ˆã‚¹ã‚±ãƒ¼ãƒ«å€¤ï¼‰ã®è¨­å®šï¼ˆModelã‚¯ãƒ©ã‚¹ã¸ã®æ©‹æ¸¡ã—ï¼‰
+	void SetModelTexture(std::string filename, int index = 0);	// ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£å¤‰æ›´ï¼ˆModelã‚¯ãƒ©ã‚¹ã¸ã®æ©‹æ¸¡ã—ï¼‰
 
 private:
-	Model* mpModel;			// ƒ‚ƒfƒ‹ƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^
+	Model* model_;			// ãƒ¢ãƒ‡ãƒ«ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
 };
 
-/*
-*
-* šŽg—p•û–@
-* 1. ƒXƒJƒCƒ{ƒbƒNƒX‚ð¶¬‚µ‚½‚¢ Scene ‚Ì Initialize “à‚ÅASkyBox ƒNƒ‰ƒX‚ð new ‚·‚éB
-* 2. •K—v‚Å‚ ‚ê‚Î SkyBox ‚Ì‘å‚«‚³‚ð’²®‚·‚éB
-*	2-a. 1‚ÌŽè‡‚Ånew‚·‚éÛ‚ÉAƒ[ƒJƒ‹•Ï”‚Énew‚µ‚½‚à‚Ì‚ðŽæ‚Á‚Ä‚¨‚­
-*		—ájSkyBox* pSkyBox = new SkyBox(ƒtƒ@ƒCƒ‹–¼);
-*			pSkyBox->SetScale(5.0f);
-* 3. ƒXƒJƒCƒ{ƒbƒNƒXƒ‚ƒfƒ‹‚ÉŽg—p‚³‚ê‚Ä‚¢‚éƒeƒNƒXƒ`ƒƒ‚ð•ÏX‚µ‚½‚¢ê‡‚ÍASetModelTexture ‚ð—˜—p‚·‚éB
-*	3-a. 1‚ÌŽè‡‚Ånew‚·‚éÛ‚ÉAƒ[ƒJƒ‹•Ï”‚Énew‚µ‚½‚à‚Ì‚ðŽæ‚Á‚Ä‚¨‚­
-*		—ájSkyBox* pSkyBox = new SkyBox(ƒtƒ@ƒCƒ‹–¼);
-*			pSkyBox->SetModelTexture(•ÏX‚µ‚½‚¢‰æ‘œ‚Ö‚ÌƒpƒX);
-* ¦2 ‚Æ 3 ‚Í•¹—p‰Â”\‚Å‚·B
-*
-* Šî–{“I‚É‚Í‚±‚ê‚¾‚¯‚Å‚·‚ªAŽg—p‚µ‚½‚¢ê‡‚Í Model ƒNƒ‰ƒX‘¤‚ÌC³‚à•K—v‚È‚Ì‚Å’ˆÓ‚·‚é‚±‚ÆB
-* ¨uiModelƒNƒ‰ƒX‚Ö‚Ì‹´“n‚µjv‚Æ‚¢‚¤ƒRƒƒ“ƒg‚Ì‚ ‚éŠÖ”‚ð Model ƒNƒ‰ƒX‘¤‚É—pˆÓ‚·‚é•K—v‚ª‚ ‚éB
-*
-*/

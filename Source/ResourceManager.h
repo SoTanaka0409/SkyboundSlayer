@@ -1,42 +1,17 @@
-#pragma once
+ï»¿#pragma once
 #pragma once
 #include <vector>
 #include <string>
 
-// šƒŠƒ\[ƒXŠÇ—ƒNƒ‰ƒX‚Ìg‚¢•ûš
-//
-// Master ƒNƒ‰ƒX‚ÉASceneManager‚Æ“¯‚¶‚æ‚¤‚ÈŒ`‚ÅƒNƒ‰ƒX‚Ìƒ|ƒCƒ“ƒ^‚ğì‚é
-// Main.cpp ‚É‚Ä‰Šú‰»Adelete ˆ—‚ğ‘‚­
-// ModelƒNƒ‰ƒX‚È‚Ç‚Åg—p‚µ‚Ä‚¢‚é wMV1LoadModel(filename.c_str())x ‚ğ wMaster::mpResourceManager->LoadModel(filename.c_str())x
-// i‘‚«•û‚Íˆê—áB•Ï”–¼‚È‚Ç‚ÍŠF‚³‚ñ‚ª‘‚­‚½‚ß‘½­•Ï‚í‚é‰Â”\«‚Í‚ ‚èj
-// ‚È‚Ç‚Æ’u‚«Š·‚¦‚éB
-//
 
-// š‚È‚ºg‚¤‚Ì‚©š
-// 
-// “G‚È‚Ç‚ğ¶¬‚µ‚½Û‚ÉƒJƒN‚Â‚­ê‡A‘å‘Ì‚ÌŒ´ˆö‚ªƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ‚É‚ ‚é‚½‚ßA
-// ‚»‚Ì“Ç‚İ‚İˆ—‚ğ­‚È‚­‚·‚é‚½‚ß‚ÉƒŠƒ\[ƒXŠÇ—ƒNƒ‰ƒX‚ğg‚¤B
-// ‘å—Ê‚Éƒ‚ƒfƒ‹‚ğ“Ç‚İ‚Şl‚Ù‚Ç‰¶Œb‚ª‚Å‚©‚¢B
-// ‚»‚ê‚Æ“¯‚¶——R‚ÅA‰æ‘œƒtƒ@ƒCƒ‹‚È‚Ç‚à‘å‚«‚ÈƒTƒCƒY‚ğ“Ç‚İ‚Ş‚ÆƒJƒN‚Â‚­‚½‚ßA
-// “¯‚¶‚æ‚¤‚ÈŒø‰Ê‚ª“¾‚ç‚ê‚éB
-// i‰æ‘œ“Ç‚İ‚İ‚Í LoadGraphics ‚Åo—ˆ‚éj
-//
-
-// š’ˆÓš
-// LoadGraphics, LoadDivGraphics ‚ğg‚¤ê‡A
-// Œ»ó‚Å‚Í‚»‚ê‚¼‚ê‚ÌƒNƒ‰ƒX‚Å wDeleteGraphx ‚È‚Ç‚ğŒÄ‚Ño‚µ‚ÄA“Ç‚İ‚ñ‚¾‰æ‘œ‚ğíœ‚µ‚Ä‚¢‚éˆ—‚ª‚ ‚é‚Í‚¸‚Å‚·‚ªA
-// ‚»‚Ìˆ—‚ÍÁ‚µ‚Ä‚µ‚Ü‚Á‚Ä‘åä•v‚Å‚·B
-// i‰æ‘œ‚ÉŠÖ‚µ‚Ä‚Íw•¡»x‚ğ‚µ‚Ä‚¨‚ç‚¸ADeleteGraph ‚ğ‚µ‚Ä‚µ‚Ü‚¤‚Æ‘å–{‚Ìƒf[ƒ^‚ªíœ‚³‚ê‚Ä‚µ‚Ä‚µ‚Ü‚¤‚½‚ßAƒf[ƒ^‚ğg‚¢‚Ü‚í‚·‚±‚Æ‚ªo—ˆ‚È‚­‚È‚éj
-// 
-
-// ƒeƒNƒXƒ`ƒƒ‚Ì•ªŠ„“Ç‚İ‚İ—pƒf[ƒ^
+// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®åˆ†å‰²èª­ã¿è¾¼ã¿ç”¨ãƒ‡ãƒ¼ã‚¿
 struct DivGraphData
 {
-	std::string filePath;	// ƒeƒNƒXƒ`ƒƒ‚ÌƒpƒX–¼
-	int* divHandleList;		// •ªŠ„‚³‚ê‚½ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹‚ÌƒŠƒXƒg
-	int divX;				// ‰¡‚Ì•ªŠ„”
-	int divY;				// c‚Ì•ªŠ„”
-	int allNum;				// •ªŠ„Å‘å”
+	std::string filePath;	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ‘ã‚¹å
+	int* divHandleList;		// åˆ†å‰²ã•ã‚ŒãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«ã®ãƒªã‚¹ãƒˆ
+	int divX;				// æ¨ªã®åˆ†å‰²æ•°
+	int divY;				// ç¸¦ã®åˆ†å‰²æ•°
+	int allNum;				// åˆ†å‰²æœ€å¤§æ•°
 
 	DivGraphData(
 		std::string filePath,
@@ -53,21 +28,25 @@ struct DivGraphData
 	}
 };
 
-// ƒŠƒ\[ƒXŠÇ—ƒNƒ‰ƒX
+// ãƒªã‚½ãƒ¼ã‚¹ç®¡ç†ã‚¯ãƒ©ã‚¹
 class ResourceManager
 {
 public:
+    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	ResourceManager();
+    // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~ResourceManager();
 
-	int LoadModel(std::string pathName);	// ƒ‚ƒfƒ‹ƒŠƒ\[ƒX¶¬
-	int LoadGraphics(std::string pathName);	// ƒOƒ‰ƒtƒBƒbƒNƒŠƒ\[ƒX¶¬
-	DivGraphData* LoadDivGraphics(std::string pathName, int allNum, int numX, int numY);	// •ªŠ„‚³‚ê‚½ƒOƒ‰ƒtƒBƒbƒNƒŠƒ\[ƒX¶¬
+	int LoadModel(std::string pathName);	// ãƒ¢ãƒ‡ãƒ«ãƒªã‚½ãƒ¼ã‚¹ç”Ÿæˆ
+	int LoadGraphics(std::string pathName);	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒªã‚½ãƒ¼ã‚¹ç”Ÿæˆ
+	DivGraphData* LoadDivGraphics(std::string pathName, int allNum, int numX, int numY);	// åˆ†å‰²ã•ã‚ŒãŸã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒªã‚½ãƒ¼ã‚¹ç”Ÿæˆ
 
-	int GetTotalResource() { return resourceMapList.size() + graphicResourceMapList.size() + divGraphicResourceMapList.size(); }
+    // ç¾åœ¨èª­ã¿è¾¼ã‚“ã§ã„ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã®ç·æ•°ã‚’å–å¾—ã™ã‚‹
+	int GetTotalResource() { return static_cast<int>(resourceMapList.size() + graphicResourceMapList.size() + divGraphicResourceMapList.size()); }
 
 private:
-	std::vector<std::pair<std::string, int>> resourceMapList;			// ƒ‚ƒfƒ‹ƒŠƒ\[ƒXƒŠƒXƒg
-	std::vector<std::pair<std::string, int>> graphicResourceMapList;	// ƒeƒNƒXƒ`ƒƒƒŠƒXƒg
-	std::vector<DivGraphData*> divGraphicResourceMapList;				// •ªŠ„ƒeƒNƒXƒ`ƒƒƒŠƒXƒg
+	std::vector<std::pair<std::string, int>> resourceMapList;			// ãƒ¢ãƒ‡ãƒ«ãƒªã‚½ãƒ¼ã‚¹ãƒªã‚¹ãƒˆ
+	std::vector<std::pair<std::string, int>> graphicResourceMapList;	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚¹ãƒˆ
+	std::vector<DivGraphData*> divGraphicResourceMapList;				// åˆ†å‰²ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚¹ãƒˆ
 };

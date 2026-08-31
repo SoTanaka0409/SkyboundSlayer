@@ -1,49 +1,66 @@
-#pragma once
+ï»¿#pragma once
+#include "ModelUtility.h"
 #include <string>
 #include <vector>
-#include "ModelUtility.h"
 
+/// @brief 3Dãƒ¢ãƒ‡ãƒ«ï¼ˆDxLibãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«ï¼‰ã®å˜ä¸€ãƒ»ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿãƒ»é·ç§»åˆ¶å¾¡ã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
 class ModelAnimation
 {
 public:
-    // šNewš
-    // ‚±‚±‚É‚ ‚Á‚½’è‹`‚ª ModelUtility‚ÖˆÚ“®‚³‚ê‚Ä‚¢‚é]
+	/// @brief ModelAnimationã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	/// @param modelHandle åˆ¶å¾¡å¯¾è±¡ã¨ãªã‚‹DxLibã®3Dãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+	ModelAnimation(int modelHandle);
 
-public:
-    ModelAnimation(int modelHandle);   // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-    ~ModelAnimation();  // ƒfƒXƒgƒ‰ƒNƒ^
+	/// @brief ModelAnimationã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~ModelAnimation();
 
-    void Update();  // XV
+	/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“ã®é€²è¡Œã€ãƒ–ãƒ¬ãƒ³ãƒ‰ç‡è¨ˆç®—ã€ãƒ«ãƒ¼ãƒ—çµ‚ç«¯åˆ¤å®šãªã©ã®æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°ã‚’è¡Œã†
+	void Update();
 
-    // note: mixamo ‚Åƒ_ƒEƒ“ƒ[ƒh‚·‚é‚ÆA
-    // 0”Ô–Ú‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒf[ƒ^‚Íƒ_ƒ~[‚ª“ü‚Á‚Ä‚¢‚é‚Ì‚ÅA
-    // ƒfƒtƒHƒ‹ƒg‚Å“K—p‚·‚éƒCƒ“ƒfƒbƒNƒX‚ğ1‚É‚µ‚Ä‚¨‚­
-    void ChangeAnimation(AnimationState state, int index = 1); // ƒAƒjƒ[ƒVƒ‡ƒ“Ø‚è‘Ö‚¦ˆ—
+	/// @brief å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+	/// @param state åˆ‡ã‚Šæ›¿ãˆå…ˆã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
+	/// @param index ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿å†…ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆMixamoç­‰ã®ãƒ€ãƒŸãƒ¼å›é¿ã®ãŸã‚æ—¢å®šå€¤1ï¼‰
+	void ChangeAnimation(AnimationState state, int index = 1);
 
-    void SetLoop(bool isLoop) { mbLoop = isLoop; }  // ƒ‹[ƒvİ’è
-    void SetLoopFinishState(AnimationState state) { mnLoopFinishState = state; }    // ƒ‹[ƒvI—¹‚ÉÄ¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“
-    void SetAnimationBlend(bool isBlend);   // ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒuƒŒƒ“ƒhİ’è
+	/// @brief ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ«ãƒ¼ãƒ—å†ç”Ÿã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®šã™ã‚‹
+	/// @param isLoop ãƒ«ãƒ¼ãƒ—å†ç”Ÿã‚’è¡Œã†å ´åˆã¯true
+	void SetLoop(bool isLoop) { loop_ = isLoop; }
 
-    AnimationState GetNowState() { return mnState; }    // Œ»İÄ¶‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚Ìæ“¾
-    bool IsLoopFinish() { return mbLoopFinish; }        // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒ‹[ƒv‚ªI—¹‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	/// @brief éãƒ«ãƒ¼ãƒ—ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿçµ‚äº†æ™‚ã«è‡ªå‹•ç§»è¡Œã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’è¨­å®šã™ã‚‹
+	/// @param state ç§»è¡Œå…ˆã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
+	void SetLoopFinishState(AnimationState state) { loop_finish_state_ = state; }
 
-    void SetAnimationCount(float count) { mfAnimationCount = count; }
+	/// @brief ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚ã®ãƒ–ãƒ¬ãƒ³ãƒ‰ï¼ˆè£œé–“ï¼‰å‡¦ç†ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’è¨­å®šã™ã‚‹
+	/// @param isBlend ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚’è¡Œã†å ´åˆã¯true
+	void SetAnimationBlend(bool isBlend);
+
+	/// @brief ç¾åœ¨å†ç”Ÿä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—ã™ã‚‹
+	/// @return AnimationState ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
+	AnimationState GetNowState() { return state_; }
+
+	/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿï¼ˆã¾ãŸã¯1ãƒ«ãƒ¼ãƒ—ï¼‰ãŒçµ‚äº†ã—ãŸã‹åˆ¤å®šã™ã‚‹
+	/// @return bool å†ç”Ÿå®Œäº†ã—ãŸå ´åˆã¯true
+	bool IsLoopFinish() { return loop_finish_; }
+
+	/// @brief ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é€²è¡Œé€Ÿåº¦ï¼ˆã‚³ãƒé€ã‚Šãƒ»ã‚«ã‚¦ãƒ³ãƒˆã®åŠ ç®—é‡ï¼‰ã‚’è¨­å®šã™ã‚‹
+	/// @param count å†ç”Ÿæ™‚é–“ã®é€²è¡Œå€ç‡ãƒ»é€Ÿåº¦
+	void SetAnimationCount(float count) { animation_count_ = count; }
 
 private:
-    int mnModelHandle;  // ƒ‚ƒfƒ‹‚Ìƒnƒ“ƒhƒ‹
+	int model_handle_;                   ///< åˆ¶å¾¡å¯¾è±¡ã¨ãªã‚‹3Dãƒ¢ãƒ‡ãƒ«ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒãƒ³ãƒ‰ãƒ«
 
-    float mfAnimationTime;  // Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŒ»İ‚ÌÄ¶ŠÔ
-    float mfAnimationCount;//Ä¶ŠÔ‚ğŒˆ‚ß‚é
-    int mnAnimationIndex;   // Ä¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX
+	float animation_time_;               ///< ç¾åœ¨å†ç”Ÿä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®çµŒéæ™‚é–“
+	float animation_count_;              ///< ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿé€Ÿåº¦ã®é€²è¡Œã‚«ã‚¦ãƒ³ãƒˆä¿‚æ•°
+	int animation_index_;                ///< ç¾åœ¨å†ç”Ÿä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·
 
-    float mfOldAnimationTime;   // 1‚Â‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“Ä¶ŠÔ
-    int mnOldAnimationIndex;    // ‚P‚Â‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX
+	float old_animation_time_;           ///< åˆ‡ã‚Šæ›¿ãˆå‰ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµŒéæ™‚é–“ï¼ˆãƒ–ãƒ¬ãƒ³ãƒ‰ç”¨ï¼‰
+	int old_animation_index_;            ///< åˆ‡ã‚Šæ›¿ãˆå‰ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç•ªå·ï¼ˆãƒ–ãƒ¬ãƒ³ãƒ‰ç”¨ï¼‰
 
-    float mfAnimBlendRate;      // ƒ‚[ƒVƒ‡ƒ“‚ÌØ‚è‘Ö‚í‚è“x‡
+	float anim_blend_rate_;              ///< å‰ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‹ã‚‰ç¾åœ¨ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã¸ã®è£œé–“ãƒ–ãƒ¬ãƒ³ãƒ‰ç‡ï¼ˆ0.0fã€œ1.0fï¼‰
 
-    AnimationState mnState; // Œ»İÄ¶‚µ‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚Ì”Ô†
+	AnimationState state_;               ///< ç¾åœ¨å†ç”Ÿã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆè­˜åˆ¥ç•ªå·
 
-    bool mbLoop;            // ƒ‚[ƒVƒ‡ƒ“‚ğƒ‹[ƒv‚³‚¹‚é‚©‚Ç‚¤‚©
-    AnimationState mnLoopFinishState;   // ƒ‹[ƒv‚ªI‚í‚Á‚½‚ÉÄ¶‚µ‚½‚¢ƒAƒjƒ[ƒVƒ‡ƒ“”Ô†
-    bool mbLoopFinish;      // ƒ‚[ƒVƒ‡ƒ“ƒ‹[ƒv‚ªI‚í‚Á‚½‚©‚Ç‚¤‚©
+	bool loop_;                          ///< ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ãƒ«ãƒ¼ãƒ—å†ç”Ÿã•ã›ã‚‹ã‹ã©ã†ã‹ã®åˆ¤å®šãƒ•ãƒ©ã‚°
+	AnimationState loop_finish_state_;   ///< éãƒ«ãƒ¼ãƒ—ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã«ç§»è¡Œã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
+	bool loop_finish_;                   ///< ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”ŸãŒæœ€çµ‚ãƒ•ãƒ¬ãƒ¼ãƒ ã¾ã§åˆ°é”ãƒ»çµ‚äº†ã—ãŸã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
 };

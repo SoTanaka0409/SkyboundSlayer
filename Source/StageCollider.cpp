@@ -1,158 +1,102 @@
-#include"StageCollider.h"
+﻿#include"StageCollider.h"
 #include"SphereCollider.h"
 #include"CapsuleCollider.h"
 #include"Master.h"
 #include"ObjectManager.h"
 #include"SceneManager.h"
 #include"Effect.h"
+#include"Config.h"
+#include"Player3D.h"
 
 
+/// @brief StageColliderの初期化（コンストラクタ）
 StageCollider::StageCollider()
 	:Object3D(VGet(0,1000,0))
 	,Time(50)
 	,Count(0)
 {
 	
-	mpGoBossCollider = new SphereCollider(this, VGet(6000,100,6000), 100);
-	mpGoStageCollider= new SphereCollider(this, VGet(16500,0, 16500), 100);
+	go_boss_collider_ = new SphereCollider(this,VAdd( Config::GetStageCenter(),VGet(0,0,-2000)), 100);
+	
 	
 
-	mpTexture = new Texture("Resource/2D/BossLogo.png",VGet(400,400,0),true);
-	mpTexture2 = new Texture("Resource/2D/NormalLogo.png", VGet(400, 400, 0), true);
+	texture_ = new Texture("Resource/画像/エリア表示/01_ボスエリア表示画像.png",VGet(400,400,0),true);
+	texture2_ = new Texture("Resource/画像/エリア表示/02_通常エリア表示画像.png", VGet(400, 400, 0), true);
 
-	if(Master::TutorialFlag)mpGoBossCollider->mvPosition= VGet(0, 100, -6000);
 }
 
 StageCollider::~StageCollider()
 {
 
-	if (mpGoBossCollider != nullptr)
+	if (go_boss_collider_ != nullptr)
 	{
-		mpGoBossCollider->SetDeleteFlag(true);
+		go_boss_collider_->SetDeleteFlag(true);
 	}
-	if (mpGoStageCollider != nullptr)
-	{
-		mpGoStageCollider->SetDeleteFlag(true);
-	}
+	
 
 	SetDeleteFlag(true);
 }
 
+
+/// @brief StageColliderの描画処理
 void StageCollider::Draw()
 {
 	
 	
 }
 
+
+/// @brief StageColliderの状態更新処理
 void StageCollider::Update()
 {
-	Count++;
-	if (Count >Time)
-	{
-		new Effect(mpGoBossCollider->mvPosition, "Resource/Damage.png", GetColorU8(255, 0, 30, 0), 120.0f, 0.5f);
-		new Effect(mpGoStageCollider->mvPosition, "Resource/Damage.png", GetColorU8(255, 0, 30, 0), 120.0f, 0.5f);
-		Count = 0;
-	}
 
 }
 
+
+/// @brief StageColliderのOnEnter処理
 void StageCollider::OnEnter(Collider* collider, Collider* check)
 {
-	if (Count > 10)
-	{
-		
-		/*auto mpEne = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Enemy3D);
-		if (collider == mpSafeBossCollider || collider == mpSafeNormalCollider && check->mpParentObject->GetTag() == Tag3D_Enemy3D)
-		{
-			Enemy* enemy = dynamic_cast<Enemy*>(check->mpParentObject);
-			if (enemy == nullptr)return;
-			if (check == enemy->GetEnemycoll())
-			{
-				enemy->SetVPosition(VGet(rand() % 3000 +1500, 100, rand() % 3000 + 1500));
-			
-			}
+	
 
-		}*/
-		
-
-		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage�ɍs��
-		{
-
-			
-		}
-		if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstage�ɍs��
-		{
-			
-		}
-	}
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-	if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage�ɍs��
-	{
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-		if (player == nullptr)return;
-		if(check==player->Get500Collider())
-		{
-			DrawBox(400, 200, 600, 250, GetColor(0, 0, 0), true);
-			DrawFormatString(450, 220, GetColor(255, 255, 255), "BossStage��");
-			
-		}
-		
-
-	}
-	if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstage�ɍs��
-	{
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-		if (player == nullptr)return;
-		if (check == player->Get500Collider())
-		{
-			DrawBox(400, 200, 600, 250, GetColor(0, 0, 0), true);
-			DrawFormatString(450, 220, GetColor(255, 255, 255), "normalStage��");
-		}
-	}
 
 }
 
+
+/// @brief StageColliderのOnTrigger処理
 void StageCollider::OnTrigger(Collider* collider, Collider* check)
 {
-	if (Count > 10)
-	{
-		auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
+	
+	
 
-		if (collider == mpGoBossCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//normalstage�ɍs��
+		if (collider == go_boss_collider_ && check->parent_object_->GetTag() == Tag3D_Player3D)//normalstageに行く
 		{
-			Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+			
+			Player3D* player = Master::player_;
 			if (player == nullptr) return;
-			mpTexture2->Draw();
+			texture2_->Draw();
 			if (check == player->GetCollisionCollider())
 			{
-				player->SetPosition(VAdd(mpGoStageCollider->mvPosition, VGet(500.0f, 0, 0)));//�ꏊ���ړ�
-				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warp����炷
-				new Effect(VGet(17000, 0, 16000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
-				new Effect(VGet(16000, 0, 17000), "Resource/Damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
+				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//場所を移勁
+				Master::sound_manager_->PlaySE(SoundManager::SE_WARP);//warp音を鳴らす
+				/*new Effect(VGet(17000, 0, 16000), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
+				new Effect(VGet(16000, 0, 17000), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);*/
 			}
 		}
-		if (collider == mpGoStageCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)//bossstage�ɍs��
-		{
-			Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-			if (player == nullptr) return;
-			mpTexture->Draw();
-			if (check == player->GetCollisionCollider())
-			{
-				Master::mpSoundManager->PlaySE(SoundManager::SE_WARP);//warp����炷
-				player->SetPosition(VAdd(mpGoBossCollider->mvPosition, VGet(500.0f, 0, 0)));//�ꏊ���ړ�
-				
-			}
-		}
-	}
+	
+	
 	
 
 }
 
+
+/// @brief StageColliderのOnExit処理
 void StageCollider::OnExit(Collider* collider, Collider* check)
 {
 	
 }
 
+
+/// @brief StageColliderのColliderUpdate処理
 void StageCollider::ColliderUpdate()
 {
 	

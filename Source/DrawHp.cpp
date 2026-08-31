@@ -1,80 +1,65 @@
-
-#include"DrawHp.h"
+Ôªø#include"DrawHp.h"
 #include"Enemy3D.h"
+#include"Enemy.h"
 #include"Master.h"
 #include"Object3D.h"
 #include"ObjectManager.h"
 #include"Model.h"
-#include"Scene3D.h"
+#include"GameScene.h"
 #include"SceneManager.h"
 #include"Scene.h"
 #include"Player3D.h"
 
-
-
+/// @brief DrawHp„ÅÆÂàùÊúüÂåñÔºà„Ç≥„É≥„Çπ„Éà„É©„ÇØ„ÇøÔºâ
 DrawHp::DrawHp()
 {
-	
 }
-
-
 
 DrawHp::~DrawHp()
 {
-
 }
 
-
-//çXêV
+/// @brief DrawHp„ÅÆÁä∂ÊÖãÊõ¥Êñ∞Âá¶ÁêÜ
 void DrawHp::Update()
 {
-	//ñæì˙ÇÕÉoÅ[ÇçÏÇ¡ÇƒâEâ∫Ç∆âEè„ÇçÌÇÈÇÊÇ§Ç…ÉvÉçÉOÉâÉÄÇçÏÇÈ
-	//ìGÇÃå©ÇƒÇ¢ÇÈï˚äpÇ…çáÇÌÇπÅAÇöç¿ïWÇ‡Çòç¿ïWÇ‡çáÇÌÇπÇÈ
-	//mpmodel->update()Ç›ÇΩÇ¢Ç…ÇcÇíÇÅÇóÇgÇoÇ‡ÉGÉlÉ~Å[ÇÃÉAÉbÉvÉfÅ[ÉgèàóùÇ…ì¸ÇÍÇÈ
-	auto pObjList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	UpdateHpBars();
+}
+
+/// @brief DrawHp„ÅÆUpdateHpBarsÂá¶ÁêÜ
+void DrawHp::UpdateHpBars()
+{
+	const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	for (int i = 0; i < pObjList.size(); i++)
 	{
 		auto pObj = pObjList[i];
-		auto pEnemyList = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-		auto pEnemy = pEnemyList[i];
-
-		Enemy* pEne = dynamic_cast<Enemy*>(pEnemy);
-
-		if (pObj != nullptr)
+		Enemy* pEne = pObj->CastTo<Enemy>();
+		if (pEne != nullptr)
 		{
-			VECTOR DrawHpBar3D = VAdd(pEne->GetPosition(), VGet(0.0f, 250.0f, 0.0f));
-			VECTOR DrawHpBarWorld = ConvWorldPosToScreenPos(DrawHpBar3D);
-
-			int BarWidth = 60;
-			int BarHeight = 10;
-
-			float HpBar = pEne->GetHp() / pEne->GetMaxHp();
-
-			int HpBarX = DrawHpBarWorld.x - BarWidth / 2;
-			int HpBarY = DrawHpBarWorld.y - BarHeight / 2;
-
-			auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
-			Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
-			bool isHitSearch = HitCheck_Sphere_Capsule(
-				pEne->GetPosition(),//ÉXÉtÉBÉAÇÃíÜêSç¿ïW
-				3000,                        //Ç∑Ç”Ç°Ç†ÇÃîºåa
-				pPlayer->GetPosition(),     //ÉJÉvÉZÉãÇÃç¿ïWÇP(â∫ë§Åj
-				VAdd(pPlayer->GetPosition(), VGet(0.0f, 150.0f, 0.0f)),//ÉJÉvÉZÉãÇÃç¿ïWÇQ(è„ë§Åj
-				40.0f);
-			if (isHitSearch&&pEne->GetHp()>0)
-			{
-				DrawBox(HpBarX, HpBarY, HpBarX + BarWidth, HpBarY + BarHeight, GetColor(255, 255, 255), FALSE);
-				DrawBox(HpBarX, HpBarY, HpBarX + (int)(BarWidth * HpBar), HpBarY + BarHeight, GetColor(0, 255, 0), TRUE);
-			}
+			DrawSingleHpBar(pEne);
 		}
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-
-
 }
-//ï`âÊ
+
+/// @brief DrawHp„ÅÆDrawSingleHpBarÂá¶ÁêÜ
+void DrawHp::DrawSingleHpBar(Enemy* pEne)
+{
+	VECTOR DrawHpBar3D = VAdd(pEne->GetPosition(), VGet(0.0f, kHpBarOffsetY, 0.0f));
+	VECTOR DrawHpBarWorld = ConvWorldPosToScreenPos(DrawHpBar3D);
+
+	float HpBar = pEne->GetHp() / pEne->GetMaxHp();
+
+	int HpBarX = static_cast<int>(DrawHpBarWorld.x) - kHpBarWidth / 2;
+	int HpBarY = static_cast<int>(DrawHpBarWorld.y) - kHpBarHeight / 2;
+
+	bool is_hit_search_flag_ = pEne->IsHitSearchFlag();
+	if (is_hit_search_flag_ && pEne->GetHp() > 0)
+	{
+		DrawBox(HpBarX, HpBarY, HpBarX + kHpBarWidth, HpBarY + kHpBarHeight, GetColor(255, 255, 255), FALSE);
+		DrawBox(HpBarX, HpBarY, HpBarX + (int)(kHpBarWidth * HpBar), HpBarY + kHpBarHeight, GetColor(0, 255, 0), TRUE);
+	}
+}
+
+/// @brief DrawHp„ÅÆÊèèÁîªÂá¶ÁêÜ
 void DrawHp::Draw()
 {
-	
 }

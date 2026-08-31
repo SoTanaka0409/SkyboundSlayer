@@ -1,90 +1,145 @@
-#include "EffekseerManager.h"
+﻿#include "EffekseerManager.h"
 
+/// @details エフェクトマネージャーの初期生成
 EffekseerManager::EffekseerManager()
 {
 }
 
 EffekseerManager::~EffekseerManager()
 {
+	// メモリ管理：解放時に呼び出されることで、VRAM上のEffekseerコンテキスト全体のクリーンアップを保証する
 	End();
 }
 
+/// @details Effekseerシステムの起動、およびDxLibグラフィックデバイスロスト時の復帰フック関数の登録
 void EffekseerManager::Init()
 {
-	// 譛螟ｧ繝代・繝・ぅ繧ｯ繝ｫ謠冗判謨ｰ繧呈欠螳壹＠縺ｦ蛻晄悄蛹・	Effekseer_Init(8000);
+	// パフォーマンス理由：雷雨や爆発が重なるゲーム後半（クライシスモード）でも、描画個数上限によってエフェクトが途中で途切れないよう最大描画数を十分に確保
+	Effekseer_Init(8000);
 
-	// 繝・ヰ繧､繧ｹ繝ｭ繧ｹ繝医′逋ｺ逕溘＠縺滓凾縺ｫ蛯吶∴縺ｦ繧ｳ繝ｼ繝ｫ繝舌ャ繧ｯ繧堤匳骭ｲ
+	// バグ回避：フルスクリーン切り替え時やウィンドウ最小化等によってDirect3Dデバイスがロストした際、ロード済みパーティクルのVRAM復旧を自動で行わせる
+	SetUseASyncLoadFlag(FALSE);
 	Effekseer_SetGraphicsDeviceLostCallbackFunctions();
-
 }
 
+/// @details 再生中エフェクトの時間経過、アニメーションフレーム、および物理挙動の進行更新
 void EffekseerManager::Update()
 {
-	// 豈弱ヵ繝ｬ繝ｼ繝縺ｮ繧ｨ繝輔ぉ繧ｯ繝域峩譁ｰ蜃ｦ逅・	UpdateEffekseer3D();
+	// 外部仕様依存：DxLib標準の3D描画システムとEffekseerの頂点更新スレッドを同期させるため、毎フレーム描画直前に必ず呼び出す
+	UpdateEffekseer3D();
 }
 
+/// @details DxLibの現在の3Dカメラマトリクス（Cameraオブジェクト）に基づいた、各エフェクトポリゴンのバックバッファへの描画
 void EffekseerManager::Draw()
 {
-	// 豈弱ヵ繝ｬ繝ｼ繝縺ｮ繧ｨ繝輔ぉ繧ｯ繝域緒逕ｻ蜃ｦ逅・	DrawEffekseer3D();
+	// 描画順：3Dモデルのレンダリングがすべて完了した後に、深度バッファを保護しつつ半透明ブレンドでエフェクトを重ねる
+	DrawEffekseer3D();
 }
 
+/// @details 再生中の個別インスタンスの一括削除、登録エフェクトリソースのクリア、およびライブラリ終了処理
 void EffekseerManager::End()
 {
-	// 繝ｭ繝ｼ繝峨＠縺溘お繝輔ぉ繧ｯ繝医ｒ隗｣謾ｾ
-	for (auto& effect : mEffects)
+	// バグ回避：Finalizeの二重呼び出しや、デストラクタ経由での多重解放によるDxLib内部コンテキスト破綻（クラッシュバグ）を完全に防ぐセーフティ
+	static bool isEnded = false;
+	if (isEnded) return;
+	isEnded = true;
+
+	for (auto& effect : effects_)
 	{
 		DeleteEffekseerEffect(effect.second);
 	}
-	mEffects.clear();
+	effects_.clear();
 
-	// Effekseer縺ｮ邨ゆｺ・・逅・	Effekseer_End();
+	Effkseer_End();
 }
 
+/// @param name = 管理用識別キー, filepath = アセットパス, magnification = 初期表示スケーリング倍率
+/// @return ロードされたエフェクトハンドル（失敗時は -1）
+/// @details 一時的な非同期ロード解除、およびロード済み配列への登録
 int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, float magnification)
 {
-	if (mEffects.find(name) != mEffects.end())
+	if (effects_.find(name) != effects_.end())
 	{
-		return mEffects[name];
+		return effects_[name];
 	}
 
+	// 技術スタック制約：EffekseerのリソースロードAPIはDxLib側の非同期スレッド（ASync）に対応していないため、読み込み完了までメインスレッドを同期ブロックする
+	int oldFlag = GetUseASyncLoadFlag();
+	SetUseASyncLoadFlag(FALSE);
 	int handle = LoadEffekseerEffect(filepath, magnification);
+	SetUseASyncLoadFlag(oldFlag);
 	if (handle != -1)
 	{
-		mEffects[name] = handle;
+		effects_[name] = handle;
 	}
 	return handle;
 }
 
+/// @param name = 再生するアセット識別キー, pos = 発生させる3D空間座標（VECTOR）
+/// @return 再生中のエフェクトを一意に識別する管理用インスタンスハンドル（失敗時は -1）
+/// @details 3D空間上へのエフェクトインスタンスの発行、および初期位置のバインド
 int EffekseerManager::PlayEffect(const std::string& name, VECTOR pos)
 {
-	if (mEffects.find(name) == mEffects.end())
+	if (effects_.find(name) == effects_.end())
 	{
 		return -1;
 	}
 
-	int playingHandle = PlayEffekseer3DEffect(mEffects[name]);
+	int playingHandle = PlayEffekseer3DEffect(effects_[name]);
 	SetPosPlayingEffekseer3DEffect(playingHandle, pos.x, pos.y, pos.z);
-	
+
 	return playingHandle;
 }
 
+/// @param playingHandle = 停止させる再生中インスタンスハンドル
+/// @details 対象エフェクトの再生停止（寿命の強制終了処理）
 void EffekseerManager::StopEffect(int playingHandle)
 {
-	StopEffekseer3DEffect(playingHandle);
+	if (playingHandle != -1) {
+		StopEffekseer3DEffect(playingHandle);
+	}
 }
 
+/// @param playingHandle = 対象インスタンスハンドル, pos = 移動先の新3D空間座標
+/// @details 再生中のエフェクト位置の更新（追従アクターの移動に同期させる）
 void EffekseerManager::SetEffectPosition(int playingHandle, VECTOR pos)
 {
-	SetPosPlayingEffekseer3DEffect(playingHandle, pos.x, pos.y, pos.z);
+	if (playingHandle != -1) {
+		SetPosPlayingEffekseer3DEffect(playingHandle, pos.x, pos.y, pos.z);
+	}
 }
 
+/// @param playingHandle = 対象インスタンスハンドル, x, y, z = 各軸の回転角（ラジアン）
+/// @details 再生中のエフェクトの回転行列の更新（アブダクションビームの照射角度調整等に使用）
 void EffekseerManager::SetEffectRotation(int playingHandle, float x, float y, float z)
 {
-	SetRotationPlayingEffekseer3DEffect(playingHandle, x, y, z);
+	if (playingHandle != -1) {
+		SetRotationPlayingEffekseer3DEffect(playingHandle, x, y, z);
+	}
 }
 
+/// @param playingHandle = 対象インスタンスハンドル, x, y, z = 各軸の拡大縮小率
+/// @details 再生中エフェクトのスケール変更（クライシスモード移行時の竜巻エフェクトの巨大化等に使用）
 void EffekseerManager::SetEffectScale(int playingHandle, float x, float y, float z)
 {
-	SetScalePlayingEffekseer3DEffect(playingHandle, x, y, z);
+	if (playingHandle != -1) {
+		SetScalePlayingEffekseer3DEffect(playingHandle, x, y, z);
+	}
 }
 
+/// @param playingHandle = 判定対象の再生中インスタンスハンドル
+/// @return 再生中であれば true、すでに寿命消滅または停止していれば false
+bool EffekseerManager::IsPlaying(int playingHandle)
+{
+	if (playingHandle == -1) return false;
+	return IsEffekseer3DEffectPlaying(playingHandle) != 0;
+}
+
+/// @param playingHandle = 対象インスタンスハンドル, speed = 再生速度スケール（1.0fが等速）
+/// @details 対象エフェクトのアニメーション更新速度の変更（ヒットストップによる演出のスローモーション表現等に使用）
+void EffekseerManager::SetEffectSpeed(int playingHandle, float speed)
+{
+	if (playingHandle != -1) {
+		SetSpeedPlayingEffekseer3DEffect(playingHandle, speed);
+	}
+}

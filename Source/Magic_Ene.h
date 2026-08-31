@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"Magic.h"
 
 class Magic_Ene:public Magic
@@ -9,8 +9,6 @@ public:
 	~Magic_Ene();
 
 	void Update();
-
-	void Draw();
 
 	virtual void OnEnter(Collider* collider, Collider* check) override;
 	virtual void OnTrigger(Collider* collider, Collider* check) override;

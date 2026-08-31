@@ -1,9 +1,12 @@
-#include"InputManager.h"
+ï»¿#include"InputManager.h"
 #include"DxLib.h"
 
-int InputManager::mDownBuffer[256] = { 0 };
-int InputManager::mUpBuffer[256] = { 0 };
+int InputManager::down_buffer_[256] = { 0 };
+int InputManager::up_buffer_[256] = { 0 };
+int InputManager::mouse_down_buffer_ = 0;
 
+
+/// @brief InputManagerã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 InputManager::InputManager()
 {
 
@@ -16,23 +19,43 @@ InputManager::~InputManager()
 
 int InputManager::CheckDownKey(int KeyCode)
 {
-	// –ß‚è’l—p‚Ì•Ï”‚ğ—pˆÓ
+	// æˆ»ã‚Šå€¤ç”¨ã®å¤‰æ•°ã‚’ç”¨æ„
 	int result = 0;
 
-	// w’èƒL[‚ÌŒ»İ‚Ìó‘Ô‚ğæ“¾
+	// æŒ‡å®šã‚­ãƒ¼ã®ç¾åœ¨ã®çŠ¶æ…‹ã‚’å–å¾—
 	int keyState = CheckHitKey(KeyCode);
 	
-	//‘O‰ñƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¨‚ç‚¸AŒ»İƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç
-	if (mDownBuffer[KeyCode] == 0 && keyState == 1)
+	//å‰å›ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ãŠã‚‰ãšã€ç¾åœ¨ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰
+	if (down_buffer_[KeyCode] == 0 && keyState == 1)
 	{
 		result = 1;
 	}
 
-	//Œ»İ‚ÌƒL[‚Ìó‘Ô‚ğƒoƒbƒtƒ@‚ÉŠi”[
-	mDownBuffer[KeyCode] = keyState;
+	//ç¾åœ¨ã®ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’ãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´
+	down_buffer_[KeyCode] = keyState;
 	return result;
 }
 int InputManager::CheckPressKey(int KeyCode)
 {
 	return CheckHitKey(KeyCode);
+}
+int InputManager::CheckMouseClickLeft()
+{
+	int result = 0;
+	int mouseState = GetMouseInput() & MOUSE_INPUT_LEFT;
+	if (mouse_down_buffer_ == 0 && mouseState != 0)
+	{
+		result = 1;
+	}
+	mouse_down_buffer_ = mouseState;
+	return result;
+}
+
+
+/// @brief ãƒã‚¦ã‚¹ã®åº§æ¨™ã‚’å–å¾—ã™ã‚‹ãŸã‚
+/// @param int& x, int& y
+/// @details å¼•æ•°ã¸ã®ä»£å…¥
+void InputManager::GetMousePos(int& x, int& y)
+{
+	GetMousePoint(&x, &y);
 }

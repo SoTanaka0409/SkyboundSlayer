@@ -1,48 +1,47 @@
-#pragma once
-#include"Dxlib.h"
-#include"Scene.h"
-#include"InputManager.h"
-#include"Texture.h"
+﻿#pragma once
+#include "Dxlib.h"
+#include "Scene.h"
+#include "InputManager.h"
 
-class Rule :public Scene
+// ゲームの遊び方や操作説明を表示するチュートリアル（ルール）シーン。複数ページの表示と入力遷移を管理する
+class Rule : public Scene
 {
 public:
-	Rule();
+/// @details シーン遷移時の基底セットアップを行う
+    Rule();
 
-	~Rule();
+/// @details 派生クラスで確保したリソースを安全に解放するため、仮想デストラクタとして定義する
+    ~Rule();
 
-	void Initialize();
+/// @details ルール説明用の画像ハンドルのVRAMロードや、現在のページ番号の初期化を行う
+    void Initialize();
 
-	void Draw();
+/// @details 現在のページ番号(page_)に応じて、背景・対応する説明コンテンツ・ナビゲーションUIを描画する
+    void Draw();
 
-	void Update();
+/// @details プレイヤーの入力状態を毎フレーム監視し、ページ送りや前のシーン（タイトル等）への遷移を処理する
+    void Update();
 
-	void Finalize();
+/// @details シーン離脱時に画像ハンドル等の動的リソースを破棄し、VRAMのメモリリークを防ぐ
+    void Finalize();
 
 private:
-	Texture* mpTexture;
-	Scene* mpScene;
-	Texture* mpTexture2;
-	Texture* mpTexture3;
-	int mnC;//�N���A���@���I�΂ꂽ�C�����ǂ���
-	int mnS;//������@���I�΂�Ă��邩�ǂ���
-	int mnE;//�G���h���I�΂�Ă��邩�ǂ���
+/// @details 左右キーやボタン入力によるページ遷移(page_の増減)と、境界値（範囲外アクセス防止）のクランプ処理を行う
+    void HandlePageInput();
 
-	bool C;//�N���A���@���I�΂ꂽ�C�����ǂ���
-	bool S;//������@���I�΂�Ă��邩�ǂ���
-	bool E;//�G���h���I�΂�Ă��邩�ǂ���
+/// @details 全ページで共通となる背景を描画し、ページ切り替え時の視覚的な途切れやチラつきを防ぐ
+    void DrawRuleBackground();
 
-	bool C_Enter;//�N���A���@���I�΂ꂽ�C�����ǂ���(enter)
-	bool S_Enter;//������@���I�΂�Ă��邩�ǂ���(enter)
-	bool E_Enter;//�G���h���I�΂�Ă��邩�ǂ���(enter)
+/// @details 1ページ目（基本操作など）の専用画像やテキストをバッファへ登録する
+    void DrawRulePage1();
 
-	int mnPause;//�|�[�Y��ʂ��ǂ���
-	int size = GetFontSize();
+/// @details 2ページ目（応用システムなど）の専用画像やテキストをバッファへ登録する
+    void DrawRulePage2();
 
-	std::string filename1;
-	int mnHandle1;
+/// @details 画面下部に「次へ」「戻る」などの操作ガイドを描画し、ユーザーに現在可能なアクションを明示する
+    void DrawRuleFooter();
 
-	int Color1;//�F�̕ύX
-	int Colorflag;
-
+    int page_;         // 現在表示している操作説明のページインデックス（入力に応じて変動する）
+    int bg_handle1_;   // 1ページ目のコンテンツを表示するための画像ハンドル
+    int bg_handle2_;   // 2ページ目のコンテンツを表示するための画像ハンドル
 };

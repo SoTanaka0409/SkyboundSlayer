@@ -1,262 +1,233 @@
-#include"Enemy.h"
-#include"Model.h"
-#include"Master.h"
-#include"Player3D.h"
-#include"Object3D.h"
-#include"ObjectManager.h"
-//
-#include"Scene3D.h"
-#include"SceneManager.h"
-#include"Stage.h"
-#include"DrawHp.h"
-#include"Coin.h"
+﻿#include "Enemy.h"
+#include "Model.h"
+#include "Master.h"
+#include "Player3D.h"
+#include "Object3D.h"
+#include "ObjectManager.h"
+#include "GameScene.h"
+#include "SceneManager.h"
+#include "Stage.h"
+#include "DrawHp.h"
+#include "Coin.h"
+#include "Wall.h"
+#include "Scene.h"
+#include "Tree.h"
+#include "ColliderManager.h"
+#include "SphereCollider.h"
+#include "CapsuleCollider.h"
 
-
-#include"Wall.h"
-#include"Scene.h"
-#include"Tree.h"
-#include"ColliderManager.h"
-#include"SphereCollider.h"
-#include"CapsuleCollider.h"
-
-
-Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, float xp,int money, bool isSeparateAnim)
-	:Object3D(initPos)
-	, mfHp(hp)
-	, mfSpeed(speed)
-	, mbInvisible(false)
-	, mfAngle(0.0f)
-	, mfTargetAngle(0.0f)
-	, mfSize(HitSize)
-	, HitSerch(Serch1)
-	, HitAttackSerch(Serch2)
-	, HitStopSerch(Serch3)
-	, mfHaveXp(xp)
-	, AlgHit(20)
-	, mfAttack(attack)
-	, NoPosition(VGet(0, 0, 0))
-	, AttackHitJudgmentflag(false)
-	, isHitAttackSearch(false)
-	, isHitSerchStop(false)
-	, isHitAttack(false)
-	, isHitSearch(false)
-	, HitJudgmentflag_Player(false)
-	, WalkCount(0)
-	, WalkTimer(0)
-	, isDead(false)
-	, mfMaxHp(hp)
-	,mfHaveMoney(money)
-	//,Animation(false)
+/// @brief Enemyクラスのコンストラクタ
+/// @param filename 使用する3Dモデルのファイルパス
+/// @param initPos 初期配置座標
+/// @param hp 初期・最大体力値
+/// @param speed 移動速度
+/// @param attack 攻撃力
+/// @param HitSize カプセルコライダーの判定サイズ
+/// @param Serch1 索敵（追従）用範囲半径
+/// @param Serch2 攻撃開始用範囲半径
+/// @param Serch3 接近停止用範囲半径
+/// @param money 倒した際に獲得できる資金
+/// @param is_separate_anim_ アニメーションを分離読み込みするかどうかのフラグ
+Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
+	: Object3D(initPos)
+	, hp_(hp)
+	, speed_(speed)
+	, is_invisible_(false)
+	, angle_(0.0f)
+	, target_angle_(0.0f)
+	, size_(HitSize)
+	, hit_search_(Serch1)
+	, hit_attack_search_(Serch2)
+	, hit_stop_search_(Serch3)
+	, alg_hit_(20)
+	, attack_(attack)
+	, no_position_(VGet(0, 0, 0))
+	, is_attack_hit_judgment_flag_(false)
+	, is_hit_attack_search_flag_(false)
+	, is_hit_search_stop_flag_(false)
+	, is_hit_attack_flag_(false)
+	, is_hit_search_flag_(false)
+	, is_hit_judgment_flag_player_(false)
+	, walk_count_(0)
+	, walk_timer_(0)
+	, is_dead_(false)
+	, max_hp_(hp)
+	, have_money_(money)
 {
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//驛｢譎｢・�E�・�E�驛｢譏ｴ繝ｻ・取刮・�E�・�E�繝ｻ・�E�鬨�E�蠁E���E��E�阮吶・
-	mpModel = new Model(filename, initPos, isSeparateAnim);
-	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
-	VinitPos = initPos;
-	mfMaxHp = mfHp;
-	mfNormalSpeed = mfSpeed;
+	model_ = new Model(filename, initPos, is_separate_anim_);
+	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
+	init_position_ = initPos;
+	max_hp_ = hp_;
+	normal_speed_ = speed_;
 
-	mpCapsuleCollider = new CapsuleCollider(this, mvPosition, VAdd(mvPosition, VGet(0.0f, mfSize/2, 0.0f)), mfSize);
-	mpAttachCollider = new SphereCollider(this, mpModel->GetAttachmentPosition(), 50.0f);
-	mpSerchCollider = new SphereCollider(this, mvPosition, HitSerch);//髫�E�・�E�繝ｻ・�E�驛｢・�E�陷�E�閧�E�邊滁E��墓得�E�E�・�E�驍ｵ・�E�陷�E�・�E�繝ｻ邁E��咏ｹ晢�E��E�
-	mpAttackCollider = new SphereCollider(this, mvPosition, HitAttackSerch);//髫�E�・�E�繝ｻ・�E�驛｢・�E�陷�E�莠�E�諢幁E��・�E�郢晢�E��E�繝ｻ・�E�髯晏�E�・�E�譎｢・�E�竏ｫ・�E�・�E�陷�E�・�E�郢晢�E��E�
-	mpStopCollider = new SphereCollider(this, mvPosition, HitStopSerch);//髫�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�鬮�E�閧�E�霎ｨ陞ｻ・�E�驛｢・�E�陷代・・�E�・�E�隴擾�E��E�隨・�E��E�髯�E��E�郢晢�E��E�
-	//new DrawHp("",  //鬨�E�蛹・�E��E�・�E�髯�E�蜑�E�E��E�讓｣蛟ｹ
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//髣匁E���E�繝ｻ・�E�髯滂ｽ�E�郢晢�E��E�繝ｻ・�E�繝ｻ・�E�髫�E�阮吶・
-	  // 驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驛｢譎会ｽ�E�譎｢・�E�・�E�鬨�E�蠁E���E��E�阮吶・
-	
-	
+	capsule_collider_ = new CapsuleCollider(this, position_, VAdd(position_, VGet(0.0f, size_ / 2, 0.0f)), size_);
+	attach_collider_ = new SphereCollider(this, model_->GetAttachmentPosition(), 50.0f);
+	serch_collider_ = new SphereCollider(this, position_, hit_search_);
+	attack_collider_ = new SphereCollider(this, position_, hit_attack_search_);
+	stop_collider_ = new SphereCollider(this, position_, hit_stop_search_);
 }
 
+/// @brief Enemyクラスのデストラクタ
 Enemy::~Enemy()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		delete mpModel;
+		delete model_;
+		model_ = nullptr;
 	}
-	
 }
 
+/// @brief 毎フレームの状態更新処理を行う
+/// @details 死亡判定、攻撃動作、各コライダー座標同期、移動および回転制御を実行する
 void Enemy::Update()
 {
-	
-		
-	
-	
-		if (mpModel != nullptr)
-		{
-			DeathEnemy();//髫�E�・�E�繝ｻ・�E�驛｢・�E�髮区�E��E�繝ｻ繝ｻ・�E�驍ｵ・�E�雋�E�E�繝ｻ驍ｵ・�E�鬮�E�・�E�遶企豪・�E�・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驍ｵ・�E�陷�E�・�E�繝ｻ迢暦�E��E�・�E�雋�E∞�E�E�竏ｫ・�E�・�E�繝ｻ・�E�驛｢・�E�繝ｻ・�E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎�E樟繝ｻ螳夲�E��E�繧・�E��E�蜻�E�・�E�閾�E�・�E�・�E�郢晢�E��E�
-			Attack();
-			CollPositionUpdate();
-			RotationByMove();
-			Move();
-			/////髯滓汚�E�E�・�E�m驛｢・�E�陷�E�逎ｯ笁E��驍ｵ・�E�繝ｻ・�E�髯�E�繝ｻ・�E�・�E�鬨�E�繝ｻ繝ｻ
-		
-			mpModel->Update();
-			//mpDH->Update();//drawHp驍ｵ・�E�繝ｻ・�E�驛｢・�E�繝ｻ・�E�驛｢譏ｴ繝ｻ郢晢�E��E�驛｢譏ｴ繝ｻ郢晢�E��E�驛｢譎�E樟繝ｻ螳壽Τ繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�
-			
-		}
+	if (model_ != nullptr)
+	{
+		DeathEnemy();
+		Attack();
+		UpdateColliderPosition();
+		RotationByMove();
+		Move();
 
-	
+		model_->Update();
+	}
 }
 
+/// @brief Enemyの描画処理を行う
+/// @details モデルの描画およびデバッグフラグ有効時のワイヤーフレーム描画を行う
 void Enemy::Draw()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		mpModel->Draw();
+		model_->Draw();
 	}
-	if (Master::mpDebug->Getdebug() == true && Master::mpEnemySerch->getSerch() == false)
-	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
-			mfSize,
-			8,
-			GetColor(255, 255, 255),
-			GetColor(255, 255, 255),
-			false
-		);
-	}
-	if (Master::mpEnemySerch->getSerch() == true)
-	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
-			mfSize * 5,
-			8,
-			GetColor(255, 0, 0),
-			GetColor(255, 0, 0),
-			false
-		);
-	}
-	
 
+	if (Master::debug_->Getdebug() == true)
+	{
+		DrawCapsule3D(
+			position_,
+			VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
+			size_,
+			8,
+			GetColor(255, 255, 255),
+			GetColor(255, 255, 255),
+			false
+		);
+	}
 }
 
+/// @brief 攻撃モーションパターン管理用拡張メソッド
 void Enemy::AttackList()
 {
-	
-
 }
 
+/// @brief 攻撃アニメーションの開始判定およびタイマー制御を行う
 void Enemy::Attack()
 {
-	AnimationState now = mpModel->GetNowState();
-	
-	if (AttackCount >= AttackInterval&& isHitAttackSearch)
+	AnimationState now = model_->GetNowState();
+
+	if (attack_count_ >= attack_interval_ && is_hit_attack_search_flag_)
 	{
-		Master::mpSoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
-		AttackCount = 0;
-		//髫�E�・�E�繝ｻ・�E�髫�E�・�E�郢晢�E��E�・守坩・�E�譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驍ｵ・�E�繝ｻ・�E�髯樊ｺ�E�蛻�E�陝ｲ・�E�
-		mpModel->ChangeAnimation(ANIMATION_ATTACK);
-		//驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驛｢譎丞ｹ�E�郢晢�E��E�驍ｵ・�E�髴域喚髮�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�
-		mpModel->SetLoop(false);
-		//驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�髯溷供�E�E�蠕後�E髯溯�E�斐�E繝ｻ・�E�雋�E�E��E�逧�E�・�E�譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驍ｵ・�E�繝ｻ・�E�髫�E�魁E��ｽ�E�・�E�驍ｵ・�E�郢晢�E��E�
-		mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
-		isHitAttackSearch = false;
+		Master::sound_manager_->PlaySE(SoundManager::SE_ATTACKSLIDE);
+		attack_count_ = 0;
+		model_->ChangeAnimation(ANIMATION_ATTACK);
+		model_->SetLoop(false);
+		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+		is_hit_attack_search_flag_ = false;
 	}
+
 	if (!(now == ANIMATION_ATTACK))
 	{
-		AttackHitJudgmentflag = false;
-		AttackCount++;
+		is_attack_hit_judgment_flag_ = false;
+		attack_count_++;
 	}
-
-
-
 }
 
-
-
-
+/// @brief プレイヤー追従移動および壁・地形との衝突スライド計算を行う
 void Enemy::Move()
 {
-	AnimationState now = mpModel->GetNowState();
-	if (now == ANIMATION_ATTACK||now==ANIMATION_ATTACKMAGIC||now==ANIMATION_ATTACKJUMP)return;
-	if (Master::SafePointOn)mvPosition = VinitPos;//驛｢・�E�郢�E�繝ｻ・�E�・�E�驛｢譎丞ｹ�E�・取ｨ抵�E��E�・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驍ｵ・�E�隰疲�E�ゑｽ�E�・�E�霑壼生繝ｻ髯懶�E��E�繝ｻ・�E�髯晢�E��E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�繝ｻ迢暦�E��E�・�E�繝ｻ・�E�驛｢・�E�霑壼生繝ｻ髫�E�蟶�E�・�E�蛟･繝ｻ驛｢・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髫�E�魁E��ｽ�E�・�E�驛｢・�E�郢晢�E��E�
-	
+	AnimationState now = model_->GetNowState();
+	if (now == ANIMATION_ATTACK || now == ANIMATION_ATTACKMAGIC || now == ANIMATION_ATTACKJUMP) return;
+	if (Master::is_safe_point_on_) position_ = init_position_;
 
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
-	Player3D* pPlayer = dynamic_cast<Player3D*>(mpPlayer);
+	Player3D* pPlayer = Master::player_;
+	move_vec_ = VGet(0.0f, 0.0f, 0.0f);
 
-	moveVec = VGet(0.0f, 0.0f, 0.0f);
 	{
-	}
-	{
-		if (isHitSerchStop) { mfSpeed = 0; } else { mfSpeed = mfNormalSpeed; }
-		
-		GoPosition = VSub(pPlayer->GetPosition(), mvPosition);
-		GoPosition.y = 0.0f; // Fix Y axis movement
-		if (VSquareSize(GoPosition) > 0.0001f) GoPosition = VNorm(GoPosition);
-		moveVec = GoPosition;
+		if (is_hit_search_stop_flag_)
+		{
+			speed_ = 0;
+		}
+		else
+		{
+			speed_ = normal_speed_;
+		}
 
-		bool isMove = (moveVec.x != 0.0f || moveVec.z != 0.0f);
-		if (isMove) { mpModel->ChangeAnimation(ANIMATION_RUN); mfTargetAngle = atan2f(moveVec.x, moveVec.z); }
-		else { mpModel->ChangeAnimation(ANIMATION_NEUTRAL); }
+		go_position_ = VSub(pPlayer->GetPosition(), position_);
+		go_position_.y = 0.0f;
+		if (VSquareSize(go_position_) > 0.0001f) go_position_ = VNorm(go_position_);
+		move_vec_ = go_position_;
 
-		VECTOR oldPosition = mvPosition;
-		mvPosition = VAdd(mvPosition, VScale(moveVec, mfSpeed));
-		//////////////////////////////////////////////////////
+		bool isMove = (move_vec_.x != 0.0f || move_vec_.z != 0.0f);
+		if (isMove)
+		{
+			model_->ChangeAnimation(ANIMATION_RUN);
+			target_angle_ = atan2f(move_vec_.x, move_vec_.z);
+		}
+		else
+		{
+			model_->ChangeAnimation(ANIMATION_NEUTRAL);
+		}
 
-		VECTOR hitPos = VGet(0.0f, 0.0f, 0.0f);
-		//驛｢・�E�繝ｻ・�E�驛｢譏ｴ繝ｻ郢晢�E��E�驛｢・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髯溷・萓ｭ隨�E�繝ｻ・�E�・�E�鬮�E�竏ｵ繝ｻ髯橸�E��E�陞｢・�E�繝ｻ蝣�E�・�E�・�E�陷�E�・�E�繝ｻ繝ｻ
-		hitPos = VGet(0.0f, 0.0f, 0.0f);
-		bool isHit = false;
-		// �n�`�i�X�e�[�W�j�ɉ�������
+		VECTOR old_position_ = position_;
+		position_ = VAdd(position_, VScale(move_vec_, speed_));
+
 		TerrainFollow(0.0f, 150.0f, 40.0f, 150.0f, -40.0f, 4.0f);
-		auto walls = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
+		const auto& walls = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
+
 		if (!walls.empty())
 		{
-			// 髯溷・萓ｭ隨�E�繝ｻ・�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�繝ｻ邁E���E��E�遶丞､�E�・�E�蟶晏擅繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驛｢・�E�郢晢�E��E�
-			// hint: 髴托ｽ�E�繝ｻ・�E�髴托ｽ�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髯�E�繝ｻ・�E�・�E�鬨�E�繝ｻ繝ｻ邵�E�蝣�E�・�E�・�E�繝ｻ・�E�1髫�E�・�E�陞｢・�E�郢晢�E��E�髯橸�E��E�遶丞､�E�・�E�・�E�驍ｵ・�E�陋ｹ・�E�隲�E�蜥弱♀郢�E�迚咎�E��E�驍ｵ・�E�繝ｻ・�E�髯具�E��E�繝ｻ・�E�髯橸�E��E�陞｢・�E�繝ｻ繝ｻ・�E�・�E�陟募�E��E�繝ｻ驍ｵ・�E�郢晢�E��E�郢晢�E��E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�髫�E�・�E�陞滂ｽ�E�繝ｻ・�E�闔蛹・�E��E�・�E�繝ｻ・�E�髣匁E���E�陞ゅ・・�E�・�E�陝ｲ・�E�遶頑･�E�・�E�蜀�E�萓ｭ隨�E�繝ｻ・�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�隨�E�繝ｻ謦�E�繝ｻ・�E�髯�E�・�E�陋ｹ・�E�郢晢�E��E�髯�E�繝ｻ・�E�・�E�鬨�E�繝ｻ繝ｻ繝ｻ蟶晁箔郢晢�E��E�遶擾�E��E�驛｢・�E�郢晢�E��E�
-			for (int i = 0; i < walls.size(); i++)
+			// Wall（壁）との当たり判定と壁ずり処理
+			for (size_t i = 0; i < walls.size(); i++)
 			{
-				Wall* wall = dynamic_cast<Wall*>(walls.at(i));
+				Wall* wall = walls.at(i)->CastTo<Wall>();
 				if (wall != nullptr)
 				{
 					std::vector<VERTEX3D> vertex = wall->GetVertex();
 
-					// 驛｢譎丞ｹ�E�・取ｨ抵�E��E�・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驛｢・�E�髮区�E�奁E���E�竏ｫ・�E�・�E�驛｢・�E�陋ｹ・�E�遶匁E���E�驍ｵ・�E�繝ｻ・�E�驛｢・�E�繝ｻ・�E�驛｢譎丞ｹ�E�邵�E�譎会ｽ�E�譎｢・�E�・�E�髯懷姓�E�E�譏ｴ繝ｻ髯具�E��E�繝ｻ・�E�髯橸�E��E�陞｢・�E�遶雁E���E�・�E�・�E�遶乗劼・�E�・�E�遶丞｣�E�繝ｻ髣匁E���E�髣・�E��E�繝ｻ・�E�髮区�E��E�・�E�・�E�繝ｻ・�E�驛｢譎�E�E��E�・取㏍・�E�・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髯溷・萓ｭ隨�E�繝ｻ・�E�・�E�鬮�E�竏ｵ繝ｻ髯橸�E��E�陞｢・�E�繝ｻ蟶晏距陟募ｨ�E�魘ｬ
 					if (HitCheck_Capsule_Triangle(
-						mvPosition,
-						VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
+						position_,
+						VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
 						80.0f,
 						vertex.at(0).pos, vertex.at(1).pos, vertex.at(2).pos) ||
 						HitCheck_Capsule_Triangle(
-							mvPosition,
-							VAdd(mvPosition, VGet(0.0f, 200.0f, 0.0f)),
+							position_,
+							VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
 							80.0f,
 							vertex.at(3).pos, vertex.at(1).pos, vertex.at(2).pos)
 						)
 					{
+						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);
+						float a = VDot(VScale(move_vec_, -1.0f), vertex.at(0).norm);
+						slide = VAdd(move_vec_, VScale(vertex.at(0).norm, a));
 
-
-
-						// 髯橸�E��E�遶丞｣�E�繝ｻ髮取�E・�E�・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�鬮�E�・�E�陟暮�E�会ｽ�E�・�E�驛｢・�E�陋ｹ・�E�遶匁E���E�驍ｵ・�E�繝ｻ・�E�驛｢譎�E函邵�E�驢搾�E��E�譎�E樟�E取刮・�E�・�E�髮区�E��E�蠕宣辧霈斐・
-						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);  // 髯橸�E��E�遶擾�E��E�繝ｻ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�郢晢�E��E�驛｢・�E�繝ｻ・�E�驛｢譎�E樟�E弱・
-						float a = VDot(VScale(moveVec, -1.0f), vertex.at(0).norm);  // 鬩募�E・�E�・�E�髯�E�讎奁E���E�轣偁E���E�・�E�髯�E�・�E�闔会ｽ�E�郢晢�E��E�驛｢・�E�繝ｻ・�E�驛｢譎�E樟�E取刮・�E�・�E�繝ｻ・�E�髯�E�・�E�隶主�E�・�E��E�・�E�繝ｻ・�E�驛｢譎�E函邵�E�驢搾�E��E�譎�E樟�E取刮・�E�・�E�繝ｻ・�E�驍ｵ・�E�遶乗劼・�E�・�E�遶丞｣�E�繝ｻ髮主�E�薙�E繝ｻ・�E�陞｢・�E�遶雁E���E�・�E�・�E�繝ｻ・�E�髯�E��E�郢晢�E��E�繝ｻ・�E�鬮�E�・�E�繝ｻ螳夲�E��E�蠑ｱ・・・竏ｫ・�E�・�E�郢晢�E��E�
-						slide = VAdd(moveVec, VScale(vertex.at(0).norm, a));    // 髯橸�E��E�遶擾�E��E�繝ｻ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�郢晢�E��E�驛｢・�E�繝ｻ・�E�驛｢譎�E樟�E取刮・�E�・�E�陞ｳ螟ｲ・�E�・�E�髢�E�・�E�繝ｻ・�E�郢晢�E��E�
-
-						// 髣匁E���E�髫�E�魁E��ｽ�E�・�E�髯溯�E��E�・�E�・�E�髫�E�轣倡函繝ｻ螳夲�E��E�魁E��ｽ�E�・�E�驍ｵ・�E�陷会ｽ�E�遯�E�・�E�驍ｵ・�E�闕ｵ譎｢・�E�闁E��讀�E�遶丞｣�E�繝ｻ髮取�E・�E�・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髮弱・・�E�・�E�驍ｵ・�E�闕ｳ螂�E�E��E�閧�E�・�E�・�E�郢晢�E��E�遶企豪・�E�・�E�陷�E�・�E�繝ｻ繝ｻ
-						mvPosition = oldPosition;
-						mvPosition = VAdd(mvPosition, VScale(slide, mfSpeed));
+						position_ = old_position_;
+						position_ = VAdd(position_, VScale(slide, speed_));
 					}
 				}
 			}
 		}
 
-
-
-
-		mpModel->SetPosition(mvPosition);
-
-
+		model_->SetPosition(position_);
 	}
 }
 
+/// @brief 移動方向に応じた段階的回転補間処理を行う
 void Enemy::RotationByMove()
 {
-	//髴托ｽ�E�繝ｻ・�E�髯懶�E��E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髯懁E��・�E�繝ｻ・�E�・�E�繝ｻ・�E�髯区�E�ゑｽ�E�・�E�驍ｵ・�E�闕ｵ譎｢・�E�陋ｾ�E�・�E�繝ｻ・�E�髫�E�轣倡函郢晢�E��E�髯懁E��・�E�繝ｻ・�E�・�E�繝ｻ・�E�髯区�E�ゑｽ�E�・�E�驍ｵ・�E�繝ｻ・�E�髯晢�E��E�繝ｻ・�E�髯具�E��E�郢晢�E��E�繝ｻ螳夲�E��E�蠑ｱ・・・竏ｫ・�E�・�E�郢晢�E��E�
-	float subAngle = mfTargetAngle - mfAngle;
+	float subAngle = target_angle_ - angle_;
 
-	//驍ｵ・�E�郢�E�繝ｻ・�E�邁E���E��E�繝ｻ・�E�・�E�髯�E�・�E�闔会ｽ�E�・ゑｽ�E�驛｢・�E�陝ｲ・�E�遶匁E���E�驛｢・�E�陋ｹ・�E�陝・�E�髯�E�・�E�闔会ｽ�E�郢晢�E��E�髯晢�E��E�繝ｻ・�E�驍ｵ・�E�鬲・�E�夲�E��E�・�E�隰・∞�E�E�・�E�陋帙�E・�E�・�E�闔牙遜�E�E�・�E�繝ｻ・�E�髣比ｼ夲�E��E�・�E�髣匁E���E�陞ゅ・・�E�・�E�闔蛹・�E��E�・�E�繝ｻ・�E�髣匁E���E�陷茨�E��E�繝ｻ・�E�陝ｲ・�E�遶企豪・�E�・�E�繝ｻ・�E�驛｢・�E�闕ｵ譎｢・�E�繝ｻ・�E�・�E�繝ｻ・�E�驍ｵ・�E�陟募�E��E�繝ｻ驍ｵ・�E�郢晢�E��E�郢晢�E��E�驍ｵ・�E�陞｢・�E�遶企�E・�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�
-	//髯晢�E��E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髯区�E�ゑｽ�E�・�E�驍ｵ・�E�鬲・�E�夲�E��E�・�E�隰・∞�E�E�・�E�陋帙�E・�E�・�E�髯應ｼ夲�E��E�・�E�繝ｻ・�E�髣匁E���E�陞ゅ・・�E�・�E�闔蛹・�E��E�・�E�繝ｻ・�E�髣匁E���E�陷茨�E��E�繝ｻ・�E�陝ｲ・�E�遶企豪・�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�隨�E�繝ｻ・�E�・�E�髢�E�・�E�雎ｬ・�E�髮弱・・�E�・�E�驍ｵ・�E�陷�E�・�E�繝ｻ繝ｻ
 	if (subAngle < -DX_PI_F)
 	{
 		subAngle += DX_TWO_PI_F;
@@ -266,7 +237,6 @@ void Enemy::RotationByMove()
 		subAngle -= DX_TWO_PI_F;
 	}
 
-	//鬮�E�闍難�E��E�讖ｸ・�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�髯晢�E��E�繝ｻ・�E�髯具�E��E�郢晢�E��E�繝ｻ螳夲�E��E�謌翫・郢晢�E��E�遶願侭繝ｻ髣雁E���E�繝ｻ鬮�E�蜿�E�・�E�・�E�隨・�E��E�驍ｵ・�E�闔会ｽ�E�繝ｻ繝ｻ
 	if (subAngle > 0.0f)
 	{
 		subAngle -= ROTATE_SPEED;
@@ -283,236 +253,219 @@ void Enemy::RotationByMove()
 			subAngle = 0.0f;
 		}
 	}
-	//髣碑崟螳�E�鬯�E�繝ｻ・�E�・�E�郢晢�E��E�遯�E�・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�陷会ｽ�E�繝ｻ讓｣蝗馴寞讖ｸ・�E�・�E�繝ｻ・�E�驛｢・�E�陜｣・�E�髢�E�繝ｻ諤弱・・�E�
-	mfAngle = mfTargetAngle - subAngle;
+	angle_ = target_angle_ - subAngle;
 
-	//髯懁E��・�E�繝ｻ・�E�・�E�繝ｻ・�E�髯区�E�ゑｽ�E�・�E�驛｢・�E�陞ｳ螟ｲ・�E�・�E�繝ｻ・�E�髯橸�E��E�郢晢�E��E�
-	mvRotation.y = mfAngle + DX_PI_F;
-	//驛｢譎｢・�E�・�E�驛｢譏ｴ繝ｻ・取刮・�E�・�E�繝ｻ・�E�髣費�E��E�隴擾�E��E�遶擾�E��E�驛｢・�E�郢晢�E��E�
-	mpModel->SetRotation(mvRotation);
-
-
+	rotation_.y = angle_ + DX_PI_F;
+	model_->SetRotation(rotation_);
 }
 
+/// @brief ダメージ適用処理
+/// @param damage 減少させるHP量
 void Enemy::Damage(float damage)
 {
-
-	mfHp -= damage;
-	if(mfHp <= 0)
+	hp_ -= damage;
+	if (hp_ <= 0)
 	{
-		mfHp = 0;
-		isDead = true;
+		if (!is_dead_ && Master::score_manager_ != nullptr)
+		{
+			Master::score_manager_->AddDefeatedEnemy();
+		}
+		hp_ = 0;
+		is_dead_ = true;
 	}
 }
 
-
-
+/// @brief 死亡時の演出再生およびオブジェクト削除予約を行う
 void Enemy::DeathEnemy()
 {
-	if (!isDead)return;
-	
-	mpModel->ChangeAnimation(ANIMATION_DYING);
-	//驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驛｢譎丞ｹ�E�郢晢�E��E�驍ｵ・�E�髴域喚髮�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�
-	mpModel->SetLoop(false);
-	//驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�髯溷供�E�E�蠕後�E髯溯�E�斐�E繝ｻ・�E�雋�E�E��E�逧�E�・�E�譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譎｢・�E�・�E�驍ｵ・�E�繝ｻ・�E�髫�E�魁E��ｽ�E�・�E�驍ｵ・�E�郢晢�E��E�
-	//驛｢譏ｴ繝ｻ郢晢�E��E�驛｢譏ｴ繝ｻ郢晢�E��E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譏ｴ繝ｻ郢晢�E��E�髯溯�E�斐�E郢晢�E��E�髯溯�E�斐�E繝ｻ・�E�雋�E�E��E�逧�E�・�E�譏ｴ繝ｻ郢晢�E��E�驛｢・�E�繝ｻ・�E�驛｢譎｢・�E�・�E�驛｢譏ｴ繝ｻ郢晢�E��E�驍ｵ・�E�繝ｻ・�E�髫�E�魁E��ｽ�E�・�E�驍ｵ・�E�郢晢�E��E�
-	mpModel->SetLoopFinishState(ANIMATION_MAX);
-	
+	if (!is_dead_) return;
+
+	model_->ChangeAnimation(ANIMATION_DYING);
+	model_->SetLoop(false);
+	model_->SetLoopFinishState(ANIMATION_MAX);
+
 	Delete();
-	if (mpModel->IsAnimationLoopFinish())
+	if (model_->IsAnimationLoopFinish())
 	{
 		GiveRewards();
-		if (Master::TutorialFlag) { Master::TutorialCount++; }
-		
-		
 		SetDeleteFlag(true);
 	}
-	
-	mpModel->Draw();
-	mpModel->Update();
-	
-	
+
+	model_->Update();
 }
 
+/// @brief 死亡時に各種コライダーを画面外遥か遠くへ移動させて無効化する
 void Enemy::DeathColliderPosition()
 {
 	VECTOR pos = VGet(10000, 10000, 10000);
-	if (mpCapsuleCollider != nullptr)
+	if (capsule_collider_ != nullptr)
 	{
-		mpCapsuleCollider->mvPosition = pos;
-		mpCapsuleCollider->mvPosition2 = pos;
+		capsule_collider_->position_ = pos;
+		capsule_collider_->position2_ = pos;
 	}
-	if (mpAttachCollider != nullptr)
+	if (attach_collider_ != nullptr)
 	{
-		mpAttachCollider->mvPosition = pos;
+		attach_collider_->position_ = pos;
 	}
-	if (mpSerchCollider != nullptr)
+	if (serch_collider_ != nullptr)
 	{
-		mpSerchCollider->mvPosition = pos;
+		serch_collider_->position_ = pos;
 	}
-	if (mpStopCollider != nullptr)
+	if (stop_collider_ != nullptr)
 	{
-		mpStopCollider->SetDeleteFlag(true);
-		mpStopCollider->mvPosition = pos;
+		stop_collider_->SetDeleteFlag(true);
+		stop_collider_->position_ = pos;
 	}
-	if (mpAttackCollider != nullptr)
+	if (attack_collider_ != nullptr)
 	{
-		mpAttackCollider->mvPosition = pos;
+		attack_collider_->position_ = pos;
 	}
-
 }
 
-void Enemy::OnEnter(Collider* collider, Collider* check)//髯晢�E��E�繝ｻ・�E�髯句�E��E�・�E�・�E�.
+/// @brief 他オブジェクトのコライダーと接触を開始した瞬間の割り込み処理
+/// @param collider 自身のコライダー
+/// @param check 相手のコライダー
+void Enemy::OnEnter(Collider* collider, Collider* check)
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-	if (mfHp <= 0)return;
-	if (collider == mpCapsuleCollider && check->mpParentObject->GetTag() == Tag3D_Obj)
+	if (hp_ <= 0) return;
+	if (collider == capsule_collider_ && check->parent_object_->GetTag() == Tag3D_Obj)
 	{
-		
-		mvPosition = VinitPos;
+		position_ = init_position_;
 	}
-	
-	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
-	{
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-		if (player == nullptr)return;
-	
-		if (collider == mpSerchCollider &&player->GetCollisionCollider()==check)
-		{
-			isHitSearch = true;
-		}
-		if (collider == mpAttackCollider && player->GetCollisionCollider() == check)
-		{
-			isHitAttackSearch = true;//髫�E�・�E�繝ｻ・�E�髫�E�・�E�郢晢�E��E�陝ｷ謌頑ｲり嵯譏ｴ�E�ｨ驛｢譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�
 
-		}
-		if (collider == mpStopCollider && player->GetCollisionCollider() == check)
+	if (check->parent_object_->GetTag() == Tag3D_Player3D)
+	{
+		Player3D* player = Master::player_;
+		if (player == nullptr) return;
+
+		if (collider == serch_collider_ && player->GetCollisionCollider() == check)
 		{
-			isHitSerchStop = true;
+			is_hit_search_flag_ = true;
+		}
+		if (collider == attack_collider_ && player->GetCollisionCollider() == check)
+		{
+			is_hit_attack_search_flag_ = true;
+		}
+		if (collider == stop_collider_ && player->GetCollisionCollider() == check)
+		{
+			is_hit_search_stop_flag_ = true;
 		}
 	}
-	//髯溷・萓ｭ隨�E�繝ｻ・�E�・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�繝ｻ遏ｩ・�E�・�E�隰撰�E��E�陷・�E��E�驍ｵ・�E�繝ｻ・�E�髯�E�繝ｻ・�E�・�E�鬨�E�繝ｻ繝ｻ
 }
 
+/// @brief 他オブジェクトのコライダーと接触中の継続処理（プレイヤーへの攻撃判定等）
+/// @param collider 自身のコライダー
+/// @param check 相手のコライダー
 void Enemy::OnTrigger(Collider* collider, Collider* check)
-{//髯溷・萓ｭ隨�E�繝ｻ・�E�・�E�繝ｻ・�E�驍ｵ・�E�雋�E�E��E�隶・�E�鬯�E�・�E�髦�E�蜷�E�繝ｻ髯�E�繝ｻ・�E�・�E�鬨�E�繝ｻ繝ｻ
-	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
-	AnimationState now = mpModel->GetNowState();
-	if (collider == mpAttachCollider && check->mpParentObject->GetTag() == Tag3D_Player3D)
-	{//mpModel驍ｵ・�E�繝ｻ・�E�鬨�E�・�E�繝ｻ・�E�髯�E�・�E�繝ｻ・�E�驛｢・�E�郢�E�繝ｻ譌ｺ驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�繝ｻ・�E�驍ｵ・�E�郢晢�E��E�繝ｻ迢暦�E��E�・�E�遶丞､ゑｽ�E�・�E�繝ｻ・�E�驍ｵ・�E�髦�E�蜷�E�繝ｻif髫�E�竏壹・遶頑･�E�諤�E�繝ｻ・�E�驛｢・�E�陝ｲ・�E�遶企�E・�E�・�E�郢晢�E��E�
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-		if (player == nullptr)return;
+{
+	if (hp_ <= 0) return;
+	AnimationState now = model_->GetNowState();
+
+	if (collider == attach_collider_ && check->parent_object_->GetTag() == Tag3D_Player3D)
+	{
+		Player3D* player = Master::player_;
+		if (player == nullptr) return;
+
 		if (check == player->GetCollisionCollider())
 		{
-			if (now == ANIMATION_ATTACK && !AttackHitJudgmentflag)
+			if (now == ANIMATION_ATTACK && !is_attack_hit_judgment_flag_)
 			{
-
-				player->Damage(mfAttack);
-				AttackHitJudgmentflag = true;//髯溷・萓ｭ隨�E�繝ｻ・�E�・�E�繝ｻ・�E�驍ｵ・�E�雋�E∞�E�E�閧�E�・�E�譎｢・�E�・�E�
+				player->Damage(attack_);
+				is_attack_hit_judgment_flag_ = true;
 			}
 		}
 	}
-	
 }
 
+/// @brief 他オブジェクトのコライダーと離脱した瞬間の割り込み処理
+/// @param collider 自身のコライダー
+/// @param check 相手のコライダー
 void Enemy::OnExit(Collider* collider, Collider* check)
 {
-	if (mfHp <= 0)return; auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
-	AnimationState now = mpModel->GetNowState();
-	if (check->mpParentObject->GetTag() == Tag3D_Player3D)
+	if (hp_ <= 0) return;
+
+	if (check->parent_object_->GetTag() == Tag3D_Player3D)
 	{
-		
-		Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-		if (player == nullptr)return;
-		if (collider == mpAttachCollider && player->GetCollisionCollider() == check)
-			{
+		Player3D* player = Master::player_;
+		if (player == nullptr) return;
 
-			}
-			if (collider == mpSerchCollider && player->GetCollisionCollider() == check)
-			{
-				isHitSearch = false;
-			}
-			if (collider == mpAttackCollider && player->GetCollisionCollider() == check)
-			{
-				isHitAttackSearch = false;//髫�E�・�E�繝ｻ・�E�髫�E�・�E�郢晢�E��E�陝ｷ謌頑ｲり嵯譏ｴ�E�ｨ驛｢譎｢・�E�・�E�驛｢・�E�繝ｻ・�E�
-
-			}
-			if (collider == mpStopCollider && player->GetCollisionCollider() == check)
-			{
-				isHitSerchStop = false;
-			}
-		
+		if (collider == serch_collider_ && player->GetCollisionCollider() == check)
+		{
+			is_hit_search_flag_ = false;
+		}
+		if (collider == attack_collider_ && player->GetCollisionCollider() == check)
+		{
+			is_hit_attack_search_flag_ = false;
+		}
+		if (collider == stop_collider_ && player->GetCollisionCollider() == check)
+		{
+			is_hit_search_stop_flag_ = false;
+		}
 	}
 }
 
-void Enemy::CollPositionUpdate()
+/// @brief 各コライダーの追従位置座標を毎フレーム同期更新する
+void Enemy::UpdateColliderPosition()
 {
-	if (mpCapsuleCollider != nullptr)
+	if (capsule_collider_ != nullptr)
 	{
-		mpCapsuleCollider->mvPosition = mvPosition;
-		mpCapsuleCollider->mvPosition2 = VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f));
-		
+		capsule_collider_->position_ = position_;
+		capsule_collider_->position2_ = VAdd(position_, VGet(0.0f, 150.0f, 0.0f));
 	}
-	if (mpAttachCollider != nullptr)
+	if (attach_collider_ != nullptr)
 	{
-		mpAttachCollider->mvPosition = mpModel->GetAttachmentPosition();
+		attach_collider_->position_ = model_->GetAttachmentPosition();
 	}
-	if (mpSerchCollider != nullptr)
+	if (serch_collider_ != nullptr)
 	{
-		mpSerchCollider->mvPosition = mvPosition;
+		serch_collider_->position_ = position_;
 	}
-	if (mpStopCollider != nullptr)
+	if (stop_collider_ != nullptr)
 	{
-		mpStopCollider->mvPosition = VAdd(mvPosition, VGet(0.0f, mfSize / 2, 0.0f));
+		stop_collider_->position_ = VAdd(position_, VGet(0.0f, size_ / 2, 0.0f));
 	}
-	if (mpAttackCollider != nullptr)
+	if (attack_collider_ != nullptr)
 	{
-		mpAttackCollider->mvPosition = VAdd(mvPosition, VGet(0.0f, mfSize / 2, 0.0f));
+		attack_collider_->position_ = VAdd(position_, VGet(0.0f, size_ / 2, 0.0f));
 	}
-	
-	
-
-
-	
-	
 }
 
+/// @brief 全ての登録済みコライダーを削除マークし解放準備をする
 void Enemy::Delete()
 {
-	
-	if (mpCapsuleCollider != nullptr)
+	if (capsule_collider_ != nullptr)
 	{
-		mpCapsuleCollider->SetDeleteFlag(true);
+		capsule_collider_->SetDeleteFlag(true);
+		capsule_collider_ = nullptr;
 	}
-	if (mpAttachCollider != nullptr)
+	if (attach_collider_ != nullptr)
 	{
-		mpAttachCollider->SetDeleteFlag(true);
+		attach_collider_->SetDeleteFlag(true);
+		attach_collider_ = nullptr;
 	}
-	if (mpSerchCollider != nullptr)
+	if (serch_collider_ != nullptr)
 	{
-		mpSerchCollider->SetDeleteFlag(true);
+		serch_collider_->SetDeleteFlag(true);
+		serch_collider_ = nullptr;
 	}
-	if (mpStopCollider != nullptr)
+	if (stop_collider_ != nullptr)
 	{
-		mpStopCollider->SetDeleteFlag(true);
+		stop_collider_->SetDeleteFlag(true);
+		stop_collider_ = nullptr;
 	}
-	if (mpAttackCollider != nullptr)
+	if (attack_collider_ != nullptr)
 	{
-		mpAttackCollider->SetDeleteFlag(true);
+		attack_collider_->SetDeleteFlag(true);
+		attack_collider_ = nullptr;
 	}
-	
 }
 
-
+/// @brief 撃破時にプレイヤーへ報酬資金を加算付与する
 void Enemy::GiveRewards()
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Player3D::Tag3D_Player3D);
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
-	if (player != nullptr) {
-		player->mpHaveMoney->AddMoney(mfHaveMoney);
-		player->mpLevelUp->AddXp(mfHaveXp);
+	Player3D* player = Master::player_;
+	if (player != nullptr)
+	{
+		player->have_money_->AddMoney(have_money_);
 	}
 }
-
-
-

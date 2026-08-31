@@ -1,50 +1,76 @@
-#include "DxLib.h"
+﻿#include "DxLib.h"
 #include "ResourceManager.h"
 
+/// @details なし（インスタンス生成時の初期化処理）
 ResourceManager::ResourceManager()
 {
-
 }
 
+/// @details キャッシュした全リソース（3Dモデル・単一画像・分割画像）のDxLibハンドルを完全破棄し、メモリリークを防ぐ
 ResourceManager::~ResourceManager()
 {
-    // �I���W�i���̃n���h�����폜����
-
-    for (int i = 0; i < resourceMapList.size(); i++)
+    for (int i = 0; i < (int)resourceMapList.size(); i++)
     {
         MV1DeleteModel(resourceMapList.at(i).second);
     }
+    resourceMapList.clear();
 
-    MV1InitModel();
-    InitGraph();
+    for (int i = 0; i < (int)graphicResourceMapList.size(); i++)
+    {
+        DeleteGraph(graphicResourceMapList.at(i).second);
+    }
+    graphicResourceMapList.clear();
+
+    for (int i = 0; i < (int)divGraphicResourceMapList.size(); i++)
+    {
+        DivGraphData* data = divGraphicResourceMapList.at(i);
+        if (data != nullptr)
+        {
+            // 動的確保された分割ハンドルの配列要素をすべて解放し、構造体自体も破棄する
+            for (int j = 0; j < data->allNum; j++)
+            {
+                DeleteGraph(data->divHandleList[j]);
+            }
+            delete[] data->divHandleList;
+            delete data;
+        }
+    }
+    divGraphicResourceMapList.clear();
 }
 
-// ���f�����\�[�X����
+/// @param pathName (ファイルパス)
+/// @return モデルハンドル(-1で失敗)
+/// @details I
 int ResourceManager::LoadModel(std::string pathName)
 {
-    // ���ɓǂݍ��܂ꂽ���f�����ǂ����m�F
     for (int i = 0; i < resourceMapList.size(); i++)
     {
         if (resourceMapList.at(i).first == pathName)
         {
-            // �ǂݍ��܂�Ă���Ȃ烂�f���n���h���𕡐����ĕԂ�
+            // 非同期読み込み中のハンドルを複製(MV1DuplicateModel)するとDxLib内部でアクセス違反が起きるため、新規ロードで安全に回避する
+            if (CheckHandleASyncLoad(resourceMapList.at(i).second) == TRUE)
+            {
+                return MV1LoadModel(pathName.c_str());
+            }
+
             return MV1DuplicateModel(resourceMapList.at(i).second);
         }
     }
 
-    // �ǂݍ��܂�Ă��Ȃ��ꍇ�͐V���ɓǂݍ���
     int handle = MV1LoadModel(pathName.c_str());
     if (handle == -1)
     {
         return -1;
     }
 
-    // vector �ɒǉ�
+    // 以降の呼び出しを高速化するため元ハンドルをキャッシュしつつ、呼び出し元には状態操作用に複製を渡す
     resourceMapList.push_back(std::pair<std::string, int>(pathName, handle));
-    return MV1DuplicateModel(handle);   // �I���W�i���̃n���h���͎c���Ă��������̂ŕ������ĕԂ��Ă���
+    return MV1DuplicateModel(handle);
 }
 
-// �O���t�B�b�N���\�[�X����
+/// @param pathName (ファイルパス)
+/// @return 画像ハンドル(-1で失敗)
+/// @details 同一画像の重複ロードによるVRAM圧迫を防ぐため、キャッシュ済みであれば既存ハンドルを使い回す
 int ResourceManager::LoadGraphics(std::string pathName)
 {
     for (int i = 0; i < graphicResourceMapList.size(); i++)
@@ -65,7 +91,9 @@ int ResourceManager::LoadGraphics(std::string pathName)
     return handle;
 }
 
-// �������ꂽ�O���t�B�b�N���\�[�X����
+/// @param pathName(パス), allNum(総数), numX(横分割数), numY(縦分割数)
+/// @return 分割画像データ構造体のポインタ
+/// @details 画像サイズから1コマの解像度を自動計算し、分割ロードした配列データをキャッシュに登録する
 DivGraphData* ResourceManager::LoadDivGraphics(std::string pathName, int allNum, int numX, int numY)
 {
     for (int i = 0; i < divGraphicResourceMapList.size(); i++)
@@ -76,33 +104,29 @@ DivGraphData* ResourceManager::LoadDivGraphics(std::string pathName, int allNum,
         }
     }
 
-    // ��U�e�N�X�`����ǂݍ���
+    // 全体の解像度から1コマあたりの正確なピクセル幅・高さを算出するため、ダミーとして一度全体をロードする
     int handle = LoadGraph(pathName.c_str());
     if (handle == -1)
     {
         return nullptr;
     }
 
-    // ���삵���N���X�ɏ����i�[
-    DivGraphData *data = new DivGraphData(
+    DivGraphData* data = new DivGraphData(
         pathName,
         numX, numY,
         allNum
     );
 
-    // ��U�ǂݍ��񂾃e�N�X�`���̉摜�T�C�Y���擾
     int sizeX, sizeY;
     GetGraphSize(handle, &sizeX, &sizeY);
 
-    // �e�N�X�`�������ǂݍ���
-    std::vector<int> test;
+    // 取得した動的サイズ情報を元にDxLibの分割ロードAPIを叩き、ハンドル配列を構造体に格納する
     handle = LoadDivGraph(pathName.c_str(), allNum, numX, numY, sizeX / numX, sizeY / numY, data->divHandleList);
     if (handle == -1)
     {
         return nullptr;
     }
 
-    // �f�[�^��ۑ�
     divGraphicResourceMapList.push_back(data);
 
     return data;

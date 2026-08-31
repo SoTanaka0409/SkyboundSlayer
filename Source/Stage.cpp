@@ -1,70 +1,70 @@
-#include"Stage.h"
+ï»¿#include"Stage.h"
 #include"Master.h"
 
-Stage::Stage(VECTOR initPos,std::string stageModelName, std::string stageCollisionModelName, VECTOR scale)//À•W‚ÍŒ´“_‚Æ‚µ‚Ä‚¨‚­
+/// @param åˆæœŸåº§æ¨™, è¡¨ç¤ºãƒ¢ãƒ‡ãƒ«å, å½“ãŸã‚Šåˆ¤å®šãƒ¢ãƒ‡ãƒ«å, ã‚¹ã‚±ãƒ¼ãƒ«, ãƒ†ã‚¯ã‚¹ãƒãƒ£å
+/// @details æç”»ç”¨ã¨åˆ¤å®šç”¨ï¼ˆä¸å¯è¦–ï¼‰ã®ãƒ¢ãƒ‡ãƒ«ã‚’åˆ†é›¢ã—ã¦ãƒ­ãƒ¼ãƒ‰ã—ã€ç„¡åŠ¹å€¤(-1)æ™‚ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚¹ã‚±ãƒ¼ãƒ«ã‚’é©ç”¨ã™ã‚‹
+Stage::Stage(VECTOR initPos, std::string stageModelName, std::string stageCollisionModelName, VECTOR scale, std::string textureFilename)
 	:Object3D(initPos)
 {
-	//ƒ^ƒOİ’è
 	SetTag(Object3D::Tag3D_Stage);
-	//ƒXƒe[ƒWƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
-	mnModelHandle = MV1LoadModel(stageModelName.c_str());
-	
-	//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹(“–‚½‚è”»’è—p‚Ìƒ‚ƒfƒ‹)‚Ì“Ç‚İ‚İ
-	mnCollisionHandle = MV1LoadModel(stageCollisionModelName.c_str());
 
-	//ƒfƒtƒHƒ‹ƒg‚Ìˆø”‚ª“n‚³‚ê‚½ê‡‚Í]—ˆ‚ÌƒXƒP[ƒ‹‚ğg—p
+	model_handle_ = MV1LoadModel(stageModelName.c_str());
+	collision_handle_ = MV1LoadModel(stageCollisionModelName.c_str());
+
+	// å‘¼ã³å‡ºã—å…ƒã‹ã‚‰ã‚¹ã‚±ãƒ¼ãƒ«æŒ‡å®šãŒçœç•¥ã•ã‚ŒãŸå ´åˆã¯ã€å¾“æ¥ã®å›ºå®šã‚¹ãƒ†ãƒ¼ã‚¸ã‚µã‚¤ã‚º(300.0f)ã§ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹
 	if (scale.x == -1.0f && scale.y == -1.0f && scale.z == -1.0f) {
 		float StageSize = 300.0f;
-		MV1SetScale(mnModelHandle, VGet(StageSize, 50.0f, StageSize));
-		MV1SetScale(mnCollisionHandle, VGet(StageSize, StageSize, StageSize));
-	} else {
-		MV1SetScale(mnModelHandle, scale);
-		MV1SetScale(mnCollisionHandle, scale);
+		MV1SetScale(model_handle_, VGet(StageSize, 50.0f, StageSize));
+		MV1SetScale(collision_handle_, VGet(StageSize, StageSize, StageSize));
 	}
-	MV1SetPosition(mnCollisionHandle, initPos);
-	MV1SetPosition(mnModelHandle, initPos);
-	MV1SetupCollInfo(mnCollisionHandle);
+	else {
+		MV1SetScale(model_handle_, scale);
+		MV1SetScale(collision_handle_, scale);
+	}
 
-	
-	
+	MV1SetPosition(collision_handle_, initPos);
+	MV1SetPosition(model_handle_, initPos);
+	MV1SetupCollInfo(collision_handle_);
+
+	if (!textureFilename.empty()) {
+		int texHandle = Master::resource_manager_->LoadGraphics(textureFilename);
+		if (texHandle != -1) {
+			MV1SetTextureGraphHandle(model_handle_, 0, texHandle, FALSE);
+		}
+	}
 }
 
+/// @details VRAMä¸Šã®ãƒ¢ãƒ‡ãƒ«ãƒªã‚½ãƒ¼ã‚¹ï¼ˆæç”»ç”¨ãƒ»åˆ¤å®šç”¨ï¼‰ã‚’ç ´æ£„ã—ã€ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚ã®ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’é˜²ã
 Stage::~Stage()
 {
-	//“Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹‚Ì”jŠü
-	MV1DeleteModel(mnModelHandle);
-	MV1DeleteModel(mnCollisionHandle);
+	MV1DeleteModel(model_handle_);
+	MV1DeleteModel(collision_handle_);
 }
 
+/// @details ãªã—ï¼ˆèƒŒæ™¯ã‚¹ãƒ†ãƒ¼ã‚¸ç­‰ã®é™çš„ãªç’°å¢ƒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æƒ³å®šã—ã¦ã„ã‚‹ãŸã‚ã€å‹•çš„ãªçŠ¶æ…‹æ›´æ–°ã¯è¡Œã‚ãªã„ï¼‰
 void Stage::Update()
 {
-
 }
+
+/// @details ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¦–èªã•ã›ã‚‹ãŸã‚ã®æç”»ç”¨ãƒ¢ãƒ‡ãƒ«ã®ã¿ã‚’æç”»ãƒãƒƒãƒ•ã‚¡ã¸ç™»éŒ²ã™ã‚‹
 void Stage::Draw()
 {
-	//ƒXƒe[ƒWƒ‚ƒfƒ‹‚Ì•`‰æ
-	MV1DrawModel(mnModelHandle);
-
-	//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ì•`‰æ(ƒƒCƒ„[ƒtƒŒ[ƒ€‚İ‚½‚¢‚ÈŠ´‚¶‚Å•`‰æ)
-	// ///“–‚½‚è”»’è—p‚Ìƒ‚ƒfƒ‹‚Æ‚µ‚Äì‚ç‚ê‚Ä‚¢‚é
-	//“Ç‚İ‚Şƒ‚ƒfƒ‹AFA
+	MV1DrawModel(model_handle_);
 }
 
+/// @param pos1, pos2 (ã‚«ãƒ—ã‚»ãƒ«ã®å§‹ç‚¹ãƒ»çµ‚ç‚¹), r (åŠå¾„)
+/// @return è¡çªã®æœ‰ç„¡(bool)
+/// @details ãƒ‡ãƒãƒƒã‚°æœ‰åŠ¹æ™‚ã¯è¡çªãƒãƒªã‚´ãƒ³ã‚’å¯è¦–åŒ–æç”»ã—ã€åˆ¤å®šå¾Œã¯DxLibå´ã®ãƒ¡ãƒ¢ãƒª(result)ã‚’ç¢ºå®Ÿã«è§£æ”¾ã™ã‚‹
 bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 {
-	//¶¬‚µ‚Ä‚¢‚½“–‚½‚è”»’è‚ğŠî‚ÉƒJƒvƒZƒ‹‚Æ‚Ì“–‚½‚è”»’è‚ğs‚¤
-	//ƒRƒŠƒWƒ‡ƒ“Œ‹‰Ê‘ã“ü—pƒ|ƒŠƒSƒ“”z—ñ
-	MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_Capsule(mnCollisionHandle, -1, pos1, pos2, r);
+	MV1_COLL_RESULT_POLY_DIM result = MV1CollCheck_Capsule(collision_handle_, -1, pos1, pos2, r);
 
-	if (Master::mpDebug->Getdebug() == true)
+	if (Master::debug_->Getdebug() == true)
 	{
-		//ƒ|ƒŠƒSƒ“‚Éˆê‚ÂˆÈã“–‚½‚Á‚Ä‚¢‚éê‡
 		if (result.HitNum >= 1)
 		{
-			//‰ñ”‚ğ“–‚½‚Á‚½‰ñ”‚ğ‰ñ‚·
 			for (int i = 0; i < result.HitNum; i++)
 			{
-				//3D‚ÌOŠpŒ`‚ğ•`‰æ‚·‚é
 				DrawTriangle3D(
 					result.Dim[i].Position[0],
 					result.Dim[i].Position[1],
@@ -75,55 +75,50 @@ bool Stage::CheckHit_Capsule(VECTOR pos1, VECTOR pos2, float r)
 			}
 		}
 	}
-	//“–‚½‚è”»’èî•ñ‚ÌŒã•Ğ‚Ã‚¯
-	MV1CollResultPolyDimTerminate(result);
 
+	// DxLibã®ä»•æ§˜ä¸Šã€å–å¾—ã—ãŸãƒãƒªã‚´ãƒ³æƒ…å ±ã¯æ˜ç¤ºçš„ã«ç ´æ£„ã—ãªã„ã¨ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã‚’èµ·ã“ã™ãŸã‚å¿…é ˆ
+	MV1CollResultPolyDimTerminate(result);
 
 	return(result.HitNum >= 1);
 }
 
+/// @param pos1, pos2 (ãƒ¬ã‚¤ã®å§‹ç‚¹ãƒ»çµ‚ç‚¹)
+/// @return è¡çªã—ãŸç©ºé–“åº§æ¨™ï¼ˆæœªãƒ’ãƒƒãƒˆæ™‚ã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ï¼‰
+/// @details ãªã—ï¼ˆãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã«ã‚ˆã‚‹ç€å¼¾ç‚¹ã®è¨ˆç®—ã‚„ã€å°„ç·šãŒé€šã£ã¦ã„ã‚‹ã‹ã®åˆ¤å®šãªã©ã«ä½¿ç”¨ã™ã‚‹ï¼‰
 VECTOR Stage::CheckHit_Line(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
+	auto result = MV1CollCheck_Line(collision_handle_, -1, pos1, pos2);
 
-	//“–‚½‚è”»’èî•ñ‚Æü•ª‚Æ‚Ì“–‚½‚è”»’è‚ğs‚¤
-	auto result = MV1CollCheck_Line(mnCollisionHandle, -1, pos1, pos2);
-
-	//“–‚½‚Á‚Ä‚¢‚½ê‡
-	if (result.HitFlag)//result.HitNum >= 1
+	if (result.HitFlag)
 	{
-		//“–‚½‚Á‚½ŒÂ”‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğreturn‚·‚é‚æ‚¤‚Éæ“¾‚·‚é
-		//•Ç‚Ì‚İ‚½‚¢‚ÉHitPosition‚ğ‚Æ‚é•K—v‚È‚¢
 		ret = result.HitPosition;
 	}
 
 	return ret;
 }
 
+/// @param pos1, pos2 (ãƒ¬ã‚¤ã®å§‹ç‚¹ãƒ»çµ‚ç‚¹)
+/// @return è¡çªã—ãŸç©ºé–“åº§æ¨™ï¼ˆæœªãƒ’ãƒƒãƒˆæ™‚ã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ï¼‰
+/// @details ç”»é¢ä¸Šã«ãƒ’ãƒƒãƒˆã—ãŸåº§æ¨™ãƒ†ã‚­ã‚¹ãƒˆã€ã¾ãŸã¯æœªãƒ’ãƒƒãƒˆã®è­¦å‘ŠUIã‚’æç”»ã™ã‚‹ï¼ˆãƒ‡ãƒãƒƒã‚°ç”¨é€”ï¼‰
 VECTOR Stage::CheckHit_LineDebug(VECTOR pos1, VECTOR pos2)
 {
 	VECTOR ret = VGet(0.0f, 0.0f, 0.0f);
+	auto result = MV1CollCheck_Line(collision_handle_, -1, pos1, pos2);
 
-	//“–‚½‚è”»’èî•ñ‚Æü•ª‚Æ‚Ì“–‚½‚è”»’è‚ğs‚¤
-	auto result = MV1CollCheck_Line(mnCollisionHandle, -1, pos1, pos2);
-
-	//“–‚½‚Á‚Ä‚¢‚½ê‡
-	if (result.HitFlag)//result.HitNum >= 1
+	if (result.HitFlag)
 	{
-		//“–‚½‚Á‚½ŒÂ”‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğreturn‚·‚é‚æ‚¤‚Éæ“¾‚·‚é
-		//•Ç‚Ì‚İ‚½‚¢‚ÉHitPosition‚ğ‚Æ‚é•K—v‚È‚¢
 		ret = result.HitPosition;
-		if (Master::mpDebug->Getdebug() == true)
+		if (Master::debug_->Getdebug() == true)
 		{
 			DrawFormatString(200, 0, GetColor(255, 0, 0), "Hit: x:%f, y:%f. z:%f", ret.x, ret.y, ret.z);
 		}
 	}
 	else
 	{
-		if (Master::mpDebug->Getdebug() == true)
+		if (Master::debug_->Getdebug() == true)
 		{
 			DrawFormatString(200, 0, GetColor(255, 0, 0), "Hit None");
-
 		}
 	}
 

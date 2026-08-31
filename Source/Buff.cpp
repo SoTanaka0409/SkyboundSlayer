@@ -1,12 +1,14 @@
-#include"Buff.h"
+﻿#include"Buff.h"
 #include"Master.h"
 #include"ObjectManager.h"
 
+
+/// @brief Buffの初期化（コンストラクタ）
 Buff::Buff(int timer, float effect,Object3D::StatusState type)
 	:Do_buff(true)
 {
-	auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-	Player3D* player = dynamic_cast<Player3D*>(mpPlayer);
+	auto player_ = Master::player_;
+	Player3D* player = Master::player_;
 	efDate.Timer = timer;
 	efDate.Effect = effect;
 	efDate.Count = 0;
@@ -18,6 +20,8 @@ Buff::~Buff()
 
 }
 
+
+/// @brief Buffの状態更新処理
 void Buff::Update()
 {
 	efDate.Count++;
@@ -25,13 +29,13 @@ void Buff::Update()
 	if(efDate.Count>= efDate.Timer)
 	{
 		Do_buff = false;
-		efDate.mbUse = false;
+		efDate.use_ = false;
 		efDate.Effect = 0;
 		
 	}
 	else
 	{
-		DrawFormatString(200, 800, GetColor(255, 0, 0), "buff�g�p��");
+		DrawFormatString(200, 800, GetColor(255, 0, 0), "buff使用中");
 	}
 
 

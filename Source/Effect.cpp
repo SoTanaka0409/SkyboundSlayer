@@ -1,96 +1,92 @@
-#include"Effect.h"
+ï»¿#include"Effect.h"
 
 
-Effect::Effect(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime)
-	:Object3D(initPos)
+
+/// @brief Effectã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
+Effect::Effect()
 {
-	mpEffect = new EffectInfo();
+	effect_ = new EffectInfo();
+	graph_handle_ = -1;
+	active_ = false;
+}
 
-	//mpEffect->color = GetColorU8(128, 16, 16, 255);//¡‚ÍŒÅ’è‚ÅÔ‚Á‚Û‚¢F
-	mpEffect->color = Changecolor;
+
+/// @brief Effectã®Playå‡¦ç†
+void Effect::Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor,float Size,float VisibleTime)
+{
+	active_ = true;
+	effect_->color = Changecolor;
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		mpEffect->particle[i].pos = initPos;//‰ŠúÀ•W
-
-		mpEffect->particle[i].dir.x = ((float)GetRand(200) - 100.0f) / 100.0f;
-		mpEffect->particle[i].dir.y = ((float)GetRand(200) - 100.0f) / 100.0f;
-		mpEffect->particle[i].dir.z = ((float)GetRand(200) - 100.0f) / 100.0f;
-
-		//‘¬“x
-		mpEffect->particle[i].speed = ((float)GetRand(SPEED_RAND_MAX) + SPEED_RAND_MIN) / 100.0f;
-
-		//•‰“§–¾“x
-		mpEffect->particle[i].alpha = 1.0f;
-
-		//‘å‚«‚³
-		mpEffect->particle[i].size = Size;
-
-		//•\¦ŠÔ
-		mpEffect->particle[i].visibleTime = VisibleTime;
-
+		effect_->particle[i].pos = initPos;
+		effect_->particle[i].dir.x = ((float)GetRand(200) - 100.0f) / 100.0f;
+		effect_->particle[i].dir.y = ((float)GetRand(200) - 100.0f) / 100.0f;
+		effect_->particle[i].dir.z = ((float)GetRand(200) - 100.0f) / 100.0f;
+		effect_->particle[i].speed = ((float)GetRand(SPEED_RAND_MAX) + SPEED_RAND_MIN) / 100.0f;
+		effect_->particle[i].alpha = 1.0f;
+		effect_->particle[i].size = Size;
+		effect_->particle[i].visibleTime = VisibleTime;
 	}
-	//‰æ‘œ‚Ì“Ç‚İ‚İ
-	mnGraphHandle = LoadGraph(filename.c_str());
-
+	if (graph_handle_ == -1) {
+		int oldFlag = GetUseASyncLoadFlag();
+		SetUseASyncLoadFlag(FALSE);
+		graph_handle_ = LoadGraph(filename.c_str());
+		SetUseASyncLoadFlag(oldFlag);
+	}
 }
 
 Effect::~Effect()
 {
-	delete mpEffect;
+	delete effect_;
 
-	DeleteGraph(mnGraphHandle);
+	DeleteGraph(graph_handle_);
 
 }
 
 
+
+/// @brief Effectã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void Effect::Update()
 {
-	bool isEnd = true;  //ƒp[ƒeƒBƒNƒ‹‚ª‚·‚×‚ÄÁ‚¦‚½‚©‚Ç‚¤‚©
-	float stepTime = 1.0f / 60.0f;//1ƒtƒŒ[ƒ€‚É‚Ç‚ê‚¾‚¯i‚ß‚é‚©‚ÌŠî–{’l
+	bool isEnd = true;
+	float stepTime = 1.0f / 60.0f;
 
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		if (mpEffect->particle[i].alpha <= 0.0f)
+		if (effect_->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
-		//‚±‚±‚Ü‚Å‚­‚é‚Æ‚¢‚¤‚±‚Æ‚Í­‚È‚­‚Ä‚àˆê‚Â‚Íƒp[ƒeƒBƒNƒ‹‚ª‘¶İ‚µ‚Ä‚¢‚é‚Ì‚ÅI—¹‚³‚¹‚È‚¢
 		isEnd = false;
-		if (mpEffect->particle[i].speed > 0.0f)
+		if (effect_->particle[i].speed > 0.0f)
 		{
-			//À•W‚ğˆÚ“®‚³‚¹‚é
-			mpEffect->particle[i].pos = VAdd(mpEffect->particle[i].pos, VScale(mpEffect->particle[i].dir, mpEffect->particle[i].speed));
+			effect_->particle[i].pos = VAdd(effect_->particle[i].pos, VScale(effect_->particle[i].dir, effect_->particle[i].speed));
 
 
-			mpEffect->particle[i].speed -= 2.0f * stepTime;
+			effect_->particle[i].speed -= 2.0f * stepTime;
 
-			//‘¬“x‚ª‚OˆÈ‰º‚É‚È‚Á‚½ê‡
-			if (mpEffect->particle[i].speed <= 0.0f)
+			if (effect_->particle[i].speed <= 0.0f)
 			{
-				mpEffect->particle[i].visibleTime = 0.0f;
+				effect_->particle[i].visibleTime = 0.0f;
 
 			}
 
 
 		}
-		//
-		if (mpEffect->particle[i].visibleTime > 0.0f)
+		if (effect_->particle[i].visibleTime > 0.0f)
 		{
-			//•\¦ŠÔ‚ğŒ¸‚ç‚µ‚Ä‚¢‚­
-			mpEffect->particle[i].visibleTime -= 0.75f * stepTime;
+			effect_->particle[i].visibleTime -= 0.75f * stepTime;
 		}
 		else
 		{
-			//ƒAƒ‹ƒtƒ@’l‚ğ—‚Æ‚µ‚Ä‚¢‚­i™X‚É—‚Æ‚µ‚Ä‚¢‚­)
-			mpEffect->particle[i].alpha -= 12.0f * stepTime;
+			effect_->particle[i].alpha -= 12.0f * stepTime;
 		}
 
 	}
-	//ƒp[ƒeƒBƒNƒ‹‚ª‚P‚Â‚à‘¶İ‚µ‚Ä‚¢‚È‚¢‚Ì‚Å‚ ‚ê‚ÎíœƒE‚·‚é
 	if (isEnd)
 	{
-		SetDeleteFlag(true);
+		active_ = false;
 	}
 
 
@@ -99,33 +95,27 @@ void Effect::Update()
 
 }
 
+
+/// @brief Effectã®æç”»å‡¦ç†
 void Effect::Draw()
 {
-	//
 	SetUseZBufferFlag(TRUE);
-	//Zbaxtufanikakikomisinai 
 	SetWriteZBufferFlag(FALSE);
-	//•`‰æ‹P“x
-	SetDrawBright(mpEffect->color.r, mpEffect->color.g, mpEffect->color.b);
+	SetDrawBright(effect_->color.r, effect_->color.g, effect_->color.b);
 
-	//•`‰æ‚µ‚Ä‚¢‚­
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		//ƒAƒ‹ƒtƒ@’l‚ª‚OˆÈ‰º‚È‚ç•`‰æ‚µ‚È‚¢
-		if (mpEffect->particle[i].alpha <= 0.0f)
+		if (effect_->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
-		//u”½“]ƒuƒŒƒ“ƒhv‚ğs‚¢‚Â‚Âƒp[ƒeƒBƒNƒ‹‚ğƒrƒ‹ƒ{[ƒh‚Å•`‰æ
-		// //”½“]ƒuƒŒƒ“ƒh...F‚ğ”½“]‚µ‚Ä‚­‚ê‚é
-		//ƒrƒ‹ƒ{[ƒhBBBƒJƒƒ‰•ûŒü‚Éí‚ÉŒü‚¢‚Ä‚­‚ê‚é‚RDƒ|ƒŠƒSƒ“
-		SetDrawBlendMode(DX_BLENDMODE_INVSRC, (int)mpEffect->particle[i].alpha * 255.0f);
+		SetDrawBlendMode(DX_BLENDMODE_INVSRC, static_cast<int>(effect_->particle[i].alpha * 255.0f));
 		DrawBillboard3D(
-			mpEffect->particle[i].pos, 0.5f, 0.5f,
-			mpEffect->particle[i].size * mpEffect->particle[i].alpha,
+			effect_->particle[i].pos, 0.5f, 0.5f,
+			effect_->particle[i].size * effect_->particle[i].alpha,
 			0.0f,
-			mnGraphHandle,
+			graph_handle_,
 			true
 		);
 
@@ -134,22 +124,17 @@ void Effect::Draw()
 
 	for (int i = 0; i < PARTICLE_NUM; i++)
 	{
-		//ƒAƒ‹ƒtƒ@’l‚ª‚OˆÈ‰º‚È‚ç•`‰æ‚µ‚È‚¢
-		if (mpEffect->particle[i].alpha <= 0.0f)
+		if (effect_->particle[i].alpha <= 0.0f)
 		{
 			continue;
 		}
 
-		//u‰ÁZƒuƒŒƒ“ƒhv‚ğs‚¢‚Â‚Âƒp[ƒeƒBƒNƒ‹‚ğƒrƒ‹ƒ{[ƒh‚Å•`‰æ
-		// ‰ÁZƒuƒŒƒ“ƒh...d‚È‚Á‚½ƒ|ƒŠƒSƒ“•”•ª‚ÌF‚ª‰ÁZ‚³‚ê‚Ä‚¢‚­•`‰æ•û–@
-		// Œ¸ZƒuƒŒƒ“ƒhiSUB)F‚ğŒ¸‚ç‚µ‚Ä‚¢‚­
-		//ƒrƒ‹ƒ{[ƒhBBBƒJƒƒ‰•ûŒü‚Éí‚ÉŒü‚¢‚Ä‚­‚ê‚é‚RDƒ|ƒŠƒSƒ“
-		SetDrawBlendMode(DX_BLENDMODE_ADD, (int)mpEffect->particle[i].alpha * 255.0f);
+		SetDrawBlendMode(DX_BLENDMODE_ADD, static_cast<int>(effect_->particle[i].alpha * 255.0f));
 		DrawBillboard3D(
-			mpEffect->particle[i].pos, 0.5f, 0.5f,
-			mpEffect->particle[i].size * mpEffect->particle[i].alpha,
+			effect_->particle[i].pos, 0.5f, 0.5f,
+			effect_->particle[i].size * effect_->particle[i].alpha,
 			0.0f,
-			mnGraphHandle,
+			graph_handle_,
 			true
 		);
 
@@ -158,13 +143,10 @@ void Effect::Draw()
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
-	//•`‰æ‹P“x‚ğŒ³‚É–ß‚·
 	SetDrawBright(255, 255, 255);
 
-	//Zƒoƒbƒtƒ@‚ğg—p‚·‚é
 	SetUseZBufferFlag(TRUE);
 
-	//Zƒoƒbƒtƒ@[‚Ö‚Ì‘‚«‚İ‚Í‚µ‚È‚¢
 	SetWriteZBufferFlag(TRUE);
 
 

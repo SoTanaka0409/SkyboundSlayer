@@ -1,62 +1,40 @@
-#pragma once
-#include"Scene3D.h"
-#include"Dxlib.h"
-#include"Scene.h"
-#include"Texture.h"
-#include"ObjectManager.h"
-#include"haikei.h"
+ï»¿#pragma once
+#include "Dxlib.h"
+#include "Scene.h"
 
-class ResultScene :public Scene
+class ResultScene : public Scene
 {
 public:
-	/*enum ColorList
-	{
-		none = 0,
-		Color1,
-		Color2,
-		Color3,
-		Rast,
+   
+    	ResultScene();
+   
+    	~ResultScene();
 
-	};*/
-public:
-	ResultScene();
-
-	~ResultScene();
-
-	void Initialize();
-
-	void Draw();
-
-	void Update();
-
-	void Finalize();
+   
+    	void Initialize();
+ 
+    	void Update();
+   
+    	void Draw();
+        void Finalize();
+   
 
 private:
-	Texture* mpTexture;
-	Texture* mpTexture2;
-	Scene* mpScene;
-	ObjectManager* mpObjectManager;
-	int mnC;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©
-	int mnS;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	int mnE;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚© 
+  
+/// @details ãƒªã‚¶ãƒ«ãƒˆç”»é¢ã§ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼å…¥åŠ›ï¼ˆæ±ºå®šãƒœã‚¿ãƒ³ç­‰ï¼‰ã‚’æ¤œçŸ¥ã—ã€ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã‚„æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸ã¸ã®é·ç§»ãƒˆãƒªã‚¬ãƒ¼ã‚’ç™ºç«ã•ã›ã‚‹
+    void HandleReturnInput();
 
-	bool C;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©
-	bool S;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool E;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+/// @details ãƒªã‚¶ãƒ«ãƒˆUIã®åŸºç›¤ã¨ãªã‚‹åŠé€æ˜ã®èƒŒæ™¯ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãªã©ã‚’æç”»ãƒãƒƒãƒ•ã‚¡ã¸ç™»éŒ²ã™ã‚‹
+    void DrawResultPanel();
 
-	bool C_Enter;//ƒNƒŠƒA•û–@‚ª‘I‚Î‚ê‚½ƒCƒ‹‚©‚Ç‚¤‚©(enter
-	bool S_Enter;//‘€ì•û–@‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©(enter
-	bool E_Enter;//ƒGƒ“ƒh‚ª‘I‚Î‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©(enter
+/// @details ã€ŒSTAGE CLEARã€ãªã©ã®è¦‹å‡ºã—ãƒ†ã‚­ã‚¹ãƒˆã‚„è£…é£¾ã‚’æç”»ã—ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«çµæœã‚’æ˜ç¤ºã™ã‚‹
+    void DrawResultHeader();
 
-	int mnPause;
-	int size = GetFontSize();
+/// @details è¨ä¼æ•°ã‚„ã‚¯ãƒªã‚¢ã‚¿ã‚¤ãƒ ã€ç²å¾—ã‚¹ã‚³ã‚¢ãªã©ã®è©³ç´°ãªæˆç¸¾ãƒ‡ãƒ¼ã‚¿ã‚’è¨ˆç®—ãƒ»æ•´å½¢ã—ã€ãƒ‘ãƒãƒ«ä¸­å¤®é ˜åŸŸã¸æç”»ã™ã‚‹
+    void DrawResultStats();
 
-	std::string filename1;
-	int mnHandle1;
+/// @details ç”»é¢ä¸‹éƒ¨ã«ã€ŒPress Enter to Nextã€ãªã©ã®æ“ä½œã‚¬ã‚¤ãƒ‰ã‚’ç‚¹æ»…æç”»ã—ã€æ¬¡ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’æç¤ºã™ã‚‹
+    void DrawResultFooter();
 
-	int AllTimer;
-	
-	int Color1;//ƒJƒ‰[•ÏX
-	int ColorCount;
-	bool Colorflag;
+    int all_timer_; // ã‚¹ã‚³ã‚¢ã®ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—æ¼”å‡ºã‚„ã€ä¸€å®šæ™‚é–“çµŒéå¾Œã®å…¥åŠ›å—ä»˜é–‹å§‹ãªã©ã€ãƒªã‚¶ãƒ«ãƒˆç”»é¢å…¨ä½“ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€²è¡Œã‚’ç®¡ç†ã™ã‚‹ã‚¿ã‚¤ãƒãƒ¼
 };

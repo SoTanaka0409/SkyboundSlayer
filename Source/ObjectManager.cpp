@@ -1,56 +1,57 @@
-#include"ObjectManager.h"
+﻿#include"ObjectManager.h"
 #include "Master.h"
 #include "ColliderManager.h"
 
-ObjectManager::ObjectManager()
-{
 
+/// @brief ObjectManagerのコンストラクタ
+/// @details 各種変数の初期化
+ObjectManager::ObjectManager()
+	: cache_dirty_(true)
+{
 }
 
+
+/// @brief ObjectManagerのデストラクタ
+/// @details オブジェクトの破棄
 ObjectManager::~ObjectManager()
 {
-
+	DeleteAll3D();
+	DeleteAll2D();
 }
 
-//更新
+
+/// @brief 全オブジェクトの状態を更新するため
+/// @details 各オブジェクトのUpdate呼び出し
 void ObjectManager::Update()
 {
-	//2Dオブジェクトの更新
-	//mObject2DList.begin()...リスト戦闘の要素へのイテレーターを取得する
-	//mObject2DList.end()...リストの末尾の要素へのイテレーターを取得する
-	//イテレーターとは？。。。std::Listの要素のことをさす.
-	//リストの利点...要素と要素の間に新しい要素を差し込むことが容易にできる
-	//std::List...双方系連結リスト(要素の前後の要素にアクセスすることが簡単)
 
-	for (std::list < Object3D*>::iterator itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	for (std::list < Object3D*>::iterator itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
 		(*itr)->Update();
 	}
 
-	for (std::list < Object2D*>::iterator itr = mObject2DList.begin(); itr != mObject2DList.end(); itr++)
+	for (std::list < Object2D*>::iterator itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
 	{
 		(*itr)->Update();
 	}
-	// 3Dの更新が終わった時点でカメラとの距離を計算する
-	for (std::list<Object3D*>::iterator itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	for (std::list<Object3D*>::iterator itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
-		VECTOR cameraPos = Master::mpCamera->GetPosition();
+		VECTOR cameraPos = Master::camera_->GetPosition();
 		VECTOR objPos = (*itr)->GetPosition();
 		(*itr)->SetCameraDistance(VSize(VSub(objPos, cameraPos)));
 	}
 
-	// 当たり判定オブジェクトの更新
 	ColliderManager::GetInstance()->Update();
 
 }
 
-//描画
+
+/// @brief 全オブジェクトを描画するため
+/// @details 各オブジェクトのDraw呼び出し
 void ObjectManager::Draw()
 {
-	//auto...型推論。＝より右側の型を推測してくれる便利な奴
-	//atd::List<Object2D*>::iterator==auto
 	
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
 
 		if ((*itr)->IsDrawFlag() == true)
@@ -60,7 +61,7 @@ void ObjectManager::Draw()
 	}
 	ColliderManager::GetInstance()->Draw();
 
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); itr++)
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
 	{
 
 		if ((*itr)->IsDrawFlag() == true)
@@ -71,167 +72,163 @@ void ObjectManager::Draw()
 	}
 	
 }
+
+/// @brief オブジェクトをリストに追加するため
+/// @param オブジェクトポインタ
+/// @details リストへの要素追加
 void ObjectManager::AddObject(Object3D* object3D)
 {
-	mObject3DList.push_back(object3D);
+	object_3d_list_.push_back(object3D);
+	cache_dirty_ = true;
 
 
 }
 
-//3Dオブジェクトの全削除
+
+/// @brief 全ての3Dオブジェクトを削除するため
+/// @details 3Dオブジェクトリストのクリア
 void ObjectManager::DeleteAll3D()
 {
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); /* ここは空なので注意 */)
+	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 	{
-		
-
-		//リストから削除
-		itr = mObject3DList.erase(itr);
-
-		itr++;
-		DeleteAll3DIfNeeded();
+		delete *itr;
 	}
-
-
+	object_3d_list_.clear();
+	cache_dirty_ = true;
 }
 
-Object3D* ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
+Object3D* 
+/// @brief 特定のタグを持つ3Dオブジェクトを取得するため
+/// @param Object3D::Tag3D tag
+/// @return Object3D*
+ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
 {
 	auto itr = std::find_if(
-		mObject3DList.begin(),
-		mObject3DList.end(),
-		[&](Object3D* obj) {return obj->GetTag() == tag; } //ラムダ式
-		//[&]...今回の場合、mObject3DListの要素を[参照]するという意味合い
-		//(Object3D *obj)...参照したオブジェクトの型と引数名
-		//{...}...処理内容（今回は条件)
-		//[](){...}この形がラムダ式の基本
+		object_3d_list_.begin(),
+		object_3d_list_.end(),
+		[&](Object3D* obj) {return obj->GetTag() == tag; }
 	);
-	if (itr != mObject3DList.end())
+	if (itr != object_3d_list_.end())
 	{
-		return (*itr);//オブジェクトが見つかった
+		return (*itr);
 	}
-	return nullptr;  //オブジェクトが見つからなかった
+	return nullptr;
 }
 
-//指定したたぐの3Dオブジェクトのリストを取得
-std::vector<Object3D*>ObjectManager::GetObject3DListByTag(Object3D::Tag3D tag)
+const std::vector<Object3D*>& ObjectManager::GetObject3DListByTag(Object3D::Tag3D tag)
 {
-	std::vector<Object3D*>ret;
-
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end(); itr++)
+	if (cache_dirty_)
 	{
-		//tagとおなじタグを持っているオブジェクトがあればvectorに入れる
-		if ((*itr)->GetTag() == tag)
+		cached_3d_lists_.clear();
+		for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
 		{
-			ret.push_back(*itr);
+			cached_3d_lists_[(*itr)->GetTag()].push_back(*itr);
 		}
+		cache_dirty_ = false;
 	}
-
-	return ret;
+	return cached_3d_lists_[tag];
 }
 
+
+/// @brief 削除フラグが立っている3Dオブジェクトを削除するため
+/// @details リストからの要素削除
 void ObjectManager::DeleteAll3DIfNeeded()
 {
-	for (auto itr = mObject3DList.begin(); itr != mObject3DList.end();)
+	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end();)
 	{
 		if ((*itr)->IsDeleteFlag() == true)
 		{
 			Object3D* temp = *itr;
 
-			//リストから削除
-			itr = mObject3DList.erase(itr);
+			itr = object_3d_list_.erase(itr);
+			cache_dirty_ = true;
 
-			//オブジェクトそのものを削除
 			delete temp;
 			temp = nullptr;
 		}
 		else
 		{
-			//つぎのitrに進める
 			itr++;
 		}
 	}
 
 }
 
-//２Dオブジェクトの追加
+
+/// @brief オブジェクトをリストに追加するため
+/// @param オブジェクトポインタ
+/// @details リストへの要素追加
 void ObjectManager::AddObject(Object2D* object2D)
 {
-	mObject2DList.push_back(object2D);
+	object_2d_list_.push_back(object2D);
 }
 
-//2Dオブジェクトの全削除
+
+/// @brief 全ての2Dオブジェクトを削除するため
+/// @details 2Dオブジェクトリストのクリア
 void ObjectManager::DeleteAll2D()
 {
-	Master::mpInfClassManager->LogList.clear();
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); /* ここは空なので注意 */)
+	Master::inf_class_manager_->LogList.clear();
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end();)
 	{
 		Object2D* temp = *itr;
 
-		//リストから削除
-		itr = mObject2DList.erase(itr);
+		itr = object_2d_list_.erase(itr);
 
-		//オブジェクトそのものを削除
 		delete temp;
 		temp = nullptr;
 	}
 }
 
-//削除する必要のあるオブジェクトがあれば削除する
+
+/// @brief 削除フラグが立っている2Dオブジェクトを削除するため
+/// @details リストからの要素削除
 void ObjectManager::DeleteAll2DIfNeeded()
 {
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); /* ここは空なので注意 */)
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end();)
 	{
-		if ((*itr)->IsDeleteFlag() == true)//省略すると(*itr)->IsDeleteFlag()
+		if ((*itr)->IsDeleteFlag() == true)
 		{
 			Object2D* temp = *itr;
 
-			//リストから削除
-			itr = mObject2DList.erase(itr);
+			itr = object_2d_list_.erase(itr);
 
-			//オブジェクトそのものを削除
 			delete temp;
 			temp = nullptr;
 		}
 		else
 		{
-			//次の要素へ進める
 			itr++;
 		}
 
 	}
 }
 
-//指定したタグの２Dオブジェクトを取得
-Object2D* ObjectManager::GetObject2DByTag(Object2D::Tag2D tag)
+Object2D* 
+/// @brief 特定のタグを持つ2Dオブジェクトを取得するため
+/// @param Object2D::Tag2D tag
+/// @return Object2D*
+ObjectManager::GetObject2DByTag(Object2D::Tag2D tag)
 {
-	//std::findを利用して対象のオブジェクトを探す
 	auto itr = std::find_if(
-		mObject2DList.begin(),
-		mObject2DList.end(),
-		[&](Object2D* obj) {return obj->GetTag() == tag; } //ラムダ式
-		//[&]...今回の場合、mObject2DListの要素を[参照]するという意味合い
-		//(Object2D *obj)...参照したオブジェクトの型と引数名
-		//{...}...処理内容（今回は条件)
-		//[](){...}この形がラムダ式の基本
+		object_2d_list_.begin(),
+		object_2d_list_.end(),
+		[&](Object2D* obj) {return obj->GetTag() == tag; }
 	);
 
-	//見つかったかどうかを判定
-	if (itr != mObject2DList.end())
+	if (itr != object_2d_list_.end())
 	{
-		return (*itr);//オブジェクトが見つかった
+		return (*itr);
 	}
-	return nullptr;  //オブジェクトが見つからなかった
+	return nullptr;
 }
 
-//指定したたぐの2Dオブジェクトのリストを取得
 std::vector<Object2D*>ObjectManager::GetObject2DListByTag(Object2D::Tag2D tag)
 {
 	std::vector<Object2D*>ret;
 
-	for (auto itr = mObject2DList.begin(); itr != mObject2DList.end(); itr++)
+	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
 	{
-		//tagとおなじタグを持っているオブジェクトがあればvectorに入れる
 		if ((*itr)->GetTag() == tag)
 		{
 			ret.push_back(*itr);

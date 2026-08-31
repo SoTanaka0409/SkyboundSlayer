@@ -1,26 +1,27 @@
-#include"DrawCircle1.h"
+﻿#include"DrawCircle1.h"
 #include"Master.h"
 #include"Dxlib.h"
 #include"SceneManager.h"
 #include"ObjectManager.h"
+#include"Player3D.h"
 
 
+
+/// @brief DrawCircle1の初期化（コンストラクタ）
 DrawCircle1::DrawCircle1(std::string filename, VECTOR centerPos)
 	:Object3D(centerPos)
     ,radius(600)
     ,Maxradius(400)
-    ,mnCenter(centerPos)
+    ,center_(centerPos)
 {
 	//^O
 	SetTag(Object3D::Tag3D_Object);
 
     
-	//
-	mnGraphHandle = LoadGraph(filename.c_str());
+	graph_handle_ = LoadGraph(filename.c_str());
 
-    auto mpPlayer = Master::mpSceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DByTag(Object3D::Tag3D_Player3D);
-    auto pPlayer = dynamic_cast<Player3D*>(mpPlayer);
-   //ANVN 
+    auto player_ = Master::player_;
+    auto pPlayer = Master::player_;
     OldPosition = pPlayer->GetPosition();
 
     
@@ -32,40 +33,21 @@ DrawCircle1::DrawCircle1(std::string filename, VECTOR centerPos)
 DrawCircle1::~DrawCircle1()
 {
 
-	//j
-	DeleteGraph(mnGraphHandle);
+	DeleteGraph(graph_handle_);
 }
 
 
-//XV
+
+/// @brief DrawCircle1の状態更新処理
 void DrawCircle1::Update()
 {
     
 }
 //`
+
+/// @brief DrawCircle1の描画処理
 void DrawCircle1::Draw()
 {
     
-
-
-
-
-    //    // S_
-    //    v0.dif = GetColorU8(255, 0, 0, 100); // 
-
-    //    // O@
-    //    v1.pos = VGet(
-    //        center.x + sinf(a1) * radius,
-    //        center.y + 0.5f,
-    //        center.z + cosf(a1) * radius
-
-    //    // OA
-    //    v2.pos = VGet(
-    //        center.x + sinf(a2) * radius,
-    //        center.y + 0.5f,
-    //        center.z + cosf(a2) * radius
-
-    //// ON
-
 
 }

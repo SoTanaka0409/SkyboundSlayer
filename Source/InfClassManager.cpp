@@ -1,6 +1,5 @@
-#include"InfClassManager.h"
+﻿#include"InfClassManager.h"
 #include"ItemManager.h"
-#include"WeaponManager.h"
 #include"Master.h"
 
 InfClassManager::InfClassManager()
@@ -22,7 +21,7 @@ void InfClassManager::Update()
 	for (auto Log = LogList.begin(); Log != LogList.end(); Log++)
 	{
 		
-		(*Log)->SetPosition(VGet(0, 700 - 30 * Lognumber, 0));
+		(*Log)->SetPosition(VGet(0.0f, 700.0f - 30.0f * static_cast<float>(Lognumber), 0.0f));
 		Lognumber++;
 		
 	}
@@ -40,4 +39,5 @@ void InfClassManager::Update()
 	}
 
 }
+
 

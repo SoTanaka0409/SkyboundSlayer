@@ -1,148 +1,112 @@
-#include"Enemy3D.h"
-#include"Model.h"
-#include"Master.h"
-#include"Player3D.h"
-#include"Object3D.h"
-#include"ObjectManager.h"
-//
-#include"Scene3D.h"
-#include"SceneManager.h"
-#include"Stage.h"
-#include"DrawHp.h"
+﻿#include "Enemy3D.h"
+#include "Model.h"
+#include "Master.h"
+#include "Player3D.h"
+#include "Object3D.h"
+#include "ObjectManager.h"
+#include "GameScene.h"
+#include "SceneManager.h"
+#include "Stage.h"
+#include "DrawHp.h"
+#include "Wall.h"
+#include "Scene.h"
+#include "Tree.h"
+#include "Effect.h"
+#include "InputManager.h"
+#include "SphereCollider.h"
+#include "CapsuleCollider.h"
+#include "Magic_Ene.h"
 
-
-#include"Wall.h"
-#include"Scene.h"
-#include"Tree.h"
-#include"Effect.h"
-#include"InputManager.h"
-#include"SphereCollider.h"
-#include"CapsuleCollider.h"
-#include"Magic_Ene.h"
-
-Enemy3D::Enemy3D(std::string filename, VECTOR initPos, float hp,float speed,float HitSize,float Serch1,float Serch2,float Serch3,float xp,int money, bool isSeparateAnim)
-	:Enemy(filename,initPos,  hp, speed,2,HitSize,Serch1,Serch2,Serch3,xp,money, isSeparateAnim)
-	
-	
-	
-	//,Animation(false)
+/// @param filename=モデルパス, initPos=初期座標, hp=体力, speed=移動速度, HitSize=判定半径, Serch1~3=各種索敵半径, money=撃破報酬, is_separate_anim_=アニメ分割フラグ
+/// @details 3Dモデルの基底構築、各モーション（待機・走り・死亡・魔法攻撃）のアセット登録、および初期スケール適用
+Enemy3D::Enemy3D(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
+	: Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 {
-	mbMagic = true;
-	mnChance = 70;//�A�C�e���̃h���b�v�m��
-	AttackInterval = 60;
-	AttackCount = 0;
+	chance_ = 70; // ゲームバランス調整：ザコ敵を倒した際のテンポを維持しつつ、程よいリソース供給を行うためのドロップ確率（70%）
+	attack_interval_ = 60;
+	attack_count_ = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
-	//���f���̐���
-	mpModel->AddAnimation(ANIMATION_NEUTRAL, "Resource/Model/Idle.mv1");
-	mpModel->AddAnimation(ANIMATION_RUN, "Resource/Model/Run.mv1");
-	mpModel->AddAnimation(ANIMATION_DYING, "Resource/Model/Dying.mv1");
-	mpModel->AddAnimation(ANIMATION_ATTACK, "Resource/Model/MagicAttack.mv1");
-	
-	mpModel->SetScale(VGet(1.3f, 1.3f, 1.3f));
-	//new DrawHp("",  //�摜��
-	//	(VAdd(mvPosition, VGet(0.0f, 100.0f, 0.0f))),//���S���W
-	mpDebug = new Debug();
-	/*Item::ItemInformation* itemInfo;
-	itemInfo = new Item::ItemInformation();
-	itemInfo->Count = 1;
-	itemInfo->ID = Item::ItemID::HEAL;
-	itemInfo->isLog = true;
-	itemInfo->Name = "heal";
-	mpItemManager->AddItem(itemInfo);*/
-	
+
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
+	model_->AddAnimation(ANIMATION_DYING, "Resource/3Dモデル/キャラクターとアニメーション/13_死亡アニメーション.mv1");
+	model_->AddAnimation(ANIMATION_ATTACK, "Resource/3Dモデル/キャラクターとアニメーション/14_魔法攻撃アニメーション.mv1");
+
+	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
 }
 
 Enemy3D::~Enemy3D()
 {
-	Delete();
-	SetDeleteFlag(true);
 }
 
+/// @details 死亡時の消滅処理、または生存時における攻撃判定・移動物理計算・アニメーションフレーム更新とコライダー位置同期
 void Enemy3D::Update()
 {
-	if (isDead)
+	if (is_dead_)
 	{
 		DeathEnemy();
 	}
 	else
 	{
-
-		if (mpModel != nullptr)
+		if (model_ != nullptr)
 		{
-
 			Attack();
 
-			if (!(mpModel->GetNowState() == ANIMATION_ATTACK))
+			// 操作性制約：魔法詠唱アニメーションの最中に敵が滑るように移動する違和感を防ぐため、攻撃モーション中のみ移動と旋回をロック
+			if (!(model_->GetNowState() == ANIMATION_ATTACK))
 			{
 				RotationByMove();
 				Move();
-
-
 			}
 
-			mpModel->Update();
-			//mpDH->Update();//drawHp�̃A�b�v�f�[�g���Ă�
-			CollPositionUpdate();
-
-
+			model_->Update();
+			UpdateColliderPosition();
 		}
 	}
 }
 
+/// @details 3Dモデルの描画、およびデバッグモード有効時におけるコリジョン形状のワイヤーフレームオーバーレイ表示
 void Enemy3D::Draw()
 {
-	if (mpModel != nullptr)
+	if (model_ != nullptr)
 	{
-		mpModel->Draw();
+		model_->Draw();
 	}
-	if (Master::mpDebug->Getdebug() == true&& Master::mpEnemySerch->getSerch() == false)
+
+	// デバッグ支援：ゲームプレイ中にレイキャストやUFO吸引コライダーとの正確な接触範囲を目視確認するため、実判定と完全同期したカプセルを描画
+	if (Master::debug_->Getdebug() == true)
 	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
-			mfSize,
+		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
+			size_,
 			8,
 			GetColor(255, 255, 255),
 			GetColor(255, 255, 255),
 			false
 		);
 	}
-	if (Master::mpEnemySerch->getSerch() == true)
-	{
-		DrawCapsule3D(mvPosition, VAdd(mvPosition, VGet(0.0f, 150.0f, 0.0f)),
-			mfSize*5,
-			8,
-			GetColor(255, 0, 0),
-			GetColor(255, 0, 0),
-			false
-		);
-	}
-	
-	
 }
 
+/// @details 攻撃アニメーションの開始、インターバルカウンターのリセット、および魔法弾オブジェクト（Magic_Ene）の動的生成
+void Enemy3D::Attack()
+{
+	AnimationState now = model_->GetNowState();
 
-
-	void Enemy3D::Attack()
+	if (attack_count_ >= attack_interval_ && is_hit_attack_search_flag_)
 	{
-		AnimationState now = mpModel->GetNowState();
-		
-		if (AttackCount >= AttackInterval && isHitAttackSearch)
-		{
-			AttackCount = 0;
-			//�U�����[�V�����ɕύX
-			mpModel->ChangeAnimation(ANIMATION_ATTACK);
-			//���[�v�͂����Ȃ�
-			mpModel->SetLoop(false);
-			//���[�V������͑ҋ@���[�V�����ɖ߂�
-			mpModel->SetLoopFinishState(ANIMATION_NEUTRAL);
-			isHitAttackSearch = false;
-			new Magic_Ene("Resource/Damage.png", VAdd(mvPosition,VGet(0.0f,100.0f,0.0f)), 50.0f, 5, 30.0f, GoPosition, 0, 150);
-		}
-		if (!(now == ANIMATION_ATTACK))
-		{
-			AttackCount++;
-			AttackHitJudgmentflag = false;//�����蔻��̕���
-		}
+		attack_count_ = 0;
+		model_->ChangeAnimation(ANIMATION_ATTACK);
+
+		// 外部仕様制約：攻撃モーションがループ再生されて何度も弾丸が多重生成されるバグを防ぐため、再生は1回のみに制限し自動で待機状態へ遷移させる
+		model_->SetLoop(false);
+		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+		is_hit_attack_search_flag_ = false;
+
+		new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 50.0f, 5, 30.0f, go_position_, 0, 150);
 	}
 
-	
-	
+	if (!(now == ANIMATION_ATTACK))
+	{
+		attack_count_++;
+		is_attack_hit_judgment_flag_ = false; // 次の攻撃ターンで再び自機へのダメージ判定を行えるようにするためのフラグ復帰
+	}
+}
