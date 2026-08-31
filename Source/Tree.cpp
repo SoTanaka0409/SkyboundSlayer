@@ -1,6 +1,6 @@
 ﻿#include"Tree.h"
 #include"ObjectManager.h"
-#include"Scene3D.h"
+#include"GameScene.h"
 #include"SceneManager.h"
 #include"Master.h"
 #include"Stage.h"

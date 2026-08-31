@@ -1,34 +1,32 @@
 ﻿#include "EquipmentManager.h"
-#include "Master.h"
 #include "InfClass.h"
+#include "Master.h"
 
-
-/// @brief EquipmentManagerの初期化（コンストラクタ）
+/// @brief EquipmentManagerクラスのコンストラクタ
 EquipmentManager::EquipmentManager()
 {
 }
 
+/// @brief EquipmentManagerクラスのデストラクタ
 EquipmentManager::~EquipmentManager()
 {
 }
 
-
-/// @brief EquipmentManagerの描画処理
+/// @brief 装備関連の描画処理を行う
 void EquipmentManager::Draw()
 {
 }
 
-
-/// @brief EquipmentManagerの状態更新処理
+/// @brief 装備状態やタイマー等の毎フレーム更新処理を行う
 void EquipmentManager::Update()
 {
 }
 
-
-/// @brief EquipmentManagerのAddEquipment処理
+/// @brief 新しい装備データをリストに追加、または既存の同種装備の性能を上書き更新する
+/// @param date 追加・更新する装備データ構造体へのポインタ
 void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 {
-	for (auto itr = date_list_.begin(); itr != date_list_.end(); itr++)
+	for (auto itr = date_list_.begin(); itr != date_list_.end(); ++itr)
 	{
 		if ((*itr)->id == date->id)
 		{
@@ -77,29 +75,23 @@ void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 	date_list_.push_back(date);
 }
 
-
-/// @brief EquipmentManagerのWearEquipment処理
+/// @brief 指定した装備をプレイヤーに装着（装備状態を有効化）する
+/// @param date 装着する装備データのポインタ
 void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 {
-	for (auto itr = date_list_.begin(); itr != date_list_.end(); itr++)
+	for (auto itr = date_list_.begin(); itr != date_list_.end(); ++itr)
 	{
-		(*itr)->get_ = false;
+		(*itr)->get_ = ((*itr)->id == date->id);
 	}
-	for (auto itr = date_list_.begin(); itr != date_list_.end(); itr++)
-	{
-		if ((*itr)->id == date->id)
-		{
-			(*itr)->get_ = true;
-		}
-	}
+
 	GetDamage();
 }
 
-
-/// @brief EquipmentManagerのGetDamage処理
+/// @brief 現在装着（有効化）されている装備の攻撃補正値（ダメージ）を取得する
+/// @return float 装着中装備のダメージ補正値（未装着時は0.0f）
 float EquipmentManager::GetDamage()
 {
-	for (auto itr = date_list_.begin(); itr != date_list_.end(); itr++)
+	for (auto itr = date_list_.begin(); itr != date_list_.end(); ++itr)
 	{
 		if ((*itr)->get_)
 		{

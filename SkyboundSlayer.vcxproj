@@ -69,7 +69,7 @@
     <ClCompile Include="Source\Save.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
-    <ClCompile Include="Source\Scene3D.cpp" />
+    <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\SceneGame.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Fade.cpp" />
@@ -142,7 +142,7 @@
     <ClInclude Include="Source\Save.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\GameManager.h" />
-    <ClInclude Include="Source\Scene3D.h" />
+    <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\SceneGame.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\Fade.h" />

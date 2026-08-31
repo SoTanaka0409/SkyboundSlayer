@@ -1,6 +1,6 @@
 ﻿#include <fstream>
 #include <sstream>
-#include"Scene3D.h"
+#include"GameScene.h"
 #include"Config.h"
 #include"Enemy3D_AT.h"
 #include"Player3D.h"
@@ -18,19 +18,19 @@
 #include"StageObject.h"
 
 /// @details 非同期ロード進行用フラグとタイマーの初期化
-Scene3D::Scene3D()
+GameScene::GameScene()
 	: load_timer_(500)     // ロード待機フレーム数
 	, load_count_(0)       // ロード完了アセット数
 	, is_load_flag_(true)  // ロード中判定フラグ
 {
 }
 
-Scene3D::~Scene3D()
+GameScene::~GameScene()
 {
 }
 
 /// @details 3D環境の設定、アクター生成、ステージ情報のパース処理の実行
-void Scene3D::Initialize()
+void GameScene::Initialize()
 {
 	SceneGame::Initialize();
 	SetupEnvironment();
@@ -39,10 +39,12 @@ void Scene3D::Initialize()
 	LoadStageObjectsFromCsv();
 	CreateSkyBox();
 	Master::sound_manager_->PlayBGM(SoundManager::BGM_GAME);
+
+	SetMouseDispFlag(false);
 }
 
 /// @details DXライブラリのフォグ・環境光設定のグローバル変更
-void Scene3D::SetupEnvironment()
+void GameScene::SetupEnvironment()
 {
 	// 空間の奥行きを表現し、遠方のモデル描画の境界を自然に馴染ませるためフォグを設定
 	SetFogEnable(TRUE);
@@ -57,7 +59,7 @@ void Scene3D::SetupEnvironment()
 }
 
 /// @details プレイヤーやショップ等の必須アクターオブジェクトのヒープ確保
-void Scene3D::CreateInitialActors()
+void GameScene::CreateInitialActors()
 {
 	new Player3D("Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
 	new StatShop("Resource/3Dモデル/キャラクターとアニメーション/04_ショップ店員モデル.mv1", VGet(-1500, 100, 1500));
@@ -65,14 +67,14 @@ void Scene3D::CreateInitialActors()
 }
 
 /// @details 地形モデルおよび当たり判定モデルの生成
-void Scene3D::CreateStage()
+void GameScene::CreateStage()
 {
 	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", VGet(200.0f, 100.0f, 200.0f));
 	new Stage(Config::GetStageCenter(), "Resource/3Dモデル/ステージ/通常ステージ/01_通常ステージモデル.mv1", "Resource/3Dモデル/ステージ/通常ステージ/02_通常ステージ当たり判定モデル.mv1", VGet(3.0f, 0.3f, 3.0f));
 }
 
 /// @details CSVファイルからのデータ読み込みおよびステージオブジェクトの大量生成
-void Scene3D::LoadStageObjectsFromCsv()
+void GameScene::LoadStageObjectsFromCsv()
 {
 	std::ifstream file(L"Resource/データ/CSV/01_ステージ配置データ.csv");
 	if (file.is_open())
@@ -131,7 +133,7 @@ void Scene3D::LoadStageObjectsFromCsv()
 }
 
 /// @details 天球ドームの生成とテクスチャの適用
-void Scene3D::CreateSkyBox()
+void GameScene::CreateSkyBox()
 {
 	SkyBox* pSkyBox = new SkyBox("Resource/3Dモデル/背景/空/01_空ドームモデル.x", VGet(0, 0, -5000));
 	float scale = 13.0f;
@@ -140,7 +142,7 @@ void Scene3D::CreateSkyBox()
 }
 
 /// @details ゲーム状態の更新およびリザルト画面への遷移
-void Scene3D::Update()
+void GameScene::Update()
 {
 	SceneGame::Update();
 	Master::save_->Update();
@@ -179,15 +181,15 @@ void Scene3D::Update()
 }
 
 /// @details 3Dモデル、UI、デバッグ用グリッドの描画
-void Scene3D::Draw()
+void GameScene::Draw()
 {
 	SceneGame::Draw();
 	Master::save_->Draw();
-	DrawDebugGrid();
+
 }
 
 /// @details 地面へのグリッド線の描画
-void Scene3D::DrawDebugGrid()
+void GameScene::DrawDebugGrid()
 {
 	// マップ作成時やデバッグ時の座標スケール感を目視確認しやすくするための補助線
 	const int count = 51;
@@ -211,7 +213,7 @@ void Scene3D::DrawDebugGrid()
 }
 
 /// @details BGM停止と描画設定の初期化
-void Scene3D::Finalize()
+void GameScene::Finalize()
 {
 	Master::sound_manager_->StopBGM();
 	SceneGame::Finalize();

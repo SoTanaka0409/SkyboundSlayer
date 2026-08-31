@@ -1,22 +1,21 @@
 ﻿#include "ShortInventory.h"
-#include "Master.h"
-#include "InputManager.h"
 #include "Config.h"
+#include "InputManager.h"
+#include "Master.h"
 #include <iterator>
 
-
-/// @brief ShortInventoryの初期化（コンストラクタ）
+/// @brief ShortInventoryクラスのコンストラクタ
 ShortInventory::ShortInventory()
 	: selected_index_(0)
 {
 }
 
+/// @brief ShortInventoryクラスのデストラクタ
 ShortInventory::~ShortInventory()
 {
 }
 
-
-/// @brief ShortInventoryの状態更新処理
+/// @brief ショートカットインベントリの選択切り替え・使用入力判定などの毎フレーム更新処理を行う
 void ShortInventory::Update()
 {
 	int itemCount = GetItemCount();
@@ -34,8 +33,8 @@ void ShortInventory::Update()
 	}
 }
 
-
-/// @brief ShortInventoryのGetItemCount処理
+/// @brief インベントリ内に保持されているアイテムの種類数を取得する
+/// @return int 所持アイテムの種類数
 int ShortInventory::GetItemCount() const
 {
 	if (!Master::item_manager_)
@@ -43,11 +42,11 @@ int ShortInventory::GetItemCount() const
 		return 0;
 	}
 
-	return (int)Master::item_manager_->item_list_.size();
+	return static_cast<int>(Master::item_manager_->item_list_.size());
 }
 
-
-/// @brief ShortInventoryのClampSelectedIndex処理
+/// @brief 選択インデックスがアイテムリストの範囲外にならないようクランプ（ループ補正）処理を行う
+/// @param itemCount 現在の所持アイテム総数
 void ShortInventory::ClampSelectedIndex(int itemCount)
 {
 	if (itemCount <= 0)
@@ -66,8 +65,8 @@ void ShortInventory::ClampSelectedIndex(int itemCount)
 	}
 }
 
-
-/// @brief ShortInventoryのHandleSelectionInput処理
+/// @brief 左右キー入力による選択アイテムのインデックス切り替え処理を行う
+/// @param itemCount 現在の所持アイテム総数
 void ShortInventory::HandleSelectionInput(int itemCount)
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_RIGHT))
@@ -83,8 +82,7 @@ void ShortInventory::HandleSelectionInput(int itemCount)
 	}
 }
 
-
-/// @brief ShortInventoryのUseSelectedItem処理
+/// @brief 現在選択されているアイテムを消費・使用する
 void ShortInventory::UseSelectedItem()
 {
 	Item::ItemInformation* info = GetSelectedItem();
@@ -94,11 +92,16 @@ void ShortInventory::UseSelectedItem()
 	}
 }
 
-
-/// @brief ShortInventoryのGetSelectedItem処理
+/// @brief 現在選択されているアイテムのデータ構造体へのポインタを取得する
+/// @return Item::ItemInformation* 選択中のアイテム情報ポインタ（選択不可時はnullptr）
 Item::ItemInformation* ShortInventory::GetSelectedItem() const
 {
 	if (!Master::item_manager_)
+	{
+		return nullptr;
+	}
+
+	if (selected_index_ < 0 || selected_index_ >= GetItemCount())
 	{
 		return nullptr;
 	}
@@ -113,8 +116,7 @@ Item::ItemInformation* ShortInventory::GetSelectedItem() const
 	return *it;
 }
 
-
-/// @brief ShortInventoryの描画処理
+/// @brief ショートカットUIの描画処理を行う
 void ShortInventory::Draw()
 {
 	int itemCount = GetItemCount();
@@ -133,23 +135,26 @@ void ShortInventory::Draw()
 	DrawItemPanel(info);
 }
 
-
-/// @brief ShortInventoryのDrawItemPanel処理
+/// @brief 画面右下にアイテム枠・選択名・所持数・操作ガイドUIを描画する
+/// @param info 描画対象となる選択中のアイテム情報構造体ポインタ
 void ShortInventory::DrawItemPanel(const Item::ItemInformation* info)
 {
 	const int boxW = 300;
 	const int boxH = 74;
 	const int boxX = Config::ScreenWidth - boxW - 28;
 	const int boxY = Config::ScreenHeight - boxH - 28;
+
 	const int panel = GetColor(18, 17, 20);
 	const int panelLight = GetColor(38, 35, 38);
 	const int gold = GetColor(198, 154, 64);
 	const int goldDark = GetColor(98, 73, 32);
 
+	// 背景シャドウ半透明描画
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
 	DrawBox(boxX - 6, boxY - 4, boxX + boxW + 6, boxY + boxH + 6, GetColor(0, 0, 0), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	// UI枠パネル描画
 	DrawBox(boxX, boxY, boxX + boxW, boxY + boxH, panel, TRUE);
 	DrawBox(boxX + 6, boxY + 6, boxX + boxW - 6, boxY + 12, panelLight, TRUE);
 	DrawLine(boxX, boxY, boxX + boxW, boxY, gold, 1);
@@ -157,6 +162,7 @@ void ShortInventory::DrawItemPanel(const Item::ItemInformation* info)
 	DrawLine(boxX, boxY, boxX, boxY + boxH, goldDark, 1);
 	DrawLine(boxX + boxW, boxY, boxX + boxW, boxY + boxH, gold, 1);
 
+	// アイテム情報テキスト描画
 	DrawFormatString(boxX + 18, boxY + 12, GetColor(245, 226, 174), "ITEM");
 	DrawFormatString(boxX + 78, boxY + 12, GetColor(238, 238, 238), "%s", info->Name.c_str());
 	DrawFormatString(boxX + 78, boxY + 42, GetColor(205, 210, 216), "x %d", info->Count);

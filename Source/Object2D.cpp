@@ -1,7 +1,7 @@
 ﻿#include"Object2D.h"
 #include"Master.h"
 #include"ObjectManager.h"
-#include"Scene3D.h"
+#include"GameScene.h"
 #include"Scene.h"
 
 

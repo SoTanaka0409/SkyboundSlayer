@@ -28,6 +28,7 @@ TitleScene::~TitleScene()
 /// @details カメラ・進行度・コライダーの初期化、BGM再生、およびタイトル専用3D背景・ステージオブジェクトの生成を行う
 void TitleScene::Initialize()
 {
+	SetMouseDispFlag(true);
 	Master::camera_->Initialize();
 	// 周回プレイ時の不具合を防ぐため、タイトルに戻った時点でクリア回数とコライダー情報をリセットする
 	Master::game_clear_count_ = 0;
@@ -130,7 +131,7 @@ void TitleScene::HandleMenuInput()
 	if (IsHoverStart(mx, my))
 	{
 		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
-		Master::scene_manager_->SetNextScene(SceneManager::kScene3D);
+		Master::scene_manager_->SetNextScene(SceneManager::kGameScene);
 	}
 	else if (IsHoverRule(mx, my))
 	{

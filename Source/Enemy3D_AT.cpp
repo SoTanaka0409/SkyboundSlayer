@@ -4,7 +4,7 @@
 #include "Player3D.h"
 #include "Object3D.h"
 #include "ObjectManager.h"
-#include "Scene3D.h"
+#include "GameScene.h"
 #include "SceneManager.h"
 #include "Stage.h"
 #include "DrawHp.h"
@@ -30,7 +30,7 @@ Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float spe
 	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
 
 	// 演出仕様：敵の右手に武器モデルを確実に連動（アタッチ）させ、アニメーションによる手首のひねりや振りに刃物の位置を完全同期させる
-	model_->AddAttachment("Resource/3Dモデル/武器/01_剣モデル.mv1", "mixamorig:RightHand");
+	model_->AddAttachment("Resource/3Dモデル/武器/01_剣モデル.mv1", "mixamorig:RightHand", VGet(0.0f, 0.0f, 0.0f), VGet(-DX_PI_F / 4.0f, 0.0f, 0.0f));
 	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
 	model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
 	model_->AddAnimation(ANIMATION_DYING, "Resource/3Dモデル/キャラクターとアニメーション/13_死亡アニメーション.mv1");

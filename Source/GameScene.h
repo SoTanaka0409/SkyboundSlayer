@@ -7,7 +7,7 @@
 #include "GameManager.h"
 
 // 3D空間をベースとしたメインゲームループを管理するシーン。ステージの構築、アクターのロード、環境構築を統括する
-class Scene3D : public SceneGame
+class GameScene : public SceneGame
 {
 private:
     Texture* texture_;  // ロード画面や警告UIなどで使用する2Dテクスチャ（汎用背景等）
@@ -15,10 +15,10 @@ private:
 
 public:
 /// @details 3Dゲームシーン固有のタイマーや状態フラグを安全な初期値にセットアップする
-    Scene3D();
+    GameScene();
 
 /// @details 派生シーンとして確保したリソースを確実に解放するための仮想デストラクタ
-    ~Scene3D();
+    ~GameScene();
 
 /// @details 3Dモデル、CSVからのステージ配置、環境光などのセットアップを開始し、ロード画面へ移行する
     void Initialize();

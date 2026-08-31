@@ -198,7 +198,7 @@ void StatShop::DrawShopNpc(Player3D* player)
 
 	if (dist < 1000.0f)
 	{
-		DrawFormatString(drawX - 60, drawY - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」");
+		DrawFormatString(drawX - 60, drawY - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」 ");
 	}
 
 	model_->Draw();
@@ -214,9 +214,18 @@ void StatShop::Update()
 
 	CloseShopIfPhaseEnding();
 
+	static bool was_shop_open = false;
 	if (Master::is_stat_shop_on_)
 	{
-		UpdateShopMenu();
+		if (was_shop_open)
+		{
+			UpdateShopMenu();
+		}
+		was_shop_open = true;
+	}
+	else
+	{
+		was_shop_open = false;
 	}
 
 	movePosition();
@@ -550,7 +559,7 @@ void StatShop::OnEnter(Collider* collider, Collider* check)
 		if (pPlayer && collider == shop_in_ && pPlayer->GetCollisionCollider() == check)
 		{
 			static int oldEnter = 0;
-			int currentEnter = CheckHitKey(KEY_INPUT_RETURN);
+			int currentEnter = InputManager::CheckDownKey(KEY_INPUT_RETURN);
 			if (currentEnter && !oldEnter && !Master::is_stat_shop_on_)
 			{
 				Master::is_stat_shop_on_ = true;

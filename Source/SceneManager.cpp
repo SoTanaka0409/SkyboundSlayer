@@ -1,6 +1,6 @@
 ﻿#include "SceneManager.h"
 #include "Fade.h"
-#include "Scene3D.h"
+#include "GameScene.h"
 #include "TitleScene.h"
 #include "Scene.h"
 #include "Rule.h"
@@ -98,8 +98,8 @@ void SceneManager::ChangeSceneIfNeeded()
 	case SceneType::kSceneSettings:
 		current_scene_ = new SettingsScene();
 		break;
-	case SceneType::kScene3D:
-		current_scene_ = new Scene3D();
+	case SceneType::kGameScene:
+		current_scene_ = new GameScene();
 		break;
 	case SceneType::kSceneResultScene:
 		current_scene_ = new ResultScene();

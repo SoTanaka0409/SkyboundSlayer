@@ -3,7 +3,7 @@
 #include <cmath>
 #include "Master.h"
 #include "ObjectManager.h"
-#include "Scene3D.h"
+#include "GameScene.h"
 #include "Object3D.h"
 #include "Player3D.h"
 #include "Scene.h"
@@ -143,7 +143,7 @@ void Camera::UpdateRotation()
 	int centerY = 360;
 
 	auto sceneType = Master::scene_manager_->GetCurrentSceneType();
-	if (sceneType == SceneManager::kScene3D) {
+	if (sceneType == SceneManager::kGameScene) {
 		SetMousePoint(centerX, centerY);
 
 		int deltaX = mouseX - centerX;

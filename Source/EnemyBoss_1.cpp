@@ -4,7 +4,7 @@
 #include"Player3D.h"
 #include"Object3D.h"
 #include"ObjectManager.h"
-#include"Scene3D.h"
+#include"GameScene.h"
 #include"SceneManager.h"
 #include"Stage.h"
 #include"DrawHp.h"

@@ -5,7 +5,7 @@
 #include "SceneManager.h"
 #include "Master.h"
 #include "ObjectManager.h"
-#include "Scene3D.h"
+#include "GameScene.h"
 #include "Player3D.h"
 #include "Camera.h"
 #include "ScoreManager.h"

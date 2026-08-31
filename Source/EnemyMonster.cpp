@@ -3,13 +3,23 @@
 #include "Master.h"
 #include "Player3D.h"
 #include "ObjectManager.h"
-#include "Scene3D.h"
+#include "GameScene.h"
 #include "SceneManager.h"
 #include "Magic_Ene.h"
 #include "CapsuleCollider.h"
 
-/// @param filename = モデルパス, initPos = 初期座標, hp = 体力, speed = 移動速度, HitSize
-/// @details 各種戦闘パラメータ（攻撃間隔等）の初期設定および着地判定用コライダーの生成
+/// @brief EnemyMonsterクラスのコンストラクタ
+/// @param filename 使用する3Dモデルのファイルパス
+/// @param initPos 初期配置座標
+/// @param hp 初期・最大体力値
+/// @param speed 移動速度
+/// @param HitSize カプセルコライダーの判定サイズ
+/// @param Serch1 索敵用範囲半径
+/// @param Serch2 攻撃開始用範囲半径
+/// @param Serch3 接近停止用範囲半径
+/// @param money 倒した際に獲得できる資金
+/// @param is_separate_anim_ アニメーションを分離読み込みするかどうかのフラグ
+/// @details 各種戦闘パラメータ（攻撃間隔等）の初期設定および着地判定用コライダーの生成を行う
 EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	: Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 	, attack_state_(AttackState::None)
@@ -25,7 +35,8 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	attack_count_ = 0;
 	SetTag(Object3D::Tag3D_Enemy3D);
 
-	if (model_) {
+	if (model_)
+	{
 		model_->SetScale(VGet(3.0f, 3.0f, 3.0f));
 		model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
 		model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
@@ -37,11 +48,13 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	landing_attack_collider_ = new SphereCollider(this, position_, 800.0f);
 }
 
+/// @brief EnemyMonsterクラスのデストラクタ
 EnemyMonster::~EnemyMonster()
 {
 }
 
-/// @details 死亡時の演出進行、または攻撃ステートに応じた移動処理とモデル更新の同期
+/// @brief 毎フレームの状態更新処理を行う
+/// @details 死亡時の演出進行、または攻撃ステートに応じた移動処理とモデル更新の同期を行う
 void EnemyMonster::Update()
 {
 	if (is_dead_)
@@ -66,21 +79,26 @@ void EnemyMonster::Update()
 	}
 }
 
-/// @details モデルの描画。デバッグ時のみ物理コライダーと攻撃判定範囲を可視化
+/// @brief 3Dモデルの描画処理を行う
+/// @details モデルの描画。デバッグ時のみ物理コライダーと攻撃判定範囲を可視化する
 void EnemyMonster::Draw()
 {
-	if (model_ != nullptr) model_->Draw();
+	if (model_ != nullptr)
+	{
+		model_->Draw();
+	}
 
 	if (Master::debug_->Getdebug() == true)
 	{
 		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)), size_, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
-		if (attack_state_ == AttackState::Jumping || attack_state_ == AttackState::Landing) {
+		if (attack_state_ == AttackState::Jumping || attack_state_ == AttackState::Landing)
+		{
 			DrawSphere3D(position_, 300.0f, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), false);
 		}
 	}
 }
 
-/// @details 現在の攻撃ステートに基づいた各フェーズ更新メソッドの実行
+/// @brief 現在の攻撃ステートに基づいた各フェーズ更新メソッドの実行
 void EnemyMonster::Attack()
 {
 	switch (attack_state_)
@@ -92,6 +110,7 @@ void EnemyMonster::Attack()
 	}
 }
 
+/// @brief 待機（攻撃準備可能）状態の更新処理
 void EnemyMonster::UpdateAttackIdle()
 {
 	if (attack_count_ >= attack_interval_ && IsPlayerInJumpRange())
@@ -106,6 +125,7 @@ void EnemyMonster::UpdateAttackIdle()
 	attack_count_++;
 }
 
+/// @brief 攻撃の溜め（予兆演出）状態の更新処理
 void EnemyMonster::UpdateAttackCharging()
 {
 	charge_timer_++;
@@ -115,10 +135,14 @@ void EnemyMonster::UpdateAttackCharging()
 	model_->SetLoop(false);
 	model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-	// UX仕様：プレイヤーに「攻撃が来る」という予兆（テロップやモデルの溜め）を認識させ、回避行動の準備期間として30フレームの硬直を設ける
-	if (charge_timer_ > 30) StartJumpAttack();
+	// UX仕様：プレイヤーに「攻撃が来る」という予兆を認識させ、回避行動の準備期間として30フレームの硬直を設ける
+	if (charge_timer_ > 30)
+	{
+		StartJumpAttack();
+	}
 }
 
+/// @brief ジャンプ滞空（空中移動・重力計算）状態の更新処理
 void EnemyMonster::UpdateAttackJumping()
 {
 	position_.y += jump_velocity_;
@@ -136,6 +160,7 @@ void EnemyMonster::UpdateAttackJumping()
 	}
 }
 
+/// @brief 着地硬直・範囲判定発生状態の更新処理
 void EnemyMonster::UpdateAttackLanding()
 {
 	charge_timer_++;
@@ -146,6 +171,8 @@ void EnemyMonster::UpdateAttackLanding()
 	}
 }
 
+/// @brief プレイヤーがジャンプ攻撃の射程範囲内にいるか判定する
+/// @return bool 射程内であればtrue
 bool EnemyMonster::IsPlayerInJumpRange() const
 {
 	const float jumpTime = (80.0f / gravity_) * 2.0f;
@@ -159,6 +186,7 @@ bool EnemyMonster::IsPlayerInJumpRange() const
 	return VSquareSize(toPlayer) <= maxJumpDistance * maxJumpDistance;
 }
 
+/// @brief プレイヤーの方向に向けてジャンプベクトルを設定する
 void EnemyMonster::SetJumpDirectionToPlayer()
 {
 	VECTOR toPlayer = go_position_;
@@ -166,6 +194,7 @@ void EnemyMonster::SetJumpDirectionToPlayer()
 	jump_target_dir_ = VSquareSize(toPlayer) > 0.0f ? VNorm(toPlayer) : VGet(0, 0, 1);
 }
 
+/// @brief ジャンプ攻撃の物理パラメータ（初速、方向、滞空時間）を計算して開始する
 void EnemyMonster::StartJumpAttack()
 {
 	attack_state_ = AttackState::Jumping;
@@ -188,7 +217,9 @@ void EnemyMonster::StartJumpAttack()
 	forward_speed_ = dist / jumpTime;
 }
 
-/// @param collider = 自身の判定領域, check = 衝突相手のコライダー
+/// @brief 接触判定の継続処理
+/// @param collider 自身のコライダー
+/// @param check 相手のコライダー
 /// @details 着地攻撃時にプレイヤーとの接触を確認し、ダメージ（2倍補正）を適用して被弾フラグを立てる
 void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 {
@@ -208,7 +239,8 @@ void EnemyMonster::OnTrigger(Collider* collider, Collider* check)
 	Enemy::OnTrigger(collider, check);
 }
 
-/// @details 死亡アニメーションの再生と、完了後の報酬付与・オブジェクト削除
+/// @brief 死亡時の処理を行う
+/// @details 死亡アニメーションの再生と、完了後の報酬付与・オブジェクト削除を行う
 void EnemyMonster::DeathEnemy()
 {
 	is_dead_ = true;
@@ -226,7 +258,8 @@ void EnemyMonster::DeathEnemy()
 	model_->Update();
 }
 
-/// @details 着地攻撃用コライダーの明示的な破棄
+/// @brief オブジェクト破棄時の解放処理を行う
+/// @details 着地攻撃用コライダーの明示的な破棄を行う
 void EnemyMonster::Delete()
 {
 	Enemy::Delete();

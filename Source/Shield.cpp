@@ -3,7 +3,7 @@
 #include"Player3D.h"
 #include"Master.h"
 #include"ObjectManager.h"
-#include"Scene3D.h"
+#include"GameScene.h"
 #include"SceneManager.h"
 #include"Scene.h"
 
