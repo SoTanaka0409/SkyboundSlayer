@@ -5,11 +5,13 @@
 #include "Texture.h"
 #include "EnemyManager.h"
 #include "GameManager.h"
+#include "PauseMenu.h"
 
 // 3D空間をベースとしたメインゲームループを管理するシーン。ステージの構築、アクターのロード、環境構築を統括する
 class GameScene : public SceneGame
 {
 private:
+    PauseMenu* pause_menu_;
     Texture* texture_;  // ロード画面や警告UIなどで使用する2Dテクスチャ（汎用背景等）
     Texture* texture2_; // 汎用UIやエフェクト用のサブテクスチャ
 

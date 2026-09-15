@@ -710,8 +710,8 @@ void Player3D::DrawStatusBars()
 	}
 	DrawLine(48, 49, 382, 49, white, 1);
 	DrawLine(48, 76, 382, 76, iron, 1);
-	DrawFormatString(48, 34, GetColor(245, 226, 174), "HP");
-	DrawFormatString(314, 34, GetColor(232, 225, 215), "%d / %d", (int)hp_, (int)maxHp);
+	DrawFormatString(48, 24, GetColor(245, 226, 174), "HP");
+	DrawFormatString(314, 24, GetColor(232, 225, 215), "%d / %d", (int)hp_, (int)maxHp);
 
 	float slideRatio = attack_slide_cooldown_ > 0 ? (float)attack_slide_count_ / (float)attack_slide_cooldown_ : 1.0f;
 	slideRatio = slideRatio < 0.0f ? 0.0f : slideRatio;
@@ -944,7 +944,7 @@ void Player3D::SelectAttack()
 		break;
 	}
 
-	if (Master::debug_)
+	if (Master::debug_ != nullptr && Master::debug_->Getdebug())
 	{
 		DrawFormatString(300, 300, GetColor(255, 255, 255), "%d", attack_selection_index_);
 	}

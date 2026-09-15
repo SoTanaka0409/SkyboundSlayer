@@ -1,9 +1,9 @@
-ï»¿#include"Buff.h"
+#include"Buff.h"
 #include"Master.h"
 #include"ObjectManager.h"
 
 
-/// @brief Buffã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
+/// @brief Buff‚Ì‰Šú‰»iƒRƒ“ƒXƒgƒ‰ƒNƒ^j
 Buff::Buff(int timer, float effect,Object3D::StatusState type)
 	:Do_buff(true)
 {
@@ -21,7 +21,7 @@ Buff::~Buff()
 }
 
 
-/// @brief Buffã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
+/// @brief Buff‚Ìó‘ÔXVˆ—
 void Buff::Update()
 {
 	efDate.Count++;
@@ -35,7 +35,7 @@ void Buff::Update()
 	}
 	else
 	{
-		DrawFormatString(200, 800, GetColor(255, 0, 0), "buffä½¿ç”¨ä¸­");
+		if (Master::debug_ != nullptr && Master::debug_->Getdebug()) DrawFormatString(200, 800, GetColor(255, 0, 0), "buffŽg—p’†");
 	}
 
 

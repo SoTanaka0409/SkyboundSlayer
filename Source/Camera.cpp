@@ -143,7 +143,7 @@ void Camera::UpdateRotation()
 	int centerY = 360;
 
 	auto sceneType = Master::scene_manager_->GetCurrentSceneType();
-	if (sceneType == SceneManager::kGameScene) {
+	if (sceneType == SceneManager::kGameScene && !Master::is_pause_on_) {
 		SetMousePoint(centerX, centerY);
 
 		int deltaX = mouseX - centerX;

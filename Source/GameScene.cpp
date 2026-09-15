@@ -27,12 +27,14 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+	delete pause_menu_;
 }
 
 /// @details 3D環境の設定、アクター生成、ステージ情報のパース処理の実行
 void GameScene::Initialize()
 {
 	SceneGame::Initialize();
+	pause_menu_ = new PauseMenu();
 	SetupEnvironment();
 	CreateInitialActors();
 	CreateStage();
@@ -144,6 +146,19 @@ void GameScene::CreateSkyBox()
 /// @details ゲーム状態の更新およびリザルト画面への遷移
 void GameScene::Update()
 {
+	if (InputManager::CheckDownKey(KEY_INPUT_P) != 0)
+	{
+		Master::is_pause_on_ = !Master::is_pause_on_;
+		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		SetMouseDispFlag(Master::is_pause_on_ ? TRUE : FALSE);
+	}
+
+	if (Master::is_pause_on_)
+	{
+		if (pause_menu_) pause_menu_->Update();
+		return;
+	}
+
 	SceneGame::Update();
 	Master::save_->Update();
 	Player3D* player = Master::player_;
@@ -185,6 +200,11 @@ void GameScene::Draw()
 {
 	SceneGame::Draw();
 	Master::save_->Draw();
+
+	if (Master::is_pause_on_ && pause_menu_)
+	{
+		pause_menu_->Draw();
+	}
 
 }
 

@@ -102,3 +102,7 @@ __pycache__/
 
 # Intermediate build output
 DxLesson/x64/
+
+# Allow DxLib and Effekseer libs
+!DxLib_VC/**/*.lib
+!EFKforDxLib/**/*.lib
