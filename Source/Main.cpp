@@ -39,6 +39,7 @@ BuffManager* Master::buff_manager_ = new BuffManager();
 Chat* Master::chat_ = new Chat();
 Save* Master::save_ = new Save();
 
+int Master::hit_stop_timer_ = 0;
 bool Master::is_pause_on_ = false;
 bool Master::is_stat_shop_on_ = false;
 bool Master::is_safe_point_on_ = false;
@@ -144,6 +145,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Master::camera_->Finalize();
 	delete Master::camera_;
 	delete Master::resource_manager_;
+	delete Master::debug_;
+	delete Master::draw_hp_;
+	delete Master::enemy_manager_;
+	delete Master::item_manager_;
+	delete Master::inf_class_manager_;
+	delete Master::buff_manager_;
+	delete Master::chat_;
+	delete Master::save_;
 
 	ColliderManager::GetInstance()->Finalize();
 	EffekseerManager::GetInstance()->End();

@@ -1,27 +1,32 @@
-ï»¿#include "ItemManager.h"
+#include "ItemManager.h"
 #include "Buff.h"
 #include "BuffManager.h"
 #include "Master.h"
 #include "ObjectManager.h"
 #include "Player3D.h"
 
-/// @brief ItemManagerã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @brief ItemManagerƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
 ItemManager::ItemManager()
 {
 }
 
-/// @brief ItemManagerã‚¯ãƒ©ã‚¹ã®ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+/// @brief ItemManagerƒNƒ‰ƒX‚ÌƒfƒXƒgƒ‰ƒNƒ^
 ItemManager::~ItemManager()
 {
+	for (auto item : item_list_)
+	{
+		delete item;
+	}
+	item_list_.clear();
 }
 
-/// @brief ã‚¢ã‚¤ãƒ†ãƒ çŠ¶æ…‹ã‚„ã‚¿ã‚¤ãƒãƒ¼ç­‰ã®æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°å‡¦ç†ã‚’è¡Œã†
+/// @brief ƒAƒCƒeƒ€ó‘Ô‚âƒ^ƒCƒ}[“™‚Ì–ˆƒtƒŒ[ƒ€XVˆ—‚ğs‚¤
 void ItemManager::Update()
 {
 }
 
-/// @brief æ–°ã—ã„ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ‰€æŒãƒªã‚¹ãƒˆã«è¿½åŠ ã€ã¾ãŸã¯æ‰€æŒæ•°ã‚’åŠ ç®—ã™ã‚‹
-/// @param mItem è¿½åŠ ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ æƒ…å ±æ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+/// @brief V‚µ‚¢ƒAƒCƒeƒ€‚ğŠƒŠƒXƒg‚É’Ç‰ÁA‚Ü‚½‚ÍŠ”‚ğ‰ÁZ‚·‚é
+/// @param mItem ’Ç‰Á‚·‚éƒAƒCƒeƒ€î•ñ\‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^
 void ItemManager::AddItem(Item::ItemInformation* mItem)
 {
 	if (mItem == nullptr) return;
@@ -29,32 +34,32 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 
 	get_itemflag_ = true;
 
-	// ã‚¢ã‚¤ãƒ†ãƒ IDã«å¿œã˜ãŸåç§°ãŠã‚ˆã³åŸºæœ¬ä¾¡æ ¼ã®è¨­å®š
+	// ƒAƒCƒeƒ€ID‚É‰‚¶‚½–¼Ì‚¨‚æ‚ÑŠî–{‰¿Ši‚Ìİ’è
 	switch (mItem->ID)
 	{
 	case Item::ItemID::NONE:
 		break;
 	case Item::ItemID::HEAL:
-		mItem->Name = "å›å¾©è–¬";
+		mItem->Name = "‰ñ•œ–ò";
 		mItem->price = 100;
 		break;
 	case Item::ItemID::POWER:
-		mItem->Name = "æ”»æ’ƒåŠ›UP";
+		mItem->Name = "UŒ‚—ÍUP";
 		mItem->price = 100;
 		break;
 	case Item::ItemID::HIGHHEAL:
-		mItem->Name = "é«˜ç´šå›å¾©è–¬";
+		mItem->Name = "‚‹‰‰ñ•œ–ò";
 		mItem->price = 300;
 		break;
 	case Item::ItemID::SPEED:
-		mItem->Name = "ã‚¹ãƒ”ãƒ¼ãƒ‰UP";
+		mItem->Name = "ƒXƒs[ƒhUP";
 		mItem->price = 50;
 		break;
 	default:
 		break;
 	}
 
-	// æ—¢å­˜ã®æ‰€æŒã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆå†…ã«åŒç¨®ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª
+	// Šù‘¶‚ÌŠƒAƒCƒeƒ€ƒŠƒXƒg“à‚É“¯íƒAƒCƒeƒ€‚ª‘¶İ‚·‚é‚©Šm”F
 	for (auto itr = item_list_.begin(); itr != item_list_.end(); ++itr)
 	{
 		if ((*itr)->ID == mItem->ID)
@@ -66,7 +71,7 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 				Master::inf_class_manager_->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
 			}
 
-			// é‡è¤‡è¿½åŠ æ™‚ã¯ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯é˜²æ­¢ã®ãŸã‚å¼•æ•°ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è§£æ”¾
+			// d•¡’Ç‰Á‚Íƒƒ‚ƒŠƒŠ[ƒN–h~‚Ì‚½‚ßˆø”‚ÌƒIƒuƒWƒFƒNƒg‚ğ‰ğ•ú
 			delete mItem;
 			return;
 		}
@@ -80,8 +85,8 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 	item_list_.push_back(mItem);
 }
 
-/// @brief æŒ‡å®šã—ãŸIDã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¶ˆè²»ãƒ»ä½¿ç”¨ã™ã‚‹
-/// @param id ä½¿ç”¨ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®è­˜åˆ¥ID
+/// @brief w’è‚µ‚½ID‚ÌƒAƒCƒeƒ€‚ğÁ”ïEg—p‚·‚é
+/// @param id g—p‚·‚éƒAƒCƒeƒ€‚Ì¯•ÊID
 void ItemManager::UseItem(Item::ItemID id)
 {
 	Player3D* player = Master::player_;
@@ -118,8 +123,8 @@ void ItemManager::UseItem(Item::ItemID id)
 	}
 }
 
-/// @brief ã‚¢ã‚¤ãƒ†ãƒ ä½¿ç”¨æ™‚ã®å®Ÿéš›ã®åŠ¹æœï¼ˆHPå›å¾©ã€æ”»æ’ƒãƒ»ç§»å‹•é€Ÿåº¦ãƒãƒ•ä»˜ä¸ï¼‰ã‚’é©ç”¨ã™ã‚‹
-/// @param id åŠ¹æœã‚’é©ç”¨ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®è­˜åˆ¥ID
+/// @brief ƒAƒCƒeƒ€g—p‚ÌÀÛ‚ÌŒø‰ÊiHP‰ñ•œAUŒ‚EˆÚ“®‘¬“xƒoƒt•t—^j‚ğ“K—p‚·‚é
+/// @param id Œø‰Ê‚ğ“K—p‚·‚éƒAƒCƒeƒ€‚Ì¯•ÊID
 void ItemManager::Effect(Item::ItemID id)
 {
 	Player3D* player = Master::player_;

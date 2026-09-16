@@ -114,6 +114,9 @@ Player3D::~Player3D()
 	if (Master::player_ == this) Master::player_ = nullptr;
 	delete model_;
 	delete short_inventory_;
+	delete buff_manager_;
+	delete equipment_manager_;
+	delete have_money_;
 	CollDelete();
 }
 
@@ -829,9 +832,10 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				// 多段ヒットを防ぐため、既にこの攻撃がヒットした敵は除外する
 				if (now == ANIMATION_ATTACK && attack_state_ == kAttackNormal && !is_jumping_ && !pEne->IsHitJudgmentFlagPlayer())
 				{
+					pEne->SetHitJudgmentFlagPlayer(true);
 					pEne->Damage(GetAllStatusState(Object3D::Status_Attack));
 
-					Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
+					Master::camera_->SetupShake(2.0f, 6.0f, 2.0f);
 					EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
 				}
 			}
@@ -851,7 +855,8 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + slide_attack_);
 				pEne->SetHitJudgmentFlagPlayer(true);
 
-				Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
+				Master::camera_->SetupShake(6.0f, 12.0f, 6.0f);
+				if (Master::hit_stop_timer_ == 0) Master::hit_stop_timer_ = 3; // 最初のヒットのみストップ
 				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
 			}
 		}
@@ -877,7 +882,8 @@ void Player3D::ApplyJumpAttackHit(Collider* collider, Collider* check)
 	pEne->SetHitJudgmentFlagPlayer(true);
 	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_);
 
-	Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
+	Master::camera_->SetupShake(8.0f, 15.0f, 8.0f);
+	if (Master::hit_stop_timer_ == 0) Master::hit_stop_timer_ = 4; // 最初の大ダメージ時のみストップ
 	EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
 }
 

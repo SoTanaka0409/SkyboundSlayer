@@ -39,6 +39,7 @@ public:
 	static Chat* chat_;                       ///< チャットUI・メッセージ描画マネージャー
 	static Save* save_;                       ///< セーブデータ入出力を担当するマネージャー
 
+	static int hit_stop_timer_;
 	static bool is_pause_on_;                 ///< メニュー展開時にアクターの更新処理を停止・ポーズするためのフラグ
 	static bool is_stat_shop_on_;             ///< ステータス強化ショップ画面が開いているかを示すフラグ
 	static bool is_near_shop_on_;             ///< プレイヤーがショップNPCの近くにいるかを示す判定フラグ

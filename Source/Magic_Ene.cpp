@@ -1,4 +1,4 @@
-ï»¿#include "Magic_Ene.h"
+#include "Magic_Ene.h"
 #include <cmath>
 #include "SphereCollider.h"
 #include "CapsuleCollider.h"
@@ -8,8 +8,8 @@
 #include "ObjectManager.h"
 #include "Player3D.h"
 
-/// @param filename = ãƒ¢ãƒ‡ãƒ«ãƒ‘ã‚¹, initPos = åˆæœŸä½ç½®, r = å½“ãŸã‚Šåˆ¤å®šåŠå¾„, damage = å¨åŠ›, speed = é€Ÿåº¦, movevec = ç§»å‹•æ–¹å‘, count = å¯¿å‘½ã‚«ã‚¦ãƒ³ã‚¿, time = æœ€å¤§å¯¿å‘½
-/// @details SEã®å†ç”Ÿã€æ”»æ’ƒåŠ›ã®åˆæœŸåŒ–
+/// @param filename = ƒ‚ƒfƒ‹ƒpƒX, initPos = ‰ŠúˆÊ’u, r = “–‚½‚è”»’è”¼Œa, damage = ˆĞ—Í, speed = ‘¬“x, movevec = ˆÚ“®•ûŒü, count = õ–½ƒJƒEƒ“ƒ^, time = Å‘åõ–½
+/// @details SE‚ÌÄ¶AUŒ‚—Í‚Ì‰Šú‰»
 Magic_Ene::Magic_Ene(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time)
 	: Magic(filename, initPos, r, damage, speed, movevec, count, time)
 {
@@ -21,49 +21,49 @@ Magic_Ene::~Magic_Ene()
 {
 }
 
-/// @details ç§»å‹•å‡¦ç†ã€å½“ãŸã‚Šåˆ¤å®šã®è¿½å¾“ã€ãŠã‚ˆã³å¯¿å‘½åˆ°é”æ™‚ã®æ¶ˆæ»…å‡¦ç†
+/// @details ˆÚ“®ˆ—A“–‚½‚è”»’è‚Ì’Ç]A‚¨‚æ‚Ñõ–½“’B‚ÌÁ–Åˆ—
 void Magic_Ene::Update()
 {
 	Magic::Update();
 }
 
-/// @brief ãƒœã‚¹ãƒ»æ•µã®é­”æ³•å¼¾ã®æç”»ï¼ˆç¦ã€…ã—ããƒ—ãƒ­ã£ã½ãè¦‹ã›ã‚‹ï¼‰
+/// @brief ƒ{ƒXE“G‚Ì–‚–@’e‚Ì•`‰æi‰ĞX‚µ‚­ƒvƒ‚Á‚Û‚­Œ©‚¹‚éj
 void Magic_Ene::Draw()
 {
-	// è„ˆæ‰“ã¤ã‚¹ã‚±ãƒ¼ãƒ«æ¼”å‡º
+	// –¬‘Å‚ÂƒXƒP[ƒ‹‰‰o
 	float pulse = 1.0f + 0.15f * sinf(DeleteCount * 0.3f);
 	float scale = magic_size_ * pulse;
 	
-	// åŠ ç®—åŠé€æ˜ã§ç™ºå…‰ã—ã¦ã„ã‚‹ã‚ˆã†ã«è¦‹ã›ã‚‹
+	// ‰ÁZ”¼“§–¾‚Å”­Œõ‚µ‚Ä‚¢‚é‚æ‚¤‚ÉŒ©‚¹‚é
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
 	
-	// å¤–å´ã®ã‚ªãƒ¼ãƒ©ï¼ˆèµ¤ç´«ï½æš—é»’ã£ã½ã„è‰²å‘³ã®å…‰ï¼‰
+	// ŠO‚ÌƒI[ƒ‰iÔŒn“‚Ì­‚µˆÃ‚ß‚ÌFj
 	SetDrawBright(255, 30, 80);
-	DrawBillboard3D(position_, 0.5f, 0.5f, scale * 1.8f, DeleteCount * 0.1f, graph_handle_, TRUE);
+	DrawBillboard3D(position_, 0.5f, 0.5f, scale * kMagicScaleMax, DeleteCount * 0.1f, graph_handle_, TRUE);
 	
-	// ä¸­é–“ã®ã‚ªãƒ¼ãƒ©ï¼ˆé€†å›è»¢ã€ã‚ªãƒ¬ãƒ³ã‚¸ã‚„ç´«ï¼‰
+	// ’†‚ÌƒI[ƒ‰iƒsƒ“ƒN‡Œn‚ÌFj
 	SetDrawBright(200, 50, 255);
-	DrawBillboard3D(position_, 0.5f, 0.5f, scale * 1.3f, -DeleteCount * 0.15f, graph_handle_, TRUE);
+	DrawBillboard3D(position_, 0.5f, 0.5f, scale * kMagicScaleMid, -DeleteCount * 0.15f, graph_handle_, TRUE);
 	
-	// èŠ¯ã®éƒ¨åˆ†ï¼ˆã¾ã°ã‚†ã„ç™½ã€å›è»¢ã•ã›ãªã„ï¼‰
+	// c‚Ì•”•ªi‚Ü‚Î‚ä‚¢”’A‰ñ“]‚È‚µj
 	SetDrawBright(255, 255, 255);
-	DrawBillboard3D(position_, 0.5f, 0.5f, scale * 0.7f, 0.0f, graph_handle_, TRUE);
+	DrawBillboard3D(position_, 0.5f, 0.5f, scale * kMagicScaleMin, 0.0f, graph_handle_, TRUE);
 	
-	// æç”»è¨­å®šã‚’å…ƒã«æˆ»ã™
+	// •`‰æİ’è‚ğŒ³‚É–ß‚·
 	SetDrawBright(255, 255, 255);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
-/// @param collider = è‡ªèº«ã®åˆ¤å®šé ˜åŸŸ, check = è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @param collider = ©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
 void Magic_Ene::OnEnter(Collider* collider, Collider* check)
 {
 }
 
-/// @param collider = è‡ªèº«ã®åˆ¤å®šé ˜åŸŸ, check = è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
-/// @details ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®æ¥è§¦æ™‚ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’é©ç”¨ã—ã€å¼¾ã‚’å³åº§ã«ç ´æ£„ã™ã‚‹
+/// @param collider = ©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
+/// @details ƒvƒŒƒCƒ„[‚Æ‚ÌÚG‚Éƒ_ƒ[ƒW‚ğ“K—p‚µA’e‚ğ‘¦À‚É”jŠü‚·‚é
 void Magic_Ene::OnTrigger(Collider* collider, Collider* check)
 {
-	// ã‚¢ãƒ¼ã‚­ãƒ†ã‚¯ãƒãƒ£è¨­è¨ˆï¼šå¼¾å¹•ã®å¯†åº¦ãŒé«˜ãã¦ã‚‚å‡¦ç†è½ã¡ã‚’é˜²ããŸã‚ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨æ¥è§¦ã—ãŸç¬é–“ã®ã¿è¡çªåˆ¤å®šã‚’è¡Œã„ã€å³åº§ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å›åã™ã‚‹
+	// ƒA[ƒLƒeƒNƒ`ƒƒİŒvF’e–‹‚Ì–§“x‚ª‚‚­‚Ä‚àˆ——‚¿‚ğ–h‚®‚½‚ßAƒvƒŒƒCƒ„[‚ÆÚG‚µ‚½uŠÔ‚Ì‚İÕ“Ë”»’è‚ğs‚¢A‘¦À‚ÉƒIƒuƒWƒFƒNƒg‚ğ‰ñû‚·‚é
 	if (collider == hit_collider_ && check->parent_object_->GetTag() == Tag3D_Player3D)
 	{
 		Player3D* pPlayer = check->parent_object_->CastTo<Player3D>();
@@ -75,7 +75,7 @@ void Magic_Ene::OnTrigger(Collider* collider, Collider* check)
 	}
 }
 
-/// @param collider = è‡ªèº«ã®åˆ¤å®šé ˜åŸŸ, check = è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
+/// @param collider = ©g‚Ì”»’è—Ìˆæ, check = Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
 void Magic_Ene::OnExit(Collider* collider, Collider* check)
 {
 }

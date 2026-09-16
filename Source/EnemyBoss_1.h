@@ -46,12 +46,30 @@ private:
     void UpdateJumpPhysics();
 
     // === 定数 ===
-    static constexpr float kJumpAscendSpeed = 15.0f;  // ジャンプ攻撃時の浮上初速（プレイヤーの視界から消える高さ）
-    static constexpr float kJumpDescendSpeed = -25.0f; // 回避の猶予を削るための急降下落下速度
+    
+    // === ボスの攻撃タイプ ===
+    enum class BossAttackType {
+        kCombo = 0,
+        kMagic = 1,
+        kJump = 2
+    };
+
+    // === パラメータ定数 ===
+    static constexpr float kJumpAttackDamage = 10.0f;
+    static constexpr int kJumpChargeFrames = 30;
+    static constexpr float kJumpInitialVelocity = 80.0f;
+    static constexpr float kMagicScale = 75.0f;
+    static constexpr float kMagicDamage = 5.0f;
+    static constexpr float kMagicSpeed = 30.0f;
+    static constexpr int kMagicLifetime = 150;
+    static constexpr int kAttackChanceThreshold = 30;
+
+    static constexpr float kJumpAscendSpeed = 15.0f;
+    static constexpr float kJumpDescendSpeed = -25.0f;
 
     SphereCollider* jump_attack_coiider_; // 着地時に広範囲へ広がる衝撃波のダメージ判定用コライダー
 
-    int attack_type_;         // 乱数やヘイトに応じて分岐する、現在実行中の攻撃アクションID
+    BossAttackType attack_type_;         // 乱数やヘイトに応じて分岐する、現在実行中の攻撃アクションID
     int attack1_combo_count_; // 連続攻撃の段数（コンボルートの派生判定に使用）
 
     float mfjumpPower;        // 現在のY軸方向への推進力（滞空時間の計算用）

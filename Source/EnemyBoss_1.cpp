@@ -26,9 +26,9 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 {
 	mfjumpPower = 150.0f;       // ジャンプ攻撃時の最大到達高度
 	HighPositionFlag = false;   // ジャンプの頂点到達状態の管理
-	attack_type_ = 0;           // 現在の攻撃パターンの種類
+	attack_type_ = BossAttackType::kCombo;           // 現在の攻撃パターンの種類
 	attack1_combo_count_ = 0;   // 連続魔法攻撃の残り発動回数
-	chance_ = 30;               // 攻撃頻度の重み付けパラメータ
+	chance_ = kAttackChanceThreshold;               // 攻撃頻度の重み付けパラメータ
 	attack_interval_ = 60;      // 連続攻撃を防ぐためのクールタイム（フレーム）
 	attack_count_ = 0;          // クールタイム計測用カウンタ
 	jump_charge_timer_ = 0;
@@ -122,26 +122,26 @@ void EnemyBoss_1::Attack()
 		attack_count_ = 0;
 		is_hit_attack_search_flag_ = false;
 
-		attack_type_ = GetRand(2);
+		attack_type_ = static_cast<BossAttackType>(GetRand(2));
 
-		if (attack_type_ == 0)
+		if (attack_type_ == BossAttackType::kCombo)
 		{
 			attack1_combo_count_ = 3;
 		}
-		else if (attack_type_ == 1)
+		else if (attack_type_ == BossAttackType::kMagic)
 		{
 			model_->ChangeAnimation(ANIMATION_ATTACKMAGIC);
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 			// ボスの弾のサイズと当たり判定を1.5倍にする (50.0f -> 75.0f)
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 75.0f, 5, 30.0f, go_position_, 0, 150);
+			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, go_position_, 0, kMagicLifetime);
 			VECTOR leftGo = VTransform(go_position_, MGetRotY(-30.0f * DX_PI_F / 180.0f));
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 75.0f, 5, 30.0f, leftGo, 0, 150);
+			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, leftGo, 0, kMagicLifetime);
 			VECTOR rightGo = VTransform(go_position_, MGetRotY(30.0f * DX_PI_F / 180.0f));
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 75.0f, 5, 30.0f, rightGo, 0, 150);
+			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, rightGo, 0, kMagicLifetime);
 		}
-		else if (attack_type_ == 2)
+		else if (attack_type_ == BossAttackType::kJump)
 		{
 			model_->ChangeAnimation(ANIMATION_ATTACK);
 			model_->SetLoop(false);
@@ -156,7 +156,7 @@ void EnemyBoss_1::Attack()
 	}
 
 	// パターン0の場合、モーション完了に合わせて段階的に魔法を生成する仕様
-	if (attack_type_ == 0 && attack1_combo_count_ > 0)
+	if (attack_type_ == BossAttackType::kCombo && attack1_combo_count_ > 0)
 	{
 		if (now == ANIMATION_NEUTRAL || now == ANIMATION_RUN)
 		{
@@ -165,7 +165,7 @@ void EnemyBoss_1::Attack()
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 			// ボスの弾のサイズと当たり判定を1.5倍にする (100.0f -> 150.0f)
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 150.0f, 5, 30.0f, go_position_, 0, 150);
+			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 150.0f, 5, 30.0f, go_position_, 0, kMagicLifetime);
 
 			attack1_combo_count_--;
 		}
@@ -198,7 +198,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 				// 多段ヒットを防ぐため、1回のジャンプ攻撃につきダメージは1度のみ
 				if (now == ANIMATION_ATTACK && !is_attack_hit_judgment_flag_)
 				{
-					pPlayer->Damage(attack_);
+					pPlayer->Damage(kJumpAttackDamage);
 					is_attack_hit_judgment_flag_ = true;
 				}
 			}
@@ -243,12 +243,12 @@ void EnemyBoss_1::Delete()
 /// @details 攻撃タイプ2時のボスのY座標および軌道計算の更新
 void EnemyBoss_1::UpdateJumpPhysics()
 {
-	if (model_->GetNowState() == ANIMATION_ATTACK && attack_type_ == 2)
+	if (model_->GetNowState() == ANIMATION_ATTACK && attack_type_ == BossAttackType::kJump)
 	{
 		jump_charge_timer_++;
 		
 		// 溜め期間中（30フレーム目まで）はプレイヤーの方向を向く
-		if (jump_charge_timer_ <= 30)
+		if (jump_charge_timer_ <= kJumpChargeFrames)
 		{
 			VECTOR toPlayer = VSub(Master::player_->GetPosition(), position_);
 			target_angle_ = atan2f(toPlayer.x, toPlayer.z);
@@ -256,9 +256,9 @@ void EnemyBoss_1::UpdateJumpPhysics()
 		}
 
 		// 30フレーム目（アニメーションの溜めが終わるタイミング）でジャンプの物理パラメータを計算・設定
-		if (jump_charge_timer_ == 30)
+		if (jump_charge_timer_ == kJumpChargeFrames)
 		{
-			jump_velocity_ = 80.0f; // EnemyMonsterと同じ初速
+			jump_velocity_ = kJumpInitialVelocity; // EnemyMonsterと同じ初速
 			
 			Player3D* pPlayer = Master::player_;
 			float dist = 0.0f;
