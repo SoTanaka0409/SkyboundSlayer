@@ -484,19 +484,17 @@ void GameManager::DrawDebugPanel()
 	const DebugButton killButton = { 28, 104, 164, 40, "KILL ENEMIES" };
 	const DebugButton bossButton = { 202, 104, 132, 40, "GO BOSS" };
 
-	int fontSize = GetFontSize();
-	SetFontSize(18);
+	static int font18 = -1;
+	if (font18 == -1) font18 = CreateFontToHandle(NULL, 18, -1);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 165);
 	DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(0, 0, 0), true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(92, 68, 30), false);
-	DrawFormatString(panelX + 8, panelY - 18, GetColor(190, 170, 120), "DEBUG  F5 / F6");
+	DrawFormatStringToHandle(panelX + 8, panelY - 18, GetColor(190, 170, 120), font18, "DEBUG  F5 / F6");
 
 	DrawDebugButton(killButton, IsMouseInButton(killButton, mouseX, mouseY));
 	DrawDebugButton(bossButton, IsMouseInButton(bossButton, mouseX, mouseY));
-
-	SetFontSize(fontSize);
 }
 
 /// @brief 現在の進行フェーズに対応するメイン表示テキストを取得する
@@ -561,8 +559,8 @@ int GameManager::GetEnemyCount() const
 /// @brief 画面右上にフェーズ名および敵残数を表示するHUDを描画する
 void GameManager::DrawPhaseHud()
 {
-	int fontSize = GetFontSize();
-	SetFontSize(24);
+	static int font24 = -1;
+	if (font24 == -1) font24 = CreateFontToHandle(NULL, 24, -1);
 
 	const int panelX = Config::ScreenWidth - 356;
 	const int panelY = 28;
@@ -582,11 +580,10 @@ void GameManager::DrawPhaseHud()
 	DrawLine(panelX, panelY + panelH, panelX + panelW, panelY + panelH, goldDark, 1);
 	DrawLine(panelX, panelY, panelX, panelY + panelH, goldDark, 1);
 	DrawLine(panelX + panelW, panelY, panelX + panelW, panelY + panelH, gold, 1);
-	DrawFormatString(panelX + 18, panelY + 19, GetColor(245, 226, 174), "%s", GetPhaseLabel());
-	DrawFormatString(panelX + 18, panelY + 48, GetColor(205, 210, 216), "%s", GetPhaseSubLabel());
-	DrawFormatString(panelX + 230, panelY + 48, GetColor(238, 238, 238), "x%02d", GetEnemyCount());
-
-	SetFontSize(fontSize);
+	
+	DrawFormatStringToHandle(panelX + 18, panelY + 19, GetColor(245, 226, 174), font24, "%s", GetPhaseLabel());
+	DrawFormatStringToHandle(panelX + 18, panelY + 48, GetColor(205, 210, 216), font24, "%s", GetPhaseSubLabel());
+	DrawFormatStringToHandle(panelX + 230, panelY + 48, GetColor(238, 238, 238), font24, "x%02d", GetEnemyCount());
 }
 
 /// @brief ショップフェーズ中のタイマー・アナウンス用上部バナーを描画する
@@ -597,8 +594,8 @@ void GameManager::DrawShopBanner()
 		return;
 	}
 
-	int fontSize = GetFontSize();
-	SetFontSize(28);
+	static int font28 = -1;
+	if (font28 == -1) font28 = CreateFontToHandle(NULL, 28, -1);
 
 	const int bannerW = 700;
 	const int bannerX = Config::ScreenWidth / 2 - bannerW / 2;
@@ -615,14 +612,12 @@ void GameManager::DrawShopBanner()
 	if (current_phase_ != Phase::kShop3)
 	{
 		int seconds = shop_timer_ / 60;
-		DrawFormatString(bannerX + 210, bannerY + 14, GetColor(255, 238, 156), "NEXT WAVE IN %d", seconds);
+		DrawFormatStringToHandle(bannerX + 210, bannerY + 14, GetColor(255, 238, 156), font28, "NEXT WAVE IN %d", seconds);
 	}
 	else
 	{
-		DrawFormatString(bannerX + 108, bannerY + 14, GetColor(141, 239, 255), "ENTER THE BLUE TELEPORTER TO START BOSS");
+		DrawFormatStringToHandle(bannerX + 108, bannerY + 14, GetColor(141, 239, 255), font28, "ENTER THE BLUE TELEPORTER TO START BOSS");
 	}
-
-	SetFontSize(fontSize);
 }
 
 /// @brief ボス戦遷移時のブラックアウト・暗転演出を描画する

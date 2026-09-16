@@ -102,19 +102,6 @@ void Enemy::Draw()
 	{
 		model_->Draw();
 	}
-
-	if (Master::debug_->Getdebug() == true)
-	{
-		DrawCapsule3D(
-			position_,
-			VAdd(position_, VGet(0.0f, 150.0f, 0.0f)),
-			size_,
-			8,
-			GetColor(255, 255, 255),
-			GetColor(255, 255, 255),
-			false
-		);
-	}
 }
 
 /// @brief 攻撃モーションパターン管理用拡張メソッド

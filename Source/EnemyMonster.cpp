@@ -87,15 +87,6 @@ void EnemyMonster::Draw()
 	{
 		model_->Draw();
 	}
-
-	if (Master::debug_->Getdebug() == true)
-	{
-		DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)), size_, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
-		if (attack_state_ == AttackState::Jumping || attack_state_ == AttackState::Landing)
-		{
-			DrawSphere3D(position_, 300.0f, 8, GetColor(255, 0, 0), GetColor(255, 0, 0), false);
-		}
-	}
 }
 
 /// @brief 現在の攻撃ステートに基づいた各フェーズ更新メソッドの実行

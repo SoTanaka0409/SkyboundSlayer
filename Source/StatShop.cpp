@@ -102,10 +102,16 @@ void StatShop::Draw()
 /// @details ショップ画面の半透明背景パネルと、ヘッダー・選択肢・フッターの各UI要素を合成描画する
 void StatShop::DrawShopMenu(Player3D* player)
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
-	DrawBox(300, 100, 1620, 800, GetColor(0, 0, 50), TRUE);
+	// 半透明のグラデーション背景などでリッチな印象にする
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 210);
+	DrawBox(300, 100, 1620, 800, GetColor(20, 20, 30), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	DrawBox(300, 100, 1620, 160, GetColor(50, 50, 80), TRUE); // ヘッダー部分の強調
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawBox(300, 100, 1620, 800, GetColor(255, 255, 255), FALSE);
+
+	// シンプルな白線ではなく、ゴールド系の枠線で高級感を出す
+	DrawBox(300, 100, 1620, 800, GetColor(200, 170, 80), FALSE);
+	DrawBox(298, 98, 1622, 802, GetColor(100, 80, 30), FALSE); // 外側の細い縁取り
 
 	int fontSize = GetFontSize();
 	DrawShopHeader(player);
@@ -190,15 +196,19 @@ void StatShop::DrawShopNpc(Player3D* player)
 	float dz = playerPos.z - position_.z;
 	float dist = sqrtf(dx * dx + dz * dz);
 
-	int drawX = static_cast<int>(drawNameWorld.x);
-	int drawY = static_cast<int>(drawNameWorld.y);
-
-	DrawFormatString(drawX - 30, drawY, GetColor(255, 255, 0), "[ ステータスショップ ]");
-	DrawFormatString(drawX - 10, drawY + 20, GetColor(255, 255, 255), "Enterキーで開く");
-
-	if (dist < 1000.0f)
+	// カメラ後方にある場合は描画しない
+	if (drawNameWorld.z >= 0.0f && drawNameWorld.z <= 1.0f)
 	{
-		DrawFormatString(drawX - 60, drawY - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」 ");
+		int drawX = static_cast<int>(drawNameWorld.x);
+		int drawY = static_cast<int>(drawNameWorld.y);
+
+		DrawFormatString(drawX - 30, drawY, GetColor(255, 255, 0), "[ ステータスショップ ]");
+		DrawFormatString(drawX - 10, drawY + 20, GetColor(255, 255, 255), "Enterキーで開く");
+
+		if (dist < 1000.0f)
+		{
+			DrawFormatString(drawX - 60, drawY - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」 ");
+		}
 	}
 
 	model_->Draw();

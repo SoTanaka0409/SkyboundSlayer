@@ -505,8 +505,8 @@ void Player3D::Attack()
 		model_->SetLoop(false);
 		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-		if (model_->GetIsSeparate() == true) model_->separate_animation_->SetAnimationCount(1.3f);
-		else model_->animation_->SetAnimationCount(0.5f);
+		if (model_->GetIsSeparate() == true) model_->separate_animation_->SetAnimationCount(0.9f);
+		else model_->animation_->SetAnimationCount(0.35f);
 	}
 
 	const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
@@ -514,7 +514,7 @@ void Player3D::Attack()
 	{
 		attack_state_ = kAttackNormal;
 
-		if (attack_count_ % 5 == 0)
+		if (attack_count_ == 0)
 		{
 			// 1回の攻撃モーションで多段ヒットしすぎるのを防ぐため、一定フレームごとにヒットフラグをリセットする
 			for (int i = 0; i < pObjList.size(); i++)

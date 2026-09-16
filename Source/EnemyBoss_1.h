@@ -56,4 +56,9 @@ private:
 
     float mfjumpPower;        // 現在のY軸方向への推進力（滞空時間の計算用）
     bool HighPositionFlag;    // ジャンプの頂点に達し、急降下ステートへ移行すべきかを判定するフラグ
+    VECTOR jump_target_dir_;  // ジャンプ時の移動方向ベクトル
+    float forward_speed_;     // ジャンプ時の前進速度
+    int jump_charge_timer_;   // ジャンプのタメ時間計測用
+    float jump_velocity_;     // 現在のジャンプ速度
+    float gravity_;           // 重力加速度
 };

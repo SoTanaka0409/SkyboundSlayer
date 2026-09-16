@@ -60,7 +60,7 @@ void SphereCollider::Draw()
 	DrawSphere3D(
 		position_,
 		radius_,
-		8,
+		4,
 		GetColor(255, 255, 255),
 		GetColor(255, 255, 255),
 		false

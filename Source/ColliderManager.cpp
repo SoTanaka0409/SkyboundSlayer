@@ -1,6 +1,7 @@
 ﻿#include "ColliderManager.h"
 #include "Collider.h"
 #include"Master.h"
+#include "Player3D.h"
 
 // 静的メンバ変数定義
 ColliderManager* ColliderManager::instance_ = nullptr;
@@ -34,12 +35,25 @@ void ColliderManager::Update()
 // 描画
 void ColliderManager::Draw()
 {
+    if (!Master::debug_->Getdebug()) return;
+
+    VECTOR refPos = VGet(0, 0, 0);
+    bool useCull = false;
+    if (Master::player_) {
+        refPos = Master::player_->GetPosition();
+        useCull = true;
+    }
+
     for (auto itr = collider_list_.begin(); itr != collider_list_.end(); itr++)
     {
-        if (Master::debug_->Getdebug())
-        {
-            (*itr)->Draw();
+        if (useCull) {
+            // プレイヤーから距離が一定以上のコライダーはデバッグ描画を省略（重力・処理負荷軽減）
+            float distSq = VSquareSize(VSub((*itr)->position_, refPos));
+            if (distSq > 3000.0f * 3000.0f) {
+                continue;
+            }
         }
+        (*itr)->Draw();
     }
 }
 

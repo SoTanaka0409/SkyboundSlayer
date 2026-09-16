@@ -65,7 +65,7 @@ void CapsuleCollider::Draw()
 		position_,
 		position2_,
 		radius_,
-		8,
+		4,
 		GetColor(255, 255, 255),
 		GetColor(255, 255, 255),
 		false

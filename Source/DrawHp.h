@@ -2,6 +2,7 @@
 #include"DxLib.h"
 #include"Object3D.h"
 #include<vector>
+#include<map>
 #include"Enemy3D.h"
 
 class Enemy; // 前方宣言
@@ -24,4 +25,7 @@ private:
 	static constexpr float kHpBarOffsetY = 250.0f;
 	static constexpr int kHpBarWidth = 60;
 	static constexpr int kHpBarHeight = 10;
+
+	// 遅延HP（アニメーション用）を管理するマップ
+	std::map<Enemy*, float> delayed_hp_map_;
 };

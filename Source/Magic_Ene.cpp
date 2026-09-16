@@ -1,4 +1,5 @@
 ﻿#include "Magic_Ene.h"
+#include <cmath>
 #include "SphereCollider.h"
 #include "CapsuleCollider.h"
 #include "Effect.h"
@@ -23,15 +24,34 @@ Magic_Ene::~Magic_Ene()
 /// @details 移動処理、当たり判定の追従、および寿命到達時の消滅処理
 void Magic_Ene::Update()
 {
-	DeleteCount++;
-	Move();
-	hit_collider_->position_ = position_;
+	Magic::Update();
+}
 
-	// レベルデザイン：弾幕シューティングとしての空間制御のため、一定時間で自動的に消滅させて画面内の弾密度を適正に保つ
-	if (DeleteCount > DeleteTime)
-	{
-		Death();
-	}
+/// @brief ボス・敵の魔法弾の描画（禍々しくプロっぽく見せる）
+void Magic_Ene::Draw()
+{
+	// 脈打つスケール演出
+	float pulse = 1.0f + 0.15f * sinf(DeleteCount * 0.3f);
+	float scale = magic_size_ * pulse;
+	
+	// 加算半透明で発光しているように見せる
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
+	
+	// 外側のオーラ（赤紫～暗黒っぽい色味の光）
+	SetDrawBright(255, 30, 80);
+	DrawBillboard3D(position_, 0.5f, 0.5f, scale * 1.8f, DeleteCount * 0.1f, graph_handle_, TRUE);
+	
+	// 中間のオーラ（逆回転、オレンジや紫）
+	SetDrawBright(200, 50, 255);
+	DrawBillboard3D(position_, 0.5f, 0.5f, scale * 1.3f, -DeleteCount * 0.15f, graph_handle_, TRUE);
+	
+	// 芯の部分（まばゆい白、回転させない）
+	SetDrawBright(255, 255, 255);
+	DrawBillboard3D(position_, 0.5f, 0.5f, scale * 0.7f, 0.0f, graph_handle_, TRUE);
+	
+	// 描画設定を元に戻す
+	SetDrawBright(255, 255, 255);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 /// @param collider = 自身の判定領域, check = 衝突相手のコライダー

@@ -65,6 +65,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetMainWindowText("Skybound Slayer");
 	if (DxLib_Init() == -1) return -1;
 
+	// 学生っぽさを消すため、高品位なフォントとアンチエイリアスを使用する
+	ChangeFont("メイリオ");
+	ChangeFontType(DX_FONTTYPE_ANTIALIASING_EDGE);
+
 	EffekseerManager::GetInstance()->Init();
 
 	// 環境光の設定：3D空間全体を均一に照らし、暗部でのモデル視認性を確保するためのベースライト設定
