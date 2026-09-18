@@ -63,22 +63,22 @@ void GameScene::SetupEnvironment()
 /// @details プレイヤーやショップ等の必須アクターオブジェクトのヒープ確保
 void GameScene::CreateInitialActors()
 {
-	new Player3D("Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
-	new StatShop("Resource/3Dモデル/キャラクターとアニメーション/04_ショップ店員モデル.mv1", VGet(-1500, 100, 1500));
-	new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3Dモデル/小物/焚き火/01_焚き火モデル.mv1", VGet(10.0f, 10.0f, 10.0f));
+	new Player3D("Resource/model/character/01_human.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
+	new StatShop("Resource/model/character/04_shop_clerk_model.mv1", VGet(-1500, 100, 1500));
+	new StageObject(VGet(-1250, 20.0f, -1050), "Resource/model/props/campfire/01_campfire_model.mv1", VGet(10.0f, 10.0f, 10.0f));
 }
 
 /// @details 地形モデルおよび当たり判定モデルの生成
 void GameScene::CreateStage()
 {
-	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", VGet(200.0f, 100.0f, 200.0f));
-	new Stage(Config::GetStageCenter(), "Resource/3Dモデル/ステージ/通常ステージ/01_通常ステージモデル.mv1", "Resource/3Dモデル/ステージ/通常ステージ/02_通常ステージ当たり判定モデル.mv1", VGet(3.0f, 0.3f, 3.0f));
+	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/model/bg/island/01_island.mv1", "Resource/model/bg/island/01_island.mv1", VGet(200.0f, 100.0f, 200.0f));
+	new Stage(Config::GetStageCenter(), "Resource/model/stage/normal/01_normal_stage.mv1", "Resource/model/stage/normal/02_normal_collider.mv1", VGet(3.0f, 0.3f, 3.0f));
 }
 
 /// @details CSVファイルからのデータ読み込みおよびステージオブジェクトの大量生成
 void GameScene::LoadStageObjectsFromCsv()
 {
-	std::ifstream file(L"Resource/データ/CSV/01_ステージ配置データ.csv");
+	std::ifstream file(L"Resource/data/CSV/01_stage_layout.csv");
 	if (file.is_open())
 	{
 		std::string line;
@@ -137,10 +137,10 @@ void GameScene::LoadStageObjectsFromCsv()
 /// @details 天球ドームの生成とテクスチャの適用
 void GameScene::CreateSkyBox()
 {
-	SkyBox* pSkyBox = new SkyBox("Resource/3Dモデル/背景/空/01_空ドームモデル.x", VGet(0, 0, -5000));
+	SkyBox* pSkyBox = new SkyBox("Resource/model/bg/sky/01_sky_dome_model.x", VGet(0, 0, -5000));
 	float scale = 13.0f;
 	pSkyBox->SetScale(VGet(scale, scale, scale));
-	pSkyBox->SetModelTexture("Resource/3Dモデル/背景/空/02_空テクスチャ.jpg");
+	pSkyBox->SetModelTexture("Resource/model/bg/sky/02_sky_texture.jpg");
 }
 
 /// @details ゲーム状態の更新およびリザルト画面への遷移

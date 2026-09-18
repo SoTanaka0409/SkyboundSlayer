@@ -38,11 +38,11 @@ void TitleScene::Initialize()
 	Master::sound_manager_->PlayBGM(SoundManager::BGM_TITLE);
 
 	// 一枚絵ではなく、実際のゲームプレイと同じ3Dモデルを配置してカメラを回すことでシームレスな世界観を演出する
-	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", "Resource/3Dモデル/背景/浮遊島/01_浮遊島モデル.mv1", VGet(200.0f, 100.0f, 200.0f));
-	new Stage(Config::GetStageCenter(), "Resource/3Dモデル/ステージ/通常ステージ/01_通常ステージモデル.mv1", "Resource/3Dモデル/ステージ/通常ステージ/02_通常ステージ当たり判定モデル.mv1", VGet(3.0f, 0.3f, 3.0f));
+	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/model/bg/island/01_island.mv1", "Resource/model/bg/island/01_island.mv1", VGet(200.0f, 100.0f, 200.0f));
+	new Stage(Config::GetStageCenter(), "Resource/model/stage/normal/01_normal_stage.mv1", "Resource/model/stage/normal/02_normal_collider.mv1", VGet(3.0f, 0.3f, 3.0f));
 
 	// 配置データのハードコーディングを避け、CSVから読み込むことでプランナーの調整工数を削減する
-	std::ifstream file(L"Resource/データ/CSV/01_ステージ配置データ.csv");
+	std::ifstream file(L"Resource/data/CSV/01_stage_layout.csv");
 	if (file.is_open())
 	{
 		std::string line;
@@ -89,12 +89,12 @@ void TitleScene::Initialize()
 		file.close();
 	}
 
-	SkyBox* pSkyBox = new SkyBox("Resource/3Dモデル/背景/空/01_空ドームモデル.x", VGet(0, 0, -5000));
+	SkyBox* pSkyBox = new SkyBox("Resource/model/bg/sky/01_sky_dome_model.x", VGet(0, 0, -5000));
 	float scale = 13.0f;
 	pSkyBox->SetScale(VGet(scale, scale, scale));
-	pSkyBox->SetModelTexture("Resource/3Dモデル/背景/空/02_空テクスチャ.jpg");
+	pSkyBox->SetModelTexture("Resource/model/bg/sky/02_sky_texture.jpg");
 
-	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", VGet(3.0f, 3.0f, 3.0f));
+	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/model/props/portal/01_portal.mv1", VGet(3.0f, 3.0f, 3.0f));
 	camera_angle_ = 0.0f;
 }
 

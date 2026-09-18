@@ -71,10 +71,10 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
 
 	// ポータルの土台モデルを生成
 	float portalSize = 100.0f;
-	new Stage(VAdd(boss_portal_pos_, VGet(0.0f, -570.0f, 0.0f)), "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", "Resource/3Dモデル/小物/ポータル/01_ポータルモデル.mv1", VGet(portalSize, portalSize, portalSize));
+	new Stage(VAdd(boss_portal_pos_, VGet(0.0f, -570.0f, 0.0f)), "Resource/model/props/portal/01_portal.mv1", "Resource/model/props/portal/01_portal.mv1", VGet(portalSize, portalSize, portalSize));
 
 	// ポータル上の魔法陣エフェクトを生成
-	new EffekseerObject("Mahoujin", "Resource/エフェクト_魔法陣/02_魔法陣エフェクト発生用.efk", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
+	new EffekseerObject("Mahoujin", "Resource/effect/magic/02_magic_effect_playback.efk", VAdd(boss_portal_pos_, VGet(0.0f, -565.0f, 0.0f)), nullptr, true, 1.0f, 1.0f);
 }
 
 /// @brief GameManagerのデストラクタ
@@ -700,7 +700,7 @@ void GameManager::SpawnPhase1Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(3000.0f, 100.0f, 3000.0f),
 		20,
@@ -721,7 +721,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(8000.0f, 100.0f, 8000.0f),
 		20,
@@ -737,7 +737,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(2000.0f, 100.0f, 2000.0f),
 		20,
@@ -758,7 +758,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::monster_stage1,
-		"Resource/3Dモデル/キャラクターとアニメーション/02_敵モンスターモデル.mv1",
+		"Resource/model/character/02_enemy_monster_model.mv1",
 		centerPos,
 		VGet(12000.0f, 100.0f, 12000.0f),
 		100,
@@ -774,7 +774,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,
@@ -790,7 +790,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,
@@ -811,7 +811,7 @@ void GameManager::SpawnBossEnemy()
 	VECTOR bossCenter = Config::GetStageBossCenter();
 	AddEnemy(MakeEnemyData(
 		EnemyManager::boss_stage1,
-		"Resource/3Dモデル/キャラクターとアニメーション/03_ボスモデル.mv1",
+		"Resource/model/character/03_boss.mv1",
 		bossCenter,
 		VAdd(bossCenter, VGet(-500.0f, 0.0f, 2000.0f)),
 		300,

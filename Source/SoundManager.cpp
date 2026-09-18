@@ -21,24 +21,24 @@ void SoundManager::Initialize()
 {
 	// アーキテクチャ設計：プレイ中のロードによるカクつき（処理落ち）や音ズレを防ぐため、起動時やシーン切り替え時の非同期ロード中に全音声アセットをオンメモリ化しておく
 	// BGMの読み込み
-	LoadBGM(SOUND_BGM::BGM_TITLE, "Resource/音源/BGM/01_タイトル画面BGM.mp3");
-	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/音源/BGM/02_ゲーム中BGM.mp3"); //増やしたい場合
-	LoadBGM(SOUND_BGM::BGM_RESULT, "Resource/音源/BGM/03_リザルト画面BGM.mp3");
+	LoadBGM(SOUND_BGM::BGM_TITLE, "Resource/sound/BGM/01_title_bgm.mp3");
+	LoadBGM(SOUND_BGM::BGM_GAME, "Resource/sound/BGM/02_game_bgm.mp3"); //増やしたい場合
+	LoadBGM(SOUND_BGM::BGM_RESULT, "Resource/sound/BGM/03_result_bgm.mp3");
 
 	// SEの読み込み
-	LoadSE(SOUND_SE::SE_FIRE, "Resource/音源/SE/01_火魔法効果音.mp3");
-	LoadSE(SOUND_SE::SE_ATTACK, "Resource/音源/SE/02_通常攻撃効果音.mp3");
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/音源/SE/03_スライド攻撃効果音.mp3");
-	LoadSE(SOUND_SE::SE_SLIDE, "Resource/音源/SE/04_スライド移動効果音.mp3");
-	LoadSE(SOUND_SE::SE_HEAL, "Resource/音源/SE/05_回復効果音.mp3");
+	LoadSE(SOUND_SE::SE_FIRE, "Resource/sound/SE/01_fire_magic.mp3");
+	LoadSE(SOUND_SE::SE_ATTACK, "Resource/sound/SE/02_normal_attack.mp3");
+	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/sound/SE/03_slide_attack.mp3");
+	LoadSE(SOUND_SE::SE_SLIDE, "Resource/sound/SE/04_slide_move.mp3");
+	LoadSE(SOUND_SE::SE_HEAL, "Resource/sound/SE/05_heal.mp3");
 	
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/音源/SE/03_スライド攻撃効果音.mp3");
-	LoadSE(SOUND_SE::SE_JUMP, "Resource/音源/SE/06_ジャンプ効果音.mp3");
-	LoadSE(SOUND_SE::SE_WARP, "Resource/音源/SE/07_ワープ効果音.mp3");
-	LoadSE(SOUND_SE::SE_POWER, "Resource/音源/SE/08_能力上昇効果音.mp3");
-	LoadSE(SOUND_SE::SE_SHOP, "Resource/音源/SE/09_購入効果音.mp3");
-	LoadSE(SOUND_SE::SE_SELECT, "Resource/音源/SE/10_決定効果音.mp3");
-	LoadSE(SOUND_SE::SE_WINDOW, "Resource/音源/SE/11_メニュー効果音.mp3");
+	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/sound/SE/03_slide_attack.mp3");
+	LoadSE(SOUND_SE::SE_JUMP, "Resource/sound/SE/06_jump.mp3");
+	LoadSE(SOUND_SE::SE_WARP, "Resource/sound/SE/07_warp.mp3");
+	LoadSE(SOUND_SE::SE_POWER, "Resource/sound/SE/08_powerup.mp3");
+	LoadSE(SOUND_SE::SE_SHOP, "Resource/sound/SE/09_buy.mp3");
+	LoadSE(SOUND_SE::SE_SELECT, "Resource/sound/SE/10_decide.mp3");
+	LoadSE(SOUND_SE::SE_WINDOW, "Resource/sound/SE/11_menu.mp3");
 }
 
 /// @details メモリ上に確保されたすべてのサウンドハンドルの安全な破棄

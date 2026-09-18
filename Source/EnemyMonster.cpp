@@ -38,10 +38,10 @@ EnemyMonster::EnemyMonster(std::string filename, VECTOR initPos, float hp, float
 	if (model_)
 	{
 		model_->SetScale(VGet(3.0f, 3.0f, 3.0f));
-		model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
-		model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
-		model_->AddAnimation(ANIMATION_DYING, "Resource/3Dモデル/キャラクターとアニメーション/13_死亡アニメーション.mv1");
-		model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/3Dモデル/キャラクターとアニメーション/17_ジャンプ攻撃アニメーション.mv1");
+		model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
+		model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
+		model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
+		model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/model/character/17_jump_attack.mv1");
 	}
 
 	// レベルデザイン：着地攻撃は範囲が広いため、プレイヤーが回避行動をとるための十分な視覚的猶予を持たせる大きな半径で設定
@@ -147,7 +147,7 @@ void EnemyMonster::UpdateAttackJumping()
 		attack_state_ = AttackState::Landing;
 		charge_timer_ = 0;
 
-		new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0, 0, 0), 0, 150);
+		new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 50.0f, 0.0f)), 50.0f, 5, 30.0f, VGet(0, 0, 0), 0, 150);
 	}
 }
 

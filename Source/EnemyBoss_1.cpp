@@ -37,11 +37,11 @@ EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float s
 
 	SetTag(Object3D::Tag3D_Enemy3D);
 
-	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
-	model_->AddAnimation(ANIMATION_DYING, "Resource/3Dモデル/キャラクターとアニメーション/13_死亡アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKMAGIC, "Resource/3Dモデル/キャラクターとアニメーション/14_魔法攻撃アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_ATTACK, "Resource/3Dモデル/キャラクターとアニメーション/17_ジャンプ攻撃アニメーション.mv1");
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
+	model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
+	model_->AddAnimation(ANIMATION_ATTACKMAGIC, "Resource/model/character/14_magic_attack.mv1");
+	model_->AddAnimation(ANIMATION_ATTACK, "Resource/model/character/17_jump_attack.mv1");
 
 	model_->SetScale(VGet(4.0f, 4.0f, 4.0f));
 
@@ -135,11 +135,11 @@ void EnemyBoss_1::Attack()
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 			// ボスの弾のサイズと当たり判定を1.5倍にする (50.0f -> 75.0f)
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, go_position_, 0, kMagicLifetime);
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, go_position_, 0, kMagicLifetime);
 			VECTOR leftGo = VTransform(go_position_, MGetRotY(-30.0f * DX_PI_F / 180.0f));
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, leftGo, 0, kMagicLifetime);
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, leftGo, 0, kMagicLifetime);
 			VECTOR rightGo = VTransform(go_position_, MGetRotY(30.0f * DX_PI_F / 180.0f));
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, rightGo, 0, kMagicLifetime);
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, rightGo, 0, kMagicLifetime);
 		}
 		else if (attack_type_ == BossAttackType::kJump)
 		{
@@ -165,7 +165,7 @@ void EnemyBoss_1::Attack()
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 			// ボスの弾のサイズと当たり判定を1.5倍にする (100.0f -> 150.0f)
-			new Magic_Ene("Resource/画像/戦闘/01_ダメージ表示画像.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 150.0f, 5, 30.0f, go_position_, 0, kMagicLifetime);
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 150.0f, 5, 30.0f, go_position_, 0, kMagicLifetime);
 
 			attack1_combo_count_--;
 		}

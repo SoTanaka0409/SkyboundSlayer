@@ -24,8 +24,8 @@ Rule::~Rule()
 void Rule::Initialize()
 {
 	page_ = 1;
-	bg_handle1_ = LoadGraph("Resource/‰æ‘œ/ƒ‹[ƒ‹‰æ–Ê/01_ƒ‹[ƒ‹‰æ–Ê”wŒi‚P.png");
-	bg_handle2_ = LoadGraph("Resource/‰æ‘œ/ƒ‹[ƒ‹‰æ–Ê/02_ƒ‹[ƒ‹‰æ–Ê”wŒi‚Q.png");
+	bg_handle1_ = LoadGraph("Resource/image/rule/01_rule_bg_1.png");
+	bg_handle2_ = LoadGraph("Resource/image/rule/02_rule_bg_2.png");
 }
 
 
