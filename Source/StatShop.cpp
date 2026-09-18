@@ -1,4 +1,4 @@
-﻿#include "StatShop.h"
+#include "StatShop.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -102,7 +102,11 @@ void StatShop::Draw()
 /// @details ショップ画面の半透明背景パネルと、ヘッダー・選択肢・フッターの各UI要素を合成描画する
 void StatShop::DrawShopMenu(Player3D* player)
 {
-	// 半透明のグラデーション背景などでリッチな印象にする
+	// 全画面の背景を暗くする
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(0, 0, 0), TRUE);
+
+	// ショップ全体の背景
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 210);
 	DrawBox(300, 100, 1620, 800, GetColor(20, 20, 30), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
@@ -159,22 +163,34 @@ void StatShop::DrawShopOptions()
 
 	for (int i = 0; i <= select_max_; i++)
 	{
-		int color = (i == select_) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
-		int optionY = 250 + i * 60;
-		if (i == select_)
-		{
-			DrawFormatString(330, optionY, color, ">");
+		bool is_selected = (i == select_);
+		int expand = is_selected ? 4 : 0;
+		int bgColor = is_selected ? GetColor(60, 50, 20) : GetColor(30, 30, 40);
+		int color = is_selected ? GetColor(255, 255, 200) : GetColor(200, 200, 200);
+		int optionY = 240 + i * 80;
+		
+		// 背景パネル
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, is_selected ? 240 : 150);
+		DrawBox(330 - expand, optionY - expand, 1580 + expand, optionY + 60 + expand, bgColor, TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		
+		if (is_selected) {
+			DrawLine(330 - expand, optionY - expand, 1580 + expand, optionY - expand, GetColor(255, 215, 100), 2);
+			DrawFormatString(350 - expand, optionY + 15, color, ">");
 		}
 
-		DrawExtendGraph(360, 245 + i * 60, 400, 285 + i * 60, icons[i], TRUE);
+		DrawExtendGraph(390, optionY + 10, 430, optionY + 50, icons[i], TRUE);
+		
+		SetFontSize(is_selected ? 30 : 28);
 		if (i == 4)
 		{
-			DrawFormatString(415, optionY, color, "%s - Cost: 100", options[i]);
+			DrawFormatString(450, optionY + 15, color, "%s - Cost: 100", options[i]);
 		}
 		else
 		{
-			DrawFormatString(415, optionY, color, "%s (UP %d) - Cost: %d", options[i], upgradeCounts[i], GetCost(upgradeCounts[i]));
+			DrawFormatString(450, optionY + 15, color, "%s (UP %d) - Cost: %d", options[i], upgradeCounts[i], GetCost(upgradeCounts[i]));
 		}
+		SetFontSize(24);
 	}
 }
 

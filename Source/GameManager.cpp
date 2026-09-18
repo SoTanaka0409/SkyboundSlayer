@@ -9,6 +9,7 @@
 #include "Tree.h"
 #include "InputManager.h"
 #include "EffekseerObject.h"
+#include "DamageUI.h"
 
 namespace
 {
@@ -80,6 +81,7 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
 /// @brief GameManagerのデストラクタ
 GameManager::~GameManager()
 {
+	DamageUIManager::GetInstance()->Unload();
 }
 
 /// @brief 毎フレームの更新処理を行う
@@ -106,6 +108,8 @@ void GameManager::Update()
 	{
 		UpdateBattlePhase();
 	}
+
+	DamageUIManager::GetInstance()->Update();
 }
 
 /// @brief ボスカットシーン中のカメラ座標やタイマーを更新する
@@ -463,6 +467,7 @@ void GameManager::Draw()
 	DrawShopBanner();
 	DrawBossFade();
 	DrawDebugPanel();
+	DamageUIManager::GetInstance()->Draw();
 }
 
 /// @brief デバッグ用操作パネルおよびボタンを画面上に描画する

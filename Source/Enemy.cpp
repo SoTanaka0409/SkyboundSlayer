@@ -1,4 +1,5 @@
-﻿#include "Enemy.h"
+#include "Enemy.h"
+#include "DamageUI.h"
 #include "Model.h"
 #include "Master.h"
 #include "Player3D.h"
@@ -250,6 +251,7 @@ void Enemy::RotationByMove()
 /// @param damage 減少させるHP量
 void Enemy::Damage(float damage)
 {
+	DamageUIManager::GetInstance()->AddDamage((int)damage, position_, damage >= 100.0f);
 	hp_ -= damage;
 	if (hp_ <= 0)
 	{

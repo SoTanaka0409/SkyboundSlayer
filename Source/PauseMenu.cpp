@@ -1,4 +1,4 @@
-﻿#include "PauseMenu.h"
+#include "PauseMenu.h"
 #include "Config.h"
 #include "Master.h"
 #include "InputManager.h"
@@ -171,14 +171,17 @@ void PauseMenu::DrawVolumeRow(int y, const char* label, bool enabled, int volume
 
 void PauseMenu::DrawButton(const Rect& rect, const char* label, bool hover)
 {
-	const int fill = hover ? GetColor(48, 39, 18) : GetColor(20, 24, 32);
-	const int text = hover ? GetColor(255, 246, 184) : GetColor(222, 236, 248);
+	const int fill = hover ? GetColor(60, 50, 20) : GetColor(20, 24, 32);
+	const int text_color = hover ? GetColor(255, 255, 200) : GetColor(222, 236, 248);
+	int expand = hover ? 6 : 0; // ホバー時に枠を拡大して強調
 
-	DrawBox(rect.x, rect.y, rect.x + rect.w, rect.y + rect.h, fill, TRUE);
-	DrawLine(rect.x, rect.y, rect.x + rect.w, rect.y, hover ? GetColor(218, 178, 86) : GetColor(98, 73, 32), 2);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 240);
+	DrawBox(rect.x - expand, rect.y - expand, rect.x + rect.w + expand, rect.y + rect.h + expand, fill, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawLine(rect.x - expand, rect.y - expand, rect.x + rect.w + expand, rect.y - expand, hover ? GetColor(255, 215, 100) : GetColor(98, 73, 32), 2);
 
-	SetFontSize(30);
-	DrawFormatString(rect.x + 48, rect.y + 17, text, "%s%s", hover ? "> " : "  ", label);
+	SetFontSize(hover ? 32 : 30);
+	DrawFormatString(rect.x + 48 - expand, rect.y + 17 - expand/2, text_color, "%s%s", hover ? "> " : "  ", label);
 	SetFontSize(24);
 }
 

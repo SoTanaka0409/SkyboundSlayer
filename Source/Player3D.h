@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include"DxLib.h"
 #include<string>
 #include"Object3D.h"
@@ -98,6 +98,7 @@ public:
 	void RotationByMove();
 
 	float GetHp() { return hp_; }
+	float GetMaxHp() { return max_hp_ + upgrade_max_hp_; }
 	void SetHp(float hp) { hp_ = hp; }
 	void StartDeath();
 	bool IsDead() const { return is_dead_; }

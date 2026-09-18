@@ -1,4 +1,4 @@
-﻿#include <fstream>
+#include <fstream>
 #include <sstream>
 #include"GameScene.h"
 #include"Config.h"
@@ -199,6 +199,16 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	SceneGame::Draw();
+
+	// ピンチ演出（HP 30%以下で赤い画面点滅）
+	if (Master::player_ && Master::player_->GetHp() > 0 && Master::player_->GetHp() <= Master::player_->GetMaxHp() * 0.3f)
+	{
+		int alpha = (int)(60 + sin(GetNowCount() * 0.01f) * 40); // 脈打つ赤いエフェクト
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(200, 0, 0), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
 	Master::save_->Draw();
 
 	if (Master::is_pause_on_ && pause_menu_)

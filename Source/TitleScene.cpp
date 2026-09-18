@@ -1,4 +1,4 @@
-﻿#include "TitleScene.h"
+#include "TitleScene.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -261,18 +261,22 @@ void TitleScene::DrawMenuPanel()
 	DrawLine(448, 694, 448, 976, accentGold, 1);
 	DrawBox(84, 708, 434, 722, panelLight, TRUE);
 
-	SetFontSize(34);
-	DrawBox(96, 712, 416, 774, hoverStart ? GetColor(48, 39, 18) : menuBtn, TRUE);
-	DrawLine(96, 712, 416, 712, hoverStart ? accentGold : accentGoldDark, 1);
-	DrawFormatString(126, 728, hoverStart ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sGAME START", hoverStart ? "> " : "  ");
+	auto drawAnimBtn = [&](int bx, int by, int bw, int bh, bool hover, const char* label) {
+		int expand = hover ? 8 : 0;
+		int fill = hover ? GetColor(60, 50, 20) : menuBtn;
+		int textC = hover ? GetColor(255, 255, 200) : GetColor(222, 236, 248);
+		int lineC = hover ? GetColor(255, 215, 100) : accentGoldDark;
+		
+		DrawBox(bx - expand, by - expand, bx + bw + expand, by + bh + expand, fill, TRUE);
+		DrawLine(bx - expand, by - expand, bx + bw + expand, by - expand, lineC, hover ? 2 : 1);
+		
+		SetFontSize(hover ? 38 : 34);
+		DrawFormatString(bx + 30 - expand, by + 16 - expand/2, textC, "%s%s", hover ? "> " : "  ", label);
+	};
 
-	DrawBox(96, 792, 416, 854, hoverRule ? GetColor(48, 39, 18) : menuBtn, TRUE);
-	DrawLine(96, 792, 416, 792, hoverRule ? accentGold : accentGoldDark, 1);
-	DrawFormatString(126, 808, hoverRule ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sRULE", hoverRule ? "> " : "  ");
-
-	DrawBox(96, 872, 416, 934, hoverSettings ? GetColor(48, 39, 18) : menuBtn, TRUE);
-	DrawLine(96, 872, 416, 872, hoverSettings ? accentGold : accentGoldDark, 1);
-	DrawFormatString(126, 888, hoverSettings ? GetColor(255, 246, 184) : GetColor(222, 236, 248), "%sSETTINGS", hoverSettings ? "> " : "  ");
+	drawAnimBtn(96, 712, 320, 62, hoverStart, "GAME START");
+	drawAnimBtn(96, 792, 320, 62, hoverRule, "RULE");
+	drawAnimBtn(96, 872, 320, 62, hoverSettings, "SETTINGS");
 }
 
 /// @brief 画面下部の点滅案内プロンプトを描画する
