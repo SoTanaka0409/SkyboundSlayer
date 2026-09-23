@@ -1,3 +1,0 @@
-Total Animations: 2
-Anim 0: Take 001
-Anim 1: mixamo.com
