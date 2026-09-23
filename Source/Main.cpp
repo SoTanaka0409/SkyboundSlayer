@@ -67,7 +67,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1) return -1;
 
 	// 学生っぽさを消すため、高品位なフォントとアンチエイリアスを使用する
-	ChangeFont("メイリオ");
+	AddFontFile("Resource/Genkai-Mincho-font/genkai-mincho.ttf");
+	ChangeFont("源界明朝");
 	ChangeFontType(DX_FONTTYPE_ANTIALIASING_EDGE);
 
 	EffekseerManager::GetInstance()->Init();

@@ -19,18 +19,18 @@
 #include"CapsuleCollider.h"
 #include"Magic_Ene.h"
 
-/// @param 初期化パラメータ（位置、HP、速度、当たり判定サイズ、探索範囲、所持金など）
-/// @details 3Dモデル、アニメーション、当たり判定用のメモリ確保と設定
+/// @param 蛻晄悄蛹悶ヱ繝ｩ繝｡繝ｼ繧ｿ・井ｽ咲ｽｮ縲？P縲・溷ｺｦ縲∝ｽ薙◆繧雁愛螳壹し繧､繧ｺ縲∵爾邏｢遽・峇縲∵園謖・≡縺ｪ縺ｩ・・
+/// @details 3D繝｢繝・Ν縲√い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縲∝ｽ薙◆繧雁愛螳夂畑縺ｮ繝｡繝｢繝ｪ遒ｺ菫昴→險ｭ螳・
 EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 {
-	mfjumpPower = 150.0f;       // ジャンプ攻撃時の最大到達高度
-	HighPositionFlag = false;   // ジャンプの頂点到達状態の管理
-	attack_type_ = BossAttackType::kCombo;           // 現在の攻撃パターンの種類
-	attack1_combo_count_ = 0;   // 連続魔法攻撃の残り発動回数
-	chance_ = kAttackChanceThreshold;               // 攻撃頻度の重み付けパラメータ
-	attack_interval_ = 60;      // 連続攻撃を防ぐためのクールタイム（フレーム）
-	attack_count_ = 0;          // クールタイム計測用カウンタ
+	mfjumpPower = 150.0f;       // 繧ｸ繝｣繝ｳ繝玲判謦・凾縺ｮ譛螟ｧ蛻ｰ驕秘ｫ伜ｺｦ
+	HighPositionFlag = false;   // 繧ｸ繝｣繝ｳ繝励・鬆らせ蛻ｰ驕皮憾諷九・邂｡逅・
+	attack_type_ = BossAttackType::kCombo;           // 迴ｾ蝨ｨ縺ｮ謾ｻ謦・ヱ繧ｿ繝ｼ繝ｳ縺ｮ遞ｮ鬘・
+	attack1_combo_count_ = 0;   // 騾｣邯夐ｭ疲ｳ墓判謦・・谿九ｊ逋ｺ蜍募屓謨ｰ
+	chance_ = kAttackChanceThreshold;               // 謾ｻ謦・ｻ蠎ｦ縺ｮ驥阪∩莉倥￠繝代Λ繝｡繝ｼ繧ｿ
+	attack_interval_ = 60;      // 騾｣邯壽判謦・ｒ髦ｲ縺舌◆繧√・繧ｯ繝ｼ繝ｫ繧ｿ繧､繝・医ヵ繝ｬ繝ｼ繝・・
+	attack_count_ = 0;          // 繧ｯ繝ｼ繝ｫ繧ｿ繧､繝險域ｸｬ逕ｨ繧ｫ繧ｦ繝ｳ繧ｿ
 	jump_charge_timer_ = 0;
 	jump_velocity_ = 0.0f;
 	gravity_ = 4.0f;
@@ -53,13 +53,13 @@ EnemyBoss_1::~EnemyBoss_1()
 
 }
 
-/// @details ボスの座標更新、攻撃判定、アニメーション進行
+/// @details 繝懊せ縺ｮ蠎ｧ讓呎峩譁ｰ縲∵判謦・愛螳壹√い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ騾ｲ陦・
 void EnemyBoss_1::Update()
 {
 	SceneGame* game = Master::scene_manager_->GetSceneGame();
 	if (game && game->game_manager_) {
 		auto phase = game->game_manager_->GetCurrentPhase();
-		// 画面遷移中に予期せぬ攻撃や座標移動が発生するバグを防ぐため処理を停止
+		// 逕ｻ髱｢驕ｷ遘ｻ荳ｭ縺ｫ莠域悄縺帙〓謾ｻ謦・ｄ蠎ｧ讓咏ｧｻ蜍輔′逋ｺ逕溘☆繧九ヰ繧ｰ繧帝亟縺舌◆繧∝・逅・ｒ蛛懈ｭ｢
 		if (phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss) {
 			return;
 		}
@@ -75,7 +75,7 @@ void EnemyBoss_1::Update()
 		{
 
 			Attack();
-			// 攻撃モーション中の不自然な滑り移動を防ぐため座標更新を停止
+			// 謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ荳ｭ縺ｮ荳崎・辟ｶ縺ｪ貊代ｊ遘ｻ蜍輔ｒ髦ｲ縺舌◆繧∝ｺｧ讓呎峩譁ｰ繧貞●豁｢
 			if (model_->GetNowState() != ANIMATION_ATTACK && model_->GetNowState() != ANIMATION_ATTACKJUMP)
 			{
 				RotationByMove();
@@ -84,14 +84,14 @@ void EnemyBoss_1::Update()
 
 			UpdateJumpPhysics();
 
-			// 攻撃中（Move()が呼ばれない間）もモデルの座標を物理座標に同期させる
+			// 謾ｻ謦・ｸｭ・・ove()縺悟他縺ｰ繧後↑縺・俣・峨ｂ繝｢繝・Ν縺ｮ蠎ｧ讓吶ｒ迚ｩ逅・ｺｧ讓吶↓蜷梧悄縺輔○繧・
 			model_->SetPosition(position_);
 
 			model_->Update();
 			UpdateColliderPosition();
 			jump_attack_coiider_->position_ = position_;
 
-			// 地面抜けバグを防ぐためのY座標の下限補正
+			// 蝨ｰ髱｢謚懊￠繝舌げ繧帝亟縺舌◆繧√・Y蠎ｧ讓吶・荳矩剞陬懈ｭ｣
 			if (position_.y < init_position_.y)
 			{
 				position_.y = init_position_.y;
@@ -102,7 +102,7 @@ void EnemyBoss_1::Update()
 	}
 }
 
-/// @details ボスモデルとデバッグ用コライダーの画面描画
+/// @details 繝懊せ繝｢繝・Ν縺ｨ繝・ヰ繝・げ逕ｨ繧ｳ繝ｩ繧､繝繝ｼ縺ｮ逕ｻ髱｢謠冗判
 void EnemyBoss_1::Draw()
 {
 	if (model_ != nullptr)
@@ -111,12 +111,12 @@ void EnemyBoss_1::Draw()
 	}
 }
 
-/// @details 乱数による攻撃パターンの決定と魔法オブジェクトの生成
+/// @details 荵ｱ謨ｰ縺ｫ繧医ｋ謾ｻ謦・ヱ繧ｿ繝ｼ繝ｳ縺ｮ豎ｺ螳壹→鬲疲ｳ輔が繝悶ず繧ｧ繧ｯ繝医・逕滓・
 void EnemyBoss_1::Attack()
 {
 	AnimationState now = model_->GetNowState();
 
-	// クールタイム消化済みかつターゲットを捕捉している場合のみ攻撃開始
+	// 繧ｯ繝ｼ繝ｫ繧ｿ繧､繝豸亥喧貂医∩縺九▽繧ｿ繝ｼ繧ｲ繝・ヨ繧呈黒謐峨＠縺ｦ縺・ｋ蝣ｴ蜷医・縺ｿ謾ｻ謦・幕蟋・
 	if (attack_count_ >= attack_interval_ && is_hit_attack_search_flag_)
 	{
 		attack_count_ = 0;
@@ -134,7 +134,7 @@ void EnemyBoss_1::Attack()
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-			// ボスの弾のサイズと当たり判定を1.5倍にする (50.0f -> 75.0f)
+			// 繝懊せ縺ｮ蠑ｾ縺ｮ繧ｵ繧､繧ｺ縺ｨ蠖薙◆繧雁愛螳壹ｒ1.5蛟阪↓縺吶ｋ (50.0f -> 75.0f)
 			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, go_position_, 0, kMagicLifetime);
 			VECTOR leftGo = VTransform(go_position_, MGetRotY(-30.0f * DX_PI_F / 180.0f));
 			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, leftGo, 0, kMagicLifetime);
@@ -147,7 +147,7 @@ void EnemyBoss_1::Attack()
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 			
-			// ジャンプ開始前のタメ時間（アニメーション同期）のために初期化
+			// 繧ｸ繝｣繝ｳ繝鈴幕蟋句燕縺ｮ繧ｿ繝｡譎る俣・医い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ蜷梧悄・峨・縺溘ａ縺ｫ蛻晄悄蛹・
 			jump_charge_timer_ = 0;
 			forward_speed_ = 0.0f;
 			jump_velocity_ = 0.0f;
@@ -155,7 +155,7 @@ void EnemyBoss_1::Attack()
 		}
 	}
 
-	// パターン0の場合、モーション完了に合わせて段階的に魔法を生成する仕様
+	// 繝代ち繝ｼ繝ｳ0縺ｮ蝣ｴ蜷医√Δ繝ｼ繧ｷ繝ｧ繝ｳ螳御ｺ・↓蜷医ｏ縺帙※谿ｵ髫守噪縺ｫ鬲疲ｳ輔ｒ逕滓・縺吶ｋ莉墓ｧ・
 	if (attack_type_ == BossAttackType::kCombo && attack1_combo_count_ > 0)
 	{
 		if (now == ANIMATION_NEUTRAL || now == ANIMATION_RUN)
@@ -164,7 +164,7 @@ void EnemyBoss_1::Attack()
 			model_->SetLoop(false);
 			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-			// ボスの弾のサイズと当たり判定を1.5倍にする (100.0f -> 150.0f)
+			// 繝懊せ縺ｮ蠑ｾ縺ｮ繧ｵ繧､繧ｺ縺ｨ蠖薙◆繧雁愛螳壹ｒ1.5蛟阪↓縺吶ｋ (100.0f -> 150.0f)
 			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 150.0f, 5, 30.0f, go_position_, 0, kMagicLifetime);
 
 			attack1_combo_count_--;
@@ -181,8 +181,8 @@ void EnemyBoss_1::Attack()
 	}
 }
 
-/// @param 自身のコライダー、衝突対象のコライダー
-/// @details プレイヤーのHP減少と、ヒット済みフラグの設定
+/// @param 閾ｪ霄ｫ縺ｮ繧ｳ繝ｩ繧､繝繝ｼ縲∬｡晉ｪ∝ｯｾ雎｡縺ｮ繧ｳ繝ｩ繧､繝繝ｼ
+/// @details 繝励Ξ繧､繝､繝ｼ縺ｮHP貂帛ｰ代→縲√ヲ繝・ヨ貂医∩繝輔Λ繧ｰ縺ｮ險ｭ螳・
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0)return;
@@ -195,7 +195,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
 			{
-				// 多段ヒットを防ぐため、1回のジャンプ攻撃につきダメージは1度のみ
+				// 螟壽ｮｵ繝偵ャ繝医ｒ髦ｲ縺舌◆繧√・蝗槭・繧ｸ繝｣繝ｳ繝玲判謦・↓縺､縺阪ム繝｡繝ｼ繧ｸ縺ｯ1蠎ｦ縺ｮ縺ｿ
 				if (now == ANIMATION_ATTACK && !is_attack_hit_judgment_flag_)
 				{
 					pPlayer->Damage(kJumpAttackDamage);
@@ -206,7 +206,7 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 	}
 }
 
-/// @details アニメーション完了後のインスタンス破棄予約、およびクリアフラグの更新
+/// @details 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ螳御ｺ・ｾ後・繧､繝ｳ繧ｹ繧ｿ繝ｳ繧ｹ遐ｴ譽・ｺ育ｴ・√♀繧医・繧ｯ繝ｪ繧｢繝輔Λ繧ｰ縺ｮ譖ｴ譁ｰ
 void EnemyBoss_1::DeathEnemy()
 {
 	is_dead_ = true;
@@ -218,7 +218,7 @@ void EnemyBoss_1::DeathEnemy()
 	if (model_->IsAnimationLoopFinish())
 	{
 		GiveRewards();
-		// ゲーム進行管理上、ボスの討伐数をクリア条件としているためのカウントアップ
+		// 繧ｲ繝ｼ繝騾ｲ陦檎ｮ｡逅・ｸ翫√・繧ｹ縺ｮ險惹ｼ先焚繧偵け繝ｪ繧｢譚｡莉ｶ縺ｨ縺励※縺・ｋ縺溘ａ縺ｮ繧ｫ繧ｦ繝ｳ繝医い繝・・
 		Master::game_clear_count_++;
 
 		Delete();
@@ -228,11 +228,11 @@ void EnemyBoss_1::DeathEnemy()
 	model_->Update();
 }
 
-/// @details 保持しているコライダーのメモリ解放フラグ設定
+/// @details 菫晄戟縺励※縺・ｋ繧ｳ繝ｩ繧､繝繝ｼ縺ｮ繝｡繝｢繝ｪ隗｣謾ｾ繝輔Λ繧ｰ險ｭ螳・
 void EnemyBoss_1::Delete()
 {
 	Enemy::Delete();
-	// メモリリーク防止のため、動的確保した固有コライダーを破棄する
+	// 繝｡繝｢繝ｪ繝ｪ繝ｼ繧ｯ髦ｲ豁｢縺ｮ縺溘ａ縲∝虚逧・｢ｺ菫昴＠縺溷崋譛峨さ繝ｩ繧､繝繝ｼ繧堤ｴ譽・☆繧・
 	if (jump_attack_coiider_ != nullptr)
 	{
 		jump_attack_coiider_->SetDeleteFlag(true);
@@ -240,14 +240,14 @@ void EnemyBoss_1::Delete()
 	}
 }
 
-/// @details 攻撃タイプ2時のボスのY座標および軌道計算の更新
+/// @details 謾ｻ謦・ち繧､繝・譎ゅ・繝懊せ縺ｮY蠎ｧ讓吶♀繧医・霆碁％險育ｮ励・譖ｴ譁ｰ
 void EnemyBoss_1::UpdateJumpPhysics()
 {
 	if (model_->GetNowState() == ANIMATION_ATTACK && attack_type_ == BossAttackType::kJump)
 	{
 		jump_charge_timer_++;
 		
-		// 溜め期間中（30フレーム目まで）はプレイヤーの方向を向く
+		// 貅懊ａ譛滄俣荳ｭ・・0繝輔Ξ繝ｼ繝逶ｮ縺ｾ縺ｧ・峨・繝励Ξ繧､繝､繝ｼ縺ｮ譁ｹ蜷代ｒ蜷代￥
 		if (jump_charge_timer_ <= kJumpChargeFrames)
 		{
 			VECTOR toPlayer = VSub(Master::player_->GetPosition(), position_);
@@ -255,10 +255,10 @@ void EnemyBoss_1::UpdateJumpPhysics()
 			RotationByMove();
 		}
 
-		// 30フレーム目（アニメーションの溜めが終わるタイミング）でジャンプの物理パラメータを計算・設定
+		// 30繝輔Ξ繝ｼ繝逶ｮ・医い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ貅懊ａ縺檎ｵゅｏ繧九ち繧､繝溘Φ繧ｰ・峨〒繧ｸ繝｣繝ｳ繝励・迚ｩ逅・ヱ繝ｩ繝｡繝ｼ繧ｿ繧定ｨ育ｮ励・險ｭ螳・
 		if (jump_charge_timer_ == kJumpChargeFrames)
 		{
-			jump_velocity_ = kJumpInitialVelocity; // EnemyMonsterと同じ初速
+			jump_velocity_ = kJumpInitialVelocity; // EnemyMonster縺ｨ蜷後§蛻晞・
 			
 			Player3D* pPlayer = Master::player_;
 			float dist = 0.0f;
@@ -275,7 +275,7 @@ void EnemyBoss_1::UpdateJumpPhysics()
 				jump_target_dir_ = go_position_;
 			}
 			
-			// ジャンプの総フレーム数 = (80 / 4) * 2 = 40フレーム
+			// 繧ｸ繝｣繝ｳ繝励・邱上ヵ繝ｬ繝ｼ繝謨ｰ = (80 / 4) * 2 = 40繝輔Ξ繝ｼ繝
 			float jump_time = (jump_velocity_ / gravity_) * 2.0f;
 			forward_speed_ = dist / jump_time;
 			
@@ -284,7 +284,7 @@ void EnemyBoss_1::UpdateJumpPhysics()
 			}
 		}
 		
-		// 30フレーム目以降から実際の移動を開始
+		// 30繝輔Ξ繝ｼ繝逶ｮ莉･髯阪°繧牙ｮ滄圀縺ｮ遘ｻ蜍輔ｒ髢句ｧ・
 		if (jump_charge_timer_ > 30)
 		{
 			position_.y += jump_velocity_;
@@ -292,11 +292,14 @@ void EnemyBoss_1::UpdateJumpPhysics()
 			position_.z += jump_target_dir_.z * forward_speed_;
 			jump_velocity_ -= gravity_;
 
-			// 着地判定
+			// 逹蝨ｰ蛻､螳・
 			if (position_.y <= init_position_.y)
 			{
+				if (jump_velocity_ < 0.0f) {
+					Master::sound_manager_->PlaySE(SoundManager::SE_BOSS_JUMP);
+				}
 				position_.y = init_position_.y;
-				// 着地したら横滑り（水平移動）を停止
+				// 逹蝨ｰ縺励◆繧画ｨｪ貊代ｊ・域ｰｴ蟷ｳ遘ｻ蜍包ｼ峨ｒ蛛懈ｭ｢
 				forward_speed_ = 0.0f;
 				jump_velocity_ = 0.0f;
 			}

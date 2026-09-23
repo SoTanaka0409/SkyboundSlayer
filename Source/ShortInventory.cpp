@@ -139,7 +139,7 @@ void ShortInventory::Draw()
 /// @param info 描画対象となる選択中のアイテム情報構造体ポインタ
 void ShortInventory::DrawItemPanel(const Item::ItemInformation* info)
 {
-	const int boxW = 300;
+	const int boxW = 360;
 	const int boxH = 74;
 	const int boxX = Config::ScreenWidth - boxW - 28;
 	const int boxY = Config::ScreenHeight - boxH - 28;
@@ -164,8 +164,8 @@ void ShortInventory::DrawItemPanel(const Item::ItemInformation* info)
 
 	// アイテム情報テキスト描画
 	DrawFormatString(boxX + 18, boxY + 12, GetColor(245, 226, 174), "ITEM");
-	DrawFormatString(boxX + 78, boxY + 12, GetColor(238, 238, 238), "%s", info->Name.c_str());
-	DrawFormatString(boxX + 78, boxY + 42, GetColor(205, 210, 216), "x %d", info->Count);
-	DrawFormatString(boxX + 18, boxY + 42, GetColor(100, 255, 100), "R USE");
-	DrawFormatString(boxX + 238, boxY + 42, GetColor(200, 200, 0), "< >");
+	DrawFormatString(boxX + 100, boxY + 12, GetColor(238, 238, 238), "%s", info->Name.c_str());
+	DrawFormatString(boxX + 100, boxY + 42, GetColor(205, 210, 216), "x %d", info->Count);
+	DrawFormatString(boxX + 18, boxY + 42, GetColor(255, 210, 70), "R"); DrawFormatString(boxX + 50, boxY + 42, GetColor(220, 220, 220), "USE");
+	DrawFormatString(boxX + 300, boxY + 42, GetColor(200, 200, 0), "< >");
 }

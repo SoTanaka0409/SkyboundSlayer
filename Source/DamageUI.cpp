@@ -15,11 +15,15 @@ DamageUIManager::~DamageUIManager() {
 void DamageUIManager::Load() {
     if (is_image_loaded_) return;
     
-    // AIで生成した数字画像（横に10等分されている想定）を読み込む
-    // ※画像が用意されるまでは標準フォントで代用するための処理も後でフォールバックとして用意しますが、
-    // まずは LoadDivGraph を試みます。
-    int res = LoadDivGraph("Resource/image/UI/damage_numbers.png", 10, 10, 1, 100, 100, font_graph_handles_);
-    if (res != -1) {
+    bool success = true;
+    for (int i = 0; i < 10; ++i) {
+        std::string path = "Resource/image/UI/damage_numbers/damage_numbers_" + std::to_string(i) + ".png";
+        font_graph_handles_[i] = LoadGraph(path.c_str());
+        if (font_graph_handles_[i] == -1) {
+            success = false;
+        }
+    }
+    if (success) {
         is_image_loaded_ = true;
     }
 }
@@ -93,8 +97,8 @@ void DamageUIManager::Draw() {
 
         std::string val_str = std::to_string(popup.value);
         int total_width = 0;
-        int digit_w = 40; // 画像1文字あたりの表示幅（調整用）
-        int digit_h = 50;
+        int digit_w = 60; // 画像1文字あたりの表示幅（大きく調整）
+        int digit_h = 75;
 
         total_width = (int)(val_str.length() * digit_w * scale);
         int draw_x = (int)screen_pos.x - total_width / 2;

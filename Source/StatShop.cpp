@@ -1,4 +1,4 @@
-#include "StatShop.h"
+﻿#include "StatShop.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"

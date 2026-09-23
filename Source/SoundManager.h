@@ -30,6 +30,11 @@ public:
 		SE_POWER,       ///< 強化・パワーアップ音
 		SE_SELECT,      ///< カーソル選択音
 		SE_WINDOW,      ///< ウィンドウ開閉音
+		SE_BOSS_JUMP,   ///< ボスのジャンプ攻撃音
+		SE_SLASH,       ///< プレイヤーの斬撃音
+		SE_SLIDE_ATTACK,///< プレイヤーのスライディング攻撃音
+		SE_WALK,        ///< プレイヤーの足音
+		SE_HIT_SLASH,   ///< 剣のヒット音
 	};
 
 public:
@@ -53,6 +58,8 @@ public:
 	/// @brief 指定した効果音（SE）を再生する
 	/// @param se 再生したいSEの種類（SOUND_SE）
 	void PlaySE(SOUND_SE se);
+	void StopSE(SOUND_SE se);
+	bool CheckSE(SOUND_SE se);
 
 	/// @brief 指定したBGMファイルを読み込んでリストに登録する
 	/// @param bgm 登録するBGMの識別ID

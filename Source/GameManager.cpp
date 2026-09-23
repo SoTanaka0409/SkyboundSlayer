@@ -490,7 +490,7 @@ void GameManager::DrawDebugPanel()
 	const DebugButton bossButton = { 202, 104, 132, 40, "GO BOSS" };
 
 	static int font18 = -1;
-	if (font18 == -1) font18 = CreateFontToHandle(NULL, 18, -1);
+	if (font18 == -1) font18 = CreateFontToHandle("源界明朝", 18, -1);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 165);
 	DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(0, 0, 0), true);
@@ -565,7 +565,7 @@ int GameManager::GetEnemyCount() const
 void GameManager::DrawPhaseHud()
 {
 	static int font24 = -1;
-	if (font24 == -1) font24 = CreateFontToHandle(NULL, 24, -1);
+	if (font24 == -1) font24 = CreateFontToHandle("源界明朝", 24, -1);
 
 	const int panelX = Config::ScreenWidth - 356;
 	const int panelY = 28;
@@ -600,7 +600,7 @@ void GameManager::DrawShopBanner()
 	}
 
 	static int font28 = -1;
-	if (font28 == -1) font28 = CreateFontToHandle(NULL, 28, -1);
+	if (font28 == -1) font28 = CreateFontToHandle("源界明朝", 28, -1);
 
 	const int bannerW = 700;
 	const int bannerX = Config::ScreenWidth / 2 - bannerW / 2;

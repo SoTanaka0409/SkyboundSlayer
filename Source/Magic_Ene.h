@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Magic.h"
 
 class Magic_Ene:public Magic
@@ -16,7 +16,7 @@ public:
 	virtual void OnExit(Collider* collider, Collider* check) override;
 
 private:
-	// === ƒpƒ‰ƒ[ƒ^’è” ===
+	// === ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å®šæ•° ===
 	static constexpr float kMagicScaleMax = 1.8f;
 	static constexpr float kMagicScaleMid = 1.3f;
 	static constexpr float kMagicScaleMin = 0.7f;

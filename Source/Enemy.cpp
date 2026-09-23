@@ -1,4 +1,4 @@
-#include "Enemy.h"
+﻿#include "Enemy.h"
 #include "DamageUI.h"
 #include "Model.h"
 #include "Master.h"
@@ -17,18 +17,18 @@
 #include "SphereCollider.h"
 #include "CapsuleCollider.h"
 
-/// @brief Enemyクラスのコンストラクタ
-/// @param filename 使用する3Dモデルのファイルパス
-/// @param initPos 初期配置座標
-/// @param hp 初期・最大体力値
-/// @param speed 移動速度
-/// @param attack 攻撃力
-/// @param HitSize カプセルコライダーの判定サイズ
-/// @param Serch1 索敵（追従）用範囲半径
-/// @param Serch2 攻撃開始用範囲半径
-/// @param Serch3 接近停止用範囲半径
-/// @param money 倒した際に獲得できる資金
-/// @param is_separate_anim_ アニメーションを分離読み込みするかどうかのフラグ
+/// @brief Enemy繧ｯ繝ｩ繧ｹ縺ｮ繧ｳ繝ｳ繧ｹ繝医Λ繧ｯ繧ｿ
+/// @param filename 菴ｿ逕ｨ縺吶ｋ3D繝｢繝・Ν縺ｮ繝輔ぃ繧､繝ｫ繝代せ
+/// @param initPos 蛻晄悄驟咲ｽｮ蠎ｧ讓・
+/// @param hp 蛻晄悄繝ｻ譛螟ｧ菴灘鴨蛟､
+/// @param speed 遘ｻ蜍暮溷ｺｦ
+/// @param attack 謾ｻ謦・鴨
+/// @param HitSize 繧ｫ繝励そ繝ｫ繧ｳ繝ｩ繧､繝繝ｼ縺ｮ蛻､螳壹し繧､繧ｺ
+/// @param Serch1 邏｢謨ｵ・郁ｿｽ蠕難ｼ臥畑遽・峇蜊雁ｾ・
+/// @param Serch2 謾ｻ謦・幕蟋狗畑遽・峇蜊雁ｾ・
+/// @param Serch3 謗･霑大●豁｢逕ｨ遽・峇蜊雁ｾ・
+/// @param money 蛟偵＠縺滄圀縺ｫ迯ｲ蠕励〒縺阪ｋ雉・≡
+/// @param is_separate_anim_ 繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ繧貞・髮｢隱ｭ縺ｿ霎ｼ縺ｿ縺吶ｋ縺九←縺・°縺ｮ繝輔Λ繧ｰ
 Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	: Object3D(initPos)
 	, hp_(hp)
@@ -69,7 +69,7 @@ Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float 
 	stop_collider_ = new SphereCollider(this, position_, hit_stop_search_);
 }
 
-/// @brief Enemyクラスのデストラクタ
+/// @brief Enemy繧ｯ繝ｩ繧ｹ縺ｮ繝・せ繝医Λ繧ｯ繧ｿ
 Enemy::~Enemy()
 {
 	if (model_ != nullptr)
@@ -79,8 +79,8 @@ Enemy::~Enemy()
 	}
 }
 
-/// @brief 毎フレームの状態更新処理を行う
-/// @details 死亡判定、攻撃動作、各コライダー座標同期、移動および回転制御を実行する
+/// @brief 豈弱ヵ繝ｬ繝ｼ繝縺ｮ迥ｶ諷区峩譁ｰ蜃ｦ逅・ｒ陦後≧
+/// @details 豁ｻ莠｡蛻､螳壹∵判謦・虚菴懊∝推繧ｳ繝ｩ繧､繝繝ｼ蠎ｧ讓吝酔譛溘∫ｧｻ蜍輔♀繧医・蝗櫁ｻ｢蛻ｶ蠕｡繧貞ｮ溯｡後☆繧・
 void Enemy::Update()
 {
 	if (model_ != nullptr)
@@ -95,8 +95,8 @@ void Enemy::Update()
 	}
 }
 
-/// @brief Enemyの描画処理を行う
-/// @details モデルの描画およびデバッグフラグ有効時のワイヤーフレーム描画を行う
+/// @brief Enemy縺ｮ謠冗判蜃ｦ逅・ｒ陦後≧
+/// @details 繝｢繝・Ν縺ｮ謠冗判縺翫ｈ縺ｳ繝・ヰ繝・げ繝輔Λ繧ｰ譛牙柑譎ゅ・繝ｯ繧､繝､繝ｼ繝輔Ξ繝ｼ繝謠冗判繧定｡後≧
 void Enemy::Draw()
 {
 	if (model_ != nullptr)
@@ -105,12 +105,12 @@ void Enemy::Draw()
 	}
 }
 
-/// @brief 攻撃モーションパターン管理用拡張メソッド
+/// @brief 謾ｻ謦・Δ繝ｼ繧ｷ繝ｧ繝ｳ繝代ち繝ｼ繝ｳ邂｡逅・畑諡｡蠑ｵ繝｡繧ｽ繝・ラ
 void Enemy::AttackList()
 {
 }
 
-/// @brief 攻撃アニメーションの開始判定およびタイマー制御を行う
+/// @brief 謾ｻ謦・い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ髢句ｧ句愛螳壹♀繧医・繧ｿ繧､繝槭・蛻ｶ蠕｡繧定｡後≧
 void Enemy::Attack()
 {
 	AnimationState now = model_->GetNowState();
@@ -132,7 +132,7 @@ void Enemy::Attack()
 	}
 }
 
-/// @brief プレイヤー追従移動および壁・地形との衝突スライド計算を行う
+/// @brief 繝励Ξ繧､繝､繝ｼ霑ｽ蠕鍋ｧｻ蜍輔♀繧医・螢√・蝨ｰ蠖｢縺ｨ縺ｮ陦晉ｪ√せ繝ｩ繧､繝芽ｨ育ｮ励ｒ陦後≧
 void Enemy::Move()
 {
 	AnimationState now = model_->GetNowState();
@@ -176,7 +176,7 @@ void Enemy::Move()
 
 		if (!walls.empty())
 		{
-			// Wall（壁）との当たり判定と壁ずり処理
+			// Wall・亥｣・ｼ峨→縺ｮ蠖薙◆繧雁愛螳壹→螢√★繧雁・逅・
 			for (size_t i = 0; i < walls.size(); i++)
 			{
 				Wall* wall = walls.at(i)->CastTo<Wall>();
@@ -211,7 +211,7 @@ void Enemy::Move()
 	}
 }
 
-/// @brief 移動方向に応じた段階的回転補間処理を行う
+/// @brief 遘ｻ蜍墓婿蜷代↓蠢懊§縺滓ｮｵ髫守噪蝗櫁ｻ｢陬憺俣蜃ｦ逅・ｒ陦後≧
 void Enemy::RotationByMove()
 {
 	float subAngle = target_angle_ - angle_;
@@ -247,11 +247,16 @@ void Enemy::RotationByMove()
 	model_->SetRotation(rotation_);
 }
 
-/// @brief ダメージ適用処理
-/// @param damage 減少させるHP量
-void Enemy::Damage(float damage)
+/// @brief 繝繝｡繝ｼ繧ｸ驕ｩ逕ｨ蜃ｦ逅・
+/// @param damage 貂帛ｰ代＆縺帙ｋHP驥・
+void Enemy::Damage(float damage, bool play_sound)
 {
-	DamageUIManager::GetInstance()->AddDamage((int)damage, position_, damage >= 100.0f);
+	VECTOR pop_pos = position_;
+	pop_pos.y += size_;
+	DamageUIManager::GetInstance()->AddDamage((int)damage, pop_pos, damage >= 100.0f);
+	if (play_sound) {
+		Master::sound_manager_->PlaySE(SoundManager::SE_HIT_SLASH);
+	}
 	hp_ -= damage;
 	if (hp_ <= 0)
 	{
@@ -264,7 +269,7 @@ void Enemy::Damage(float damage)
 	}
 }
 
-/// @brief 死亡時の演出再生およびオブジェクト削除予約を行う
+/// @brief 豁ｻ莠｡譎ゅ・貍泌・蜀咲函縺翫ｈ縺ｳ繧ｪ繝悶ず繧ｧ繧ｯ繝亥炎髯､莠育ｴ・ｒ陦後≧
 void Enemy::DeathEnemy()
 {
 	if (!is_dead_) return;
@@ -283,7 +288,7 @@ void Enemy::DeathEnemy()
 	model_->Update();
 }
 
-/// @brief 死亡時に各種コライダーを画面外遥か遠くへ移動させて無効化する
+/// @brief 豁ｻ莠｡譎ゅ↓蜷・ｨｮ繧ｳ繝ｩ繧､繝繝ｼ繧堤判髱｢螟夜▼縺矩□縺上∈遘ｻ蜍輔＆縺帙※辟｡蜉ｹ蛹悶☆繧・
 void Enemy::DeathColliderPosition()
 {
 	VECTOR pos = VGet(10000, 10000, 10000);
@@ -311,9 +316,9 @@ void Enemy::DeathColliderPosition()
 	}
 }
 
-/// @brief 他オブジェクトのコライダーと接触を開始した瞬間の割り込み処理
-/// @param collider 自身のコライダー
-/// @param check 相手のコライダー
+/// @brief 莉悶が繝悶ず繧ｧ繧ｯ繝医・繧ｳ繝ｩ繧､繝繝ｼ縺ｨ謗･隗ｦ繧帝幕蟋九＠縺溽椪髢薙・蜑ｲ繧願ｾｼ縺ｿ蜃ｦ逅・
+/// @param collider 閾ｪ霄ｫ縺ｮ繧ｳ繝ｩ繧､繝繝ｼ
+/// @param check 逶ｸ謇九・繧ｳ繝ｩ繧､繝繝ｼ
 void Enemy::OnEnter(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0) return;
@@ -342,9 +347,9 @@ void Enemy::OnEnter(Collider* collider, Collider* check)
 	}
 }
 
-/// @brief 他オブジェクトのコライダーと接触中の継続処理（プレイヤーへの攻撃判定等）
-/// @param collider 自身のコライダー
-/// @param check 相手のコライダー
+/// @brief 莉悶が繝悶ず繧ｧ繧ｯ繝医・繧ｳ繝ｩ繧､繝繝ｼ縺ｨ謗･隗ｦ荳ｭ縺ｮ邯咏ｶ壼・逅・ｼ医・繝ｬ繧､繝､繝ｼ縺ｸ縺ｮ謾ｻ謦・愛螳夂ｭ会ｼ・
+/// @param collider 閾ｪ霄ｫ縺ｮ繧ｳ繝ｩ繧､繝繝ｼ
+/// @param check 逶ｸ謇九・繧ｳ繝ｩ繧､繝繝ｼ
 void Enemy::OnTrigger(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0) return;
@@ -366,9 +371,9 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 	}
 }
 
-/// @brief 他オブジェクトのコライダーと離脱した瞬間の割り込み処理
-/// @param collider 自身のコライダー
-/// @param check 相手のコライダー
+/// @brief 莉悶が繝悶ず繧ｧ繧ｯ繝医・繧ｳ繝ｩ繧､繝繝ｼ縺ｨ髮｢閼ｱ縺励◆迸ｬ髢薙・蜑ｲ繧願ｾｼ縺ｿ蜃ｦ逅・
+/// @param collider 閾ｪ霄ｫ縺ｮ繧ｳ繝ｩ繧､繝繝ｼ
+/// @param check 逶ｸ謇九・繧ｳ繝ｩ繧､繝繝ｼ
 void Enemy::OnExit(Collider* collider, Collider* check)
 {
 	if (hp_ <= 0) return;
@@ -393,7 +398,7 @@ void Enemy::OnExit(Collider* collider, Collider* check)
 	}
 }
 
-/// @brief 各コライダーの追従位置座標を毎フレーム同期更新する
+/// @brief 蜷・さ繝ｩ繧､繝繝ｼ縺ｮ霑ｽ蠕謎ｽ咲ｽｮ蠎ｧ讓吶ｒ豈弱ヵ繝ｬ繝ｼ繝蜷梧悄譖ｴ譁ｰ縺吶ｋ
 void Enemy::UpdateColliderPosition()
 {
 	if (capsule_collider_ != nullptr)
@@ -419,7 +424,7 @@ void Enemy::UpdateColliderPosition()
 	}
 }
 
-/// @brief 全ての登録済みコライダーを削除マークし解放準備をする
+/// @brief 蜈ｨ縺ｦ縺ｮ逋ｻ骭ｲ貂医∩繧ｳ繝ｩ繧､繝繝ｼ繧貞炎髯､繝槭・繧ｯ縺苓ｧ｣謾ｾ貅門ｙ繧偵☆繧・
 void Enemy::Delete()
 {
 	if (capsule_collider_ != nullptr)
@@ -449,7 +454,7 @@ void Enemy::Delete()
 	}
 }
 
-/// @brief 撃破時にプレイヤーへ報酬資金を加算付与する
+/// @brief 謦・ｴ譎ゅ↓繝励Ξ繧､繝､繝ｼ縺ｸ蝣ｱ驟ｬ雉・≡繧貞刈邂嶺ｻ倅ｸ弱☆繧・
 void Enemy::GiveRewards()
 {
 	Player3D* player = Master::player_;

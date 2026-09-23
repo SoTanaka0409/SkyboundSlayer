@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+﻿#include "TitleScene.h"
 #include "InputManager.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -151,7 +151,7 @@ void TitleScene::HandleMenuInput()
 /// @return bool ボタンの判定領域内であればtrue
 bool TitleScene::IsHoverStart(int mx, int my) const
 {
-	return mx >= 96 && mx <= 416 && my >= 732 && my <= 794;
+	return mx >= 96 && mx <= 516 && my >= 732 && my <= 794;
 }
 
 /// @brief マウスカーソルが「RULE」ボタン上にあるか判定する
@@ -160,7 +160,7 @@ bool TitleScene::IsHoverStart(int mx, int my) const
 /// @return bool ボタンの判定領域内であればtrue
 bool TitleScene::IsHoverRule(int mx, int my) const
 {
-	return mx >= 96 && mx <= 416 && my >= 792 && my <= 854;
+	return mx >= 96 && mx <= 516 && my >= 792 && my <= 854;
 }
 
 /// @brief マウスカーソルが「SETTINGS」ボタン上にあるか判定する
@@ -169,7 +169,7 @@ bool TitleScene::IsHoverRule(int mx, int my) const
 /// @return bool ボタンの判定領域内であればtrue
 bool TitleScene::IsHoverSettings(int mx, int my) const
 {
-	return mx >= 96 && mx <= 416 && my >= 872 && my <= 934;
+	return mx >= 96 && mx <= 516 && my >= 872 && my <= 934;
 }
 
 /// @brief タイトルシーンの全画面描画処理を行う
@@ -220,14 +220,14 @@ void TitleScene::DrawTitlePanel()
 	const int panelLight = GetColor(47, 52, 65);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawBox(58, 70, 760, 250, mainPanel, TRUE);
+	DrawBox(58, 70, 960, 250, mainPanel, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawLine(70, 70, 760, 70, accentGold, 2);
-	DrawLine(70, 250, 760, 250, accentGoldDark, 2);
+	DrawLine(70, 70, 960, 70, accentGold, 2);
+	DrawLine(70, 250, 960, 250, accentGoldDark, 2);
 	DrawLine(70, 70, 70, 250, accentGoldDark, 2);
-	DrawLine(760, 70, 760, 250, accentGold, 2);
-	DrawBox(84, 88, 746, 98, panelLight, TRUE);
+	DrawLine(960, 70, 960, 250, accentGold, 2);
+	DrawBox(84, 88, 946, 98, panelLight, TRUE);
 
 	SetFontSize(76);
 	// 右下にずらして黒文字を描画することで、アウトライン/影付きフォントを疑似的に表現する
@@ -252,14 +252,14 @@ void TitleScene::DrawMenuPanel()
 	const int panelLight = GetColor(47, 52, 65);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	DrawBox(70, 694, 448, 976, mainPanel, TRUE);
+	DrawBox(70, 694, 548, 976, mainPanel, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawLine(70, 694, 448, 694, accentGold, 1);
-	DrawLine(70, 976, 448, 976, accentGoldDark, 1);
+	DrawLine(70, 694, 548, 694, accentGold, 1);
+	DrawLine(70, 976, 548, 976, accentGoldDark, 1);
 	DrawLine(70, 694, 70, 976, accentGoldDark, 1);
-	DrawLine(448, 694, 448, 976, accentGold, 1);
-	DrawBox(84, 708, 434, 722, panelLight, TRUE);
+	DrawLine(548, 694, 548, 976, accentGold, 1);
+	DrawBox(84, 708, 534, 722, panelLight, TRUE);
 
 	auto drawAnimBtn = [&](int bx, int by, int bw, int bh, bool hover, const char* label) {
 		int expand = hover ? 8 : 0;
@@ -274,20 +274,20 @@ void TitleScene::DrawMenuPanel()
 		DrawFormatString(bx + 30 - expand, by + 16 - expand/2, textC, "%s%s", hover ? "> " : "  ", label);
 	};
 
-	drawAnimBtn(96, 712, 320, 62, hoverStart, "GAME START");
-	drawAnimBtn(96, 792, 320, 62, hoverRule, "RULE");
-	drawAnimBtn(96, 872, 320, 62, hoverSettings, "SETTINGS");
+	drawAnimBtn(96, 712, 420, 62, hoverStart, "GAME START");
+	drawAnimBtn(96, 792, 420, 62, hoverRule, "RULE");
+	drawAnimBtn(96, 872, 420, 62, hoverSettings, "SETTINGS");
 }
 
 /// @brief 画面下部の点滅案内プロンプトを描画する
 void TitleScene::DrawPrompt()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + color_fade_ / 3);
-	DrawBox(Config::ScreenWidth / 2 - 210, Config::ScreenHeight - 76, Config::ScreenWidth / 2 + 210, Config::ScreenHeight - 34, GetColor(30, 35, 45), TRUE);
+	DrawBox(Config::ScreenWidth / 2 - 320, Config::ScreenHeight - 76, Config::ScreenWidth / 2 + 320, Config::ScreenHeight - 34, GetColor(30, 35, 45), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	SetFontSize(22);
-	DrawFormatString(Config::ScreenWidth / 2 - 156, Config::ScreenHeight - 66, GetColor(214, 220, 224), "CLICK A COMMAND TO BEGIN");
+	DrawFormatString(Config::ScreenWidth / 2 - 220, Config::ScreenHeight - 66, GetColor(214, 220, 224), "CLICK A COMMAND TO BEGIN");
 	SetFontSize(24);
 }
 
