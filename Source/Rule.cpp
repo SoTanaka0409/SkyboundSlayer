@@ -1,4 +1,4 @@
-ï»¿#include "Rule.h"
+#include "Rule.h"
 #include "Texture.h"
 #include "Master.h"
 #include "SceneManager.h"
@@ -6,7 +6,7 @@
 
 
 
-/// @brief Ruleã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
+/// @brief Rule‚Ì‰Šú‰»iƒRƒ“ƒXƒgƒ‰ƒNƒ^j
 Rule::Rule()
 	: page_(1)
 	, bg_handle1_(-1)
@@ -20,7 +20,7 @@ Rule::~Rule()
 
 
 
-/// @brief Ruleã®åˆæœŸåŒ–å‡¦ç†
+/// @brief Rule‚Ì‰Šú‰»ˆ—
 void Rule::Initialize()
 {
 	page_ = 1;
@@ -30,7 +30,7 @@ void Rule::Initialize()
 
 
 
-/// @brief Ruleã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
+/// @brief Rule‚Ìó‘ÔXVˆ—
 void Rule::Update()
 {
 	Scene::Update();
@@ -39,7 +39,7 @@ void Rule::Update()
 
 
 
-/// @brief Ruleã®HandlePageInputå‡¦ç†
+/// @brief Rule‚ÌHandlePageInputˆ—
 void Rule::HandlePageInput()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_RIGHT) || InputManager::CheckDownKey(KEY_INPUT_D))
@@ -65,7 +65,7 @@ void Rule::HandlePageInput()
 
 
 
-/// @brief Ruleã®æç”»å‡¦ç†
+/// @brief Rule‚Ì•`‰æˆ—
 void Rule::Draw()
 {
 	Scene::Draw();
@@ -86,7 +86,7 @@ void Rule::Draw()
 
 
 
-/// @brief Ruleã®DrawRuleBackgroundå‡¦ç†
+/// @brief Rule‚ÌDrawRuleBackgroundˆ—
 void Rule::DrawRuleBackground()
 {
 	int handle = (page_ == 1) ? bg_handle1_ : bg_handle2_;
@@ -106,63 +106,64 @@ void Rule::DrawRuleBackground()
 
 
 
-/// @brief Ruleã®DrawRulePage1å‡¦ç†
+/// @brief Rule‚ÌDrawRulePage1ˆ—
 void Rule::DrawRulePage1()
 {
 	SetFontSize(48);
-	DrawFormatString(150, 150, GetColor(255, 255, 255), "ã€ ãƒ«ãƒ¼ãƒ«èª¬æ˜ (1/2) ã€‘");
+	DrawFormatString(150, 150, GetColor(255, 255, 255), "y ƒ‹[ƒ‹à–¾ (1/2) z");
 
 	SetFontSize(40);
 	int textY = 250;
 	const int lineHeight = 60;
-	DrawFormatString(150, textY, GetColor(200, 255, 200), "ã‚²ãƒ¼ãƒ ã®é€²è¡Œã«ã¤ã„ã¦ï¼š");
+	DrawFormatString(150, textY, GetColor(200, 255, 200), "ƒQ[ƒ€‚Ìis‚É‚Â‚¢‚ÄF");
 	textY += (int)(lineHeight * 1.5);
-	DrawFormatString(150, textY, GetColor(255, 255, 255), "é€šå¸¸Phase1ï½Phase3ã¾ã§ã¯ã€å‡ºç¾ã™ã‚‹æ•µã‚’å…¨ã¦å€’ã—ã¾ã™ã€‚");
+	DrawFormatString(150, textY, GetColor(255, 255, 255), "’ÊíPhase1`Phase3‚Ü‚Å‚ÍAoŒ»‚·‚é“G‚ğ‘S‚Ä“|‚µ‚Ü‚·B");
 	textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 255, 255), "ã™ã¹ã¦ã®æ•µã‚’å€’ã™ã¨æ¬¡ã®Phaseã«é€²ã¿ã¾ã™ã€‚");
+	DrawFormatString(150, textY, GetColor(255, 255, 255), "‚·‚×‚Ä‚Ì“G‚ğ“|‚·‚ÆŸ‚ÌPhase‚Éi‚İ‚Ü‚·B");
 	textY += (int)(lineHeight * 2);
-	DrawFormatString(150, textY, GetColor(200, 255, 200), "ãƒœã‚¹ã®è¨ä¼ï¼š");
+	DrawFormatString(150, textY, GetColor(200, 255, 200), "ƒ{ƒX‚Ì“¢”°F");
 	textY += (int)(lineHeight * 1.5);
-	DrawFormatString(150, textY, GetColor(255, 255, 255), "Phase3ã‚’ã‚¯ãƒªã‚¢ã—ãŸå¾Œã€ãƒœã‚¹ãƒãƒ¼ã‚¿ãƒ«ã«å‘ã‹ã„ã¾ã™ã€‚");
+	DrawFormatString(150, textY, GetColor(255, 255, 255), "Phase3‚ğƒNƒŠƒA‚µ‚½ŒãAƒ{ƒXƒ|[ƒ^ƒ‹‚ÉŒü‚©‚¢‚Ü‚·B");
 	textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 255, 255), "ãƒãƒ¼ã‚¿ãƒ«ã«å…¥ã‚‹ã¨ãƒœã‚¹æˆ¦ãŒå§‹ã¾ã‚Šã€ãƒœã‚¹ã‚’å€’ã›ã°ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ã§ã™ï¼");
+	DrawFormatString(150, textY, GetColor(255, 255, 255), "ƒ|[ƒ^ƒ‹‚É“ü‚é‚Æƒ{ƒXí‚ªn‚Ü‚èAƒ{ƒX‚ğ“|‚¹‚ÎƒQ[ƒ€ƒNƒŠƒA‚Å‚·I");
 }
 
 
 
-/// @brief Ruleã®DrawRulePage2å‡¦ç†
+/// @brief Rule‚ÌDrawRulePage2ˆ—
 void Rule::DrawRulePage2()
 {
 	SetFontSize(48);
-	DrawFormatString(150, 150, GetColor(255, 255, 255), "ã€ æ“ä½œèª¬æ˜ (2/2) ã€‘");
+	DrawFormatString(150, 150, GetColor(255, 255, 255), "y ‘€ìà–¾ (2/2) z");
 
 	SetFontSize(40);
 	int textY = 250;
 	const int lineHeight = 55;
-	DrawFormatString(150, textY, GetColor(255, 255, 200), "[W] [A] [S] [D]  ... ç§»å‹•"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 255, 200), "[SPACE]          ... å›é¿"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 200, 200), "[å·¦ã‚¯ãƒªãƒƒã‚¯]     ... æ”»æ’ƒ"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 255, 200), "[E]              ... æ”»æ’ƒæ–¹æ³•ã®åˆ‡ã‚Šæ›¿ãˆ"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 255, 200), "[â†] [â†’]          ... ã‚¢ã‚¤ãƒ†ãƒ é¸æŠ"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(200, 255, 200), "[R]              ... ã‚¢ã‚¤ãƒ†ãƒ ä½¿ç”¨"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 255, 200), "[Enter]          ... ã‚·ãƒ§ãƒƒãƒ—ã‚’é–‹ã"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 255, 200), "[F5] / [F6]      ... [ãƒ‡ãƒãƒƒã‚°] æ•µã‚’å…¨æ»… / ãƒœã‚¹æˆ¦ã¸ç§»å‹•"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 200, 200), "[ESC]            ... ã‚²ãƒ¼ãƒ çµ‚äº†");
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[W] [A] [S] [D]  ... ˆÚ“®"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[SPACE]          ... ‰ñ”ğ"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 200, 200), "[¶ƒNƒŠƒbƒN]     ... UŒ‚"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[E]              ... UŒ‚•û–@‚ÌØ‚è‘Ö‚¦"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[©] [¨]          ... ƒAƒCƒeƒ€‘I‘ğ"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(200, 255, 200), "[R]              ... ƒAƒCƒeƒ€g—p"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[Enter]          ... ƒVƒ‡ƒbƒv‚ğŠJ‚­"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[P]              ... ƒ|[ƒY"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[F5] / [F6]      ... [ƒfƒoƒbƒO] “G‚ğ‘S–Å / ƒ{ƒXí‚ÖˆÚ“®"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 200, 200), "[ESC]            ... ƒQ[ƒ€I—¹");
 }
 
 
 
-/// @brief Ruleã®DrawRuleFooterå‡¦ç†
+/// @brief Rule‚ÌDrawRuleFooterˆ—
 void Rule::DrawRuleFooter()
 {
 	SetFontSize(32);
-	DrawFormatString(150, 900, GetColor(200, 200, 200), "  [A]/[å·¦çŸ¢å°] å‰ã®ãƒšãƒ¼ã‚¸   |   æ¬¡ã®ãƒšãƒ¼ã‚¸ [D]/[å³çŸ¢å°]  ");
-	DrawFormatString(150, 950, GetColor(150, 150, 150), "[BackSpace] ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚‹");
+	DrawFormatString(150, 900, GetColor(200, 200, 200), "  [A]/[¶–îˆó] ‘O‚Ìƒy[ƒW   |   Ÿ‚Ìƒy[ƒW [D]/[‰E–îˆó]  ");
+	DrawFormatString(150, 950, GetColor(150, 150, 150), "[BackSpace] ƒ^ƒCƒgƒ‹‚É–ß‚é");
 }
 
 
 
-/// @brief Ruleã®Finalizeå‡¦ç†
+/// @brief Rule‚ÌFinalizeˆ—
 void Rule::Finalize()
 {
 	if (bg_handle1_ != -1)
