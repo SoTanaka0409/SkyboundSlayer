@@ -25,3 +25,6 @@
 - `Player.cpp` : プレイヤーの状態遷移とアニメーション制御
 - `Collision.cpp` : 独自の当たり判定処理のコアロジック
 - `Boss.cpp` : ボスの攻撃パターンのAI制御
+---
+※ゲームのプレイ動画や詳しい企画書については、以下のWebポートフォリオをご覧ください。
+👉 https://SoTanaka0409.github.io/portfolio_new/
