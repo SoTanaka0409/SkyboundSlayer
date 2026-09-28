@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "InputManager.h"
 
-// ゲームの遊び方や操作説明を表示するチュートリアル（ルール）シーン。複数ページの表示と入力遷移を管理する
+/// @brief ゲームの遊び方や操作説明を表示するチュートリアル（ルール）シーン。複数ページの表示と入力遷移を管理する
 class Rule : public Scene
 {
 public:

@@ -23,7 +23,7 @@
 #include "Chat.h"
 #include "Save.h"
 
-// サービスロケーターとしてのMasterクラス（静的メンバ変数）の実体化
+/// @brief サービスロケーターとしてのMasterクラス（静的メンバ変数）の実体化
 Player3D* Master::player_ = nullptr;
 SceneManager* Master::scene_manager_ = new SceneManager();
 SoundManager* Master::sound_manager_ = new SoundManager();

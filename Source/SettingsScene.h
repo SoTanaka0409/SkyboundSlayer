@@ -2,8 +2,8 @@
 #include "DxLib.h"
 #include "Scene.h"
 
-// アーキテクチャ設計：設定画面を担当するシーンクラス。
-// 各種サウンド設定やデバッグフラグをUI上で視覚的に操作し、Masterクラスの静的状態へ即時反映させるためのインターフェースを定義する。
+/// @brief アーキテクチャ設計：設定画面を担当するシーンクラス。
+/// @brief 各種サウンド設定やデバッグフラグをUI上で視覚的に操作し、Masterクラスの静的状態へ即時反映させるためのインターフェースを定義する。
 class SettingsScene : public Scene
 {
 public:
@@ -23,7 +23,7 @@ public:
 	void Finalize() override;
 
 private:
-	// アーキテクチャ設計：画面内のUI要素を矩形（x, y, w, h）で管理し、当たり判定や描画位置計算を統一する構造体
+	/// @brief アーキテクチャ設計：画面内のUI要素を矩形（x, y, w, h）で管理し、当たり判定や描画位置計算を統一する構造体
 	struct Rect
 	{
 		int x, y, w, h;
@@ -32,7 +32,7 @@ private:
 /// @details マウス操作に基づいたトグル状態の変更や、ボリュームバーのドラッグ処理
 	void HandleInput();
 
-	// 各描画レイヤーの分担処理
+	/// @brief 各描画レイヤーの分担処理
 	void DrawBackground();
 	void DrawHeader();
 	void DrawSettingRows();
@@ -58,7 +58,7 @@ private:
 /// @return 0-255の範囲にスケーリングされた音量値
 	int GetVolumeFromMouseX(const Rect& rect, int mouseX) const;
 
-	// 各UI操作領域の定義
+	/// @brief 各UI操作領域の定義
 	Rect bgm_toggle_rect_;
 	Rect bgm_bar_rect_;
 	Rect se_toggle_rect_;
@@ -66,7 +66,7 @@ private:
 	Rect debug_toggle_rect_;
 	Rect back_rect_;
 
-	// 演出：画面明滅等のブリンク処理用パラメータ
+	/// @brief 演出：画面明滅等のブリンク処理用パラメータ
 	int color_fade_;
 	bool color_flag_;
 };

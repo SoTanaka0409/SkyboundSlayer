@@ -2,8 +2,8 @@
 #include "dxlib.h"
 #include "Scene.h"
 
-// アーキテクチャ設計：タイトル画面を担当するシーンクラス。
-// ゲームの第一印象を決定づける場所として、3D背景の旋回演出や、操作を促す点滅UIなどを統合的に制御する。
+/// @brief アーキテクチャ設計：タイトル画面を担当するシーンクラス。
+/// @brief ゲームの第一印象を決定づける場所として、3D背景の旋回演出や、操作を促す点滅UIなどを統合的に制御する。
 class TitleScene : public Scene
 {
 public:
@@ -53,10 +53,10 @@ private:
 	bool IsHoverRule(int mx, int my) const;
 	bool IsHoverSettings(int mx, int my) const;
 
-	// カメラ演出用：自動旋回アニメーションの現在の回転角
+	/// @brief カメラ演出用：自動旋回アニメーションの現在の回転角
 	float camera_angle_;
 
-	// UI演出用：点滅処理のためのアルファ値（fade）と、明滅方向を制御するトグルフラグ
+	/// @brief UI演出用：点滅処理のためのアルファ値（fade）と、明滅方向を制御するトグルフラグ
 	int color_fade_;
 	bool color_flag_;
 };

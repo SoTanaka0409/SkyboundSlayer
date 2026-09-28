@@ -3,7 +3,7 @@
 #include "DxLib.h"
 #include <vector>
 
-// 攻撃範囲の予告など、指定座標を中心に拡がる3D円形エフェクトを描画・管理するクラス
+/// @brief 攻撃範囲の予告など、指定座標を中心に拡がる3D円形エフェクトを描画・管理するクラス
 class DrawCircle1 : public Object3D
 {
 public:
@@ -21,7 +21,7 @@ public:
     void Draw() override;
 
 /// @return 基準となる3頂点の動的配列
-    // 外部から円の基本姿勢や、簡易的な当たり判定の基準となるポリゴン面を取得するために提供する
+    /// @brief 外部から円の基本姿勢や、簡易的な当たり判定の基準となるポリゴン面を取得するために提供する
     std::vector<VERTEX3D> GetVertex()
     {
         std::vector<VERTEX3D> result;

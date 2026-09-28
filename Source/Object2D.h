@@ -3,11 +3,11 @@
 #include <vector>
 #include "DxLib.h"
 
-// 画面に表示されるすべての2D要素（UI、HUD、2Dエフェクト等）の共通属性とインターフェースを定義する基底クラス
+/// @brief 画面に表示されるすべての2D要素（UI、HUD、2Dエフェクト等）の共通属性とインターフェースを定義する基底クラス
 class Object2D
 {
 public:
-    // 2Dオブジェクトの種類を識別するためのタグ。オブジェクトマネージャー等での一括処理や衝突判定の識別に用いる
+    /// @brief 2Dオブジェクトの種類を識別するためのタグ。オブジェクトマネージャー等での一括処理や衝突判定の識別に用いる
     enum Tag2D
     {
         None2D = 0,
@@ -39,7 +39,7 @@ public: // ゲッター、セッター
 
 /// @param flag (描画可否)
 /// @details 内部の描画フラグ(draw_flag_)の更新
-    // メニューの開閉やUIの非表示切り替え時、Update処理を維持したまま描画だけをスキップさせる制御に使用する
+    /// @brief メニューの開閉やUIの非表示切り替え時、Update処理を維持したまま描画だけをスキップさせる制御に使用する
     void SetDrawFlag(bool flag) { draw_flag_ = flag; }
     bool IsDrawFlag() { return draw_flag_; }
 

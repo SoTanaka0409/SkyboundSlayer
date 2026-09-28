@@ -3,7 +3,7 @@
 #include "Model.h"
 #include <string>
 
-// プレイヤーが回収可能な収集アイテム。出現時の跳ね上がり演出と、近接時の吸い寄せ挙動を管理する
+/// @brief プレイヤーが回収可能な収集アイテム。出現時の跳ね上がり演出と、近接時の吸い寄せ挙動を管理する
 class Coin : public Object3D
 {
 public:

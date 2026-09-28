@@ -12,9 +12,9 @@ class haikei : public Object2D
 {
 
 public:
-	//コンストラクタ
+	/// @brief コンストラクタ
 	haikei(VECTOR initPos, std::string filename);
-	//デストラクタ
+	/// @brief デストラクタ
 	~haikei();
 	void Update()override;//更新
 	void Draw()override;//描画

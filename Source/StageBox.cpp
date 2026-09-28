@@ -6,7 +6,7 @@
 StageBox::StageBox(VECTOR centerPos,VECTOR centerPos2, VECTOR topLeft, VECTOR bottomRight,int color1_,int color2_,int color3_,int color4_)
 
 {
-	//手前
+	// 手前
 	{
 		//左上
 		vertex_[0].pos = VAdd(centerPos, topLeft);
@@ -47,7 +47,7 @@ StageBox::StageBox(VECTOR centerPos,VECTOR centerPos2, VECTOR topLeft, VECTOR bo
 		vertex_[3].su = 1.0f;
 		vertex_[3].sv = 1.0f;
 	}
-	//奥
+	// 奥
 	{
 		//左上
 		vertex_[4].pos = VAdd(centerPos2, topLeft);

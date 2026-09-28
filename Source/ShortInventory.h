@@ -3,7 +3,7 @@
 #include "ItemManager.h"
 #include "Item.h"
 
-// メニューを開かずに戦闘中などリアルタイムでアイテムを選択・使用するための、ショートカットUI（クイックインベントリ）を管理する
+/// @brief メニューを開かずに戦闘中などリアルタイムでアイテムを選択・使用するための、ショートカットUI（クイックインベントリ）を管理する
 class ShortInventory
 {
 public:
@@ -21,7 +21,7 @@ public:
 
 private:
 /// @return インベントリ内の有効なアイテム種類数(int)
-    // UIの描画枠数の決定や、カーソル移動時の限界値制限（ループ処理など）を計算するために用いる
+    /// @brief UIの描画枠数の決定や、カーソル移動時の限界値制限（ループ処理など）を計算するために用いる
     int GetItemCount() const;
 
 /// @param itemCount(現在のアイテム総数)
@@ -36,7 +36,7 @@ private:
     void UseSelectedItem();
 
 /// @return 選択中アイテムのメタデータへのポインタ
-    // アイテム使用時の効果判定ロジックへの引き渡しや、UI上に名前・説明文を表示するためにデータを取得する
+    /// @brief アイテム使用時の効果判定ロジックへの引き渡しや、UI上に名前・説明文を表示するためにデータを取得する
     Item::ItemInformation* GetSelectedItem() const;
 
 /// @param info(描画対象のアイテムデータ)

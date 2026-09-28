@@ -2,7 +2,7 @@
 #include"Equipment.h"
 #include"list"
 
-// プレイヤーが所持・装着している武器や防具のデータを一元管理し、ステータスへの反映を統括するマネージャー
+/// @brief プレイヤーが所持・装着している武器や防具のデータを一元管理し、ステータスへの反映を統括するマネージャー
 class EquipmentManager
 {
 public:
@@ -27,7 +27,7 @@ public:
     void WearEquipment(Equipment::EquipmentDate* date);
 
 /// @return 装備による加算ダメージ量(float)
-    // 攻撃ヒット時に呼び出され、現在アクティブな全装備の攻撃力ボーナスを合算してダメージ計算に提供する
+    /// @brief 攻撃ヒット時に呼び出され、現在アクティブな全装備の攻撃力ボーナスを合算してダメージ計算に提供する
     float GetDamage();
 
     std::list<Equipment::EquipmentDate*> date_list_; // 所持品の売却やドロップなど、頻繁な要素の追加・削除によるメモリ再確保の負荷を抑えるためのリスト構造

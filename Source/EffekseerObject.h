@@ -2,7 +2,7 @@
 #include "Object3D.h"
 #include <string>
 
-// エフェクトの再生状態をゲームオブジェクトとして扱い、キャラクターや武器への動的な追従を管理するクラス
+/// @brief エフェクトの再生状態をゲームオブジェクトとして扱い、キャラクターや武器への動的な追従を管理するクラス
 class EffekseerObject : public Object3D
 {
 public:

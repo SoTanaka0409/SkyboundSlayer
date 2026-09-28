@@ -8,7 +8,7 @@
 class SphereCollider;
 class CapsuleCollider;
 
-// プレイヤーや敵が放つ魔法（飛び道具）の基底クラス。軌道計算や寿命による自動消滅を管理する
+/// @brief プレイヤーや敵が放つ魔法（飛び道具）の基底クラス。軌道計算や寿命による自動消滅を管理する
 class Magic : public Object3D
 {
 public:

@@ -6,7 +6,7 @@
 class Player3D;
 class SphereCollider;
 
-// ステータス強化を行うショップNPCの制御クラス。徒歩での入場・退場演出と、購入メニューのUIを管理する
+/// @brief ステータス強化を行うショップNPCの制御クラス。徒歩での入場・退場演出と、購入メニューのUIを管理する
 class StatShop : public Object3D
 {
 public:

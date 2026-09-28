@@ -10,9 +10,9 @@ class Enemy; // 前方宣言
 class DrawHp 
 {
 public:
-	//centerPos,,,中心座標
-	//topLeft... 左上座標
-	//bottomRight...右下座標
+	/// @brief centerPos,,,中心座標
+	/// @brief topLeft... 左上座標
+	/// @brief bottomRight...右下座標
 	DrawHp();//コンストラクタ
 	~DrawHp();//デストラクタ
 	void Update();//更新
@@ -26,6 +26,6 @@ private:
 	static constexpr int kHpBarWidth = 60;
 	static constexpr int kHpBarHeight = 10;
 
-	// 遅延HP（アニメーション用）を管理するマップ
+	/// @brief 遅延HP（アニメーション用）を管理するマップ
 	std::map<Enemy*, float> delayed_hp_map_;
 };
