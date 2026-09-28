@@ -7,7 +7,7 @@
 #include "GameManager.h"
 #include "PauseMenu.h"
 
-// 3D空間をベースとしたメインゲームループを管理するシーン。ステージの構築、アクターのロード、環境構築を統括する
+/// @brief 3D空間をベースとしたメインゲームループを管理するシーン。ステージの構築、アクターのロード、環境構築を統括する
 class GameScene : public SceneGame
 {
 private:

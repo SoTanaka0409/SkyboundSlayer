@@ -18,7 +18,7 @@
 class SphereCollider;
 class CapsuleCollider;
 
-// プレイヤーキャラクターの入力制御、物理挙動（移動・ジャンプ）、攻撃ステート、およびステータス管理を統括するクラス
+/// @brief プレイヤーキャラクターの入力制御、物理挙動（移動・ジャンプ）、攻撃ステート、およびステータス管理を統括するクラス
 class Player3D : public Object3D
 {
 public:
@@ -110,10 +110,10 @@ public:
 
 /// @param state(ステータス種類)
 /// @return 基礎値にバフや装備補正を加算した最終値(float)
-	// ダメージ計算や移動処理を行う際、現在有効なすべての補正値が適用された正確なステータスを取得するために用いる
+	/// @brief ダメージ計算や移動処理を行う際、現在有効なすべての補正値が適用された正確なステータスを取得するために用いる
 	float GetAllStatusState(Object3D::StatusState state);
 
-	// --- Upgrade Setters ---
+	/// @brief --- Upgrade Setters ---
 	void AddUpgradeMaxHp(float add) { upgrade_max_hp_ += add; }
 	void AddUpgradeAttack(float add) { upgrade_attack_ += add; }
 	void AddUpgradeSpeed(float add) { upgrade_speed_ += add; }
@@ -181,7 +181,7 @@ private:
 	float ride_old_hp_;                 // 乗り物搭乗前など、ステータス一時変更前の退避用HPバッファ
 	float size_;                        // キャラクターの描画スケールと、壁や床との基本当たり判定半径
 
-	// --- Upgrade Stats from StatShop ---
+	/// @brief --- Upgrade Stats from StatShop ---
 	float upgrade_max_hp_ = 0.0f;           // ショップで購入した最大HPの永続加算値
 	float upgrade_attack_ = 0.0f;           // ショップで購入した基礎攻撃力の永続加算値
 	float upgrade_speed_ = 0.0f;            // ショップで購入した移動速度の永続加算値

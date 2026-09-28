@@ -6,22 +6,22 @@
 class ScoreManager
 {
 public:
-	// コンストラクタ
+	/// @brief コンストラクタ
 	ScoreManager(float score);
 	
-	// デストラクタ
+	/// @brief デストラクタ
 	~ScoreManager();
 
-	// 初期化
+	/// @brief 初期化
 	void Initialize();
 	
-	// 更新
+	/// @brief 更新
 	void Update();
 	
-	// 描画
+	/// @brief 描画
 	void Draw();
 	
-	// 終了処理
+	/// @brief 終了処理
 	void Finalize();
 
 	struct SaveDate
@@ -30,22 +30,22 @@ public:
 		float score;
 	};
 
-	// セーブデータ表示
+	/// @brief セーブデータ表示
 	void PrintSaveDate(SaveDate date);
 
-	// スコア加算
+	/// @brief スコア加算
 	void AddScore(float add)
 	{
 		score_ += add;
 	}
 
-	// スコア取得
+	/// @brief スコア取得
 	int GetScore()
 	{
 		return static_cast<int>(score_);
 	}
 
-	// スコアリセット
+	/// @brief スコアリセット
 	void ResetScore()
 	{
 		score_ = 0;
@@ -53,73 +53,73 @@ public:
 		ResetStats();
 	}
 
-	// ハイスコア取得
+	/// @brief ハイスコア取得
 	int GetHighScore()
 	{
 		return static_cast<int>(high_score_);
 	}
 
-	// ハイスコア取得2
+	/// @brief ハイスコア取得2
 	int GetHighScore2()
 	{
 		return static_cast<int>(high_score2_);
 	}
 
-	// ハイスコア取得3
+	/// @brief ハイスコア取得3
 	int GetHighScore3()
 	{
 		return static_cast<int>(high_score3_);
 	}
 
-	// 名前ID取得
+	/// @brief 名前ID取得
 	int Getname()
 	{
 		return name_id_;
 	}
 
-	// 名前取得
+	/// @brief 名前取得
 	std::string GetName()
 	{
 		return name_;
 	}
 
-	// 名前取得1
+	/// @brief 名前取得1
 	std::string GetName1()
 	{
 		return name1_;
 	}
 
-	// 名前取得2
+	/// @brief 名前取得2
 	std::string GetName2()
 	{
 		return name2_;
 	}
 
-	// 名前取得3
+	/// @brief 名前取得3
 	std::string GetName3()
 	{
 		return name3_;
 	}
 
-	// ハイスコア保存
+	/// @brief ハイスコア保存
 	void SaveHighScore();
 	
-	// ハイスコア読み込み
+	/// @brief ハイスコア読み込み
 	void LoadHighScore();
 
-	// フラグ設定
+	/// @brief フラグ設定
 	void SetDoFlag(bool flag) { is_normal_flag_ = flag; }
 	
-	// フラグ取得
+	/// @brief フラグ取得
 	bool IsDoFlag() { return is_normal_flag_; }
 
-	// 名前保存
+	/// @brief 名前保存
 	void SaveName();
 	
-	// 名前読み込み
+	/// @brief 名前読み込み
 	void LoadName();
 
-	// 戦績リセット
+	/// @brief 戦績リセット
 	void ResetStats()
 	{
 		defeated_enemies_ = 0;
@@ -130,19 +130,19 @@ public:
 		is_result_victory_ = true;
 	}
 
-	// 敵討伐数加算
+	/// @brief 敵討伐数加算
 	void AddDefeatedEnemy() { defeated_enemies_++; }
 	
-	// 敵討伐数取得
+	/// @brief 敵討伐数取得
 	int GetDefeatedEnemies() const { return defeated_enemies_; }
 
-	// ポーション使用回数加算
+	/// @brief ポーション使用回数加算
 	void AddUsedPotion() { used_potions_++; }
 	
-	// ポーション使用回数取得
+	/// @brief ポーション使用回数取得
 	int GetUsedPotions() const { return used_potions_; }
 
-	// 最終ステータス設定
+	/// @brief 最終ステータス設定
 	void SetFinalStats(float hp, float atk, float spd)
 	{
 		final_hp_ = hp;
@@ -150,13 +150,13 @@ public:
 		final_speed_ = spd;
 	}
 	
-	// 最終HP取得
+	/// @brief 最終HP取得
 	float GetFinalHp() const { return final_hp_; }
 	
-	// 最終攻撃力取得
+	/// @brief 最終攻撃力取得
 	float GetFinalAttack() const { return final_attack_; }
 	
-	// 最終スピード取得
+	/// @brief 最終スピード取得
 	float GetFinalSpeed() const { return final_speed_; }
 
 	void SetResultVictory(bool isWin) { is_result_victory_ = isWin; }

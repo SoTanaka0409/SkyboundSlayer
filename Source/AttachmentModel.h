@@ -2,7 +2,7 @@
 #include"DxLib.h"
 #include"Object3D.h"
 
-// 武器や装飾品などを、キャラクター等の特定のボーン（フレーム）に自動追従させるためのクラス
+/// @brief 武器や装飾品などを、キャラクター等の特定のボーン（フレーム）に自動追従させるためのクラス
 class AttachmentModel :public Object3D
 {
 public:
@@ -20,7 +20,7 @@ public:
     void Draw()override;
 
 /// @return 自身のDxLibモデルハンドル
-    // 外部からマテリアル変更やシェーダー適用などを直接行うために解放する（所有権は渡さない）
+    /// @brief 外部からマテリアル変更やシェーダー適用などを直接行うために解放する（所有権は渡さない）
     int GetHandle() { return handle_; }
 
 private:

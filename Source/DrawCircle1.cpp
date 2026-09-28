@@ -14,7 +14,7 @@ DrawCircle1::DrawCircle1(std::string filename, VECTOR centerPos)
     ,Maxradius(400)
     ,center_(centerPos)
 {
-	//^O
+	// ^O
 	SetTag(Object3D::Tag3D_Object);
 
     
@@ -43,7 +43,7 @@ void DrawCircle1::Update()
 {
     
 }
-//`
+/// @brief `
 
 /// @brief DrawCircle1の描画処理
 void DrawCircle1::Draw()

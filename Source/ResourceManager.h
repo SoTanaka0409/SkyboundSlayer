@@ -4,7 +4,7 @@
 #include <string>
 
 
-// テクスチャの分割読み込み用データ
+/// @brief テクスチャの分割読み込み用データ
 struct DivGraphData
 {
 	std::string filePath;	// テクスチャのパス名
@@ -28,21 +28,21 @@ struct DivGraphData
 	}
 };
 
-// リソース管理クラス
+/// @brief リソース管理クラス
 class ResourceManager
 {
 public:
-    // コンストラクタ
+    /// @brief コンストラクタ
 	ResourceManager();
-    // コンストラクタ
-    // デストラクタ
+    /// @brief コンストラクタ
+    /// @brief デストラクタ
 	~ResourceManager();
 
 	int LoadModel(std::string pathName);	// モデルリソース生成
 	int LoadGraphics(std::string pathName);	// グラフィックリソース生成
 	DivGraphData* LoadDivGraphics(std::string pathName, int allNum, int numX, int numY);	// 分割されたグラフィックリソース生成
 
-    // 現在読み込んでいるリソースの総数を取得する
+    /// @brief 現在読み込んでいるリソースの総数を取得する
 	int GetTotalResource() { return static_cast<int>(resourceMapList.size() + graphicResourceMapList.size() + divGraphicResourceMapList.size()); }
 
 private:

@@ -4,7 +4,7 @@
 #include "Enemy.h"
 #include "SphereCollider.h"
 
-// 溜め動作からの跳躍・押し潰し攻撃（ジャンプ攻撃）を主体とする、重量級エネミーの派生クラス
+/// @brief 溜め動作からの跳躍・押し潰し攻撃（ジャンプ攻撃）を主体とする、重量級エネミーの派生クラス
 class EnemyMonster : public Enemy
 {
 public:

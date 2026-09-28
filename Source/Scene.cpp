@@ -7,7 +7,7 @@
 /// @brief Sceneの初期化（コンストラクタ）
 Scene::Scene()
 {
-	//オブジェクトマネージャーの生成
+	// オブジェクトマネージャーの生成
 	object_manager_ = new ObjectManager();
 	collider_manager_ = new ColliderManager();
 }
@@ -20,7 +20,7 @@ Scene::~Scene()
 	}
 	
 }
-//描画
+/// @brief 描画
 
 
 /// @brief Sceneの描画処理
@@ -31,7 +31,7 @@ void Scene::Draw()
 		object_manager_->Draw();
 	}
 }
-//更新
+/// @brief 更新
 
 
 /// @brief Sceneの状態更新処理

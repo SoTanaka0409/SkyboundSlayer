@@ -5,7 +5,7 @@
 class TextureAnimation
 {
 public:
-    // コンストラクタ
+    /// @brief コンストラクタ
     TextureAnimation(
         VECTOR position,
         std::string filename,
@@ -14,7 +14,7 @@ public:
         int yNum,
         int interval
     );
-    // デストラクタ
+    /// @brief デストラクタ
     ~TextureAnimation();
 
     void Update();  // 更新

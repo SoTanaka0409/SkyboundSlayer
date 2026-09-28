@@ -2,7 +2,7 @@
 #include "Model.h"
 #include "Object3D.h"
 
-// ステージ上に配置される、破壊可能なオブジェクトやインタラクティブな小道具（箱、壺など）を管理するクラス
+/// @brief ステージ上に配置される、破壊可能なオブジェクトやインタラクティブな小道具（箱、壺など）を管理するクラス
 class StageObject : public Object3D
 {
 public:

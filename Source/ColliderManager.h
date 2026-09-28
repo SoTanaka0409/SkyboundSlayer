@@ -30,14 +30,14 @@ public:
     }
 
 public:
-    // コライダー追加
+    /// @brief コライダー追加
     void AddCollider(Collider* Collider);
 
-    // コライダー全削除
+    /// @brief コライダー全削除
     void DeleteAllCollider();
 
-    // 削除する必要のあるオブジェクトがあれば削除する
-    // note: 全てのオブジェクトの更新が終わった後に呼び出す
+    /// @brief 削除する必要のあるオブジェクトがあれば削除する
+    /// @brief note: 全てのオブジェクトの更新が終わった後に呼び出す
     void DeleteAllColliderIfNeeded();
 
     //// 指定したタグのコライダーを取得
