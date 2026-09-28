@@ -25,13 +25,13 @@ int InputManager::CheckDownKey(int KeyCode)
 	// 指定キーの現在の状態を取得
 	int keyState = CheckHitKey(KeyCode);
 	
-	//前回キーが押されておらず、現在キーが押されていたら
+	// 前回キーが押されておらず、現在キーが押されていたら
 	if (down_buffer_[KeyCode] == 0 && keyState == 1)
 	{
 		result = 1;
 	}
 
-	//現在のキーの状態をバッファに格納
+	// 現在のキーの状態をバッファに格納
 	down_buffer_[KeyCode] = keyState;
 	return result;
 }

@@ -3,7 +3,7 @@
 #include"Master.h"
 #include "Player3D.h"
 
-// 静的メンバ変数定義
+/// @brief 静的メンバ変数定義
 ColliderManager* ColliderManager::instance_ = nullptr;
 
 
@@ -17,7 +17,7 @@ ColliderManager::~ColliderManager()
 
 }
 
-// 更新
+/// @brief 更新
 void ColliderManager::Update()
 {
     for (auto itr = collider_list_.begin(); itr != collider_list_.end(); ++itr)
@@ -32,7 +32,7 @@ void ColliderManager::Update()
     }
 }
 
-// 描画
+/// @brief 描画
 void ColliderManager::Draw()
 {
     if (!Master::debug_->Getdebug()) return;
@@ -57,13 +57,13 @@ void ColliderManager::Draw()
     }
 }
 
-// Colliderオブジェクトの追加
+/// @brief Colliderオブジェクトの追加
 void ColliderManager::AddCollider(Collider* Collider)
 {
     collider_list_.push_back(Collider);
 }
 
-// Colliderオブジェクトの全削除
+/// @brief Colliderオブジェクトの全削除
 void ColliderManager::DeleteAllCollider()
 {
     for (auto itr = collider_list_.begin(); itr != collider_list_.end(); /*ここは空っぽなので注意*/)
@@ -79,7 +79,7 @@ void ColliderManager::DeleteAllCollider()
     }
 }
 
-// 削除する必要のあるオブジェクトがあれば削除する
+/// @brief 削除する必要のあるオブジェクトがあれば削除する
 void ColliderManager::DeleteAllColliderIfNeeded()
 {
     for (auto itr = collider_list_.begin(); itr != collider_list_.end(); /*ここは空っぽなので注意*/)

@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-// 外部ライブラリ(Effekseer)のコンテキストやリソースをアプリケーション全体で一元管理するシングルトン
+/// @brief 外部ライブラリ(Effekseer)のコンテキストやリソースをアプリケーション全体で一元管理するシングルトン
 class EffekseerManager
 {
 public:
@@ -42,7 +42,7 @@ public:
 
 /// @param playingHandle
 /// @return 再生中か否か(bool)
-    // 攻撃判定の持続時間や、次の演出への遷移タイミングをエフェクトの生存状態と同期させるために使用する
+    /// @brief 攻撃判定の持続時間や、次の演出への遷移タイミングをエフェクトの生存状態と同期させるために使用する
     bool IsPlaying(int playingHandle);
 
 /// @param playingHandle, speed(倍率)
@@ -62,7 +62,7 @@ public:
     void SetEffectScale(int playingHandle, float x, float y, float z);
 
 private:
-    // シングルトンパターンの制約として、外部からの不用意なインスタンス生成や破棄を禁止する
+    /// @brief シングルトンパターンの制約として、外部からの不用意なインスタンス生成や破棄を禁止する
     EffekseerManager();
     ~EffekseerManager();
 

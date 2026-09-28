@@ -2,17 +2,17 @@
 #include "Model.h"
 
 /// @brief SkyBoxの初期化（コンストラクタ）
-// コンストラクタ
+/// @brief コンストラクタ
 SkyBox::SkyBox(std::string filename,VECTOR pos)
 	: Object3D(VGet(0.0f, 0.0f, 0.0f))
 {
 	// スカイボックスモデルの生成
 	// note: スカイボックスの座標は、基本的には原点。
-	//       ものによっては、座標を常にプレイヤーの座標にすることで、空が見切れないようにすることもある。
+	// ものによっては、座標を常にプレイヤーの座標にすることで、空が見切れないようにすることもある。
 	model_ = new Model( filename, pos);
 }
 
-// デストラクタ
+/// @brief デストラクタ
 SkyBox::~SkyBox()
 {
 	// モデルクラスの破棄
@@ -22,7 +22,7 @@ SkyBox::~SkyBox()
 	}
 }
 
-// 更新処理
+/// @brief 更新処理
 
 /// @brief SkyBoxの状態更新処理
 void SkyBox::Update()
@@ -35,7 +35,7 @@ void SkyBox::Update()
 	}
 }
 
-// 描画処理
+/// @brief 描画処理
 
 /// @brief SkyBoxの描画処理
 void SkyBox::Draw()
@@ -57,7 +57,7 @@ void SkyBox::Draw()
 	}
 }
 
-// 拡大値（スケール値）の設定（Modelクラスへの橋渡し）
+/// @brief 拡大値（スケール値）の設定（Modelクラスへの橋渡し）
 
 /// @brief SkyBoxのSetScale処理
 void SkyBox::SetScale(VECTOR scale)
@@ -68,7 +68,7 @@ void SkyBox::SetScale(VECTOR scale)
 	}
 }
 
-// モデルのテクスチャ変更（Modelクラスへの橋渡し）
+/// @brief モデルのテクスチャ変更（Modelクラスへの橋渡し）
 
 /// @brief SkyBoxのSetModelTexture処理
 void SkyBox::SetModelTexture(std::string filename, int index)

@@ -3,7 +3,7 @@
 #include"Object2D.h"
 #include"Object3D.h"
 
-// プレイヤーの所持金（通貨・スコア）をカプセル化し、不正な値の混入や増減時のUI演出を一元管理するクラス
+/// @brief プレイヤーの所持金（通貨・スコア）をカプセル化し、不正な値の混入や増減時のUI演出を一元管理するクラス
 class HaveMoneyClass
 {
 public:
@@ -29,7 +29,7 @@ public:
     void PullMoney(int money);
 
 /// @return 現在の所持金(int)
-    // ショップでのアイテム購入時など、要求コストに対する支払い能力（残高）があるかの判定判定に使用する
+    /// @brief ショップでのアイテム購入時など、要求コストに対する支払い能力（残高）があるかの判定判定に使用する
     int HaveMoney() { return money_; }
 
 private:

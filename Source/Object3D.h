@@ -4,11 +4,11 @@
 
 class Collider;
 
-// 3D空間に配置される全オブジェクトの基底クラス。座標変換、コリジョン応答、および半透明描画のためのZソート機能を提供する
+/// @brief 3D空間に配置される全オブジェクトの基底クラス。座標変換、コリジョン応答、および半透明描画のためのZソート機能を提供する
 class Object3D
 {
 public:
-    // オブジェクトの役割を定義するタグ。衝突判定時の対象フィルタリングや、マネージャーからの特定アクター検索に使用する
+    /// @brief オブジェクトの役割を定義するタグ。衝突判定時の対象フィルタリングや、マネージャーからの特定アクター検索に使用する
     enum Tag3D
     {
         None3D = 0,
@@ -25,7 +25,7 @@ public:
         Tag3D_Shop = 4000,
     };
 
-    // オブジェクトが付与されているステータスバフ/デバフの状態を識別し、エフェクトやUI表示を分岐させるための列挙型
+    /// @brief オブジェクトが付与されているステータスバフ/デバフの状態を識別し、エフェクトやUI表示を分岐させるための列挙型
     enum StatusState
     {
         None_Status = 0,
@@ -37,10 +37,10 @@ public:
 public:
 /// @param distance (カメラからの距離)
 /// @details ソート用の基準値(current_camera_distance_)を更新する
-    // 半透明オブジェクトの描画順序を制御し、アルファブレンドのZテスト破綻を防ぐために毎フレーム計算する
+    /// @brief 半透明オブジェクトの描画順序を制御し、アルファブレンドのZテスト破綻を防ぐために毎フレーム計算する
     void SetCameraDistance(float distance) { current_camera_distance_ = distance; }
 
-    // std::sort等で使用する比較用関数オブジェクト。半透明の描画破綻を防ぐため、カメラから遠いオブジェクトを先に描画させる
+    /// @brief std::sort等で使用する比較用関数オブジェクト。半透明の描画破綻を防ぐため、カメラから遠いオブジェクトを先に描画させる
     struct CompareZOrder {
         bool operator()(Object3D* a, Object3D* b) const {
             return a->current_camera_distance_ > b->current_camera_distance_;
@@ -53,7 +53,7 @@ public:
     Object3D(VECTOR initPos);
 
 /// @return 派生クラスTへのキャストポインタ
-    // 衝突検知時など、基底ポインタから派生クラス固有の関数（ダメージ処理等）を安全に呼び出すために使用する
+    /// @brief 衝突検知時など、基底ポインタから派生クラス固有の関数（ダメージ処理等）を安全に呼び出すために使用する
     template <typename T>
     T* CastTo() {
         return dynamic_cast<T*>(this);
@@ -90,7 +90,7 @@ public:
 
 /// @param flag (描画可否)
 /// @details 内部の描画フラグ(draw_flag_)の更新
-    // カメラの視錐台カリングや、透明化スキル発動時に、当たり判定や更新処理を残したまま描画だけをスキップする
+    /// @brief カメラの視錐台カリングや、透明化スキル発動時に、当たり判定や更新処理を残したまま描画だけをスキップする
     void SetDrawFlag(bool flag) { draw_flag_ = flag; }
     bool IsDrawFlag() { return draw_flag_; }
 

@@ -17,9 +17,9 @@ ModelAnimation::ModelAnimation(int ModelHandle)
 	, loop_finish_state_(AnimationState::ANIMATION_MAX)
 	, loop_finish_(false)
 {
-	//アニメモーションで移動しているフレーム番号を検索する
+	// アニメモーションで移動しているフレーム番号を検索する
 	int moveAnimFrameIndex = MV1SearchFrame(model_handle_, "root");
-	//移動を無効にする
+	// 移動を無効にする
 	MV1SetFrameUserLocalMatrix
 	(model_handle_
 		, moveAnimFrameIndex
@@ -47,7 +47,7 @@ void ModelAnimation::Update()
 {
 
 
-	//アニメーションのブレンド率を高める
+	// アニメーションのブレンド率を高める
 	if (anim_blend_rate_ < 1.0f)
 	{
 		anim_blend_rate_ += 0.1f;   //＋＝0.1fはブレンド速度。自由に変えてもOK
@@ -59,7 +59,7 @@ void ModelAnimation::Update()
 
 
 
-	//アニメーションの更新
+	// アニメーションの更新
 	float fAnimTotaltime = 0.0f;
 
 
@@ -102,7 +102,7 @@ void ModelAnimation::Update()
 		MV1SetAttachAnimBlendRate(model_handle_, animation_index_, anim_blend_rate_);
 	}
 
-	//一つ目のアニメーションを更新
+	// 一つ目のアニメーションを更新
 	if (old_animation_index_ != -1)
 	{//そう再生時間の取得
 		fAnimTotaltime = MV1GetAttachAnimTotalTime(model_handle_, old_animation_index_);
@@ -126,7 +126,7 @@ void ModelAnimation::Update()
 
 }
 
-//アニメーションの切り替え
+/// @brief アニメーションの切り替え
 
 /// @brief ModelAnimationのChangeAnimation処理
 void ModelAnimation::ChangeAnimation(AnimationState state, int index)
@@ -136,7 +136,7 @@ void ModelAnimation::ChangeAnimation(AnimationState state, int index)
 		return;
 	}*/
 
-	//切り替えようとしているアニメーションが既に設定されている場合
+	// 切り替えようとしているアニメーションが既に設定されている場合
 	if (state_ == state)
 	{
 		return; //何もしない
@@ -144,10 +144,10 @@ void ModelAnimation::ChangeAnimation(AnimationState state, int index)
 
 
 
-	//切り替え先の番号を保持
+	// 切り替え先の番号を保持
 	state_ = state;
 
-	//ループの初期化
+	// ループの初期化
 	loop_ = true;//設定が特にない場合はループ
 	loop_finish_state_ = AnimationState::ANIMATION_MAX;//ループ終了時にアニメーションは特になし
 	loop_finish_ = false;
@@ -159,29 +159,29 @@ void ModelAnimation::ChangeAnimation(AnimationState state, int index)
 		old_animation_index_ = -1;
 	}
 
-	//現在のアニメーション状態を保持する
+	// 現在のアニメーション状態を保持する
 	old_animation_index_ = animation_index_;
 	old_animation_time_ = animation_time_;
 
 
 
-	//アニメーションのアタッチ
+	// アニメーションのアタッチ
 	animation_index_ = MV1AttachAnim(model_handle_, (int)state);
 
-	//再生時間の初期化
+	// 再生時間の初期化
 	animation_time_ = 0.0f;
 
-	//ブレンド状態を初期化
+	// ブレンド状態を初期化
 	anim_blend_rate_ = (old_animation_index_ == -1 ? 1.0f : 0.0f);
 
 }
 
-//bool ModelAnimation::is_animation_()
-//	{//そう再生時間の取得
-//		//ループさせる
-//アニメションのブレンド設定
+/// @brief bool ModelAnimation::is_animation_()
+/// @brief {//そう再生時間の取得
+// //ループさせる
+// アニメションのブレンド設定
 
-/// @brief ModelAnimationのSetAnimationBlend処理
+// ModelAnimationのSetAnimationBlend処理
 void ModelAnimation::SetAnimationBlend(bool isblend)
 {
 	if (isblend)

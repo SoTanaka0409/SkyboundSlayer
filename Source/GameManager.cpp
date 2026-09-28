@@ -12,7 +12,7 @@
 
 namespace
 {
-	/// @brief デバッグ用ボタンの領域情報を保持する構造体
+	// デバッグ用ボタンの領域情報を保持する構造体
 	struct DebugButton
 	{
 		int x;           ///< ボタン左上X座標
@@ -22,7 +22,7 @@ namespace
 		const char* label; ///< ボタンに表示するラベル文字列
 	};
 
-	/// @brief マウスカーソルがデバッグボタンの領域内にあるか判定する
+	// マウスカーソルがデバッグボタンの領域内にあるか判定する
 	/// @param button 判定対象のボタン構造体
 	/// @param mouseX マウスのX座標
 	/// @param mouseY マウスのY座標
@@ -35,7 +35,7 @@ namespace
 			mouseY <= button.y + button.h;
 	}
 
-	/// @brief デバッグ用ボタンを描画する
+	// デバッグ用ボタンを描画する
 	/// @param button 描画対象のボタン構造体
 	/// @param hover マウスホバー中かどうかのフラグ
 	void DrawDebugButton(const DebugButton& button, bool hover)
