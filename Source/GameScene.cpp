@@ -63,8 +63,8 @@ void GameScene::SetupEnvironment()
 /// @details プレイヤーやショップ等の必須アクターオブジェクトのヒープ確保
 void GameScene::CreateInitialActors()
 {
-	new Player3D("Resource/3Dモデル/キャラクターとアニメーション/01_人型キャラクターモデル.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
-	new StatShop("Resource/3Dモデル/キャラクターとアニメーション/04_ショップ店員モデル.mv1", VGet(-1500, 100, 1500));
+	new Player3D("Resource/3Dモデル/キャラクターとアニメーション/01_player.mv1", VGet(-1200, 20.0f, -1000), 30.0f, 12.0f, 150.0f, true);
+	new StatShop("Resource/3Dモデル/キャラクターとアニメーション/05_shop_clerk_model.mv1", VGet(-1500, 100, 1500));
 	new StageObject(VGet(-1250, 20.0f, -1050), "Resource/3Dモデル/小物/焚き火/01_焚き火モデル.mv1", VGet(10.0f, 10.0f, 10.0f));
 }
 
