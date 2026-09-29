@@ -197,7 +197,7 @@ void StatShop::DrawShopOptions()
 /// @details プレイヤーの操作を誘導するためのキーガイドテキストを画面下部に静的描画する
 void StatShop::DrawShopFooter()
 {
-	DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   Escape/Back: Close");
+	DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   BackSpace: Close");
 }
 
 /// @param player (距離計算用)
@@ -300,20 +300,17 @@ void StatShop::UpdateShopMenu()
 	HandleShopCloseInput();
 }
 
-/// @details EscまたはBackキーによるショップ終了操作を検知し、全体のUI表示フラグを下ろす
+/// @details BackSpaceキーによるショップ終了操作を検知し、全体のUI表示フラグを下ろす
 void StatShop::HandleShopCloseInput()
 {
-	static int oldEsc = 0;
 	static int oldBack = 0;
-	int currentEsc = CheckHitKey(KEY_INPUT_ESCAPE);
 	int currentBack = CheckHitKey(KEY_INPUT_BACK);
 
-	if ((currentEsc && !oldEsc) || (currentBack && !oldBack))
+	if (currentBack && !oldBack)
 	{
 		Master::is_stat_shop_on_ = false;
 		Master::sound_manager_->PlaySE(SoundManager::SE_WINDOW);
 	}
-	oldEsc = currentEsc;
 	oldBack = currentBack;
 }
 

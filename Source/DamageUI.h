@@ -2,7 +2,7 @@
 #include <vector>
 #include "DxLib.h"
 
-// 単一のダメージポップアップを表す構造体
+/// @brief 単一のダメージポップアップを表す構造体
 struct DamagePopUp {
     int value;           // ダメージ量
     VECTOR pos_3d;       // 3D空間上の発生位置
@@ -13,7 +13,7 @@ struct DamagePopUp {
     float random_z_dir;  // Z方向への飛び散り具合
 };
 
-// ダメージUIを管理するクラス（シングルトン推奨）
+/// @brief ダメージUIを管理するクラス（シングルトン推奨）
 class DamageUIManager {
 private:
     std::vector<DamagePopUp> popups_;
@@ -29,18 +29,18 @@ public:
         return &instance;
     }
 
-    // 数字画像の読み込み（AI生成画像を切り抜いたものを想定）
+    /// @brief 数字画像の読み込み（AI生成画像を切り抜いたものを想定）
     void Load();
 
-    // 画像の解放
+    /// @brief 画像の解放
     void Unload();
 
-    // ダメージUIの追加
+    /// @brief ダメージUIの追加
     void AddDamage(int value, VECTOR pos, bool is_critical);
 
-    // 全ダメージUIの更新
+    /// @brief 全ダメージUIの更新
     void Update();
 
-    // 全ダメージUIの描画
+    /// @brief 全ダメージUIの描画
     void Draw();
 };

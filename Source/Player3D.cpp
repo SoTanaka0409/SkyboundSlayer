@@ -71,7 +71,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	model_ = new Model(filename, initPos, is_separate_anim_);
 	have_money_ = new HaveMoneyClass(0);
 
-	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand");
+	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand", VGet(1.5f, -6.0f, 1.0f), VGet(-DX_PI_F / 3.0f, DX_PI_F / 6.0f, -DX_PI_F / 6.0f));
 	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
 	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
 	model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");

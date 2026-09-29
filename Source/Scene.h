@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "DxLib.h"
 
-// 前方宣言
+/// @brief 前方宣言
 class ObjectManager;
 class ColliderManager;
 

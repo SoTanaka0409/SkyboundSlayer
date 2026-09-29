@@ -12,14 +12,14 @@ public:
     void Draw();    // 描画
     void Update();  // 更新
 
-    // セッター関数 //
-    // ポジション設定
+    /// @brief セッター関数 //
+    /// @brief ポジション設定
     void SetPosition(VECTOR centerPosition) { position_ = centerPosition; }
 
-    // ゲッター関数 //
-    // ポジション取得
+    /// @brief ゲッター関数 //
+    /// @brief ポジション取得
     VECTOR GetPosition() { return position_; }
-    // サイズ取得
+    /// @brief サイズ取得
     int GetSizeX() { return size_x_; }
     int GetSizeY() { return size_y_; }
 

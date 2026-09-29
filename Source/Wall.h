@@ -7,9 +7,9 @@
 class Wall :public Object3D
 {
 public:
-	//centerPos,,,中心座標
-	//topLeft... 左上座標
-	//bottomRight...右下座標
+	/// @brief centerPos,,,中心座標
+	/// @brief topLeft... 左上座標
+	/// @brief bottomRight...右下座標
 	Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottomRight);//コンストラクタ
 
 	~Wall();//デストラクタ

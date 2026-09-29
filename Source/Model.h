@@ -7,7 +7,7 @@
 
 class AttachmentModel;
 
-// DxLibの3Dモデル表示をラップし、姿勢制御、武器などのボーン追従（アタッチメント）、およびアニメーション管理を統括するクラス
+/// @brief DxLibの3Dモデル表示をラップし、姿勢制御、武器などのボーン追従（アタッチメント）、およびアニメーション管理を統括するクラス
 class Model
 {
 public:
@@ -38,7 +38,7 @@ public:
     AnimationState GetNowState();
 
 /// @return ループ終了済みか(bool)
-    // 攻撃モーションの終了検知など、次のアクションへステートを遷移させるための同期トリガーとして使用する
+    /// @brief 攻撃モーションの終了検知など、次のアクションへステートを遷移させるための同期トリガーとして使用する
     bool IsAnimationLoopFinish();
 
 /// @param filename(アタッチするモデルのパス), attachFrameName(追従先ボーン名), offsetPos, offsetRot
@@ -46,7 +46,7 @@ public:
     void AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos = VGet(0.0f, 0.0f, 0.0f), VECTOR offsetRot = VGet(0.0f, 0.0f, 0.0f));
 
 /// @return アタッチメントの現在ワールド座標
-    // 剣の切っ先の位置を取得して攻撃判定（コライダー）を生成する際などに使用する
+    /// @brief 剣の切っ先の位置を取得して攻撃判定（コライダー）を生成する際などに使用する
     VECTOR GetAttachmentPosition();
     VECTOR GetAttachmentPosition_None(std::string attachFrameName);
 

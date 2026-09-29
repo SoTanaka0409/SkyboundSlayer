@@ -49,4 +49,7 @@ public:
 	static bool is_cutscene_playing_;         ///< シネマティックカットシーン再生中につきプレイヤー操作をロックするためのフラグ
 
 	static int game_clear_count_;             ///< ボス撃破後の演出やリザルト画面遷移までの演出タイマーカウンター
+
+	static bool is_quit_confirm_;             ///< ESC終了確認ダイアログ表示中フラグ
+	static int  quit_confirm_timer_;          ///< ESC連打防止ロックタイマー（60 = 1秒 @ 60fps、この間は2回目のESCを受け付けない）
 };

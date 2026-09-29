@@ -12,28 +12,28 @@ public:
     void ChangeAnimation(AnimationState state, int index = 0); // モーション切り替え処理
 
    
-    // モーションデータの追加
-    // note: 分割されているモーションをデータとして登録する。
+    /// @brief モーションデータの追加
+    /// @brief note: 分割されているモーションをデータとして登録する。
     void AddAnimation(AnimationState state, std::string filename);
 
    
-    // 対応したモーションハンドルの取得
-    // note: vector配列にデータが格納されているため、
-    //       毎回ハンドルを検索する手間が出てきてしまうので、
-    //       それを行うための関数。
+    /// @brief 対応したモーションハンドルの取得
+    /// @brief note: vector配列にデータが格納されているため、
+    /// @brief 毎回ハンドルを検索する手間が出てきてしまうので、
+    /// @brief それを行うための関数。
     int GetAnimationHandle(AnimationState state);
 
 
-    // ループ設定
+    /// @brief ループ設定
     void SetLoop(bool isLoop) { loop_ = isLoop; }
-    // ループ終了時に再生するモーション
+    /// @brief ループ終了時に再生するモーション
     void SetLoopFinishState(AnimationState state) { loop_finish_state_ = state; }
-    // モーションのブレンド設定
+    /// @brief モーションのブレンド設定
     void SetAnimationBlend(bool isBlend);
 
-    // 現在再生されているモーションの取得
+    /// @brief 現在再生されているモーションの取得
     AnimationState GetNowState() { return state_; }
-    // モーションのループが終了しているかどうか
+    /// @brief モーションのループが終了しているかどうか
     bool IsLoopFinish() { return loop_finish_; }
     void SetAnimationCount(float count) { animation_count_ = count; }
 
@@ -56,6 +56,6 @@ private:
     bool loop_finish_;      // モーションループが終わったかどうか
 
   
-    // モーションデータのリスト
+    /// @brief モーションデータのリスト
     std::vector<AnimationInfo*> animation_info_list_;
 };

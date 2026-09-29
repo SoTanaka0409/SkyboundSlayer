@@ -4,16 +4,16 @@
 Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottomRight)
 	:Object3D(centerPos)
 {
-	//タグ設定
+	// タグ設定
 	SetTag(Object3D::Tag3D_Wall3D);
 
 
-	//画像の読み込み
+	// 画像の読み込み
 	graph_handle_ = LoadGraph(filename.c_str());
 
-	//4頂点分のデータをセット
+	// 4頂点分のデータをセット
 
-	//左上
+	// 左上
 	vertex_[0].pos = VAdd(centerPos, topLeft);
 	vertex_[0].norm = VGet(1.0f, 0.0f, 0.0f);//後で計算する
 	vertex_[0].dif = GetColorU8(255, 255, 255, 255);
@@ -23,7 +23,7 @@ Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottom
 	vertex_[0].su = 0.0f;
 	vertex_[0].sv = 0.0f;
 
-	//右上
+	// 右上
 	vertex_[1].pos = VAdd(centerPos, VGet(bottomRight.x, topLeft.y, bottomRight.z));
 	vertex_[1].norm = VGet(1.0f, 0.0f, 0.0f);//後で計算する
 	vertex_[1].dif = GetColorU8(255, 255, 255, 255);
@@ -33,7 +33,7 @@ Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottom
 	vertex_[1].su = 1.0f;
 	vertex_[1].sv = 0.0f;
 
-	//左下
+	// 左下
 	vertex_[2].pos = VAdd(centerPos, VGet(topLeft.x, bottomRight.y, topLeft.z));
 	vertex_[2].norm = VGet(1.0f, 0.0f, 0.0f);//後で計算する
 	vertex_[2].dif = GetColorU8(255, 255, 255, 255);
@@ -42,7 +42,7 @@ Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottom
 	vertex_[2].v = 1.0f;
 	vertex_[2].su = 0.0f;
 	vertex_[2].sv = 1.0f;
-	//右下
+	// 右下
 	vertex_[3].pos = VAdd(centerPos, bottomRight);
 	vertex_[3].norm = VGet(1.0f, 0.0f, 0.0f);//後で計算する
 	vertex_[3].dif = GetColorU8(255, 255, 255, 255);
@@ -56,7 +56,7 @@ Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottom
 
 
 
-	//法線の設定
+	// 法線の設定
 	VECTOR norm = VCross(VSub(vertex_[0].pos, vertex_[1].pos), VSub(vertex_[0].pos, vertex_[2].pos));
 	norm = VNorm(norm);//正規化（ベクトルの大きさを１にする
 	vertex_[0].norm = norm;
@@ -71,23 +71,23 @@ Wall::Wall(std::string filename, VECTOR centerPos, VECTOR topLeft, VECTOR bottom
 Wall::~Wall()
 {
 
-	//画像の破棄
+	// 画像の破棄
 	DeleteGraph(graph_handle_);
 }
 
 
-//更新
+/// @brief 更新
 void Wall::Update()
 {
 
 }
-//描画
+/// @brief 描画
 void Wall::Draw()
 {
 	WORD index[6];
 
-	//2ポリゴン分のインデックスデータを設定
-	//右辺は頂点データの配列番号
+	// 2ポリゴン分のインデックスデータを設定
+	// 右辺は頂点データの配列番号
 	index[0] = 0;
 	index[1] = 1;
 	index[2] = 2;
@@ -97,7 +97,7 @@ void Wall::Draw()
 
 	SetUseLighting(false);
 
-	//2つの三角形ポリゴンのびょうが　
+	// 2つの三角形ポリゴンのびょうが
 	DrawPolygonIndexed3D(vertex_, 4, index, 2, graph_handle_, true);
 
 	SetUseLighting(true);

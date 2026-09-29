@@ -13,7 +13,7 @@
 
 namespace
 {
-	/// @brief デバッグ用ボタンの領域情報を保持する構造体
+	// デバッグ用ボタンの領域情報を保持する構造体
 	struct DebugButton
 	{
 		int x;           ///< ボタン左上X座標
@@ -23,7 +23,7 @@ namespace
 		const char* label; ///< ボタンに表示するラベル文字列
 	};
 
-	/// @brief マウスカーソルがデバッグボタンの領域内にあるか判定する
+	// マウスカーソルがデバッグボタンの領域内にあるか判定する
 	/// @param button 判定対象のボタン構造体
 	/// @param mouseX マウスのX座標
 	/// @param mouseY マウスのY座標
@@ -36,7 +36,7 @@ namespace
 			mouseY <= button.y + button.h;
 	}
 
-	/// @brief デバッグ用ボタンを描画する
+	// デバッグ用ボタンを描画する
 	/// @param button 描画対象のボタン構造体
 	/// @param hover マウスホバー中かどうかのフラグ
 	void DrawDebugButton(const DebugButton& button, bool hover)
@@ -705,7 +705,7 @@ void GameManager::SpawnPhase1Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/01_human.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(3000.0f, 100.0f, 3000.0f),
 		20,
@@ -726,7 +726,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/model/character/01_human.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(8000.0f, 100.0f, 8000.0f),
 		20,
@@ -742,7 +742,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/01_human.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(2000.0f, 100.0f, 2000.0f),
 		20,
@@ -763,7 +763,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::monster_stage1,
-		"Resource/model/character/02_enemy_monster_model.mv1",
+		"Resource/model/character/03_enemy_monster_model.mv1",
 		centerPos,
 		VGet(12000.0f, 100.0f, 12000.0f),
 		100,
@@ -779,7 +779,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/model/character/01_human.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,
@@ -795,7 +795,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/01_human.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,
@@ -816,7 +816,7 @@ void GameManager::SpawnBossEnemy()
 	VECTOR bossCenter = Config::GetStageBossCenter();
 	AddEnemy(MakeEnemyData(
 		EnemyManager::boss_stage1,
-		"Resource/model/character/03_boss.mv1",
+		"Resource/model/character/04_boss.mv1",
 		bossCenter,
 		VAdd(bossCenter, VGet(-500.0f, 0.0f, 2000.0f)),
 		300,

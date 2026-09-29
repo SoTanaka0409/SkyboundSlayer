@@ -10,7 +10,7 @@
 
 class Model;
 
-// 汎用的なEnemyクラスを継承し、重力や高低差など3D空間特有の挙動を実装するための派生クラス
+/// @brief 汎用的なEnemyクラスを継承し、重力や高低差など3D空間特有の挙動を実装するための派生クラス
 class Enemy3D : public Enemy
 {
 public:

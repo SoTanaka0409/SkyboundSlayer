@@ -23,7 +23,7 @@
 #include "Chat.h"
 #include "Save.h"
 
-// サービスロケーターとしてのMasterクラス（静的メンバ変数）の実体化
+/// @brief サービスロケーターとしてのMasterクラス（静的メンバ変数）の実体化
 Player3D* Master::player_ = nullptr;
 SceneManager* Master::scene_manager_ = new SceneManager();
 SoundManager* Master::sound_manager_ = new SoundManager();
@@ -47,6 +47,8 @@ bool Master::is_near_shop_on_ = false;
 bool Master::is_save_ = false;
 bool Master::is_cutscene_playing_ = false;
 int Master::game_clear_count_ = 0;
+bool Master::is_quit_confirm_ = false;
+int  Master::quit_confirm_timer_ = 0;
 
 /// @brief Windowsアプリケーションのエントリーポイント（メイン関数）
 /// @param hInstance アプリケーションの現在インスタンスのハンドル
@@ -91,17 +93,58 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetWriteZBufferFlag(true);
 	SetFontSize(20);
 
-	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+	static int prevEsc = 0;
+	bool shouldQuit = false;
+
+	while (ProcessMessage() == 0 && !shouldQuit)
 	{
 		ClearDrawScreen();
 		int time = GetNowCount();
 
+		// ESCキーの立ち上がりを検知
+		int currentEsc = CheckHitKey(KEY_INPUT_ESCAPE);
+		bool escPressed = (currentEsc && !prevEsc);
+		prevEsc = currentEsc;
+
+		// ESC終了確認ロジック
+		if (Master::is_quit_confirm_)
+		{
+			// 1秒ロック中はESCを受け付けない（連打防止）
+			if (Master::quit_confirm_timer_ > 0)
+			{
+				Master::quit_confirm_timer_--;
+			}
+			else if (escPressed)
+			{
+				// ロック解除後にESC → ゲーム終了
+				shouldQuit = true;
+			}
+
+			// マウス左クリック or 右クリックでキャンセル
+			bool mouseCancel = (GetMouseInput() & (MOUSE_INPUT_LEFT | MOUSE_INPUT_RIGHT)) != 0;
+			if (mouseCancel)
+			{
+				Master::is_quit_confirm_ = false;
+				Master::quit_confirm_timer_ = 0;
+			}
+		}
+		else
+		{
+			if (escPressed)
+			{
+				// はじめてESC → 確認モード開始・ゲーム一時停止
+				Master::is_quit_confirm_ = true;
+				Master::quit_confirm_timer_ = 60; // 1秒ロック (60fps)
+			}
+		}
+
 		// ローディング監視：ロード完了までゲーム進行（Update）をロックし、遷移時の不整合を防止
+		// 確認ダイアログ中はゲームを停止する
 		if (GetASyncLoadNum() > 0)
 		{
 			DrawFormatString(600, 360, GetColor(255, 255, 255), "NOW LOADING... %d", GetASyncLoadNum());
 		}
-		else
+		else if (!Master::is_quit_confirm_)
 		{
 			Master::draw_hp_->Update();
 			Master::camera_->Update();
@@ -119,6 +162,48 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if (GetASyncLoadNum() > 0)
 		{
 			DrawFormatString(600, 360, GetColor(255, 255, 255), "NOW LOADING... %d", GetASyncLoadNum());
+		}
+
+		// ESC終了確認ダイアログ描画
+		if (Master::is_quit_confirm_)
+		{
+			bool isLocked = (Master::quit_confirm_timer_ > 0);
+
+			// 半透明オーバーレイ
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 190);
+			DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(0, 0, 0), TRUE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+			// ダイアログパネル
+			const int px = 530, py = 390, pw = 900, ph = 240;
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 230);
+			DrawBox(px, py, px + pw, py + ph, GetColor(12, 15, 22), TRUE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			DrawLine(px,      py,      px + pw, py,      GetColor(218, 178, 86), 2);
+			DrawLine(px,      py + ph, px + pw, py + ph, GetColor(98, 73, 32),   2);
+			DrawLine(px,      py,      px,      py + ph, GetColor(98, 73, 32),   2);
+			DrawLine(px + pw, py,      px + pw, py + ph, GetColor(218, 178, 86), 2);
+
+			// タイトルテキスト
+			SetFontSize(52);
+			DrawFormatString(px + 18, py + 18, GetColor(0, 0, 0),       "QUIT GAME?");
+			DrawFormatString(px + 14, py + 14, GetColor(255, 220, 100), "QUIT GAME?");
+
+			// ロック中は「しばらくお待ちください」、解除後は「もう一度ESC」を表示
+			SetFontSize(28);
+			if (isLocked)
+			{
+				DrawFormatString(px + 30, py + 100, GetColor(160, 160, 160), "しばらくお待ちください...");
+			}
+			else
+			{
+				DrawFormatString(px + 30, py + 100, GetColor(255, 240, 160), "もう一度 [ESC] で終了します");
+			}
+
+			// マウスクリックでキャンセル（常に表示・大きく目立たせる）
+			SetFontSize(26);
+			DrawFormatString(px + 30, py + 150, GetColor(0, 0, 0),       "[ マウスクリック ] でキャンセル");
+			DrawFormatString(px + 27, py + 147, GetColor(100, 210, 255), "[ マウスクリック ] でキャンセル");
 		}
 
 		ScreenFlip();

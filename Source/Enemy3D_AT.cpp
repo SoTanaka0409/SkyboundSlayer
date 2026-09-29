@@ -30,7 +30,7 @@ Enemy3D_AT::Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float spe
 	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
 
 	// 演出仕様：敵の右手に武器モデルを確実に連動（アタッチ）させ、アニメーションによる手首のひねりや振りに刃物の位置を完全同期させる
-	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand", VGet(0.0f, 0.0f, 0.0f), VGet(-DX_PI_F / 4.0f, 0.0f, 0.0f));
+	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand", VGet(1.5f, -6.0f, 1.0f), VGet(-DX_PI_F / 3.0f, DX_PI_F / 6.0f, -DX_PI_F / 6.0f));
 	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
 	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
 	model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");

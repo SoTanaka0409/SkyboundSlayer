@@ -86,7 +86,7 @@ private:
 	static constexpr float kDefaultOffsetY = 160.0f;  ///< 通常時のカメラY軸オフセット量
 	static constexpr float kCameraCalcRadius = 400.0f; ///< カメラ位置計算用の球体半径（距離）
 
-	// ※ kMouseSensitivity と kCameraDistance は設定から即時取得するため定数から外します
+	/// @brief ※ kMouseSensitivity と kCameraDistance は設定から即時取得するため定数から外します
 
 	bool is_cutscene_mode_ = false;       ///< カットシーンモード中かどうかのフラグ
 	VECTOR mCutsceneTargetPos;            ///< カットシーン時に注視するターゲット座標
