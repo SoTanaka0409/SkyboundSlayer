@@ -705,7 +705,7 @@ void GameManager::SpawnPhase1Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/02_enemy.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(3000.0f, 100.0f, 3000.0f),
 		20,
@@ -726,7 +726,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/model/character/02_enemy.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(8000.0f, 100.0f, 8000.0f),
 		20,
@@ -742,7 +742,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/02_enemy.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(2000.0f, 100.0f, 2000.0f),
 		20,
@@ -763,7 +763,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::monster_stage1,
-		"Resource/model/character/03_enemy_monster_model.mv1",
+		"Resource/model/character/02_enemy_monster_model.mv1",
 		centerPos,
 		VGet(12000.0f, 100.0f, 12000.0f),
 		100,
@@ -779,7 +779,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/model/character/02_enemy.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,
@@ -795,7 +795,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/02_enemy.mv1",
+		"Resource/model/character/01_human.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,
@@ -816,7 +816,7 @@ void GameManager::SpawnBossEnemy()
 	VECTOR bossCenter = Config::GetStageBossCenter();
 	AddEnemy(MakeEnemyData(
 		EnemyManager::boss_stage1,
-		"Resource/model/character/04_boss.mv1",
+		"Resource/model/character/03_boss.mv1",
 		bossCenter,
 		VAdd(bossCenter, VGet(-500.0f, 0.0f, 2000.0f)),
 		300,
