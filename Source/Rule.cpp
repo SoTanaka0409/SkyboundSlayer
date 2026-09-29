@@ -148,7 +148,7 @@ void Rule::DrawRulePage2()
 	DrawFormatString(150, textY, GetColor(255, 255, 200), "[Enter]          ... ショップを開く"); textY += lineHeight;
 	DrawFormatString(150, textY, GetColor(255, 255, 200), "[P]              ... ポーズ"); textY += lineHeight;
 	DrawFormatString(150, textY, GetColor(255, 255, 200), "[F5] / [F6]      ... [デバッグ] 敵を全滅 / ボス戦へ移動"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 200, 200), "[ESC]            ... ゲーム終了");
+	DrawFormatString(150, textY, GetColor(255, 200, 200), "[ESC]            ... ゲーム終了（確認後）");
 }
 
 
