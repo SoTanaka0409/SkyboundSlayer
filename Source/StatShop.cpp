@@ -38,18 +38,18 @@ StatShop::StatShop(std::string filename, VECTOR vec)
 {
 	SetTag(Tag3D_Shop);
 	model_ = new Model(filename, position_, true);
-	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
 	model_->ChangeAnimation(ANIMATION_NEUTRAL);
 	shop_in_ = new SphereCollider(this, position_, 200.0f);
 	safe_zoon_ = new SphereCollider(this, position_, 1000.0f); // 敵の侵入を防ぎ、プレイヤーの安全を確保するための広域コライダー
 	old_mouse_down_ = false;
 
-	icon_max_hp_handle_ = LoadGraph("Resource/画像/ショップ/01_最大HP強化アイコン.png");
-	icon_attack_handle_ = LoadGraph("Resource/画像/ショップ/02_攻撃力強化アイコン.png");
-	icon_speed_handle_ = LoadGraph("Resource/画像/ショップ/03_移動速度強化アイコン.png");
-	icon_evasion_dist_handle_ = LoadGraph("Resource/画像/ショップ/04_回避距離強化アイコン.png");
-	icon_evasion_inv_handle_ = LoadGraph("Resource/画像/ショップ/05_回避無敵時間強化アイコン.png");
+	icon_max_hp_handle_ = LoadGraph("Resource/image/shop/01_hp_icon.png");
+	icon_attack_handle_ = LoadGraph("Resource/image/shop/02_attack_icon.png");
+	icon_speed_handle_ = LoadGraph("Resource/image/shop/03_speed_icon.png");
+	icon_evasion_dist_handle_ = LoadGraph("Resource/image/shop/04_evade_dist_icon.png");
+	icon_evasion_inv_handle_ = LoadGraph("Resource/image/shop/05_evade_inv_icon.png");
 
 	auto pPlayer = Master::player_;
 	auto player = dynamic_cast<Player3D*>(pPlayer);
@@ -102,10 +102,20 @@ void StatShop::Draw()
 /// @details ショップ画面の半透明背景パネルと、ヘッダー・選択肢・フッターの各UI要素を合成描画する
 void StatShop::DrawShopMenu(Player3D* player)
 {
+	// 全画面の背景を暗くする
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
-	DrawBox(300, 100, 1620, 800, GetColor(0, 0, 50), TRUE);
+	DrawBox(0, 0, Config::ScreenWidth, Config::ScreenHeight, GetColor(0, 0, 0), TRUE);
+
+	// ショップ全体の背景
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 210);
+	DrawBox(300, 100, 1620, 800, GetColor(20, 20, 30), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	DrawBox(300, 100, 1620, 160, GetColor(50, 50, 80), TRUE); // ヘッダー部分の強調
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawBox(300, 100, 1620, 800, GetColor(255, 255, 255), FALSE);
+
+	// シンプルな白線ではなく、ゴールド系の枠線で高級感を出す
+	DrawBox(300, 100, 1620, 800, GetColor(200, 170, 80), FALSE);
+	DrawBox(298, 98, 1622, 802, GetColor(100, 80, 30), FALSE); // 外側の細い縁取り
 
 	int fontSize = GetFontSize();
 	DrawShopHeader(player);
@@ -153,29 +163,41 @@ void StatShop::DrawShopOptions()
 
 	for (int i = 0; i <= select_max_; i++)
 	{
-		int color = (i == select_) ? GetColor(255, 0, 0) : GetColor(255, 255, 255);
-		int optionY = 250 + i * 60;
-		if (i == select_)
-		{
-			DrawFormatString(330, optionY, color, ">");
+		bool is_selected = (i == select_);
+		int expand = is_selected ? 4 : 0;
+		int bgColor = is_selected ? GetColor(60, 50, 20) : GetColor(30, 30, 40);
+		int color = is_selected ? GetColor(255, 255, 200) : GetColor(200, 200, 200);
+		int optionY = 240 + i * 80;
+		
+		// 背景パネル
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, is_selected ? 240 : 150);
+		DrawBox(330 - expand, optionY - expand, 1580 + expand, optionY + 60 + expand, bgColor, TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		
+		if (is_selected) {
+			DrawLine(330 - expand, optionY - expand, 1580 + expand, optionY - expand, GetColor(255, 215, 100), 2);
+			DrawFormatString(350 - expand, optionY + 15, color, ">");
 		}
 
-		DrawExtendGraph(360, 245 + i * 60, 400, 285 + i * 60, icons[i], TRUE);
+		DrawExtendGraph(390, optionY + 10, 430, optionY + 50, icons[i], TRUE);
+		
+		SetFontSize(is_selected ? 30 : 28);
 		if (i == 4)
 		{
-			DrawFormatString(415, optionY, color, "%s - Cost: 100", options[i]);
+			DrawFormatString(450, optionY + 15, color, "%s - Cost: 100", options[i]);
 		}
 		else
 		{
-			DrawFormatString(415, optionY, color, "%s (UP %d) - Cost: %d", options[i], upgradeCounts[i], GetCost(upgradeCounts[i]));
+			DrawFormatString(450, optionY + 15, color, "%s (UP %d) - Cost: %d", options[i], upgradeCounts[i], GetCost(upgradeCounts[i]));
 		}
+		SetFontSize(24);
 	}
 }
 
 /// @details プレイヤーの操作を誘導するためのキーガイドテキストを画面下部に静的描画する
 void StatShop::DrawShopFooter()
 {
-	DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   Escape/Back: Close");
+	DrawFormatString(350, 700, GetColor(200, 200, 200), "Up/Down: Select   Enter: Buy   BackSpace: Close");
 }
 
 /// @param player (距離計算用)
@@ -190,15 +212,19 @@ void StatShop::DrawShopNpc(Player3D* player)
 	float dz = playerPos.z - position_.z;
 	float dist = sqrtf(dx * dx + dz * dz);
 
-	int drawX = static_cast<int>(drawNameWorld.x);
-	int drawY = static_cast<int>(drawNameWorld.y);
-
-	DrawFormatString(drawX - 30, drawY, GetColor(255, 255, 0), "[ ステータスショップ ]");
-	DrawFormatString(drawX - 10, drawY + 20, GetColor(255, 255, 255), "Enterキーで開く");
-
-	if (dist < 1000.0f)
+	// カメラ後方にある場合は描画しない
+	if (drawNameWorld.z >= 0.0f && drawNameWorld.z <= 1.0f)
 	{
-		DrawFormatString(drawX - 60, drawY - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」 ");
+		int drawX = static_cast<int>(drawNameWorld.x);
+		int drawY = static_cast<int>(drawNameWorld.y);
+
+		DrawFormatString(drawX - 30, drawY, GetColor(255, 255, 0), "[ ステータスショップ ]");
+		DrawFormatString(drawX - 10, drawY + 20, GetColor(255, 255, 255), "Enterキーで開く");
+
+		if (dist < 1000.0f)
+		{
+			DrawFormatString(drawX - 60, drawY - 30, GetColor(100, 255, 100), "「いらっしゃい！ 何か買いたいものはあるかい？」 ");
+		}
 	}
 
 	model_->Draw();
@@ -274,20 +300,17 @@ void StatShop::UpdateShopMenu()
 	HandleShopCloseInput();
 }
 
-/// @details EscまたはBackキーによるショップ終了操作を検知し、全体のUI表示フラグを下ろす
+/// @details BackSpaceキーによるショップ終了操作を検知し、全体のUI表示フラグを下ろす
 void StatShop::HandleShopCloseInput()
 {
-	static int oldEsc = 0;
 	static int oldBack = 0;
-	int currentEsc = CheckHitKey(KEY_INPUT_ESCAPE);
 	int currentBack = CheckHitKey(KEY_INPUT_BACK);
 
-	if ((currentEsc && !oldEsc) || (currentBack && !oldBack))
+	if (currentBack && !oldBack)
 	{
 		Master::is_stat_shop_on_ = false;
 		Master::sound_manager_->PlaySE(SoundManager::SE_WINDOW);
 	}
-	oldEsc = currentEsc;
 	oldBack = currentBack;
 }
 

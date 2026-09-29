@@ -24,8 +24,8 @@ Rule::~Rule()
 void Rule::Initialize()
 {
 	page_ = 1;
-	bg_handle1_ = LoadGraph("Resource/画像/ルール画面/01_ルール画面背景１.png");
-	bg_handle2_ = LoadGraph("Resource/画像/ルール画面/02_ルール画面背景２.png");
+	bg_handle1_ = LoadGraph("Resource/image/rule/01_rule_bg_1.png");
+	bg_handle2_ = LoadGraph("Resource/image/rule/02_rule_bg_2.png");
 }
 
 
@@ -146,8 +146,9 @@ void Rule::DrawRulePage2()
 	DrawFormatString(150, textY, GetColor(255, 255, 200), "[←] [→]          ... アイテム選択"); textY += lineHeight;
 	DrawFormatString(150, textY, GetColor(200, 255, 200), "[R]              ... アイテム使用"); textY += lineHeight;
 	DrawFormatString(150, textY, GetColor(255, 255, 200), "[Enter]          ... ショップを開く"); textY += lineHeight;
+	DrawFormatString(150, textY, GetColor(255, 255, 200), "[P]              ... ポーズ"); textY += lineHeight;
 	DrawFormatString(150, textY, GetColor(255, 255, 200), "[F5] / [F6]      ... [デバッグ] 敵を全滅 / ボス戦へ移動"); textY += lineHeight;
-	DrawFormatString(150, textY, GetColor(255, 200, 200), "[ESC]            ... ゲーム終了");
+	DrawFormatString(150, textY, GetColor(255, 200, 200), "[ESC]            ... ゲーム終了（確認後）");
 }
 
 

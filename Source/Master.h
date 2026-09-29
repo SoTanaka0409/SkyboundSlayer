@@ -39,6 +39,7 @@ public:
 	static Chat* chat_;                       ///< チャットUI・メッセージ描画マネージャー
 	static Save* save_;                       ///< セーブデータ入出力を担当するマネージャー
 
+	static int hit_stop_timer_;
 	static bool is_pause_on_;                 ///< メニュー展開時にアクターの更新処理を停止・ポーズするためのフラグ
 	static bool is_stat_shop_on_;             ///< ステータス強化ショップ画面が開いているかを示すフラグ
 	static bool is_near_shop_on_;             ///< プレイヤーがショップNPCの近くにいるかを示す判定フラグ
@@ -48,4 +49,7 @@ public:
 	static bool is_cutscene_playing_;         ///< シネマティックカットシーン再生中につきプレイヤー操作をロックするためのフラグ
 
 	static int game_clear_count_;             ///< ボス撃破後の演出やリザルト画面遷移までの演出タイマーカウンター
+
+	static bool is_quit_confirm_;             ///< ESC終了確認ダイアログ表示中フラグ
+	static int  quit_confirm_timer_;          ///< ESC連打防止ロックタイマー（60 = 1秒 @ 60fps、この間は2回目のESCを受け付けない）
 };
