@@ -106,3 +106,11 @@ DxLesson/x64/
 # Allow DxLib and Effekseer libs
 !DxLib_VC/**/*.lib
 !EFKforDxLib/**/*.lib
+
+# 企業提出時に不要なファイル（変換前の生モデルデータなど）
+*.x
+*.fbx
+*.blend
+*.mqo
+*.pmx
+*.pmd
