@@ -2,9 +2,9 @@
 #include <string>
 #include <cmath>
 
-DamageUIManager::DamageUIManager() : is_image_loaded_(false) {
+DamageUIManager::DamageUIManager() : m_IsImageLoaded(false) {
     for (int i = 0; i < 10; ++i) {
-        font_graph_handles_[i] = -1;
+        m_FontGraphHandles[i] = -1;
     }
 }
 
@@ -13,29 +13,29 @@ DamageUIManager::~DamageUIManager() {
 }
 
 void DamageUIManager::Load() {
-    if (is_image_loaded_) return;
+    if (m_IsImageLoaded) return;
     
     bool success = true;
     for (int i = 0; i < 10; ++i) {
-        std::string path = "Resource/image/UI/damage_numbers/damage_numbers_" + std::to_string(i) + ".png";
-        font_graph_handles_[i] = LoadGraph(path.c_str());
-        if (font_graph_handles_[i] == -1) {
+        std::string path = "Resource/image/UI/damage_numbers/m_DamageNumbers" + std::to_string(i) + ".png";
+        m_FontGraphHandles[i] = LoadGraph(path.c_str());
+        if (m_FontGraphHandles[i] == -1) {
             success = false;
         }
     }
     if (success) {
-        is_image_loaded_ = true;
+        m_IsImageLoaded = true;
     }
 }
 
 void DamageUIManager::Unload() {
     for (int i = 0; i < 10; ++i) {
-        if (font_graph_handles_[i] != -1) {
-            DeleteGraph(font_graph_handles_[i]);
-            font_graph_handles_[i] = -1;
+        if (m_FontGraphHandles[i] != -1) {
+            DeleteGraph(m_FontGraphHandles[i]);
+            m_FontGraphHandles[i] = -1;
         }
     }
-    is_image_loaded_ = false;
+    m_IsImageLoaded = false;
 }
 
 void DamageUIManager::AddDamage(int value, VECTOR pos, bool is_critical) {
@@ -52,11 +52,11 @@ void DamageUIManager::AddDamage(int value, VECTOR pos, bool is_critical) {
     popup.random_x_dir = (GetRand(100) - 50) * 0.02f;
     popup.random_z_dir = (GetRand(100) - 50) * 0.02f;
 
-    popups_.push_back(popup);
+    m_Popups.push_back(popup);
 }
 
 void DamageUIManager::Update() {
-    for (auto it = popups_.begin(); it != popups_.end(); ) {
+    for (auto it = m_Popups.begin(); it != m_Popups.end(); ) {
         it->life_timer++;
         
         // 上にフワッと上がる処理
@@ -65,7 +65,7 @@ void DamageUIManager::Update() {
         it->pos_3d.z += it->random_z_dir;
 
         if (it->life_timer >= it->max_life) {
-            it = popups_.erase(it);
+            it = m_Popups.erase(it);
         } else {
             ++it;
         }
@@ -73,7 +73,7 @@ void DamageUIManager::Update() {
 }
 
 void DamageUIManager::Draw() {
-    for (const auto& popup : popups_) {
+    for (const auto& popup : m_Popups) {
         // 3D座標を2Dスクリーン座標に変換
         VECTOR screen_pos = ConvWorldPosToScreenPos(popup.pos_3d);
         
@@ -106,12 +106,12 @@ void DamageUIManager::Draw() {
 
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 
-        if (is_image_loaded_) {
+        if (m_IsImageLoaded) {
             // AI生成画像の数字を描画
             for (char c : val_str) {
                 int num = c - '0';
                 if (num >= 0 && num <= 9) {
-                    DrawExtendGraph(draw_x, draw_y, draw_x + (int)(digit_w * scale), draw_y + (int)(digit_h * scale), font_graph_handles_[num], TRUE);
+                    DrawExtendGraph(draw_x, draw_y, draw_x + (int)(digit_w * scale), draw_y + (int)(digit_h * scale), m_FontGraphHandles[num], TRUE);
                 }
                 draw_x += (int)(digit_w * scale);
             }

@@ -21,12 +21,12 @@ public:
 
 /// @return 自身のDxLibモデルハンドル
     /// @brief 外部からマテリアル変更やシェーダー適用などを直接行うために解放する（所有権は渡さない）
-    int GetHandle() { return handle_; }
+    int GetHandle() { return m_Handle; }
 
 private:
-    int handle_;             // アタッチされる側（武器等）の描画用DxLibモデルハンドル
-    int parent_handle_;      // 座標同期の基準となる親モデル（キャラクター等）のハンドル
-    int parent_frame_index_; // 追従先となる親モデル内の特定ボーン（手や背中など）のインデックス番号
-    VECTOR offset_pos_;      // ボーンの原点とアタッチモデルの原点のズレを吸収するための位置補正値
-    VECTOR offset_rot_;      // 持ち手の角度違いなどを吸収するための回転補正値
+    int m_Handle;             // アタッチされる側（武器等）の描画用DxLibモデルハンドル
+    int m_ParentHandle;      // 座標同期の基準となる親モデル（キャラクター等）のハンドル
+    int m_ParentFrameIndex; // 追従先となる親モデル内の特定ボーン（手や背中など）のインデックス番号
+    VECTOR m_OffsetPos;      // ボーンの原点とアタッチモデルの原点のズレを吸収するための位置補正値
+    VECTOR m_OffsetRot;      // 持ち手の角度違いなどを吸収するための回転補正値
 };

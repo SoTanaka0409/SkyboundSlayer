@@ -39,11 +39,11 @@ public:
 
 private:
 	/// @brief レベルデザイン：この空間内にプレイヤーが侵入したことを検知し、強制的にエリア移動・ボス戦へ引きずり込むためのトリガーボリューム（見えない球体）
-	SphereCollider* go_boss_collider_;
+	SphereCollider* m_GoBossCollider;
 
 	/// @brief 演出仕様：ボス戦突入時の警告UI（WARNING等）や、シーン切り替えをシームレスに見せるためのフェード処理用画像
-	Texture* texture_;
-	Texture* texture2_;
+	Texture* m_Texture;
+	Texture* m_Texture2;
 
 	/// @brief UX仕様：トリガーに触れてから実際に画面が切り替わるまでの「タメ（猶予時間）」を作り、唐突な場面遷移によるプレイヤーの混乱を防ぐためのタイマー群
 	int Count;

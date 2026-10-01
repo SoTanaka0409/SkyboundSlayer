@@ -29,7 +29,7 @@ public:
 
 	/// @brief 現在のカメラのワールド座標を取得する
 	/// @return VECTOR カメラの座標
-	VECTOR GetPosition() { return position_; }
+	VECTOR GetPosition() { return m_Position; }
 
 	/// @brief 現在のカメラの注視点座標を取得する
 	/// @return VECTOR 注視点の座標
@@ -37,15 +37,15 @@ public:
 
 	/// @brief 垂直方向（仰俯角）の回転角度を取得する
 	/// @return float 垂直角度
-	float GetLookCamera() { return vertical_angle_; }
+	float GetLookCamera() { return m_VerticalAngle; }
 
 	/// @brief 水平方向の回転角度を加算する
 	/// @param angle 加算する角度
-	void AddHorizontalAngle(float angle) { horizontal_angle_ += angle; }
+	void AddHorizontalAngle(float angle) { m_HorizontalAngle += angle; }
 
 	/// @brief 垂直方向の回転角度を設定する
 	/// @param hor 設定する垂直角度
-	void SetLookCamera(float hor) { vertical_angle_ = hor; }
+	void SetLookCamera(float hor) { m_VerticalAngle = hor; }
 
 	/// @brief カメラの視線方向ベクトルを取得する
 	/// @return VECTOR 視線方向ベクトル
@@ -57,7 +57,7 @@ public:
 
 	/// @brief カットシーンモードの有効/無効を切り替える
 	/// @param isCutscene 有効にする場合はtrue
-	void SetCutsceneMode(bool isCutscene) { is_cutscene_mode_ = isCutscene; }
+	void SetCutsceneMode(bool isCutscene) { m_IsCutsceneMode = isCutscene; }
 
 	/// @brief カットシーン時に注視するターゲット座標を設定する
 	/// @param pos 注視するワールド座標
@@ -88,29 +88,29 @@ private:
 
 	/// @brief ※ kMouseSensitivity と kCameraDistance は設定から即時取得するため定数から外します
 
-	bool is_cutscene_mode_ = false;       ///< カットシーンモード中かどうかのフラグ
+	bool m_IsCutsceneMode = false;       ///< カットシーンモード中かどうかのフラグ
 	VECTOR mCutsceneTargetPos;            ///< カットシーン時に注視するターゲット座標
-	float horizontal_angle_;              ///< 水平方向の回転角度（方位角）
-	float vertical_angle_;                ///< 垂直方向の回転角度（仰俯角）
+	float m_HorizontalAngle;              ///< 水平方向の回転角度（方位角）
+	float m_VerticalAngle;                ///< 垂直方向の回転角度（仰俯角）
 
-	VECTOR position_;                     ///< カメラのワールド位置座標
+	VECTOR m_Position;                     ///< カメラのワールド位置座標
 	VECTOR mvLookAtPosition;              ///< カメラの注視点ワールド座標
 	VECTOR dir;                           ///< カメラの視線方向ベクトル
 
-	Object3D* target_;                    ///< 追従対象の3Dオブジェクトへのポインタ
-	Model* model_;                        ///< 関連モデルへのポインタ
+	Object3D* m_Target;                    ///< 追従対象の3Dオブジェクトへのポインタ
+	Model* m_Model;                        ///< 関連モデルへのポインタ
 
 	int centerX = 640;                    ///< マウスカーソル固定・差分計算基準の画面中央X座標
 	int centerY = 360;                    ///< マウスカーソル固定・差分計算基準の画面中央Y座標
 	const float ROTATE_SPEED = 0.2f;      ///< カメラの回転補間速度定数
-	float target_angle_;                  ///< 補間目標とする回転角度
-	float angle_;                         ///< 現在の補間計算用回転角度
+	float m_TargetAngle;                  ///< 補間目標とする回転角度
+	float m_Angle;                         ///< 現在の補間計算用回転角度
 
-	float shake_angle_;                   ///< シェイク計算用サイン波の現在角度
-	float shake_time_counter_;            ///< シェイク処理の経過時間カウンタ
-	float shake_time_;                    ///< シェイクの総継続時間
-	float shake_width_;                   ///< シェイクの振幅（揺れ幅）
-	float shake_angle_speed_;             ///< シェイクの周期速度
-	float step_time_;                     ///< シェイクのステップ進行時間
+	float m_ShakeAngle;                   ///< シェイク計算用サイン波の現在角度
+	float m_ShakeTimeCounter;            ///< シェイク処理の経過時間カウンタ
+	float m_ShakeTime;                    ///< シェイクの総継続時間
+	float m_ShakeWidth;                   ///< シェイクの振幅（揺れ幅）
+	float m_ShakeAngleSpeed;             ///< シェイクの周期速度
+	float m_StepTime;                     ///< シェイクのステップ進行時間
 	VECTOR mvShakePosition;               ///< カメラ座標に加算されるシェイク用のオフセットベクトル
 };

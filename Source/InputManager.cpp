@@ -1,9 +1,9 @@
 ﻿#include"InputManager.h"
 #include"DxLib.h"
 
-int InputManager::down_buffer_[256] = { 0 };
-int InputManager::up_buffer_[256] = { 0 };
-int InputManager::mouse_down_buffer_ = 0;
+int InputManager::m_DownBuffer[256] = { 0 };
+int InputManager::m_UpBuffer[256] = { 0 };
+int InputManager::m_MouseDownBuffer = 0;
 
 
 /// @brief InputManagerのコンストラクタ
@@ -26,13 +26,13 @@ int InputManager::CheckDownKey(int KeyCode)
 	int keyState = CheckHitKey(KeyCode);
 	
 	// 前回キーが押されておらず、現在キーが押されていたら
-	if (down_buffer_[KeyCode] == 0 && keyState == 1)
+	if (m_DownBuffer[KeyCode] == 0 && keyState == 1)
 	{
 		result = 1;
 	}
 
 	// 現在のキーの状態をバッファに格納
-	down_buffer_[KeyCode] = keyState;
+	m_DownBuffer[KeyCode] = keyState;
 	return result;
 }
 int InputManager::CheckPressKey(int KeyCode)
@@ -43,11 +43,11 @@ int InputManager::CheckMouseClickLeft()
 {
 	int result = 0;
 	int mouseState = GetMouseInput() & MOUSE_INPUT_LEFT;
-	if (mouse_down_buffer_ == 0 && mouseState != 0)
+	if (m_MouseDownBuffer == 0 && mouseState != 0)
 	{
 		result = 1;
 	}
-	mouse_down_buffer_ = mouseState;
+	m_MouseDownBuffer = mouseState;
 	return result;
 }
 

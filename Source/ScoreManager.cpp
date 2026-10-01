@@ -6,10 +6,10 @@
 /// @param float score
 /// @details 各種変数の初期化
 ScoreManager::ScoreManager(float score)
-	:score_(score)
-	, high_score_(score)
-	, high_score2_(score)
-	, high_score3_(score)
+	:m_Score(score)
+	, m_HighScore(score)
+	, m_HighScore2(score)
+	, m_HighScore3(score)
 {
 
 }
@@ -62,34 +62,34 @@ void ScoreManager::SaveHighScore()
 	}
 
 	// 1位更新時の処理
-	if (score_ > high_score_)
+	if (m_Score > m_HighScore)
 	{
-		fprintf(fp, "SCORE;%d\n",(int)score_);
-		fprintf(fp, "SCORE;%d\n", (int)high_score_);
-		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
-		fprintf(fp, "NAME ;%s\n", name_.c_str());
-		fprintf(fp, "NAME ;%s\n", name1_.c_str());
-		fprintf(fp, "NAME ;%s\n", name2_.c_str());
+		fprintf(fp, "SCORE;%d\n",(int)m_Score);
+		fprintf(fp, "SCORE;%d\n", (int)m_HighScore);
+		fprintf(fp, "SCORE;%d\n", (int)m_HighScore2);
+		fprintf(fp, "NAME ;%s\n", m_Name.c_str());
+		fprintf(fp, "NAME ;%s\n", m_Name1.c_str());
+		fprintf(fp, "NAME ;%s\n", m_Name2.c_str());
 	}
 	// 2位更新時の処理
-	else if (score_ > high_score2_ && score_ < high_score_)
+	else if (m_Score > m_HighScore2 && m_Score < m_HighScore)
 	{
-		fprintf(fp, "SCORE;%d\n", (int)high_score_);
-		fprintf(fp, "SCORE;%d\n", (int)score_);
-		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
-		fprintf(fp, "NAME ;%s\n", name1_.c_str());
-		fprintf(fp, "NAME ;%s\n", name_.c_str());
-		fprintf(fp, "NAME ;%s\n", name2_.c_str());
+		fprintf(fp, "SCORE;%d\n", (int)m_HighScore);
+		fprintf(fp, "SCORE;%d\n", (int)m_Score);
+		fprintf(fp, "SCORE;%d\n", (int)m_HighScore2);
+		fprintf(fp, "NAME ;%s\n", m_Name1.c_str());
+		fprintf(fp, "NAME ;%s\n", m_Name.c_str());
+		fprintf(fp, "NAME ;%s\n", m_Name2.c_str());
 	}
 	// 3位更新時の処理
-	else if (score_ > high_score3_ && score_ < high_score2_)
+	else if (m_Score > m_HighScore3 && m_Score < m_HighScore2)
 	{
-		fprintf(fp, "SCORE;%d\n", (int)high_score_);
-		fprintf(fp, "SCORE;%d\n", (int)high_score2_);
-		fprintf(fp, "SCORE;%d\n", (int)score_);
-		fprintf(fp, "NAME ;%s\n", name1_.c_str());
-		fprintf(fp, "NAME ;%s\n", name2_.c_str());
-		fprintf(fp, "NAME ;%s\n", name_.c_str());
+		fprintf(fp, "SCORE;%d\n", (int)m_HighScore);
+		fprintf(fp, "SCORE;%d\n", (int)m_HighScore2);
+		fprintf(fp, "SCORE;%d\n", (int)m_Score);
+		fprintf(fp, "NAME ;%s\n", m_Name1.c_str());
+		fprintf(fp, "NAME ;%s\n", m_Name2.c_str());
+		fprintf(fp, "NAME ;%s\n", m_Name.c_str());
 	}
 	fclose(fp);
 }
@@ -109,17 +109,17 @@ void ScoreManager::LoadHighScore()
 	}
 
 	int s1 = 0, s2 = 0, s3 = 0;
-	fscanf(fp, "SCORE:%d\n", &s1); high_score_ = (float)s1;
-	fscanf(fp, "SCORE:%d\n", &s2); high_score2_ = (float)s2;
-	fscanf(fp, "SCORE:%d\n", &s3); high_score3_ = (float)s3;
+	fscanf(fp, "SCORE:%d\n", &s1); m_HighScore = (float)s1;
+	fscanf(fp, "SCORE:%d\n", &s2); m_HighScore2 = (float)s2;
+	fscanf(fp, "SCORE:%d\n", &s3); m_HighScore3 = (float)s3;
 
 	char name_buf[256];
 	fscanf(fp, "NAME :%s\n", name_buf);
-	name_ = name_buf;
+	m_Name = name_buf;
 	fscanf(fp, "NAME :%s\n", name_buf);
-	name2_ = name_buf;
+	m_Name2 = name_buf;
 	fscanf(fp, "NAME :%s\n", name_buf);
-	name3_ = name_buf;
+	m_Name3 = name_buf;
 
 	fclose(fp);
 }

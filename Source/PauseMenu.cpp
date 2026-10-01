@@ -6,8 +6,8 @@
 #include "SoundManager.h"
 
 PauseMenu::PauseMenu()
-	: color_fade_(0)
-	, color_flag_(false)
+	: m_ColorFade(0)
+	, m_ColorFlag(false)
 {
 	Initialize();
 }
@@ -18,16 +18,16 @@ PauseMenu::~PauseMenu()
 
 void PauseMenu::Initialize()
 {
-	bgm_toggle_rect_ = { 720, 312, 150, 48 };
-	bgm_bar_rect_ = { 920, 320, 380, 24 };
+	m_BgmToggleRect = { 720, 312, 150, 48 };
+	m_BgmBarRect = { 920, 320, 380, 24 };
 
-	se_toggle_rect_ = { 720, 432, 150, 48 };
-	se_bar_rect_ = { 920, 440, 380, 24 };
+	m_SeToggleRect = { 720, 432, 150, 48 };
+	m_SeBarRect = { 920, 440, 380, 24 };
 
-	debug_toggle_rect_ = { 820, 552, 150, 48 };
+	m_DebugToggleRect = { 820, 552, 150, 48 };
 
-	resume_rect_ = { 600, 750, 300, 60 };
-	quit_rect_ = { 1020, 750, 300, 60 };
+	m_ResumeRect = { 600, 750, 300, 60 };
+	m_QuitRect = { 1020, 750, 300, 60 };
 }
 
 void PauseMenu::Update()
@@ -50,42 +50,42 @@ void PauseMenu::HandleInput()
 
 	if (!InputManager::CheckMouseClickLeft()) return;
 
-	if (IsMouseInRect(bgm_toggle_rect_, mouseX, mouseY))
+	if (IsMouseInRect(m_BgmToggleRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->ToggleBgmEnabled();
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->ToggleBgmEnabled();
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(bgm_bar_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_BgmBarRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->SetBgmVolume(GetVolumeFromMouseX(bgm_bar_rect_, mouseX));
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->SetBgmVolume(GetVolumeFromMouseX(m_BgmBarRect, mouseX));
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(se_toggle_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_SeToggleRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->ToggleSeEnabled();
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->ToggleSeEnabled();
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(se_bar_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_SeBarRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->SetSeVolume(GetVolumeFromMouseX(se_bar_rect_, mouseX));
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->SetSeVolume(GetVolumeFromMouseX(m_SeBarRect, mouseX));
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(debug_toggle_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_DebugToggleRect, mouseX, mouseY))
 	{
-		Master::debug_->SetDebug(!Master::debug_->Getdebug());
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_Debug->SetDebug(!Master::m_Debug->Getdebug());
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(resume_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_ResumeRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_WINDOW);
-		Master::is_pause_on_ = false;
+		Master::m_SoundManager->PlaySE(SoundManager::SE_WINDOW);
+		Master::m_IsPauseOn = false;
 		SetMouseDispFlag(FALSE);
 	}
-	else if (IsMouseInRect(quit_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_QuitRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_WINDOW);
-		Master::is_pause_on_ = false;
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneTitle);
+		Master::m_SoundManager->PlaySE(SoundManager::SE_WINDOW);
+		Master::m_IsPauseOn = false;
+		Master::m_SceneManager->SetNextScene(SceneManager::kSceneTitle);
 	}
 }
 
@@ -112,12 +112,12 @@ void PauseMenu::DrawHeader()
 
 void PauseMenu::DrawSettingRows()
 {
-	DrawVolumeRow(280, "BGM", Master::sound_manager_->IsBgmEnabled(), Master::sound_manager_->GetBgmVolume());
-	DrawVolumeRow(400, "SE", Master::sound_manager_->IsSeEnabled(), Master::sound_manager_->GetSeVolume());
+	DrawVolumeRow(280, "BGM", Master::m_SoundManager->IsBgmEnabled(), Master::m_SoundManager->GetBgmVolume());
+	DrawVolumeRow(400, "SE", Master::m_SoundManager->IsSeEnabled(), Master::m_SoundManager->GetSeVolume());
 
 	SetFontSize(34);
 	DrawFormatString(594, 560, GetColor(222, 236, 248), "DEBUG");
-	DrawToggle(debug_toggle_rect_, Master::debug_->Getdebug(), "MODE");
+	DrawToggle(m_DebugToggleRect, Master::m_Debug->Getdebug(), "MODE");
 
 	SetFontSize(18);
 	DrawFormatString(990, 568, GetColor(150, 164, 180), "ON/OFF: debug display & controls");
@@ -129,8 +129,8 @@ void PauseMenu::DrawFooter()
 	int mouseX, mouseY;
 	InputManager::GetMousePos(mouseX, mouseY);
 	
-	DrawButton(resume_rect_, "RESUME", IsMouseInRect(resume_rect_, mouseX, mouseY));
-	DrawButton(quit_rect_, "QUIT", IsMouseInRect(quit_rect_, mouseX, mouseY));
+	DrawButton(m_ResumeRect, "RESUME", IsMouseInRect(m_ResumeRect, mouseX, mouseY));
+	DrawButton(m_QuitRect, "QUIT", IsMouseInRect(m_QuitRect, mouseX, mouseY));
 }
 
 void PauseMenu::DrawToggle(const Rect& rect, bool enabled, const char* label)
@@ -151,8 +151,8 @@ void PauseMenu::DrawToggle(const Rect& rect, bool enabled, const char* label)
 
 void PauseMenu::DrawVolumeRow(int y, const char* label, bool enabled, int volume)
 {
-	Rect toggleRect = label[0] == 'B' ? bgm_toggle_rect_ : se_toggle_rect_;
-	Rect barRect = label[0] == 'B' ? bgm_bar_rect_ : se_bar_rect_;
+	Rect toggleRect = label[0] == 'B' ? m_BgmToggleRect : m_SeToggleRect;
+	Rect barRect = label[0] == 'B' ? m_BgmBarRect : m_SeBarRect;
 	int percent = volume * 100 / 255;
 	int fillWidth = barRect.w * volume / 255;
 

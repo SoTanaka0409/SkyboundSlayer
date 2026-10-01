@@ -7,7 +7,7 @@
 class StageBox
 {
 public:
-	StageBox(VECTOR centerpos,VECTOR centorPos2,VECTOR TopLeft,VECTOR BottomRightint,int color1_,int color2_,int color3_,int mnColoe4);
+	StageBox(VECTOR centerpos,VECTOR centorPos2,VECTOR TopLeft,VECTOR BottomRightint,int m_Color1,int m_Color2,int m_Color3,int mnColoe4);
 	~StageBox();
 	void Draw();
 	void Update();
@@ -15,23 +15,23 @@ public:
 	{
 		std::vector<VERTEX3D>result;
   
-		result.push_back(vertex_[0]);
-		result.push_back(vertex_[1]);
-		result.push_back(vertex_[2]);
-		result.push_back(vertex_[3]);
-		result.push_back(vertex_[4]);
-		result.push_back(vertex_[5]);
-		result.push_back(vertex_[6]);
-  		result.push_back(vertex_[7]);
+		result.push_back(m_Vertex[0]);
+		result.push_back(m_Vertex[1]);
+		result.push_back(m_Vertex[2]);
+		result.push_back(m_Vertex[3]);
+		result.push_back(m_Vertex[4]);
+		result.push_back(m_Vertex[5]);
+		result.push_back(m_Vertex[6]);
+  		result.push_back(m_Vertex[7]);
 		return result;
 	}
 
 private:
-	VERTEX3D vertex_[8];//頂点情報(最終的に四角で描くので4つ)
+	VERTEX3D m_Vertex[8];//頂点情報(最終的に四角で描くので4つ)
 
-	/*int color1_;
-	int color2_;
-	int color3_;
-	int color4_;*/
+	/*int m_Color1;
+	int m_Color2;
+	int m_Color3;
+	int m_Color4;*/
 
 };

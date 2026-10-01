@@ -30,9 +30,9 @@ public:
 
 /// @return 現在の所持金(int)
     /// @brief ショップでのアイテム購入時など、要求コストに対する支払い能力（残高）があるかの判定判定に使用する
-    int HaveMoney() { return money_; }
+    int HaveMoney() { return m_Money; }
 
 private:
-    int money_;          // 意図せぬ外部からの直接書き換えや不正計算を防ぐため、カプセル化された実際の所持金額
-    Object3D* parent_;   // 3D空間上で財布の持ち主（プレイヤー等）の頭上にUIを追従させるための親オブジェクト参照
+    int m_Money;          // 意図せぬ外部からの直接書き換えや不正計算を防ぐため、カプセル化された実際の所持金額
+    Object3D* m_Parent;   // 3D空間上で財布の持ち主（プレイヤー等）の頭上にUIを追従させるための親オブジェクト参照
 };

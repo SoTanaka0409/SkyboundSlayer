@@ -25,7 +25,7 @@ public:
 	virtual void OnTrigger(Collider* collider, Collider* check);
 	virtual void OnExit(Collider* collider, Collider* check);
 private:
-	Model* model_;
-	CapsuleCollider* capsule_collider_;
-	float high_;
+	Model* m_Model;
+	CapsuleCollider* m_CapsuleCollider;
+	float m_High;
 };

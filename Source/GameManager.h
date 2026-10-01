@@ -31,14 +31,14 @@ public:
     };
 
 private:
-    Difficulty difficulty_;
-    Phase current_phase_;
-    int boss_cutscene_timer_;
-    VECTOR cutscene_start_pos_;
-    int shop_timer_;
-    int fade_alpha_;
-    EnemyManager* enemy_manager_;
-    VECTOR boss_portal_pos_;
+    Difficulty m_Difficulty;
+    Phase m_CurrentPhase;
+    int m_BossCutsceneTimer;
+    VECTOR m_CutsceneStartPos;
+    int m_ShopTimer;
+    int m_FadeAlpha;
+    EnemyManager* m_EnemyManager;
+    VECTOR m_BossPortalPos;
 
 /// @brief ボス出現カットシーンの更新
     bool UpdateBossCutscene();
@@ -134,9 +134,9 @@ public:
     void DrawMinimap();
 
     /// @brief 現在のゲームフェーズを取得する
-    Phase GetCurrentPhase() const { return current_phase_; }
+    Phase GetCurrentPhase() const { return m_CurrentPhase; }
 
     /// @brief ショップフェーズの残りフレーム数を取得する
-    int GetShopTimer() const { return shop_timer_; }
+    int GetShopTimer() const { return m_ShopTimer; }
 };
 

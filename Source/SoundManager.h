@@ -76,19 +76,19 @@ public:
 
 	/// @brief BGMの有効/無効設定状態を取得する
 	/// @return bool BGM再生が有効であればtrue
-	bool IsBgmEnabled() const { return is_bgm_enabled_; }
+	bool IsBgmEnabled() const { return m_IsBgmEnabled; }
 
 	/// @brief SEの有効/無効設定状態を取得する
 	/// @return bool SE再生が有効であればtrue
-	bool IsSeEnabled() const { return is_se_enabled_; }
+	bool IsSeEnabled() const { return m_IsSeEnabled; }
 
 	/// @brief 現在設定されているBGMの音量（0〜255）を取得する
 	/// @return int BGM音量値
-	int GetBgmVolume() const { return bgm_volume_; }
+	int GetBgmVolume() const { return m_BgmVolume; }
 
 	/// @brief 現在設定されているSEの音量（0〜255）を取得する
 	/// @return int SE音量値
-	int GetSeVolume() const { return se_volume_; }
+	int GetSeVolume() const { return m_SeVolume; }
 
 	/// @brief BGMの有効/無効を設定する
 	/// @param enabled 有効にする場合はtrue
@@ -113,14 +113,14 @@ public:
 	void ToggleSeEnabled();
 
 private:
-	SOUND_BGM now_playing_bgm_;  ///< 現在再生中のBGM種類
-	SOUND_SE now_playing_se_;    ///< 直近で再生されたSE種類
+	SOUND_BGM m_NowPlayingBgm;  ///< 現在再生中のBGM種類
+	SOUND_SE m_NowPlayingSe;    ///< 直近で再生されたSE種類
 
-	std::vector<std::pair<SOUND_BGM, int>> bgm_handle_list_; ///< ロード済みBGMハンドル管理リスト
-	std::vector<std::pair<SOUND_SE, int>> se_handle_list_;   ///< ロード済みSEハンドル管理リスト
+	std::vector<std::pair<SOUND_BGM, int>> m_BgmHandleList; ///< ロード済みBGMハンドル管理リスト
+	std::vector<std::pair<SOUND_SE, int>> m_SeHandleList;   ///< ロード済みSEハンドル管理リスト
 
-	bool is_bgm_enabled_;        ///< BGM再生が有効かどうかを示すフラグ
-	bool is_se_enabled_;         ///< SE再生が有効かどうかを示すフラグ
-	int bgm_volume_;             ///< BGMの音量（0〜255）
-	int se_volume_;              ///< SEの音量（0〜255）
+	bool m_IsBgmEnabled;        ///< BGM再生が有効かどうかを示すフラグ
+	bool m_IsSeEnabled;         ///< SE再生が有効かどうかを示すフラグ
+	int m_BgmVolume;             ///< BGMの音量（0〜255）
+	int m_SeVolume;              ///< SEの音量（0〜255）
 };

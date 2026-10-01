@@ -16,21 +16,21 @@ StageCollider::StageCollider()
 	,Count(0)
 {
 	
-	go_boss_collider_ = new SphereCollider(this,VAdd( Config::GetStageCenter(),VGet(0,0,-2000)), 100);
+	m_GoBossCollider = new SphereCollider(this,VAdd( Config::GetStageCenter(),VGet(0,0,-2000)), 100);
 	
 	
 
-	texture_ = new Texture("Resource/image/area/01_boss_area.png",VGet(400,400,0),true);
-	texture2_ = new Texture("Resource/image/area/02_normal_area.png", VGet(400, 400, 0), true);
+	m_Texture = new Texture("Resource/image/area/01_boss_area.png",VGet(400,400,0),true);
+	m_Texture2 = new Texture("Resource/image/area/02_normal_area.png", VGet(400, 400, 0), true);
 
 }
 
 StageCollider::~StageCollider()
 {
 
-	if (go_boss_collider_ != nullptr)
+	if (m_GoBossCollider != nullptr)
 	{
-		go_boss_collider_->SetDeleteFlag(true);
+		m_GoBossCollider->SetDeleteFlag(true);
 	}
 	
 
@@ -68,16 +68,16 @@ void StageCollider::OnTrigger(Collider* collider, Collider* check)
 	
 	
 
-		if (collider == go_boss_collider_ && check->parent_object_->GetTag() == Tag3D_Player3D)//normalstageに行く
+		if (collider == m_GoBossCollider && check->m_ParentObject->GetTag() == Tag3D_Player3D)//normalstageに行く
 		{
 			
-			Player3D* player = Master::player_;
+			Player3D* player = Master::m_Player;
 			if (player == nullptr) return;
-			texture2_->Draw();
+			m_Texture2->Draw();
 			if (check == player->GetCollisionCollider())
 			{
 				player->SetPosition(VAdd(Config::GetStageBossCenter(), VGet(500.0f, 0,-2000)));//場所を移勁
-				Master::sound_manager_->PlaySE(SoundManager::SE_WARP);//warp音を鳴らす
+				Master::m_SoundManager->PlaySE(SoundManager::SE_WARP);//warp音を鳴らす
 				/*new Effect(VGet(17000, 0, 16000), "Resource/image/battle/01_damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);
 				new Effect(VGet(16000, 0, 17000), "Resource/image/battle/01_damage.png", GetColorU8(0, 255, 30, 0), 500.0f, 2.5f);*/
 			}

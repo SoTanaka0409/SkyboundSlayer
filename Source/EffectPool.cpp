@@ -15,13 +15,13 @@ EffectPool::GetInstance() {
 /// @brief EffectPoolの初期化（コンストラクタ）
 EffectPool::EffectPool() {
     for (int i = 0; i < POOL_SIZE; i++) {
-        pool_[i] = new Effect();
+        m_Pool[i] = new Effect();
     }
 }
 
 EffectPool::~EffectPool() {
     for (int i = 0; i < POOL_SIZE; i++) {
-        delete pool_[i];
+        delete m_Pool[i];
     }
 }
 
@@ -29,8 +29,8 @@ EffectPool::~EffectPool() {
 /// @brief EffectPoolの状態更新処理
 void EffectPool::Update() {
     for (int i = 0; i < POOL_SIZE; i++) {
-        if (pool_[i]->IsActive()) {
-            pool_[i]->Update();
+        if (m_Pool[i]->IsActive()) {
+            m_Pool[i]->Update();
         }
     }
 }
@@ -39,8 +39,8 @@ void EffectPool::Update() {
 /// @brief EffectPoolの描画処理
 void EffectPool::Draw() {
     for (int i = 0; i < POOL_SIZE; i++) {
-        if (pool_[i]->IsActive()) {
-            pool_[i]->Draw();
+        if (m_Pool[i]->IsActive()) {
+            m_Pool[i]->Draw();
         }
     }
 }
@@ -49,8 +49,8 @@ void EffectPool::Draw() {
 /// @brief EffectPoolのPlay処理
 void EffectPool::Play(VECTOR initPos, std::string filename, COLOR_U8 Changecolor, float Size, float VisibleTime) {
     for (int i = 0; i < POOL_SIZE; i++) {
-        if (!pool_[i]->IsActive()) {
-            pool_[i]->Play(initPos, filename, Changecolor, Size, VisibleTime);
+        if (!m_Pool[i]->IsActive()) {
+            m_Pool[i]->Play(initPos, filename, Changecolor, Size, VisibleTime);
             return;
         }
     }

@@ -34,7 +34,7 @@ public:
     VECTOR CheckHit_LineDebug(VECTOR pos1, VECTOR pos2);
 
 private:
-    Debug* debug_;
-    int model_handle_;     // 画面に描画される高品質な地形3Dモデルのハンドル
-    int collision_handle_; // 物理計算専用の軽量化されたコリジョンモデルのハンドル（描画は行わない）
+    Debug* m_Debug;
+    int m_ModelHandle;     // 画面に描画される高品質な地形3Dモデルのハンドル
+    int m_CollisionHandle; // 物理計算専用の軽量化されたコリジョンモデルのハンドル（描画は行わない）
 };

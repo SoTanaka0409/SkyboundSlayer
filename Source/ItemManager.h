@@ -28,16 +28,16 @@ public:
 
 	/// @brief アイテムの獲得フラグ状態を取得する
 	/// @return bool アイテムを獲得した場合はtrue
-	bool GetItemFlag() { return get_itemflag_; }
+	bool GetItemFlag() { return m_GetItemflag; }
 
 	/// @brief アイテム使用時の実際のステータス回復・バフ付与等の効果処理を実行する
 	/// @param id 効果を適用するアイテムの識別ID
 	void Effect(Item::ItemID id);
 
 public:
-	std::list<Item::ItemInformation*> item_list_; ///< 所持しているアイテム情報のリスト
+	std::list<Item::ItemInformation*> m_ItemList; ///< 所持しているアイテム情報のリスト
 	Item::ItemInformation Information;             ///< 作業・参照用アイテム情報構造体
 
 private:
-	bool get_itemflag_;                            ///< アイテム獲得イベント発生検知フラグ
+	bool m_GetItemflag;                            ///< アイテム獲得イベント発生検知フラグ
 };

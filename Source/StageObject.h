@@ -11,10 +11,10 @@ public:
     StageObject(VECTOR initPos, std::string filename, VECTOR scale, std::string textureFilename = "", float hitRadius = 0.0f, float yOffset = 0.0f);
 
 /// @return 衝突判定半径(float)
-    float GetHitRadius() const { return hit_radius_; }
+    float GetHitRadius() const { return m_HitRadius; }
 
 /// @return 衝突判定が有効か(bool)
-    bool IsHitEnabled() const { return hit_radius_ > 0.0f; }
+    bool IsHitEnabled() const { return m_HitRadius > 0.0f; }
 
 /// @details 保持しているモデルリソースを破棄し、メモリリークを防ぐ
     ~StageObject();
@@ -26,9 +26,9 @@ public:
     void Draw();
 
 private:
-    Model* model_;              // 表示用3Dモデルの管理インスタンス
-    float scale_;               // 描画および当たり判定に適用する倍率
-    float hit_radius_;          // プレイヤーや敵との接触判定を行う球状コライダーの半径
-    bool has_followed_terrain_; // 初期配置時に地形接地処理(TerrainFollow)が完了したかを示すフラグ
-    float y_offset_;            // 地形に対してモデルを少し浮かせる（または埋める）ための調整値
+    Model* m_Model;              // 表示用3Dモデルの管理インスタンス
+    float m_Scale;               // 描画および当たり判定に適用する倍率
+    float m_HitRadius;          // プレイヤーや敵との接触判定を行う球状コライダーの半径
+    bool m_HasFollowedTerrain; // 初期配置時に地形接地処理(TerrainFollow)が完了したかを示すフラグ
+    float m_YOffset;            // 地形に対してモデルを少し浮かせる（または埋める）ための調整値
 };

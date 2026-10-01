@@ -93,7 +93,7 @@
     <ClCompile Include="Source\EquipmentManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\haikei.cpp">
+    <ClCompile Include="Source\Background.cpp">
       <Filter>ソース ファイル\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Source\PauseMenu.cpp">
@@ -311,7 +311,7 @@
     <ClInclude Include="Source\EquipmentManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\haikei.h">
+    <ClInclude Include="Source\Background.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\HaveMoneyClass.h">

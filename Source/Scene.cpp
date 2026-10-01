@@ -8,15 +8,15 @@
 Scene::Scene()
 {
 	// オブジェクトマネージャーの生成
-	object_manager_ = new ObjectManager();
-	collider_manager_ = new ColliderManager();
+	m_ObjectManager = new ObjectManager();
+	m_ColliderManager = new ColliderManager();
 }
 
 Scene::~Scene()
 {
-	if (object_manager_ != nullptr)
+	if (m_ObjectManager != nullptr)
 	{
-		delete object_manager_;
+		delete m_ObjectManager;
 	}
 	
 }
@@ -26,9 +26,9 @@ Scene::~Scene()
 /// @brief Sceneの描画処理
 void Scene::Draw()
 {
-	if (object_manager_ != nullptr)
+	if (m_ObjectManager != nullptr)
 	{
-		object_manager_->Draw();
+		m_ObjectManager->Draw();
 	}
 }
 /// @brief 更新
@@ -37,9 +37,9 @@ void Scene::Draw()
 /// @brief Sceneの状態更新処理
 void Scene::Update()
 {
-	if (object_manager_ != nullptr)
+	if (m_ObjectManager != nullptr)
 	{
 		
-		object_manager_->Update();
+		m_ObjectManager->Update();
 	}
 }

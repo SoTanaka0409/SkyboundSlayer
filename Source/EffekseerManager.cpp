@@ -44,11 +44,11 @@ void EffekseerManager::End()
 	if (isEnded) return;
 	isEnded = true;
 
-	for (auto& effect : effects_)
+	for (auto& effect : m_Effects)
 	{
 		DeleteEffekseerEffect(effect.second);
 	}
-	effects_.clear();
+	m_Effects.clear();
 
 	Effkseer_End();
 }
@@ -58,9 +58,9 @@ void EffekseerManager::End()
 /// @details 一時的な非同期ロード解除、およびロード済み配列への登録
 int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, float magnification)
 {
-	if (effects_.find(name) != effects_.end())
+	if (m_Effects.find(name) != m_Effects.end())
 	{
-		return effects_[name];
+		return m_Effects[name];
 	}
 
 	// 技術スタック制約：EffekseerのリソースロードAPIはDxLib側の非同期スレッド（ASync）に対応していないため、読み込み完了までメインスレッドを同期ブロックする
@@ -70,7 +70,7 @@ int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, 
 	SetUseASyncLoadFlag(oldFlag);
 	if (handle != -1)
 	{
-		effects_[name] = handle;
+		m_Effects[name] = handle;
 	}
 	return handle;
 }
@@ -80,12 +80,12 @@ int EffekseerManager::LoadEffect(const std::string& name, const char* filepath, 
 /// @details 3D空間上へのエフェクトインスタンスの発行、および初期位置のバインド
 int EffekseerManager::PlayEffect(const std::string& name, VECTOR pos)
 {
-	if (effects_.find(name) == effects_.end())
+	if (m_Effects.find(name) == m_Effects.end())
 	{
 		return -1;
 	}
 
-	int playingHandle = PlayEffekseer3DEffect(effects_[name]);
+	int playingHandle = PlayEffekseer3DEffect(m_Effects[name]);
 	SetPosPlayingEffekseer3DEffect(playingHandle, pos.x, pos.y, pos.z);
 
 	return playingHandle;

@@ -55,7 +55,7 @@ public:
 	void SelectClass();
 
 private:
-	Texture* texture_;                 ///< セーブ画面背景・UI枠等のテクスチャポインタ
+	Texture* m_Texture;                 ///< セーブ画面背景・UI枠等のテクスチャポインタ
 	std::list<SaveDate*> AllSaveDate;  ///< 全セーブスロットのデータを管理するリスト
 
 	int Select;                        ///< 現在選択されているセーブスロットインデックス

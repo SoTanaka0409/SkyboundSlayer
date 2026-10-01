@@ -45,7 +45,7 @@
     <ClCompile Include="Source\Enemy3D_AT.cpp" />
     <ClCompile Include="Source\Equipment.cpp" />
     <ClCompile Include="Source\EquipmentManager.cpp" />
-    <ClCompile Include="Source\haikei.cpp" />
+    <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\PauseMenu.cpp" />
     <ClCompile Include="Source\HaveMoneyClass.cpp" />
     <ClCompile Include="Source\InfClass.cpp" />
@@ -119,7 +119,7 @@
     <ClInclude Include="Source\Enemy3D_AT.h" />
     <ClInclude Include="Source\Equipment.h" />
     <ClInclude Include="Source\EquipmentManager.h" />
-    <ClInclude Include="Source\haikei.h" />
+    <ClInclude Include="Source\Background.h" />
     <ClInclude Include="Source\HaveMoneyClass.h" />
     <ClInclude Include="Source\InfClass.h" />
     <ClInclude Include="Source\InfClassManager.h" />

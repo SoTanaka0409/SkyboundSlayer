@@ -19,7 +19,7 @@ public:
     };
 
 /// @param filename, vec(出現座標)
-/// @details NPCモデルのロードと、プレイヤー進入検知用のコライダー(shop_in_)を初期化する
+/// @details NPCモデルのロードと、プレイヤー進入検知用のコライダー(m_ShopIn)を初期化する
     StatShop(std::string filename, VECTOR vec);
 
 /// @details 動的確保したモデルやコライダーを破棄し、メモリリークを防ぐ
@@ -38,7 +38,7 @@ public:
 /// @details 目標座標へ向けてNPCモデルの座標を線形補間（Lerp）する
     void movePosition();
 /// @return 到着完了か(bool)
-    bool IsArrived() const { return shop_state_ == ShopState::ARRIVED; }
+    bool IsArrived() const { return m_ShopState == ShopState::ARRIVED; }
 
     virtual void OnEnter(Collider* collider, Collider* check) override;
     virtual void OnTrigger(Collider* collider, Collider* check) override;
@@ -60,7 +60,7 @@ private:
     void DrawShopFooter();
     void DrawShopNpc(Player3D* player);
 
-/// @details 選択中の強化項目(select_)に対し、所持金とコストを照合して購入処理を実行する
+/// @details 選択中の強化項目(m_Select)に対し、所持金とコストを照合して購入処理を実行する
     void SelectClass();
     void BuyClass();
 /// @param upgradeCount(強化回数)
@@ -72,27 +72,27 @@ private:
     void UpdateShopColliderVisibility();
     void SyncModelTransform();
 
-    Model* model_;                      // ショップNPCの3Dモデル
-    SphereCollider* shop_in_;           // プレイヤーが店内に侵入したことを検知するトリガー
-    SphereCollider* safe_zoon_;         // 店内での安全領域（敵の攻撃が届かない範囲）
+    Model* m_Model;                      // ショップNPCの3Dモデル
+    SphereCollider* m_ShopIn;           // プレイヤーが店内に侵入したことを検知するトリガー
+    SphereCollider* m_SafeZoon;         // 店内での安全領域（敵の攻撃が届かない範囲）
 
-    VECTOR target_position_;            // 徒歩移動演出における目標の店舗前座標
+    VECTOR m_TargetPosition;            // 徒歩移動演出における目標の店舗前座標
     VECTOR mvStartPosition;             // 移動演出の開始地点（Lerp計算用）
-    ShopState shop_state_;              // 移動演出やメニュー展開を制御する内部ステート
+    ShopState m_ShopState;              // 移動演出やメニュー展開を制御する内部ステート
 
-    int select_;                        // 現在選択中の強化項目インデックス
-    int select_max_;                    // 項目数上限（カーソルのループ制限用）
-    int select_min_;                    // 項目数下限
-    bool old_mouse_down_;               // 入力の多重検知を防ぐための前フレームのマウス状態
+    int m_Select;                        // 現在選択中の強化項目インデックス
+    int m_SelectMax;                    // 項目数上限（カーソルのループ制限用）
+    int m_SelectMin;                    // 項目数下限
+    bool m_OldMouseDown;               // 入力の多重検知を防ぐための前フレームのマウス状態
 
-    int upgrade_max_hp_count_;          // 各項目の強化回数（コスト算出用）
-    int upgrade_attack_count_;
-    int upgrade_speed_count_;
-    int upgrade_evasion_speed_count_;
+    int m_UpgradeMaxHpCount;          // 各項目の強化回数（コスト算出用）
+    int m_UpgradeAttackCount;
+    int m_UpgradeSpeedCount;
+    int m_UpgradeEvasionSpeedCount;
 
-    int icon_max_hp_handle_;            // UI表示用の各スキルアイコン画像ハンドル
-    int icon_attack_handle_;
-    int icon_speed_handle_;
-    int icon_evasion_dist_handle_;
-    int icon_evasion_inv_handle_;
+    int m_IconMaxHpHandle;            // UI表示用の各スキルアイコン画像ハンドル
+    int m_IconAttackHandle;
+    int m_IconSpeedHandle;
+    int m_IconEvasionDistHandle;
+    int m_IconEvasionInvHandle;
 };

@@ -19,10 +19,10 @@ public:
 	std::vector<VERTEX3D>GetVertex()
 	{
 		std::vector<VERTEX3D>result;
-		result.push_back(vertex_[0]);
-		result.push_back(vertex_[1]);
-		result.push_back(vertex_[2]);
-		result.push_back(vertex_[3]);
+		result.push_back(m_Vertex[0]);
+		result.push_back(m_Vertex[1]);
+		result.push_back(m_Vertex[2]);
+		result.push_back(m_Vertex[3]);
 		return result;
 
 
@@ -30,9 +30,9 @@ public:
 	}
 
 private:
-	int graph_handle_; //画像ハンドル
+	int m_GraphHandle; //画像ハンドル
 
-	VERTEX3D vertex_[4];//頂点情報(最終的に四角で描くので4つ)
+	VERTEX3D m_Vertex[4];//頂点情報(最終的に四角で描くので4つ)
 
 
 

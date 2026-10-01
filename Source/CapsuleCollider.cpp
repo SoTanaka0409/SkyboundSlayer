@@ -7,9 +7,9 @@
 CapsuleCollider::CapsuleCollider(Object3D* parent, VECTOR pos1, VECTOR pos2, float radius)
 	: Collider(parent)
 {
-	position_ = pos1;
-	position2_ = pos2;
-	radius_ = radius;
+	m_Position = pos1;
+	m_Position2 = pos2;
+	m_Radius = radius;
 }
 
 CapsuleCollider::~CapsuleCollider()
@@ -29,12 +29,12 @@ void CapsuleCollider::Update(Collider* check)
 		if (capsule != nullptr)
 		{
 			bool isHit = HitCheck_Capsule_Capsule(
-				this->position_,
-				this->position2_,
-				this->radius_,
-				capsule->position_,
-				capsule->position2_,
-				capsule->radius_
+				this->m_Position,
+				this->m_Position2,
+				this->m_Radius,
+				capsule->m_Position,
+				capsule->m_Position2,
+				capsule->m_Radius
 			);
 
 			HitCheck(check, isHit);
@@ -45,11 +45,11 @@ void CapsuleCollider::Update(Collider* check)
 		if (sphere != nullptr)
 		{
 			bool isHit = HitCheck_Sphere_Capsule(
-				sphere->position_,
-				sphere->radius_,
-				this->position_,
-				this->position2_,
-				this->radius_
+				sphere->m_Position,
+				sphere->m_Radius,
+				this->m_Position,
+				this->m_Position2,
+				this->m_Radius
 			);
 
 			HitCheck(check, isHit);
@@ -62,9 +62,9 @@ void CapsuleCollider::Update(Collider* check)
 void CapsuleCollider::Draw()
 {
 	DrawCapsule3D(
-		position_,
-		position2_,
-		radius_,
+		m_Position,
+		m_Position2,
+		m_Radius,
 		4,
 		GetColor(255, 255, 255),
 		GetColor(255, 255, 255),

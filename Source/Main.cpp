@@ -24,31 +24,31 @@
 #include "Save.h"
 
 /// @brief サービスロケーターとしてのMasterクラス（静的メンバ変数）の実体化
-Player3D* Master::player_ = nullptr;
-SceneManager* Master::scene_manager_ = new SceneManager();
-SoundManager* Master::sound_manager_ = new SoundManager();
-ResourceManager* Master::resource_manager_ = new ResourceManager();
-Debug* Master::debug_ = new Debug();
-DrawHp* Master::draw_hp_ = new DrawHp();
-Camera* Master::camera_ = new Camera();
-ScoreManager* Master::score_manager_ = new ScoreManager(0);
-EnemyManager* Master::enemy_manager_ = new EnemyManager();
-ItemManager* Master::item_manager_ = new ItemManager();
-InfClassManager* Master::inf_class_manager_ = new InfClassManager();
-BuffManager* Master::buff_manager_ = new BuffManager();
-Chat* Master::chat_ = new Chat();
-Save* Master::save_ = new Save();
+Player3D* Master::m_Player = nullptr;
+SceneManager* Master::m_SceneManager = new SceneManager();
+SoundManager* Master::m_SoundManager = new SoundManager();
+ResourceManager* Master::m_ResourceManager = new ResourceManager();
+Debug* Master::m_Debug = new Debug();
+DrawHp* Master::m_DrawHp = new DrawHp();
+Camera* Master::m_Camera = new Camera();
+ScoreManager* Master::m_ScoreManager = new ScoreManager(0);
+EnemyManager* Master::m_EnemyManager = new EnemyManager();
+ItemManager* Master::m_ItemManager = new ItemManager();
+InfClassManager* Master::m_InfClassManager = new InfClassManager();
+BuffManager* Master::m_BuffManager = new BuffManager();
+Chat* Master::m_Chat = new Chat();
+Save* Master::m_Save = new Save();
 
-int Master::hit_stop_timer_ = 0;
-bool Master::is_pause_on_ = false;
-bool Master::is_stat_shop_on_ = false;
-bool Master::is_safe_point_on_ = false;
-bool Master::is_near_shop_on_ = false;
-bool Master::is_save_ = false;
-bool Master::is_cutscene_playing_ = false;
-int Master::game_clear_count_ = 0;
-bool Master::is_quit_confirm_ = false;
-int  Master::quit_confirm_timer_ = 0;
+int Master::m_HitStopTimer = 0;
+bool Master::m_IsPauseOn = false;
+bool Master::m_IsStatShopOn = false;
+bool Master::m_IsSafePointOn = false;
+bool Master::m_IsNearShopOn = false;
+bool Master::m_IsSave = false;
+bool Master::m_IsCutscenePlaying = false;
+int Master::m_GameClearCount = 0;
+bool Master::m_IsQuitConfirm = false;
+int  Master::m_QuitConfirmTimer = 0;
 
 /// @brief Windowsアプリケーションのエントリーポイント（メイン関数）
 /// @param hInstance アプリケーションの現在インスタンスのハンドル
@@ -83,10 +83,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// 非同期読み込み：大量のアセットを抱える本編において、ロード中のフリーズを防ぐため非同期ロードを必須とする
 	SetUseASyncLoadFlag(TRUE);
-	Master::sound_manager_->Initialize();
-	Master::scene_manager_->Initialize();
-	Master::score_manager_->Initialize();
-	Master::camera_->Initialize();
+	Master::m_SoundManager->Initialize();
+	Master::m_SceneManager->Initialize();
+	Master::m_ScoreManager->Initialize();
+	Master::m_Camera->Initialize();
 
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetUseZBufferFlag(true);
@@ -107,12 +107,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		prevEsc = currentEsc;
 
 		// ESC終了確認ロジック
-		if (Master::is_quit_confirm_)
+		if (Master::m_IsQuitConfirm)
 		{
 			// 1秒ロック中はESCを受け付けない（連打防止）
-			if (Master::quit_confirm_timer_ > 0)
+			if (Master::m_QuitConfirmTimer > 0)
 			{
-				Master::quit_confirm_timer_--;
+				Master::m_QuitConfirmTimer--;
 			}
 			else if (escPressed)
 			{
@@ -124,8 +124,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			bool mouseCancel = (GetMouseInput() & (MOUSE_INPUT_LEFT | MOUSE_INPUT_RIGHT)) != 0;
 			if (mouseCancel)
 			{
-				Master::is_quit_confirm_ = false;
-				Master::quit_confirm_timer_ = 0;
+				Master::m_IsQuitConfirm = false;
+				Master::m_QuitConfirmTimer = 0;
 			}
 		}
 		else
@@ -133,8 +133,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if (escPressed)
 			{
 				// はじめてESC → 確認モード開始・ゲーム一時停止
-				Master::is_quit_confirm_ = true;
-				Master::quit_confirm_timer_ = 60; // 1秒ロック (60fps)
+				Master::m_IsQuitConfirm = true;
+				Master::m_QuitConfirmTimer = 60; // 1秒ロック (60fps)
 			}
 		}
 
@@ -144,18 +144,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		{
 			DrawFormatString(600, 360, GetColor(255, 255, 255), "NOW LOADING... %d", GetASyncLoadNum());
 		}
-		else if (!Master::is_quit_confirm_)
+		else if (!Master::m_IsQuitConfirm)
 		{
-			Master::draw_hp_->Update();
-			Master::camera_->Update();
-			Master::scene_manager_->Update();
-			Master::inf_class_manager_->Update();
+			Master::m_DrawHp->Update();
+			Master::m_Camera->Update();
+			Master::m_SceneManager->Update();
+			Master::m_InfClassManager->Update();
 			EffekseerManager::GetInstance()->Update();
 			EffectPool::GetInstance()->Update();
 		}
 
-		Master::scene_manager_->Draw();
-		Master::score_manager_->Draw();
+		Master::m_SceneManager->Draw();
+		Master::m_ScoreManager->Draw();
 		EffekseerManager::GetInstance()->Draw();
 		EffectPool::GetInstance()->Draw();
 
@@ -165,9 +165,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 
 		// ESC終了確認ダイアログ描画
-		if (Master::is_quit_confirm_)
+		if (Master::m_IsQuitConfirm)
 		{
-			bool isLocked = (Master::quit_confirm_timer_ > 0);
+			bool isLocked = (Master::m_QuitConfirmTimer > 0);
 
 			// 半透明オーバーレイ
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 190);
@@ -214,31 +214,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// シーン遷移とメモリ掃除：メインループの最後で削除予約されたリソースをまとめて解放することで、Update/Draw中の不正アクセスを防ぐ
 		if (GetASyncLoadNum() == 0)
 		{
-			Master::scene_manager_->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
-			Master::scene_manager_->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
+			Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll3DIfNeeded();
+			Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->DeleteAll2DIfNeeded();
 			ColliderManager::GetInstance()->DeleteAllColliderIfNeeded();
-			Master::scene_manager_->ChangeSceneIfNeeded();
+			Master::m_SceneManager->ChangeSceneIfNeeded();
 		}
 	}
 
 	// 終了処理：マネージャーのFinalizeとインスタンス削除
-	Master::scene_manager_->Finalize();
-	delete Master::scene_manager_;
-	Master::sound_manager_->Finalize();
-	delete Master::sound_manager_;
-	Master::score_manager_->Finalize();
-	delete Master::score_manager_;
-	Master::camera_->Finalize();
-	delete Master::camera_;
-	delete Master::resource_manager_;
-	delete Master::debug_;
-	delete Master::draw_hp_;
-	delete Master::enemy_manager_;
-	delete Master::item_manager_;
-	delete Master::inf_class_manager_;
-	delete Master::buff_manager_;
-	delete Master::chat_;
-	delete Master::save_;
+	Master::m_SceneManager->Finalize();
+	delete Master::m_SceneManager;
+	Master::m_SoundManager->Finalize();
+	delete Master::m_SoundManager;
+	Master::m_ScoreManager->Finalize();
+	delete Master::m_ScoreManager;
+	Master::m_Camera->Finalize();
+	delete Master::m_Camera;
+	delete Master::m_ResourceManager;
+	delete Master::m_Debug;
+	delete Master::m_DrawHp;
+	delete Master::m_EnemyManager;
+	delete Master::m_ItemManager;
+	delete Master::m_InfClassManager;
+	delete Master::m_BuffManager;
+	delete Master::m_Chat;
+	delete Master::m_Save;
 
 	ColliderManager::GetInstance()->Finalize();
 	EffekseerManager::GetInstance()->End();

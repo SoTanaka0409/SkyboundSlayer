@@ -9,16 +9,16 @@ SkyBox::SkyBox(std::string filename,VECTOR pos)
 	// スカイボックスモデルの生成
 	// note: スカイボックスの座標は、基本的には原点。
 	// ものによっては、座標を常にプレイヤーの座標にすることで、空が見切れないようにすることもある。
-	model_ = new Model( filename, pos);
+	m_Model = new Model( filename, pos);
 }
 
 /// @brief デストラクタ
 SkyBox::~SkyBox()
 {
 	// モデルクラスの破棄
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
-		delete model_;
+		delete m_Model;
 	}
 }
 
@@ -27,11 +27,11 @@ SkyBox::~SkyBox()
 /// @brief SkyBoxの状態更新処理
 void SkyBox::Update()
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
 		// スカイボックスがステージを突き抜けたり影を落とすのを防ぐため、常にカメラ位置に追従させる
-		model_->SetPosition(GetCameraPosition());
-		model_->Update();
+		m_Model->SetPosition(GetCameraPosition());
+		m_Model->Update();
 	}
 }
 
@@ -40,7 +40,7 @@ void SkyBox::Update()
 /// @brief SkyBoxの描画処理
 void SkyBox::Draw()
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
 		// Zバッファの書き込みをオフにする（奥の背景として描画し、ステージを隠さないようにする）
 		SetWriteZBuffer3D(FALSE);
@@ -50,7 +50,7 @@ void SkyBox::Draw()
 		//       逆に影を付けたい場合はこの処理は外してよい。
 		SetUseLighting(FALSE);
 		
-		model_->Draw();
+		m_Model->Draw();
 		
 		SetUseLighting(TRUE);
 		SetWriteZBuffer3D(TRUE);
@@ -62,9 +62,9 @@ void SkyBox::Draw()
 /// @brief SkyBoxのSetScale処理
 void SkyBox::SetScale(VECTOR scale)
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
-		model_->SetScale(scale);
+		m_Model->SetScale(scale);
 	}
 }
 
@@ -73,8 +73,8 @@ void SkyBox::SetScale(VECTOR scale)
 /// @brief SkyBoxのSetModelTexture処理
 void SkyBox::SetModelTexture(std::string filename, int index)
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
-		model_->SetTexture(filename, index);
+		m_Model->SetTexture(filename, index);
 	}
 }

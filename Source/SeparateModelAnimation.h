@@ -25,37 +25,37 @@ public:
 
 
     /// @brief ループ設定
-    void SetLoop(bool isLoop) { loop_ = isLoop; }
+    void SetLoop(bool isLoop) { m_Loop = isLoop; }
     /// @brief ループ終了時に再生するモーション
-    void SetLoopFinishState(AnimationState state) { loop_finish_state_ = state; }
+    void SetLoopFinishState(AnimationState state) { m_LoopFinishState = state; }
     /// @brief モーションのブレンド設定
     void SetAnimationBlend(bool isBlend);
 
     /// @brief 現在再生されているモーションの取得
-    AnimationState GetNowState() { return state_; }
+    AnimationState GetNowState() { return m_State; }
     /// @brief モーションのループが終了しているかどうか
-    bool IsLoopFinish() { return loop_finish_; }
-    void SetAnimationCount(float count) { animation_count_ = count; }
+    bool IsLoopFinish() { return m_LoopFinish; }
+    void SetAnimationCount(float count) { m_AnimationCount = count; }
 
 private:
-    int model_handle_;  // モデルのハンドル
+    int m_ModelHandle;  // モデルのハンドル
 
-    float animation_time_;  // 再生しているモーションの現在の再生時間
-    float animation_count_;
-    int animation_index_;   // 再生しているモーションのインデックス
+    float m_AnimationTime;  // 再生しているモーションの現在の再生時間
+    float m_AnimationCount;
+    int m_AnimationIndex;   // 再生しているモーションのインデックス
 
-    float old_animation_time_;   // 1つ前のモーション再生時間
-    int old_animation_index_;    // １つ前のモーションのインデックス
+    float m_OldAnimationTime;   // 1つ前のモーション再生時間
+    int m_OldAnimationIndex;    // １つ前のモーションのインデックス
 
-    float anim_blend_rate_;      // モーションの切り替わり度合
+    float m_AnimBlendRate;      // モーションの切り替わり度合
 
-    AnimationState state_; // 現在再生しているモーションの番号
+    AnimationState m_State; // 現在再生しているモーションの番号
 
-    bool loop_;            // モーションをループさせるかどうか
-    AnimationState loop_finish_state_;   // ループが終わった時に再生したいモーション番号
-    bool loop_finish_;      // モーションループが終わったかどうか
+    bool m_Loop;            // モーションをループさせるかどうか
+    AnimationState m_LoopFinishState;   // ループが終わった時に再生したいモーション番号
+    bool m_LoopFinish;      // モーションループが終わったかどうか
 
   
     /// @brief モーションデータのリスト
-    std::vector<AnimationInfo*> animation_info_list_;
+    std::vector<AnimationInfo*> m_AnimationInfoList;
 };

@@ -30,7 +30,7 @@ void DrawHp::Update()
 /// @brief DrawHpのUpdateHpBars処理
 void DrawHp::UpdateHpBars()
 {
-	const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	const auto& pObjList = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	
 	std::vector<Enemy*> active_enemies;
 	for (int i = 0; i < pObjList.size(); i++)
@@ -45,9 +45,9 @@ void DrawHp::UpdateHpBars()
 	}
 	
 	// 存在しなくなった敵の遅延HPデータをクリーンアップ
-	for (auto it = delayed_hp_map_.begin(); it != delayed_hp_map_.end(); ) {
+	for (auto it = m_DelayedHpMap.begin(); it != m_DelayedHpMap.end(); ) {
 		if (std::find(active_enemies.begin(), active_enemies.end(), it->first) == active_enemies.end()) {
-			it = delayed_hp_map_.erase(it);
+			it = m_DelayedHpMap.erase(it);
 		} else {
 			++it;
 		}
@@ -63,10 +63,10 @@ void DrawHp::DrawSingleHpBar(Enemy* pEne)
 	float maxHp = pEne->GetMaxHp();
 
 	// 遅延HPの初期化・更新処理
-	if (delayed_hp_map_.find(pEne) == delayed_hp_map_.end()) {
-		delayed_hp_map_[pEne] = currentHp;
+	if (m_DelayedHpMap.find(pEne) == m_DelayedHpMap.end()) {
+		m_DelayedHpMap[pEne] = currentHp;
 	}
-	float& delayedHp = delayed_hp_map_[pEne];
+	float& delayedHp = m_DelayedHpMap[pEne];
 	if (delayedHp > currentHp) {
 		delayedHp -= maxHp * 0.005f; // 最大HPの0.5%ずつ毎フレーム減少させる (遅延ダメージ表現)
 		if (delayedHp < currentHp) delayedHp = currentHp;
@@ -137,8 +137,8 @@ void DrawHp::DrawSingleHpBar(Enemy* pEne)
 		int HpBarY = static_cast<int>(DrawHpBarWorld.y) - kHpBarHeight / 2;
 		int skew = 6; // 通常敵も少し斜めにしてスタイリッシュに
 
-		bool is_hit_search_flag_ = pEne->IsHitSearchFlag();
-		if (is_hit_search_flag_)
+		bool m_IsHitSearchFlag = pEne->IsHitSearchFlag();
+		if (m_IsHitSearchFlag)
 		{
 			float HpRatio = currentHp / maxHp;
 			float DelayedRatio = delayedHp / maxHp;

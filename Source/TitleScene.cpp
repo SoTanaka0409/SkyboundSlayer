@@ -15,7 +15,7 @@
 /// @brief TitleSceneのコンストラクタ
 /// @details UI点滅アニメーション用パラメータおよびカメラ角度の初期化を行う
 TitleScene::TitleScene()
-	: color_fade_(1), color_flag_(false), camera_angle_(0.0f)
+	: m_ColorFade(1), m_ColorFlag(false), m_CameraAngle(0.0f)
 {
 }
 
@@ -29,13 +29,13 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	SetMouseDispFlag(true);
-	Master::camera_->Initialize();
+	Master::m_Camera->Initialize();
 	// 周回プレイ時の不具合を防ぐため、タイトルに戻った時点でクリア回数とコライダー情報をリセットする
-	Master::game_clear_count_ = 0;
+	Master::m_GameClearCount = 0;
 	ColliderManager::GetInstance()->DeleteAllCollider();
 
-	Master::score_manager_->LoadHighScore();
-	Master::sound_manager_->PlayBGM(SoundManager::BGM_TITLE);
+	Master::m_ScoreManager->LoadHighScore();
+	Master::m_SoundManager->PlayBGM(SoundManager::BGM_TITLE);
 
 	// 一枚絵ではなく、実際のゲームプレイと同じ3Dモデルを配置してカメラを回すことでシームレスな世界観を演出する
 	new Stage(VGet(0.0f, 5000.0f, -20000.0f), "Resource/model/bg/island/01_island.mv1", "Resource/model/bg/island/01_island.mv1", VGet(200.0f, 100.0f, 200.0f));
@@ -95,7 +95,7 @@ void TitleScene::Initialize()
 	pSkyBox->SetModelTexture("Resource/model/bg/sky/02_sky_texture.jpg");
 
 	new StageObject(VGet(0.0f, 0.0f, 500.0f), "Resource/model/props/portal/01_portal.mv1", VGet(3.0f, 3.0f, 3.0f));
-	camera_angle_ = 0.0f;
+	m_CameraAngle = 0.0f;
 }
 
 /// @brief タイトルシーンの毎フレーム更新処理
@@ -111,10 +111,10 @@ void TitleScene::Update()
 void TitleScene::UpdateTitleCamera()
 {
 	// 浮動小数点精度の低下によるカメラのカクつきを防ぐため、2πラジアンを超えたらリセットする
-	camera_angle_ += 0.002f;
-	if (camera_angle_ >= DX_PI_F * 2.0f) camera_angle_ -= DX_PI_F * 2.0f;
+	m_CameraAngle += 0.002f;
+	if (m_CameraAngle >= DX_PI_F * 2.0f) m_CameraAngle -= DX_PI_F * 2.0f;
 
-	VECTOR camPos = VGet(cosf(camera_angle_) * 3000.0f, 2000.0f, sinf(camera_angle_) * 3000.0f);
+	VECTOR camPos = VGet(cosf(m_CameraAngle) * 3000.0f, 2000.0f, sinf(m_CameraAngle) * 3000.0f);
 	VECTOR camTarget = VGet(0.0f, 1000.0f, 0.0f);
 	SetCameraPositionAndTarget_UpVecY(camPos, camTarget);
 }
@@ -130,18 +130,18 @@ void TitleScene::HandleMenuInput()
 
 	if (IsHoverStart(mx, my))
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
-		Master::scene_manager_->SetNextScene(SceneManager::kGameScene);
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SceneManager->SetNextScene(SceneManager::kGameScene);
 	}
 	else if (IsHoverRule(mx, my))
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneRule);
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SceneManager->SetNextScene(SceneManager::kSceneRule);
 	}
 	else if (IsHoverSettings(mx, my))
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneSettings);
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SceneManager->SetNextScene(SceneManager::kSceneSettings);
 	}
 }
 
@@ -187,15 +187,15 @@ void TitleScene::Draw()
 void TitleScene::UpdatePromptBlink()
 {
 	// 透明度を徐々に増減させ、ユーザーの視線を誘導するための滑らかな明滅アニメーションを作る
-	if (color_flag_)
+	if (m_ColorFlag)
 	{
-		color_fade_ -= 4;
-		if (color_fade_ <= 0) { color_fade_ = 0; color_flag_ = false; }
+		m_ColorFade -= 4;
+		if (m_ColorFade <= 0) { m_ColorFade = 0; m_ColorFlag = false; }
 	}
 	else
 	{
-		color_fade_ += 4;
-		if (color_fade_ >= 255) { color_fade_ = 255; color_flag_ = true; }
+		m_ColorFade += 4;
+		if (m_ColorFade >= 255) { m_ColorFade = 255; m_ColorFlag = true; }
 	}
 }
 
@@ -282,7 +282,7 @@ void TitleScene::DrawMenuPanel()
 /// @brief 画面下部の点滅案内プロンプトを描画する
 void TitleScene::DrawPrompt()
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + color_fade_ / 3);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 155 + m_ColorFade / 3);
 	DrawBox(Config::ScreenWidth / 2 - 320, Config::ScreenHeight - 76, Config::ScreenWidth / 2 + 320, Config::ScreenHeight - 34, GetColor(30, 35, 45), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -295,5 +295,5 @@ void TitleScene::DrawPrompt()
 /// @details BGMの停止処理を実行する
 void TitleScene::Finalize()
 {
-	Master::sound_manager_->StopBGM();
+	Master::m_SoundManager->StopBGM();
 }

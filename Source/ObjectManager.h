@@ -69,11 +69,11 @@ public:
 
 private:
 	
-	std::map<Object3D::Tag3D, std::vector<Object3D*>> cached_3d_lists_;
-	bool cache_dirty_;
-	std::list<Object3D*>object_3d_list_;   //3Dオブジェクトを管理するリスト
+	std::map<Object3D::Tag3D, std::vector<Object3D*>> m_Cached3dLists;
+	bool m_CacheDirty;
+	std::list<Object3D*>m_Object3dList;   //3Dオブジェクトを管理するリスト
 	
-	std::list<Object2D*>object_2d_list_;
+	std::list<Object2D*>m_Object2dList;
 
 };
 

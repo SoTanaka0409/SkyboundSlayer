@@ -8,7 +8,7 @@
 /// @brief Collisionの初期化（コンストラクタ）
 Collision::Collision()
 {
-	//Master::scene_manager_->GetCurrentScene()->GetCollisionManager()
+	//Master::m_SceneManager->GetCurrentScene()->GetCollisionManager()
 }
 Collision::~Collision()
 {
@@ -19,7 +19,7 @@ Collision::~Collision()
 /// @brief Collisionの状態更新処理
 void Collision::Update()
 {
-	for (auto list = size_list_.begin(); list != size_list_.end(); list++)
+	for (auto list = m_SizeList.begin(); list != m_SizeList.end(); list++)
 	{
 
 	}

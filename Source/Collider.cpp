@@ -5,11 +5,11 @@
 
 /// @brief Colliderの初期化（コンストラクタ）
 Collider::Collider(Object3D* parent)
-	: parent_object_(parent)
-	, position_(VGet(0.0f, 0.0f, 0.0f))
-	, position2_(VGet(0.0f, 0.0f, 0.0f))
-	, radius_(0.0f)
-	, delete_flag_(false)
+	: m_ParentObject(parent)
+	, m_Position(VGet(0.0f, 0.0f, 0.0f))
+	, m_Position2(VGet(0.0f, 0.0f, 0.0f))
+	, m_Radius(0.0f)
+	, m_DeleteFlag(false)
 {
 	// ColliderManagerに Add しておく
 	ColliderManager::GetInstance()->AddCollider(this);
@@ -32,27 +32,27 @@ void Collider::HitCheck(Collider* check, bool isHit)
 
 		// すでに当たっているかチェック
 		auto itr = std::find_if(
-			collision_list_.begin(),
-			collision_list_.end(),
+			m_CollisionList.begin(),
+			m_CollisionList.end(),
 			[&](Collider* col) { return col == check; } // ラムダ式
 		);
 
-		if (itr != collision_list_.end())
+		if (itr != m_CollisionList.end())
 		{
 			// すでに当たっていた場合 //
 			
 			// 当たっている状態の処理を呼び出す
-			this->parent_object_->OnEnter(this, check);
+			this->m_ParentObject->OnEnter(this, check);
 		}
 		else
 		{
 			// すでに当たっていなかった場合 //
 
 			// リストに登録しておく
-			collision_list_.push_back(check);//任意のタイミングでしか追加しないようにすっれば
+			m_CollisionList.push_back(check);//任意のタイミングでしか追加しないようにすっれば
 
 			// 当たった瞬間状態の処理を呼び出す
-			this->parent_object_->OnTrigger(this, check);
+			this->m_ParentObject->OnTrigger(this, check);
 			
 		}
 	}
@@ -62,20 +62,20 @@ void Collider::HitCheck(Collider* check, bool isHit)
 
 		// すでに当たっているかチェック
 		auto itr = std::find_if(
-			collision_list_.begin(),
-			collision_list_.end(),
+			m_CollisionList.begin(),
+			m_CollisionList.end(),
 			[&](Collider* col) { return col == check; } // ラムダ式
 		);
 
-		if (itr != collision_list_.end())
+		if (itr != m_CollisionList.end())
 		{
 			// 当たっていた場合 //
 
 			// 離れた瞬間の処理を呼び出す
-			this->parent_object_->OnExit(this, check);
+			this->m_ParentObject->OnExit(this, check);
 
 			// 当たっていないのでリストからは除外する
-			collision_list_.erase(itr);
+			m_CollisionList.erase(itr);
 		}
 	}
 }

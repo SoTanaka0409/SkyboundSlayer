@@ -6,7 +6,7 @@
 
 /// @brief ShortInventoryクラスのコンストラクタ
 ShortInventory::ShortInventory()
-	: selected_index_(0)
+	: m_SelectedIndex(0)
 {
 }
 
@@ -37,12 +37,12 @@ void ShortInventory::Update()
 /// @return int 所持アイテムの種類数
 int ShortInventory::GetItemCount() const
 {
-	if (!Master::item_manager_)
+	if (!Master::m_ItemManager)
 	{
 		return 0;
 	}
 
-	return static_cast<int>(Master::item_manager_->item_list_.size());
+	return static_cast<int>(Master::m_ItemManager->m_ItemList.size());
 }
 
 /// @brief 選択インデックスがアイテムリストの範囲外にならないようクランプ（ループ補正）処理を行う
@@ -51,17 +51,17 @@ void ShortInventory::ClampSelectedIndex(int itemCount)
 {
 	if (itemCount <= 0)
 	{
-		selected_index_ = 0;
+		m_SelectedIndex = 0;
 		return;
 	}
 
-	if (selected_index_ >= itemCount)
+	if (m_SelectedIndex >= itemCount)
 	{
-		selected_index_ = 0;
+		m_SelectedIndex = 0;
 	}
-	else if (selected_index_ < 0)
+	else if (m_SelectedIndex < 0)
 	{
-		selected_index_ = itemCount - 1;
+		m_SelectedIndex = itemCount - 1;
 	}
 }
 
@@ -71,13 +71,13 @@ void ShortInventory::HandleSelectionInput(int itemCount)
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_RIGHT))
 	{
-		selected_index_++;
+		m_SelectedIndex++;
 		ClampSelectedIndex(itemCount);
 	}
 
 	if (InputManager::CheckDownKey(KEY_INPUT_LEFT))
 	{
-		selected_index_--;
+		m_SelectedIndex--;
 		ClampSelectedIndex(itemCount);
 	}
 }
@@ -88,7 +88,7 @@ void ShortInventory::UseSelectedItem()
 	Item::ItemInformation* info = GetSelectedItem();
 	if (info && info->Count > 0)
 	{
-		Master::item_manager_->UseItem(info->ID);
+		Master::m_ItemManager->UseItem(info->ID);
 	}
 }
 
@@ -96,19 +96,19 @@ void ShortInventory::UseSelectedItem()
 /// @return Item::ItemInformation* 選択中のアイテム情報ポインタ（選択不可時はnullptr）
 Item::ItemInformation* ShortInventory::GetSelectedItem() const
 {
-	if (!Master::item_manager_)
+	if (!Master::m_ItemManager)
 	{
 		return nullptr;
 	}
 
-	if (selected_index_ < 0 || selected_index_ >= GetItemCount())
+	if (m_SelectedIndex < 0 || m_SelectedIndex >= GetItemCount())
 	{
 		return nullptr;
 	}
 
-	auto it = Master::item_manager_->item_list_.begin();
-	std::advance(it, selected_index_);
-	if (it == Master::item_manager_->item_list_.end())
+	auto it = Master::m_ItemManager->m_ItemList.begin();
+	std::advance(it, m_SelectedIndex);
+	if (it == Master::m_ItemManager->m_ItemList.end())
 	{
 		return nullptr;
 	}

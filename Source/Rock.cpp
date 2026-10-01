@@ -5,17 +5,17 @@
 /// @brief Rockの初期化（コンストラクタ）
 Rock::Rock(std::string filename,VECTOR pos, float r,float High,float size)
 	:Object3D(VGet(0,0,0))
-	, high_(High)
+	, m_High(High)
 {
 	SetTag(Object3D::Tag3D_Obj);
-	capsule_collider_ = new CapsuleCollider(this, position_, VAdd(position_, VGet(0,High,0)),r);
-	model_ = new Model(filename, pos, false);
-	model_->SetScale(VGet(size, size, size));
+	m_CapsuleCollider = new CapsuleCollider(this, m_Position, VAdd(m_Position, VGet(0,High,0)),r);
+	m_Model = new Model(filename, pos, false);
+	m_Model->SetScale(VGet(size, size, size));
 }
 
 Rock::~Rock()
 {
-	capsule_collider_->SetDeleteFlag(true);
+	m_CapsuleCollider->SetDeleteFlag(true);
 	
 }
 
@@ -24,16 +24,16 @@ Rock::~Rock()
 /// @brief Rockの描画処理
 void Rock::Draw()
 {
-	model_->Draw();
+	m_Model->Draw();
 }
 
 
 /// @brief Rockの状態更新処理
 void Rock::Update()
 {
-	capsule_collider_->position_ = position_;
-	capsule_collider_->position2_ = position_, VAdd(position_, VGet(0, high_, 0));
-	position_.y = -100.0f;
+	m_CapsuleCollider->m_Position = m_Position;
+	m_CapsuleCollider->m_Position2 = m_Position, VAdd(m_Position, VGet(0, m_High, 0));
+	m_Position.y = -100.0f;
 }
 
 

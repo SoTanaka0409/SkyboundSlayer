@@ -17,9 +17,9 @@ public:
 
 /// @param filename, 初期座標, ステータス群, 判定サイズ群, 所持金, アニメ分離フラグ
 /// @details 跳躍攻撃専用のステートマシン初期化と、着地衝撃波用コライダーの確保
-    EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_);
+    EnemyMonster(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool m_IsSeparateAnim);
 
-/// @details 専用で動的確保した着地攻撃用コライダー（landing_attack_collider_）を確実に破棄する
+/// @details 専用で動的確保した着地攻撃用コライダー（m_LandingAttackCollider）を確実に破棄する
     ~EnemyMonster();
 
 /// @details AttackStateに基づくジャンプ攻撃の進行（溜め→跳躍→着地）と、専用の物理挙動を毎フレーム更新する
@@ -57,16 +57,16 @@ private:
 /// @details ジャンプ用の初速や多段ヒット防止フラグを初期化し、物理挙動を開始する
     void StartJumpAttack();
 
-    AttackState attack_state_;       // ジャンプ攻撃の一連のプロセス（溜め・跳躍・着地）を進行させるための内部ステート
-    int charge_timer_;               // 攻撃前の隙（溜め時間）を計測し、プレイヤーに予兆を見せるためのタイマー
-    int jump_timer_;                 // 跳躍時のモーション管理や、異常な滞空（地形引っ掛かり）を検知して強制落下させるためのタイマー
+    AttackState m_AttackState;       // ジャンプ攻撃の一連のプロセス（溜め・跳躍・着地）を進行させるための内部ステート
+    int m_ChargeTimer;               // 攻撃前の隙（溜め時間）を計測し、プレイヤーに予兆を見せるためのタイマー
+    int m_JumpTimer;                 // 跳躍時のモーション管理や、異常な滞空（地形引っ掛かり）を検知して強制落下させるためのタイマー
 
-    SphereCollider* landing_attack_collider_; // 着地時に一瞬だけ発生する、広範囲の衝撃波ダメージ用判定
-    bool has_landed_hit_;            // 着地判定の多段ヒットを防ぐため、1回のジャンプにつき1ダメージを保証するフラグ
+    SphereCollider* m_LandingAttackCollider; // 着地時に一瞬だけ発生する、広範囲の衝撃波ダメージ用判定
+    bool m_HasLandedHit;            // 着地判定の多段ヒットを防ぐため、1回のジャンプにつき1ダメージを保証するフラグ
 
-    float jump_velocity_;            // 現在のY軸方向への速度（上方向への初速から重力で減衰していく）
-    float gravity_;                  // 空中での落下加速度（通常の敵より重い挙動にするための専用値）
-    float forward_speed_;            // 跳躍中の水平方向（プレイヤーへの接近）の移動速度
-    VECTOR jump_target_dir_;         // 踏み切り時点で決定された進行方向（空中でプレイヤーを追尾し続けないように保持）
-    float jump_start_y_;             // 着地判定（Y座標の比較）を正確に行うため、跳躍開始時の地面の高さ（Y座標）を記録する
+    float m_JumpVelocity;            // 現在のY軸方向への速度（上方向への初速から重力で減衰していく）
+    float m_Gravity;                  // 空中での落下加速度（通常の敵より重い挙動にするための専用値）
+    float m_ForwardSpeed;            // 跳躍中の水平方向（プレイヤーへの接近）の移動速度
+    VECTOR m_JumpTargetDir;         // 踏み切り時点で決定された進行方向（空中でプレイヤーを追尾し続けないように保持）
+    float m_JumpStartY;             // 着地判定（Y座標の比較）を正確に行うため、跳躍開始時の地面の高さ（Y座標）を記録する
 };

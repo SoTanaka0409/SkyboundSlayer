@@ -9,14 +9,14 @@
 
 /// @brief Object2Dの初期化（コンストラクタ）
 Object2D::Object2D(VECTOR initPos)
-	:position_(initPos)
-	, rotation_(VGet(0.0f, 0.0f, 0.0f))
-	, delete_flag_(false)
-	, tag_(Tag2D::None2D)
-	, draw_flag_(true)
+	:m_Position(initPos)
+	, m_Rotation(VGet(0.0f, 0.0f, 0.0f))
+	, m_DeleteFlag(false)
+	, m_Tag(Tag2D::None2D)
+	, m_DrawFlag(true)
 {
 	// 現在のシーンのobjectManagerに自信（this)を追加する
-	Master::scene_manager_->GetCurrentScene()->GetObjectManager()->AddObject(this);
+	Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->AddObject(this);
 }
 
 /// @brief デストラクタ

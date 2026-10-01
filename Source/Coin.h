@@ -36,10 +36,10 @@ private:
     static constexpr float kSuckSpeed = 30.0f;        // 吸い寄せ時の移動速度
     static constexpr float kCollectRadius = 80.0f;    // 回収判定を行う接触半径
 
-    Model* model_;            // 描画用の3Dモデルインスタンス
-    int value_;               // ショップ等で使用する貨幣価値
-    bool is_sucking_;         // プレイヤーへの吸い寄せ状態フラグ（吸い寄せ中の挙動切り替えに使用）
-    bool collected_;          // 破棄リクエスト用フラグ（Managerでの管理に使用）
-    int age_;                 // 演出の終了判定や寿命管理用の経過フレーム
-    float speed_;             // 物理挙動や吸い寄せ移動に使用する現在の移動速度
+    Model* m_Model;            // 描画用の3Dモデルインスタンス
+    int m_Value;               // ショップ等で使用する貨幣価値
+    bool m_IsSucking;         // プレイヤーへの吸い寄せ状態フラグ（吸い寄せ中の挙動切り替えに使用）
+    bool m_Collected;          // 破棄リクエスト用フラグ（Managerでの管理に使用）
+    int m_Age;                 // 演出の終了判定や寿命管理用の経過フレーム
+    float m_Speed;             // 物理挙動や吸い寄せ移動に使用する現在の移動速度
 };

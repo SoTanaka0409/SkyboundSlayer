@@ -28,7 +28,7 @@ public:
 	void Draw() const;
 
 private:
-	int playing_handle_ = -1;  ///< 現在再生中のEffekseerエフェクトハンドル
-	bool is_holding_ = false;   ///< 現在Uキーのホールド（魔法陣展開）状態が継続しているかを示すフラグ
-	float y_offset_ = 2.0f;     ///< プレイヤー足元のめり込みを防ぐためのY軸高さオフセット量
+	int m_PlayingHandle = -1;  ///< 現在再生中のEffekseerエフェクトハンドル
+	bool m_IsHolding = false;   ///< 現在Uキーのホールド（魔法陣展開）状態が継続しているかを示すフラグ
+	float m_YOffset = 2.0f;     ///< プレイヤー足元のめり込みを防ぐためのY軸高さオフセット量
 };

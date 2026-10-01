@@ -20,20 +20,20 @@ public:
 
 	/// @brief 画面上の描画位置を設定する
 	/// @param pos 設定する描画座標ベクトル
-	void SetPosition(VECTOR pos) { position_ = pos; }
+	void SetPosition(VECTOR pos) { m_Position = pos; }
 
 	/// @brief ログメッセージおよび背景UIの描画処理を行う
 	void Draw();
 
 	/// @brief 表示期限切れによる消滅・削除対象フラグを取得する
 	/// @return bool 削除対象であればtrue
-	bool GetElaseFlag() { return elase_flag_; }
+	bool GetElaseFlag() { return m_ElaseFlag; }
 
 private:
 	int LogTime;          ///< ログの表示継続時間（制限フレーム数）
 	std::string LogDate;  ///< 表示・保持するログテキストデータ
 	int LogCount;         ///< ログの表示位置移動・アニメーション用タイマーカウント
-	bool elase_flag_;     ///< 表示終了後にリストから削除（erase）するためのフラグ
+	bool m_ElaseFlag;     ///< 表示終了後にリストから削除（erase）するためのフラグ
 
 	int LogNumber;        ///< 使用するログのデザイン・背景UIの種類を選択する番号
 };

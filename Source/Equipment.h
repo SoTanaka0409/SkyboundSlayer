@@ -20,10 +20,10 @@ public:
 		Tag_Equipment id;
 		int damage;
 		std::string name;
-		bool get_ = false;//着けている状態true
+		bool m_Get = false;//着けている状態true
 		std::string filename;
 		int price;
-		bool is_log_ = true;
+		bool m_IsLog = true;
 	}Inf;
 	
 public:

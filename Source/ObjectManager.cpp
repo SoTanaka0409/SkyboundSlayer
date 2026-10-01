@@ -6,7 +6,7 @@
 /// @brief ObjectManagerのコンストラクタ
 /// @details 各種変数の初期化
 ObjectManager::ObjectManager()
-	: cache_dirty_(true)
+	: m_CacheDirty(true)
 {
 }
 
@@ -25,18 +25,18 @@ ObjectManager::~ObjectManager()
 void ObjectManager::Update()
 {
 
-	for (std::list < Object3D*>::iterator itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
+	for (std::list < Object3D*>::iterator itr = m_Object3dList.begin(); itr != m_Object3dList.end(); itr++)
 	{
 		(*itr)->Update();
 	}
 
-	for (std::list < Object2D*>::iterator itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
+	for (std::list < Object2D*>::iterator itr = m_Object2dList.begin(); itr != m_Object2dList.end(); itr++)
 	{
 		(*itr)->Update();
 	}
-	for (std::list<Object3D*>::iterator itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
+	for (std::list<Object3D*>::iterator itr = m_Object3dList.begin(); itr != m_Object3dList.end(); itr++)
 	{
-		VECTOR cameraPos = Master::camera_->GetPosition();
+		VECTOR cameraPos = Master::m_Camera->GetPosition();
 		VECTOR objPos = (*itr)->GetPosition();
 		(*itr)->SetCameraDistance(VSize(VSub(objPos, cameraPos)));
 	}
@@ -51,7 +51,7 @@ void ObjectManager::Update()
 void ObjectManager::Draw()
 {
 	
-	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
+	for (auto itr = m_Object3dList.begin(); itr != m_Object3dList.end(); itr++)
 	{
 
 		if ((*itr)->IsDrawFlag() == true)
@@ -61,7 +61,7 @@ void ObjectManager::Draw()
 	}
 	ColliderManager::GetInstance()->Draw();
 
-	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
+	for (auto itr = m_Object2dList.begin(); itr != m_Object2dList.end(); itr++)
 	{
 
 		if ((*itr)->IsDrawFlag() == true)
@@ -78,8 +78,8 @@ void ObjectManager::Draw()
 /// @details リストへの要素追加
 void ObjectManager::AddObject(Object3D* object3D)
 {
-	object_3d_list_.push_back(object3D);
-	cache_dirty_ = true;
+	m_Object3dList.push_back(object3D);
+	m_CacheDirty = true;
 
 
 }
@@ -89,12 +89,12 @@ void ObjectManager::AddObject(Object3D* object3D)
 /// @details 3Dオブジェクトリストのクリア
 void ObjectManager::DeleteAll3D()
 {
-	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
+	for (auto itr = m_Object3dList.begin(); itr != m_Object3dList.end(); itr++)
 	{
 		delete *itr;
 	}
-	object_3d_list_.clear();
-	cache_dirty_ = true;
+	m_Object3dList.clear();
+	m_CacheDirty = true;
 }
 
 Object3D* 
@@ -104,11 +104,11 @@ Object3D*
 ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
 {
 	auto itr = std::find_if(
-		object_3d_list_.begin(),
-		object_3d_list_.end(),
+		m_Object3dList.begin(),
+		m_Object3dList.end(),
 		[&](Object3D* obj) {return obj->GetTag() == tag; }
 	);
-	if (itr != object_3d_list_.end())
+	if (itr != m_Object3dList.end())
 	{
 		return (*itr);
 	}
@@ -117,16 +117,16 @@ ObjectManager::GetObject3DByTag(Object3D::Tag3D tag)
 
 const std::vector<Object3D*>& ObjectManager::GetObject3DListByTag(Object3D::Tag3D tag)
 {
-	if (cache_dirty_)
+	if (m_CacheDirty)
 	{
-		cached_3d_lists_.clear();
-		for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end(); itr++)
+		m_Cached3dLists.clear();
+		for (auto itr = m_Object3dList.begin(); itr != m_Object3dList.end(); itr++)
 		{
-			cached_3d_lists_[(*itr)->GetTag()].push_back(*itr);
+			m_Cached3dLists[(*itr)->GetTag()].push_back(*itr);
 		}
-		cache_dirty_ = false;
+		m_CacheDirty = false;
 	}
-	return cached_3d_lists_[tag];
+	return m_Cached3dLists[tag];
 }
 
 
@@ -134,14 +134,14 @@ const std::vector<Object3D*>& ObjectManager::GetObject3DListByTag(Object3D::Tag3
 /// @details リストからの要素削除
 void ObjectManager::DeleteAll3DIfNeeded()
 {
-	for (auto itr = object_3d_list_.begin(); itr != object_3d_list_.end();)
+	for (auto itr = m_Object3dList.begin(); itr != m_Object3dList.end();)
 	{
 		if ((*itr)->IsDeleteFlag() == true)
 		{
 			Object3D* temp = *itr;
 
-			itr = object_3d_list_.erase(itr);
-			cache_dirty_ = true;
+			itr = m_Object3dList.erase(itr);
+			m_CacheDirty = true;
 
 			delete temp;
 			temp = nullptr;
@@ -160,7 +160,7 @@ void ObjectManager::DeleteAll3DIfNeeded()
 /// @details リストへの要素追加
 void ObjectManager::AddObject(Object2D* object2D)
 {
-	object_2d_list_.push_back(object2D);
+	m_Object2dList.push_back(object2D);
 }
 
 
@@ -168,12 +168,12 @@ void ObjectManager::AddObject(Object2D* object2D)
 /// @details 2Dオブジェクトリストのクリア
 void ObjectManager::DeleteAll2D()
 {
-	Master::inf_class_manager_->LogList.clear();
-	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end();)
+	Master::m_InfClassManager->LogList.clear();
+	for (auto itr = m_Object2dList.begin(); itr != m_Object2dList.end();)
 	{
 		Object2D* temp = *itr;
 
-		itr = object_2d_list_.erase(itr);
+		itr = m_Object2dList.erase(itr);
 
 		delete temp;
 		temp = nullptr;
@@ -185,13 +185,13 @@ void ObjectManager::DeleteAll2D()
 /// @details リストからの要素削除
 void ObjectManager::DeleteAll2DIfNeeded()
 {
-	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end();)
+	for (auto itr = m_Object2dList.begin(); itr != m_Object2dList.end();)
 	{
 		if ((*itr)->IsDeleteFlag() == true)
 		{
 			Object2D* temp = *itr;
 
-			itr = object_2d_list_.erase(itr);
+			itr = m_Object2dList.erase(itr);
 
 			delete temp;
 			temp = nullptr;
@@ -211,12 +211,12 @@ Object2D*
 ObjectManager::GetObject2DByTag(Object2D::Tag2D tag)
 {
 	auto itr = std::find_if(
-		object_2d_list_.begin(),
-		object_2d_list_.end(),
+		m_Object2dList.begin(),
+		m_Object2dList.end(),
 		[&](Object2D* obj) {return obj->GetTag() == tag; }
 	);
 
-	if (itr != object_2d_list_.end())
+	if (itr != m_Object2dList.end())
 	{
 		return (*itr);
 	}
@@ -227,7 +227,7 @@ std::vector<Object2D*>ObjectManager::GetObject2DListByTag(Object2D::Tag2D tag)
 {
 	std::vector<Object2D*>ret;
 
-	for (auto itr = object_2d_list_.begin(); itr != object_2d_list_.end(); itr++)
+	for (auto itr = m_Object2dList.begin(); itr != m_Object2dList.end(); itr++)
 	{
 		if ((*itr)->GetTag() == tag)
 		{

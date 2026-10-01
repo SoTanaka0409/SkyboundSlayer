@@ -40,7 +40,7 @@ void BuffManager::AddBuff(Buff* date)
 		}
 	}
 
-	date->efDate.use_ = true;
+	date->efDate.m_Use = true;
 	buffList.push_back(date);
 }
 
@@ -70,7 +70,7 @@ float BuffManager::GetBuff(Object3D::StatusState state)
 	{
 		if (b->efDate.type == state)
 		{
-			if ((*b).efDate.use_ == true)
+			if ((*b).efDate.m_Use == true)
 			{
 				return b->efDate.Effect;
 			}

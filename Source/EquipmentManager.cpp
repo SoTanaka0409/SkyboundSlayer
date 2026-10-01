@@ -26,16 +26,16 @@ void EquipmentManager::Update()
 /// @param date 追加・更新する装備データ構造体へのポインタ
 void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 {
-	for (auto itr = date_list_.begin(); itr != date_list_.end(); ++itr)
+	for (auto itr = m_DateList.begin(); itr != m_DateList.end(); ++itr)
 	{
 		if ((*itr)->id == date->id)
 		{
 			if ((*itr)->damage < date->damage)
 			{
 				(*itr)->damage = date->damage;
-				if (date->is_log_)
+				if (date->m_IsLog)
 				{
-					Master::inf_class_manager_->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
+					Master::m_InfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
 				}
 			}
 			return;
@@ -68,20 +68,20 @@ void EquipmentManager::AddEquipment(Equipment::EquipmentDate* date)
 		break;
 	}
 
-	if (date->is_log_)
+	if (date->m_IsLog)
 	{
-		Master::inf_class_manager_->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
+		Master::m_InfClassManager->LogList.push_back(new InfClass(400, date->name.c_str(), 1));
 	}
-	date_list_.push_back(date);
+	m_DateList.push_back(date);
 }
 
 /// @brief 指定した装備をプレイヤーに装着（装備状態を有効化）する
 /// @param date 装着する装備データのポインタ
 void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 {
-	for (auto itr = date_list_.begin(); itr != date_list_.end(); ++itr)
+	for (auto itr = m_DateList.begin(); itr != m_DateList.end(); ++itr)
 	{
-		(*itr)->get_ = ((*itr)->id == date->id);
+		(*itr)->m_Get = ((*itr)->id == date->id);
 	}
 
 	GetDamage();
@@ -91,9 +91,9 @@ void EquipmentManager::WearEquipment(Equipment::EquipmentDate* date)
 /// @return float 装着中装備のダメージ補正値（未装着時は0.0f）
 float EquipmentManager::GetDamage()
 {
-	for (auto itr = date_list_.begin(); itr != date_list_.end(); ++itr)
+	for (auto itr = m_DateList.begin(); itr != m_DateList.end(); ++itr)
 	{
-		if ((*itr)->get_)
+		if ((*itr)->m_Get)
 		{
 			return static_cast<float>((*itr)->damage);
 		}

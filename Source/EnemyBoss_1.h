@@ -17,7 +17,7 @@ class EnemyBoss_1 : public Enemy
 public:
 /// @param filename, 初期座標, ステータス群, 判定サイズ群, 所持金, アニメ分離フラグ
 /// @details ボス専用の巨大なモデルや、ジャンプ攻撃用の特殊コライダーを動的確保して初期化する
-    EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_);
+    EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool m_IsSeparateAnim);
 
 /// @details ボス固有の攻撃用コライダー（ジャンプ衝撃波など）を破棄し、シーン離脱時のメモリリークを防ぐ
     ~EnemyBoss_1();
@@ -67,16 +67,16 @@ private:
     static constexpr float kJumpAscendSpeed = 15.0f;
     static constexpr float kJumpDescendSpeed = -25.0f;
 
-    SphereCollider* jump_attack_coiider_; // 着地時に広範囲へ広がる衝撃波のダメージ判定用コライダー
+    SphereCollider* m_JumpAttackCoiider; // 着地時に広範囲へ広がる衝撃波のダメージ判定用コライダー
 
-    BossAttackType attack_type_;         // 乱数やヘイトに応じて分岐する、現在実行中の攻撃アクションID
-    int attack1_combo_count_; // 連続攻撃の段数（コンボルートの派生判定に使用）
+    BossAttackType m_AttackType;         // 乱数やヘイトに応じて分岐する、現在実行中の攻撃アクションID
+    int m_Attack1ComboCount; // 連続攻撃の段数（コンボルートの派生判定に使用）
 
     float mfjumpPower;        // 現在のY軸方向への推進力（滞空時間の計算用）
     bool HighPositionFlag;    // ジャンプの頂点に達し、急降下ステートへ移行すべきかを判定するフラグ
-    VECTOR jump_target_dir_;  // ジャンプ時の移動方向ベクトル
-    float forward_speed_;     // ジャンプ時の前進速度
-    int jump_charge_timer_;   // ジャンプのタメ時間計測用
-    float jump_velocity_;     // 現在のジャンプ速度
-    float gravity_;           // 重力加速度
+    VECTOR m_JumpTargetDir;  // ジャンプ時の移動方向ベクトル
+    float m_ForwardSpeed;     // ジャンプ時の前進速度
+    int m_JumpChargeTimer;   // ジャンプのタメ時間計測用
+    float m_JumpVelocity;     // 現在のジャンプ速度
+    float m_Gravity;           // 重力加速度
 };

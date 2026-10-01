@@ -1,4 +1,4 @@
-﻿#include"haikei.h"
+﻿#include"Background.h"
 #include"Object2D.h"
 #include"ObjectManager.h"
 #include"Master.h"
@@ -7,29 +7,29 @@
 
 
 /// @brief haikeiの初期化（コンストラクタ）
-haikei::haikei(VECTOR initPos, std::string filename)
+Background::Background(VECTOR initPos, std::string filename)
 	:Object2D(initPos)
 
 {
-	texture_ = new Texture("", initPos, true);
+	m_Texture = new Texture("", initPos, true);
 }
-haikei::~haikei()
+Background::~Background()
 {
 }
 
 
 /// @brief haikeiの状態更新処理
-void haikei::Update()
+void Background::Update()
 {
 	Object2D::Update();
-	texture_->Update();
+	m_Texture->Update();
 }
 
 
 /// @brief haikeiの描画処理
-void haikei::Draw()
+void Background::Draw()
 {
-	texture_->Draw();
+	m_Texture->Draw();
 	Object2D::Draw();
 }
 

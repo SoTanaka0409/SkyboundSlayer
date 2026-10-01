@@ -16,7 +16,7 @@ class Enemy3D : public Enemy
 public:
 /// @param filename(モデルパス), 初期座標, ステータス群(HP, 速度等), 当たり判定サイズ群, 所持金, アニメ分離フラグ
 /// @details 基底クラスの初期化に加え、3D環境に依存する専用リソースや状態をセットアップする
-    Enemy3D(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_);
+    Enemy3D(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool m_IsSeparateAnim);
 
 /// @details Enemy3D側で独自に確保したリソースがあれば破棄し、シーン遷移時のメモリリークを防ぐ
     ~Enemy3D();

@@ -4,7 +4,7 @@
 /// @brief Comboの初期化（コンストラクタ）
 Combo::Combo()
 	:Object2D(VGet(0,0,0))
-	,combo_(0)
+	,m_Combo(0)
 {
 	 handle = LoadGraph("%d", true);
 
@@ -39,5 +39,5 @@ void Combo::Update()
 /// @brief ComboのHitAddCombo処理
 void Combo::HitAddCombo()
 {
-	combo_++;
+	m_Combo++;
 }

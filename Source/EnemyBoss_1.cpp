@@ -21,31 +21,31 @@
 
 /// @param 初期化パラメータ（位置、HP、速度、当たり判定サイズ、探索範囲、所持金など）
 /// @details 3Dモデル、アニメーション、当たり判定用のメモリ確保と設定
-EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
-	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
+EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool m_IsSeparateAnim)
+	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, m_IsSeparateAnim)
 {
 	mfjumpPower = 150.0f;       // ジャンプ攻撃の最大到達高度
 	HighPositionFlag = false;   // ジャンプの頂点到達状態の管理
-	attack_type_ = BossAttackType::kCombo;           // 現在の攻撃パターンの種類
-	attack1_combo_count_ = 0;   // 騾｣邯夐ｭ疲ｳ墓判謦・・谿九ｊ逋ｺ蜍募屓謨ｰ
-	chance_ = kAttackChanceThreshold;               // 攻撃頻度の重み付けパラメータ
-	attack_interval_ = 60;      // 連続攻撃を防ぐためのクールタイム（フレーム）
-	attack_count_ = 0;          // クールタイム計測用カウンタ
-	jump_charge_timer_ = 0;
-	jump_velocity_ = 0.0f;
-	gravity_ = 4.0f;
+	m_AttackType = BossAttackType::kCombo;           // 現在の攻撃パターンの種類
+	m_Attack1ComboCount = 0;   // 騾｣邯夐ｭ疲ｳ墓判謦・・谿九ｊ逋ｺ蜍募屓謨ｰ
+	m_Chance = kAttackChanceThreshold;               // 攻撃頻度の重み付けパラメータ
+	m_AttackInterval = 60;      // 連続攻撃を防ぐためのクールタイム（フレーム）
+	m_AttackCount = 0;          // クールタイム計測用カウンタ
+	m_JumpChargeTimer = 0;
+	m_JumpVelocity = 0.0f;
+	m_Gravity = 4.0f;
 
 	SetTag(Object3D::Tag3D_Enemy3D);
 
-	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
-	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
-	model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKMAGIC, "Resource/model/character/14_magic_attack.mv1");
-	model_->AddAnimation(ANIMATION_ATTACK, "Resource/model/character/17_jump_attack.mv1");
+	m_Model->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
+	m_Model->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
+	m_Model->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
+	m_Model->AddAnimation(ANIMATION_ATTACKMAGIC, "Resource/model/character/14_magic_attack.mv1");
+	m_Model->AddAnimation(ANIMATION_ATTACK, "Resource/model/character/17_jump_attack.mv1");
 
-	model_->SetScale(VGet(4.0f, 4.0f, 4.0f));
+	m_Model->SetScale(VGet(4.0f, 4.0f, 4.0f));
 
-	jump_attack_coiider_ = new SphereCollider(this, position_, 400.0f);
+	m_JumpAttackCoiider = new SphereCollider(this, m_Position, 400.0f);
 }
 
 EnemyBoss_1::~EnemyBoss_1()
@@ -56,27 +56,27 @@ EnemyBoss_1::~EnemyBoss_1()
 /// @details ボスの座標更新、攻撃判定、アニメーション進行
 void EnemyBoss_1::Update()
 {
-	SceneGame* game = Master::scene_manager_->GetSceneGame();
-	if (game && game->game_manager_) {
-		auto phase = game->game_manager_->GetCurrentPhase();
+	SceneGame* game = Master::m_SceneManager->GetSceneGame();
+	if (game && game->m_GameManager) {
+		auto phase = game->m_GameManager->GetCurrentPhase();
 		// 画面遷移中に予期せぬ攻撃・座標移動が発生するバグを防ぐため処理を停止
 		if (phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss) {
 			return;
 		}
 	}
 
-	if (is_dead_)
+	if (m_IsDead)
 	{
 		DeathEnemy();
 	}
 	else
 	{
-		if (model_ != nullptr)
+		if (m_Model != nullptr)
 		{
 
 			Attack();
 		// 攻撃モーション中の不自然な滑り移動を防ぐため座標更新を停止
-			if (model_->GetNowState() != ANIMATION_ATTACK && model_->GetNowState() != ANIMATION_ATTACKJUMP)
+			if (m_Model->GetNowState() != ANIMATION_ATTACK && m_Model->GetNowState() != ANIMATION_ATTACKJUMP)
 			{
 				RotationByMove();
 				Move();
@@ -85,17 +85,17 @@ void EnemyBoss_1::Update()
 			UpdateJumpPhysics();
 
 		// 攻撃中などMove()が呼ばれない時もモデルの座標を物理座標に同期させる
-			model_->SetPosition(position_);
+			m_Model->SetPosition(m_Position);
 
-			model_->Update();
+			m_Model->Update();
 			UpdateColliderPosition();
-			jump_attack_coiider_->position_ = position_;
+			m_JumpAttackCoiider->m_Position = m_Position;
 
 		// 地面抜けバグを防ぐためのY座標の下限補正
-			if (position_.y < init_position_.y)
+			if (m_Position.y < m_InitPosition.y)
 			{
-				position_.y = init_position_.y;
-				model_->SetPosition(position_);
+				m_Position.y = m_InitPosition.y;
+				m_Model->SetPosition(m_Position);
 			}
 
 		}
@@ -105,79 +105,79 @@ void EnemyBoss_1::Update()
 /// @details ボスモデルとデバッグ用コライダーの画面描画
 void EnemyBoss_1::Draw()
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
-		model_->Draw();
+		m_Model->Draw();
 	}
 }
 
 /// @details 乱数による攻撃パターンの決定と魔法オブジェクトの生成
 void EnemyBoss_1::Attack()
 {
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 
 			// クールタイム消化済みかつターゲットを捕捉している場合のみ攻撃開始
-	if (attack_count_ >= attack_interval_ && is_hit_attack_search_flag_)
+	if (m_AttackCount >= m_AttackInterval && m_IsHitAttackSearchFlag)
 	{
-		attack_count_ = 0;
-		is_hit_attack_search_flag_ = false;
+		m_AttackCount = 0;
+		m_IsHitAttackSearchFlag = false;
 
-		attack_type_ = static_cast<BossAttackType>(GetRand(2));
+		m_AttackType = static_cast<BossAttackType>(GetRand(2));
 
-		if (attack_type_ == BossAttackType::kCombo)
+		if (m_AttackType == BossAttackType::kCombo)
 		{
-			attack1_combo_count_ = 3;
+			m_Attack1ComboCount = 3;
 		}
-		else if (attack_type_ == BossAttackType::kMagic)
+		else if (m_AttackType == BossAttackType::kMagic)
 		{
-			model_->ChangeAnimation(ANIMATION_ATTACKMAGIC);
-			model_->SetLoop(false);
-			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+			m_Model->ChangeAnimation(ANIMATION_ATTACKMAGIC);
+			m_Model->SetLoop(false);
+			m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 			// ボスの弾のサイズと当たり判定を1.5倍にする (50.0f -> 75.0f)
-			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, go_position_, 0, kMagicLifetime);
-			VECTOR leftGo = VTransform(go_position_, MGetRotY(-30.0f * DX_PI_F / 180.0f));
-			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, leftGo, 0, kMagicLifetime);
-			VECTOR rightGo = VTransform(go_position_, MGetRotY(30.0f * DX_PI_F / 180.0f));
-			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, rightGo, 0, kMagicLifetime);
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(m_Position, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, m_GoPosition, 0, kMagicLifetime);
+			VECTOR leftGo = VTransform(m_GoPosition, MGetRotY(-30.0f * DX_PI_F / 180.0f));
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(m_Position, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, leftGo, 0, kMagicLifetime);
+			VECTOR rightGo = VTransform(m_GoPosition, MGetRotY(30.0f * DX_PI_F / 180.0f));
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(m_Position, VGet(0.0f, 100.0f, 0.0f)), kMagicScale, kMagicDamage, kMagicSpeed, rightGo, 0, kMagicLifetime);
 		}
-		else if (attack_type_ == BossAttackType::kJump)
+		else if (m_AttackType == BossAttackType::kJump)
 		{
-			model_->ChangeAnimation(ANIMATION_ATTACK);
-			model_->SetLoop(false);
-			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+			m_Model->ChangeAnimation(ANIMATION_ATTACK);
+			m_Model->SetLoop(false);
+			m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
 			
 			// ジャンプ開始前のタメ時間（アニメーション同期）のために初期化
-			jump_charge_timer_ = 0;
-			forward_speed_ = 0.0f;
-			jump_velocity_ = 0.0f;
+			m_JumpChargeTimer = 0;
+			m_ForwardSpeed = 0.0f;
+			m_JumpVelocity = 0.0f;
 			HighPositionFlag = false;
 		}
 	}
 
 	// パターン0の場合、モーション完了に合わせて段階的に魔法を生成する仕様
-	if (attack_type_ == BossAttackType::kCombo && attack1_combo_count_ > 0)
+	if (m_AttackType == BossAttackType::kCombo && m_Attack1ComboCount > 0)
 	{
 		if (now == ANIMATION_NEUTRAL || now == ANIMATION_RUN)
 		{
-			model_->ChangeAnimation(ANIMATION_ATTACKMAGIC);
-			model_->SetLoop(false);
-			model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+			m_Model->ChangeAnimation(ANIMATION_ATTACKMAGIC);
+			m_Model->SetLoop(false);
+			m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
 
 			// ボスの弾のサイズと当たり判定を1.5倍にする (100.0f -> 150.0f)
-			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(position_, VGet(0.0f, 100.0f, 0.0f)), 150.0f, 5, 30.0f, go_position_, 0, kMagicLifetime);
+			new Magic_Ene("Resource/image/battle/01_damage.png", VAdd(m_Position, VGet(0.0f, 100.0f, 0.0f)), 150.0f, 5, 30.0f, m_GoPosition, 0, kMagicLifetime);
 
-			attack1_combo_count_--;
+			m_Attack1ComboCount--;
 		}
 	}
 
 	if (!(now == ANIMATION_ATTACKMAGIC) && !(now == ANIMATION_ATTACK))
 	{
-		if (attack1_combo_count_ <= 0)
+		if (m_Attack1ComboCount <= 0)
 		{
-			attack_count_++;
+			m_AttackCount++;
 		}
-		is_attack_hit_judgment_flag_ = false;
+		m_IsAttackHitJudgmentFlag = false;
 	}
 }
 
@@ -185,21 +185,21 @@ void EnemyBoss_1::Attack()
 /// @details プレイヤーのHP減少と、ヒット済みフラグの設定
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 {
-	if (hp_ <= 0)return;
-	AnimationState now = model_->GetNowState();
+	if (m_Hp <= 0)return;
+	AnimationState now = m_Model->GetNowState();
 	if (now == ANIMATION_ATTACK)
 	{
-		if (collider == jump_attack_coiider_ && check->parent_object_->GetTag() == Tag3D_Player3D)
+		if (collider == m_JumpAttackCoiider && check->m_ParentObject->GetTag() == Tag3D_Player3D)
 		{
-			Player3D* pPlayer = Master::player_;
+			Player3D* pPlayer = Master::m_Player;
 			if (pPlayer == nullptr) return;
 			if (check == pPlayer->GetCollisionCollider())
 			{
 				// 多段ヒットを防ぐため、1回のジャンプ攻撃につきダメージは1度のみ
-				if (now == ANIMATION_ATTACK && !is_attack_hit_judgment_flag_)
+				if (now == ANIMATION_ATTACK && !m_IsAttackHitJudgmentFlag)
 				{
 					pPlayer->Damage(kJumpAttackDamage);
-					is_attack_hit_judgment_flag_ = true;
+					m_IsAttackHitJudgmentFlag = true;
 				}
 			}
 		}
@@ -209,23 +209,23 @@ void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 /// @details アニメーション完了後のインスタンス破棄予約、およびクリアフラグの更新
 void EnemyBoss_1::DeathEnemy()
 {
-	is_dead_ = true;
-	model_->ChangeAnimation(ANIMATION_DYING);
-	model_->SetLoop(false);
-	model_->SetLoopFinishState(ANIMATION_MAX);
+	m_IsDead = true;
+	m_Model->ChangeAnimation(ANIMATION_DYING);
+	m_Model->SetLoop(false);
+	m_Model->SetLoopFinishState(ANIMATION_MAX);
 	DeathColliderPosition();
 
-	if (model_->IsAnimationLoopFinish())
+	if (m_Model->IsAnimationLoopFinish())
 	{
 		GiveRewards();
 		// ゲーム進行管理上、ボスの討伐数をクリア条件としているためのカウントアップ
-		Master::game_clear_count_++;
+		Master::m_GameClearCount++;
 
 		Delete();
 		SetDeleteFlag(true);
 	}
 
-	model_->Update();
+	m_Model->Update();
 }
 
 /// @details 保持しているコライダーのメモリ解放フラグ設定
@@ -233,81 +233,81 @@ void EnemyBoss_1::Delete()
 {
 	Enemy::Delete();
 	// メモリリーク防止のため、動的確保した固有コライダーを破棄する
-	if (jump_attack_coiider_ != nullptr)
+	if (m_JumpAttackCoiider != nullptr)
 	{
-		jump_attack_coiider_->SetDeleteFlag(true);
-		jump_attack_coiider_ = nullptr;
+		m_JumpAttackCoiider->SetDeleteFlag(true);
+		m_JumpAttackCoiider = nullptr;
 	}
 }
 
 /// @details 攻撃タイプ2時のボスのY座標および軌道計算の更新
 void EnemyBoss_1::UpdateJumpPhysics()
 {
-	if (model_->GetNowState() == ANIMATION_ATTACK && attack_type_ == BossAttackType::kJump)
+	if (m_Model->GetNowState() == ANIMATION_ATTACK && m_AttackType == BossAttackType::kJump)
 	{
-		jump_charge_timer_++;
+		m_JumpChargeTimer++;
 		
 		// 溜め期間中（30フレーム目まで）はプレイヤーの方向を向く
-		if (jump_charge_timer_ <= kJumpChargeFrames)
+		if (m_JumpChargeTimer <= kJumpChargeFrames)
 		{
-			VECTOR toPlayer = VSub(Master::player_->GetPosition(), position_);
-			target_angle_ = atan2f(toPlayer.x, toPlayer.z);
+			VECTOR toPlayer = VSub(Master::m_Player->GetPosition(), m_Position);
+			m_TargetAngle = atan2f(toPlayer.x, toPlayer.z);
 			RotationByMove();
 		}
 
 		// 30フレーム目（アニメーションの溜めが終わるタイミング）でジャンプの物理パラメータを計算・設定
-		if (jump_charge_timer_ == kJumpChargeFrames)
+		if (m_JumpChargeTimer == kJumpChargeFrames)
 		{
-			jump_velocity_ = kJumpInitialVelocity; // EnemyMonsterと同じ初速
+			m_JumpVelocity = kJumpInitialVelocity; // EnemyMonsterと同じ初速
 			
-			Player3D* pPlayer = Master::player_;
+			Player3D* pPlayer = Master::m_Player;
 			float dist = 0.0f;
 			if (pPlayer) {
-				VECTOR toPlayer = VSub(pPlayer->GetPosition(), position_);
+				VECTOR toPlayer = VSub(pPlayer->GetPosition(), m_Position);
 				toPlayer.y = 0.0f;
 				dist = VSize(toPlayer);
 				if (dist > 0.1f) {
-					jump_target_dir_ = VNorm(toPlayer);
+					m_JumpTargetDir = VNorm(toPlayer);
 				} else {
-					jump_target_dir_ = go_position_;
+					m_JumpTargetDir = m_GoPosition;
 				}
 			} else {
-				jump_target_dir_ = go_position_;
+				m_JumpTargetDir = m_GoPosition;
 			}
 			
 			// ジャンプの総フレーム数 = (80 / 4) * 2 = 40フレーム
-			float jump_time = (jump_velocity_ / gravity_) * 2.0f;
-			forward_speed_ = dist / jump_time;
+			float jump_time = (m_JumpVelocity / m_Gravity) * 2.0f;
+			m_ForwardSpeed = dist / jump_time;
 			
-			if (forward_speed_ > 60.0f) {
-				forward_speed_ = 60.0f;
+			if (m_ForwardSpeed > 60.0f) {
+				m_ForwardSpeed = 60.0f;
 			}
 		}
 		
 		// 30フレーム目以降から実際の移動を開始
-		if (jump_charge_timer_ > 30)
+		if (m_JumpChargeTimer > 30)
 		{
-			position_.y += jump_velocity_;
-			position_.x += jump_target_dir_.x * forward_speed_;
-			position_.z += jump_target_dir_.z * forward_speed_;
-			jump_velocity_ -= gravity_;
+			m_Position.y += m_JumpVelocity;
+			m_Position.x += m_JumpTargetDir.x * m_ForwardSpeed;
+			m_Position.z += m_JumpTargetDir.z * m_ForwardSpeed;
+			m_JumpVelocity -= m_Gravity;
 
 			// 逹蝨ｰ蛻､螳・
-			if (position_.y <= init_position_.y)
+			if (m_Position.y <= m_InitPosition.y)
 			{
-				if (jump_velocity_ < 0.0f) {
-					Master::sound_manager_->PlaySE(SoundManager::SE_BOSS_JUMP);
+				if (m_JumpVelocity < 0.0f) {
+					Master::m_SoundManager->PlaySE(SoundManager::SE_BOSS_JUMP);
 				}
-				position_.y = init_position_.y;
+				m_Position.y = m_InitPosition.y;
 				// 着地したら横滑り（水平移動）を停止
-				forward_speed_ = 0.0f;
-				jump_velocity_ = 0.0f;
+				m_ForwardSpeed = 0.0f;
+				m_JumpVelocity = 0.0f;
 			}
 		}
 	}
 	else
 	{
-		jump_charge_timer_ = 0;
+		m_JumpChargeTimer = 0;
 	}
 }
 

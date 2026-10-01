@@ -13,8 +13,8 @@
 Magic_Ene::Magic_Ene(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time)
 	: Magic(filename, initPos, r, damage, speed, movevec, count, time)
 {
-	attack_ = 3;
-	Master::sound_manager_->PlaySE(SoundManager::SE_FIRE);
+	m_Attack = 3;
+	Master::m_SoundManager->PlaySE(SoundManager::SE_FIRE);
 }
 
 Magic_Ene::~Magic_Ene()
@@ -32,22 +32,22 @@ void Magic_Ene::Draw()
 {
 	// 脈打つスケール演出
 	float pulse = 1.0f + 0.15f * sinf(DeleteCount * 0.3f);
-	float scale = magic_size_ * pulse;
+	float scale = m_MagicSize * pulse;
 	
 	// 加算半透明で発光しているように見せる
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
 	
 	// 外のオーラ（赤系統の少し暗めの色）
 	SetDrawBright(255, 30, 80);
-	DrawBillboard3D(position_, 0.5f, 0.5f, scale * kMagicScaleMax, DeleteCount * 0.1f, graph_handle_, TRUE);
+	DrawBillboard3D(m_Position, 0.5f, 0.5f, scale * kMagicScaleMax, DeleteCount * 0.1f, m_GraphHandle, TRUE);
 	
 	// 中のオーラ（ピンク紫系の色）
 	SetDrawBright(200, 50, 255);
-	DrawBillboard3D(position_, 0.5f, 0.5f, scale * kMagicScaleMid, -DeleteCount * 0.15f, graph_handle_, TRUE);
+	DrawBillboard3D(m_Position, 0.5f, 0.5f, scale * kMagicScaleMid, -DeleteCount * 0.15f, m_GraphHandle, TRUE);
 	
 	// 芯の部分（まばゆい白、回転なし）
 	SetDrawBright(255, 255, 255);
-	DrawBillboard3D(position_, 0.5f, 0.5f, scale * kMagicScaleMin, 0.0f, graph_handle_, TRUE);
+	DrawBillboard3D(m_Position, 0.5f, 0.5f, scale * kMagicScaleMin, 0.0f, m_GraphHandle, TRUE);
 	
 	// 描画設定を元に戻す
 	SetDrawBright(255, 255, 255);
@@ -64,12 +64,12 @@ void Magic_Ene::OnEnter(Collider* collider, Collider* check)
 void Magic_Ene::OnTrigger(Collider* collider, Collider* check)
 {
 	// アーキテクチャ設計：弾幕の密度が高くても処理落ちを防ぐため、プレイヤーと接触した瞬間のみ衝突判定を行い、即座にオブジェクトを回収する
-	if (collider == hit_collider_ && check->parent_object_->GetTag() == Tag3D_Player3D)
+	if (collider == m_HitCollider && check->m_ParentObject->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* pPlayer = check->parent_object_->CastTo<Player3D>();
+		Player3D* pPlayer = check->m_ParentObject->CastTo<Player3D>();
 		if (check == pPlayer->GetCollisionCollider())
 		{
-			pPlayer->Damage(mfAttack_chara + attack_);
+			pPlayer->Damage(mfAttack_chara + m_Attack);
 			Death();
 		}
 	}

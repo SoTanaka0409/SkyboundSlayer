@@ -19,7 +19,7 @@ public:
     void Update();
 
 /// @param date (新規取得した装備データ)
-/// @details 宝箱やショップから入手した装備を所持リスト(date_list_)へ追加し、インベントリを更新する
+/// @details 宝箱やショップから入手した装備を所持リスト(m_DateList)へ追加し、インベントリを更新する
     void AddEquipment(Equipment::EquipmentDate* date);
 
 /// @param date (装着対象の装備データ)
@@ -30,7 +30,7 @@ public:
     /// @brief 攻撃ヒット時に呼び出され、現在アクティブな全装備の攻撃力ボーナスを合算してダメージ計算に提供する
     float GetDamage();
 
-    std::list<Equipment::EquipmentDate*> date_list_; // 所持品の売却やドロップなど、頻繁な要素の追加・削除によるメモリ再確保の負荷を抑えるためのリスト構造
+    std::list<Equipment::EquipmentDate*> m_DateList; // 所持品の売却やドロップなど、頻繁な要素の追加・削除によるメモリ再確保の負荷を抑えるためのリスト構造
 private:
 
 };

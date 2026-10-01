@@ -7,14 +7,14 @@
 
 /// @details UIレイアウト用の各矩形領域および演出用アニメーション変数の初期化
 SettingsScene::SettingsScene()
-	: bgm_toggle_rect_{ 720, 312, 150, 48 }
-	, bgm_bar_rect_{ 920, 320, 420, 30 }
-	, se_toggle_rect_{ 720, 432, 150, 48 }
-	, se_bar_rect_{ 920, 440, 420, 30 }
-	, debug_toggle_rect_{ 820, 552, 150, 48 }
-	, back_rect_{ 80, 860, 260, 62 }
-	, color_fade_(0)
-	, color_flag_(false)
+	: m_BgmToggleRect{ 720, 312, 150, 48 }
+	, m_BgmBarRect{ 920, 320, 420, 30 }
+	, m_SeToggleRect{ 720, 432, 150, 48 }
+	, m_SeBarRect{ 920, 440, 420, 30 }
+	, m_DebugToggleRect{ 820, 552, 150, 48 }
+	, m_BackRect{ 80, 860, 260, 62 }
+	, m_ColorFade(0)
+	, m_ColorFlag(false)
 {
 }
 
@@ -25,8 +25,8 @@ SettingsScene::~SettingsScene()
 /// @details アニメーション変数のリセット
 void SettingsScene::Initialize()
 {
-	color_fade_ = 0;
-	color_flag_ = false;
+	m_ColorFade = 0;
+	m_ColorFlag = false;
 }
 
 /// @details ユーザー入力（マウス操作）の検知と設定状態の更新
@@ -57,35 +57,35 @@ void SettingsScene::HandleInput()
 	if (!InputManager::CheckMouseClickLeft()) return;
 
 	// UX仕様：直感的な操作感を提供するため、トグルスイッチおよびボリュームバーのクリックを検知し、SEで即時フィードバックを返す
-	if (IsMouseInRect(bgm_toggle_rect_, mouseX, mouseY))
+	if (IsMouseInRect(m_BgmToggleRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->ToggleBgmEnabled();
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->ToggleBgmEnabled();
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(bgm_bar_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_BgmBarRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->SetBgmVolume(GetVolumeFromMouseX(bgm_bar_rect_, mouseX));
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->SetBgmVolume(GetVolumeFromMouseX(m_BgmBarRect, mouseX));
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(se_toggle_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_SeToggleRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->ToggleSeEnabled();
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->ToggleSeEnabled();
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(se_bar_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_SeBarRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->SetSeVolume(GetVolumeFromMouseX(se_bar_rect_, mouseX));
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_SoundManager->SetSeVolume(GetVolumeFromMouseX(m_SeBarRect, mouseX));
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(debug_toggle_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_DebugToggleRect, mouseX, mouseY))
 	{
-		Master::debug_->SetDebug(!Master::debug_->Getdebug());
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
+		Master::m_Debug->SetDebug(!Master::m_Debug->Getdebug());
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 	}
-	else if (IsMouseInRect(back_rect_, mouseX, mouseY))
+	else if (IsMouseInRect(m_BackRect, mouseX, mouseY))
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_WINDOW);
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneTitle);
+		Master::m_SoundManager->PlaySE(SoundManager::SE_WINDOW);
+		Master::m_SceneManager->SetNextScene(SceneManager::kSceneTitle);
 	}
 }
 
@@ -125,12 +125,12 @@ void SettingsScene::DrawHeader()
 /// @details BGM・SEの音量設定行およびDebugモード切替ボタンの描画
 void SettingsScene::DrawSettingRows()
 {
-	DrawVolumeRow(280, "BGM", Master::sound_manager_->IsBgmEnabled(), Master::sound_manager_->GetBgmVolume());
-	DrawVolumeRow(400, "SE", Master::sound_manager_->IsSeEnabled(), Master::sound_manager_->GetSeVolume());
+	DrawVolumeRow(280, "BGM", Master::m_SoundManager->IsBgmEnabled(), Master::m_SoundManager->GetBgmVolume());
+	DrawVolumeRow(400, "SE", Master::m_SoundManager->IsSeEnabled(), Master::m_SoundManager->GetSeVolume());
 
 	SetFontSize(34);
 	DrawFormatString(594, 564, GetColor(222, 236, 248), "DEBUG");
-	DrawToggle(debug_toggle_rect_, Master::debug_->Getdebug(), "MODE");
+	DrawToggle(m_DebugToggleRect, Master::m_Debug->Getdebug(), "MODE");
 
 	SetFontSize(22);
 	DrawFormatString(990, 568, GetColor(150, 164, 180), "ON/OFF: debug display & controls");
@@ -142,10 +142,10 @@ void SettingsScene::DrawFooter()
 {
 	int mouseX, mouseY;
 	InputManager::GetMousePos(mouseX, mouseY);
-	DrawButton(back_rect_, "BACK", IsMouseInRect(back_rect_, mouseX, mouseY));
+	DrawButton(m_BackRect, "BACK", IsMouseInRect(m_BackRect, mouseX, mouseY));
 
 	// UX仕様：設定は即時適用されることをユーザーに示し、保存ボタンを探す手間を省く
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130 + color_fade_ / 2);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130 + m_ColorFade / 2);
 	DrawBox(1330, 870, 1810, 918, GetColor(20, 24, 32), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	SetFontSize(20);
@@ -153,15 +153,15 @@ void SettingsScene::DrawFooter()
 	SetFontSize(24);
 
 	// 演出：通知エリアを周期的に明滅させ、ユーザーの注意を引く
-	if (color_flag_)
+	if (m_ColorFlag)
 	{
-		color_fade_ -= 3;
-		if (color_fade_ <= 0) { color_fade_ = 0; color_flag_ = false; }
+		m_ColorFade -= 3;
+		if (m_ColorFade <= 0) { m_ColorFade = 0; m_ColorFlag = false; }
 	}
 	else
 	{
-		color_fade_ += 3;
-		if (color_fade_ >= 255) { color_fade_ = 255; color_flag_ = true; }
+		m_ColorFade += 3;
+		if (m_ColorFade >= 255) { m_ColorFade = 255; m_ColorFlag = true; }
 	}
 }
 
@@ -187,8 +187,8 @@ void SettingsScene::DrawToggle(const Rect& rect, bool enabled, const char* label
 /// @details ボリューム調整用バー（スライダー）の描画
 void SettingsScene::DrawVolumeRow(int y, const char* label, bool enabled, int volume)
 {
-	Rect toggleRect = label[0] == 'B' ? bgm_toggle_rect_ : se_toggle_rect_;
-	Rect barRect = label[0] == 'B' ? bgm_bar_rect_ : se_bar_rect_;
+	Rect toggleRect = label[0] == 'B' ? m_BgmToggleRect : m_SeToggleRect;
+	Rect barRect = label[0] == 'B' ? m_BgmBarRect : m_SeBarRect;
 	int percent = volume * 100 / 255;
 	int fillWidth = barRect.w * volume / 255;
 

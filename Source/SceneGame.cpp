@@ -4,9 +4,9 @@
 
 /// @brief SceneGameの初期化（コンストラクタ）
 SceneGame::SceneGame(GameManager::Difficulty diff)
-	: initial_difficulty_(diff)
-	, game_manager_(nullptr)
-	, enemy_manager_(nullptr)
+	: m_InitialDifficulty(diff)
+	, m_GameManager(nullptr)
+	, m_EnemyManager(nullptr)
 {
 }
 
@@ -19,13 +19,13 @@ SceneGame::~SceneGame()
 /// @brief SceneGameの初期化処理
 void SceneGame::Initialize()
 {
-	if (enemy_manager_ == nullptr)
+	if (m_EnemyManager == nullptr)
 	{
-		enemy_manager_ = new EnemyManager();
+		m_EnemyManager = new EnemyManager();
 	}
-	if (game_manager_ == nullptr)
+	if (m_GameManager == nullptr)
 	{
-		game_manager_ = new GameManager(enemy_manager_, initial_difficulty_);
+		m_GameManager = new GameManager(m_EnemyManager, m_InitialDifficulty);
 	}
 }
 
@@ -34,18 +34,18 @@ void SceneGame::Initialize()
 /// @brief SceneGameの状態更新処理
 void SceneGame::Update()
 {
-	if (Master::hit_stop_timer_ > 0)
+	if (Master::m_HitStopTimer > 0)
 	{
-		Master::hit_stop_timer_--;
+		Master::m_HitStopTimer--;
 		return;
 	}
 
-	if (!Master::is_cutscene_playing_) {
+	if (!Master::m_IsCutscenePlaying) {
 		Scene::Update();
 	}
-	if (game_manager_)
+	if (m_GameManager)
 	{
-		game_manager_->Update();
+		m_GameManager->Update();
 	}
 }
 
@@ -55,9 +55,9 @@ void SceneGame::Update()
 void SceneGame::Draw()
 {
 	Scene::Draw();
-	if (game_manager_)
+	if (m_GameManager)
 	{
-		game_manager_->Draw();
+		m_GameManager->Draw();
 	}
 }
 
@@ -66,15 +66,15 @@ void SceneGame::Draw()
 /// @brief SceneGameのFinalize処理
 void SceneGame::Finalize()
 {
-	if (game_manager_)
+	if (m_GameManager)
 	{
-		delete game_manager_;
-		game_manager_ = nullptr;
+		delete m_GameManager;
+		m_GameManager = nullptr;
 	}
-	if (enemy_manager_)
+	if (m_EnemyManager)
 	{
-		delete enemy_manager_;
-		enemy_manager_ = nullptr;
+		delete m_EnemyManager;
+		m_EnemyManager = nullptr;
 	}
 }
 
@@ -83,8 +83,8 @@ void SceneGame::Finalize()
 /// @brief SceneGameのIsShopPhase処理
 bool SceneGame::IsShopPhase() const
 {
-	if (!game_manager_) return false;
-	auto phase = game_manager_->GetCurrentPhase();
+	if (!m_GameManager) return false;
+	auto phase = m_GameManager->GetCurrentPhase();
 	return (phase == GameManager::Phase::kShop1 ||
 			phase == GameManager::Phase::kShop2 ||
 			phase == GameManager::Phase::kShop3);
@@ -95,8 +95,8 @@ bool SceneGame::IsShopPhase() const
 /// @brief SceneGameのIsBattlePhase処理
 bool SceneGame::IsBattlePhase() const
 {
-	if (!game_manager_) return false;
-	auto phase = game_manager_->GetCurrentPhase();
+	if (!m_GameManager) return false;
+	auto phase = m_GameManager->GetCurrentPhase();
 	return (phase == GameManager::Phase::kPhase1 ||
 			phase == GameManager::Phase::kPhase2 ||
 			phase == GameManager::Phase::kPhase3 ||

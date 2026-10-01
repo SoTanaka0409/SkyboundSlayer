@@ -33,77 +33,77 @@
 /// @param jumppower ジャンプ力
 /// @param speed 移動速度
 /// @param hp 初期最大HP
-/// @param is_separate_anim_ アニメーション分離処理を行うかどうかのフラグ
+/// @param m_IsSeparateAnim アニメーション分離処理を行うかどうかのフラグ
 /// @details プレイヤーモデルの初期化、各種アニメーションとコライダーの生成、マネージャー類への登録を行う
-Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float speed, float hp, bool is_separate_anim_)
+Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float speed, float hp, bool m_IsSeparateAnim)
 	: Object3D(initPos)
-	, attack_(3)
-	, jump_attack_(5)
-	, slide_attack_(7)
-	, is_jump_collider_active_(false)
-	, is_invisible_(false)
-	, is_jumping_(false)
-	, speed_(speed)
-	, kJumpPower(jumppower)
-	, hp_(hp)
-	, max_hp_(hp)
-	, size_(60.0f)
-	, ride_old_hp_(0)
-	, jump_power_(150.0f)
-	, attack_slide_speed_(20.0f)
-	, attack_slide_count_(0)
-	, attack_jump_count_(0)
-	, attack_count_(0)
-	, attack_selection_index_(0)
-	, is_jump_falling_(false)
-	, has_reached_jump_peak_(false)
-	, is_attack_slide_target_found_(false)
-	, evasion_speed_(20.0f)
-	, is_stage_out_(true)
-	, is_dead_(false)
+	, m_Attack(3)
+	, m_JumpAttack(5)
+	, m_SlideAttack(7)
+	, m_IsJumpColliderActive(false)
+	, m_IsInvisible(false)
+	, m_IsJumping(false)
+	, m_Speed(speed)
+	, JumpPower(jumppower)
+	, m_Hp(hp)
+	, m_MaxHp(hp)
+	, m_Size(60.0f)
+	, m_RideOldHp(0)
+	, m_JumpPower(150.0f)
+	, m_AttackSlideSpeed(20.0f)
+	, m_AttackSlideCount(0)
+	, m_AttackJumpCount(0)
+	, m_AttackCount(0)
+	, m_AttackSelectionIndex(0)
+	, m_IsJumpFalling(false)
+	, m_HasReachedJumpPeak(false)
+	, m_IsAttackSlideTargetFound(false)
+	, m_EvasionSpeed(20.0f)
+	, m_IsStageOut(true)
+	, m_IsDead(false)
 {
-	Master::player_ = this;
+	Master::m_Player = this;
 
 	SetTag(Object3D::Tag3D_Player3D);
-	buff_manager_ = new BuffManager();
-	equipment_manager_ = new EquipmentManager();
-	short_inventory_ = new ShortInventory();
-	model_ = new Model(filename, initPos, is_separate_anim_);
-	have_money_ = new HaveMoneyClass(0);
+	m_BuffManager = new BuffManager();
+	m_EquipmentManager = new EquipmentManager();
+	m_ShortInventory = new ShortInventory();
+	m_Model = new Model(filename, initPos, m_IsSeparateAnim);
+	m_HaveMoney = new HaveMoneyClass(0);
 
-	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand", VGet(1.5f, -6.0f, 1.0f), VGet(-DX_PI_F / 3.0f, DX_PI_F / 6.0f, -DX_PI_F / 6.0f));
-	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
-	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
-	model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
-	model_->AddAnimation(ANIMATION_ATTACK, "Resource/model/character/16_normal_attack.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKSLIDE, "Resource/model/character/15_attack_1.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/model/character/17_jump_attack.mv1");
-	model_->AddAnimation(ANIMATION_SLIDE, "Resource/model/character/18_evade.mv1");
+	m_Model->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand", VGet(1.5f, -6.0f, 1.0f), VGet(-DX_PI_F / 3.0f, DX_PI_F / 6.0f, -DX_PI_F / 6.0f));
+	m_Model->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
+	m_Model->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
+	m_Model->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
+	m_Model->AddAnimation(ANIMATION_ATTACK, "Resource/model/character/16_normal_attack.mv1");
+	m_Model->AddAnimation(ANIMATION_ATTACKSLIDE, "Resource/model/character/15_attack_1.mv1");
+	m_Model->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/model/character/17_jump_attack.mv1");
+	m_Model->AddAnimation(ANIMATION_SLIDE, "Resource/model/character/18_evade.mv1");
 
-	Master::camera_->Initialize();
-	item_manager_ = Master::item_manager_;
+	Master::m_Camera->Initialize();
+	m_ItemManager = Master::m_ItemManager;
 
 	Item::ItemInformation* item = new Item::ItemInformation();
 	item->Count = 3;
 	item->ID = Item::HEAL;
 	item->Name = "Heal";
-	item_manager_->AddItem(item);
+	m_ItemManager->AddItem(item);
 
-	float HpRatio = (float)hp_ / max_hp_;
-	max_hp_ = hp_;
-	normal_speed_ = speed_;
+	float HpRatio = (float)m_Hp / m_MaxHp;
+	m_MaxHp = m_Hp;
+	m_NormalSpeed = m_Speed;
 
-	normal_attack_ = 10;
-	attack_ = 10;
+	m_NormalAttack = 10;
+	m_Attack = 10;
 
-	capsule_collider_ = new CapsuleCollider(this, position_, VAdd(position_, VGet(0.0f, size_, 0.0f)), size_);
-	attach_collider_ = new SphereCollider(this, model_->GetAttachmentPosition(), 60.0f);
-	attack_slide_collider_ = new SphereCollider(this, position_, 200.0f);
-	search_enemy_collider_ = new SphereCollider(this, VAdd(position_, VGet(0.0f, 120.0f, 0.0f)), 500.0f);
-	attack_jump_collider_ = new SphereCollider(this, VAdd(position_, VGet(0.0f, 120.0f, 0.0f)), 300.0f);
+	m_CapsuleCollider = new CapsuleCollider(this, m_Position, VAdd(m_Position, VGet(0.0f, m_Size, 0.0f)), m_Size);
+	m_AttachCollider = new SphereCollider(this, m_Model->GetAttachmentPosition(), 60.0f);
+	m_AttackSlideCollider = new SphereCollider(this, m_Position, 200.0f);
+	m_SearchEnemyCollider = new SphereCollider(this, VAdd(m_Position, VGet(0.0f, 120.0f, 0.0f)), 500.0f);
+	m_AttackJumpCollider = new SphereCollider(this, VAdd(m_Position, VGet(0.0f, 120.0f, 0.0f)), 300.0f);
 
-	first_position_ = initPos;
-	attack_state_ = kAttackNormal;
+	m_FirstPosition = initPos;
+	m_AttackState = kAttackNormal;
 }
 
 /// @brief Player3Dクラスのデストラクタ
@@ -111,12 +111,12 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 Player3D::~Player3D()
 {
 	// ダングリングポインタによるクラッシュを防ぐため参照をクリア
-	if (Master::player_ == this) Master::player_ = nullptr;
-	delete model_;
-	delete short_inventory_;
-	delete buff_manager_;
-	delete equipment_manager_;
-	delete have_money_;
+	if (Master::m_Player == this) Master::m_Player = nullptr;
+	delete m_Model;
+	delete m_ShortInventory;
+	delete m_BuffManager;
+	delete m_EquipmentManager;
+	delete m_HaveMoney;
 	CollDelete();
 }
 
@@ -126,19 +126,19 @@ void Player3D::Update()
 {
 	UpdateInvincibilityTimer();
 
-	if (short_inventory_)
+	if (m_ShortInventory)
 	{
-		short_inventory_->Update();
+		m_ShortInventory->Update();
 	}
 
-	if (is_dead_ && model_ != nullptr)
+	if (m_IsDead && m_Model != nullptr)
 	{
-		model_->Update();
+		m_Model->Update();
 		return;
 	}
 
 	// イベント進行中やポーズ中はプレイヤーの操作・座標更新をブロックする
-	if (ShouldSkipGameplayUpdate() || Master::is_pause_on_ || model_ == nullptr)
+	if (ShouldSkipGameplayUpdate() || Master::m_IsPauseOn || m_Model == nullptr)
 	{
 		return;
 	}
@@ -150,9 +150,9 @@ void Player3D::Update()
 /// @brief 無敵時間タイマーの減算処理を行う
 void Player3D::UpdateInvincibilityTimer()
 {
-	if (invincible_timer_ > 0)
+	if (m_InvincibleTimer > 0)
 	{
-		invincible_timer_--;
+		m_InvincibleTimer--;
 	}
 }
 
@@ -160,7 +160,7 @@ void Player3D::UpdateInvincibilityTimer()
 /// @return bool スキップすべき場合はtrue
 bool Player3D::ShouldSkipGameplayUpdate() const
 {
-	if (Master::is_stat_shop_on_) return true;
+	if (Master::m_IsStatShopOn) return true;
 	return IsBossFadeActive();
 }
 
@@ -168,10 +168,10 @@ bool Player3D::ShouldSkipGameplayUpdate() const
 /// @return bool 遷移演出中であればtrue
 bool Player3D::IsBossFadeActive() const
 {
-	SceneGame* game = Master::scene_manager_->GetSceneGame();
-	if (!game || !game->game_manager_) return false;
+	SceneGame* game = Master::m_SceneManager->GetSceneGame();
+	if (!game || !game->m_GameManager) return false;
 
-	auto phase = game->game_manager_->GetCurrentPhase();
+	auto phase = game->m_GameManager->GetCurrentPhase();
 	return phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss;
 }
 
@@ -179,20 +179,20 @@ bool Player3D::IsBossFadeActive() const
 /// @details ターゲットが存在しない、または削除済みの場合はnullにリセットする
 void Player3D::ValidateTarget()
 {
-	if (target_ == nullptr) return;
+	if (m_Target == nullptr) return;
 
 	bool isValid = false;
-	const auto& enemies = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	const auto& enemies = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	for (auto obj : enemies)
 	{
-		if (target_ == obj && !obj->IsDeleteFlag())
+		if (m_Target == obj && !obj->IsDeleteFlag())
 		{
 			isValid = true;
 			break;
 		}
 	}
 
-	if (!isValid) target_ = nullptr;
+	if (!isValid) m_Target = nullptr;
 }
 
 /// @brief 内部システム（バフやショートインベントリ）の更新を行う
@@ -215,30 +215,30 @@ void Player3D::UpdateGameplayActions()
 	UpdateColliderPosition();
 	RotationByMove();
 	SearchEnemy();
-	model_->Update();
+	m_Model->Update();
 }
 
 /// @brief 待機状態へのリセット処理を行う
 /// @details 待機状態に戻った際のターゲット解除とアニメーション初期化を行う
 void Player3D::ResetNUETRAL()
 {
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 	if (now == ANIMATION_NEUTRAL)
 	{
-		if (model_->GetIsSeparate() == true) model_->separate_animation_->SetAnimationCount(0.5f);
-		else model_->animation_->SetAnimationCount(0.5f);
+		if (m_Model->GetIsSeparate() == true) m_Model->m_SeparateAnimation->SetAnimationCount(0.5f);
+		else m_Model->m_Animation->SetAnimationCount(0.5f);
 
-		target_search_count_ = 0;
-		target_ = nullptr;
+		m_TargetSearchCount = 0;
+		m_Target = nullptr;
 	}
 }
 
 /// @brief バフマネージャーおよびショートインベントリの更新を行う
 void Player3D::ManagerUpdate()
 {
-	buff_manager_->DeleteList();
-	buff_manager_->Update();
-	short_inventory_->Update();
+	m_BuffManager->DeleteList();
+	m_BuffManager->Update();
+	m_ShortInventory->Update();
 }
 
 /// @brief プレイヤーおよび関連画面要素の描画処理を行う
@@ -247,7 +247,7 @@ void Player3D::Draw()
 {
 	if (!CanDrawPlayer()) return;
 
-	if (!Master::is_pause_on_ && !is_dead_)
+	if (!Master::m_IsPauseOn && !m_IsDead)
 	{
 		DrawStatusBars();
 	}
@@ -261,118 +261,118 @@ void Player3D::Draw()
 /// @return bool 描画可能であればtrue
 bool Player3D::CanDrawPlayer() const
 {
-	return (hp_ > 0 || is_dead_) && !Master::is_stat_shop_on_ && model_ != nullptr;
+	return (m_Hp > 0 || m_IsDead) && !Master::m_IsStatShopOn && m_Model != nullptr;
 }
 
 /// @brief プレイヤーの死亡処理を開始する
 void Player3D::StartDeath()
 {
-	if (is_dead_ || model_ == nullptr) return;
+	if (m_IsDead || m_Model == nullptr) return;
 
-	hp_ = 0.0f;
-	is_dead_ = true;
+	m_Hp = 0.0f;
+	m_IsDead = true;
 	CollDelete();
-	model_->ChangeAnimation(ANIMATION_DYING);
-	model_->SetAnimationBlend(false);
-	model_->SetLoop(false);
-	model_->SetLoopFinishState(ANIMATION_MAX);
+	m_Model->ChangeAnimation(ANIMATION_DYING);
+	m_Model->SetAnimationBlend(false);
+	m_Model->SetLoop(false);
+	m_Model->SetLoopFinishState(ANIMATION_MAX);
 }
 
 /// @brief 死亡アニメーションが再生終了したか判定する
 /// @return bool 再生終了していればtrue
 bool Player3D::IsDeathAnimationFinished() const
 {
-	return is_dead_ && model_ != nullptr && model_->IsAnimationLoopFinish();
+	return m_IsDead && m_Model != nullptr && m_Model->IsAnimationLoopFinish();
 }
 
 /// @brief プレイヤー3Dモデルの描画を行う
 void Player3D::DrawPlayerModel()
 {
-	model_->Draw();
+	m_Model->Draw();
 }
 
 /// @brief デバッグ情報の画面表示を行う
 void Player3D::DrawDebugInfo()
 {
-	if (Master::debug_ == nullptr || !Master::debug_->Getdebug()) return;
+	if (Master::m_Debug == nullptr || !Master::m_Debug->Getdebug()) return;
 
-	DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, 150.0f, 0.0f)), size_, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
+	DrawCapsule3D(m_Position, VAdd(m_Position, VGet(0.0f, 150.0f, 0.0f)), m_Size, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
 	DrawFormatString(100, 300, GetColor(255, 255, 255), "Attack:%f", GetAllStatusState(Object3D::Status_Attack));
-	DrawFormatString(100, 400, GetColor(255, 255, 255), "Equipment:%f", equipment_manager_->GetDamage());
-	DrawFormatString(100, 450, GetColor(255, 255, 255), "X:%f        Y:%f        Z:%f", position_.x, position_.y, position_.z);
+	DrawFormatString(100, 400, GetColor(255, 255, 255), "Equipment:%f", m_EquipmentManager->GetDamage());
+	DrawFormatString(100, 450, GetColor(255, 255, 255), "X:%f        Y:%f        Z:%f", m_Position.x, m_Position.y, m_Position.z);
 	DrawFormatString(100, 500, GetColor(255, 255, 255), "Speed:%f", GetAllStatusState(Object3D::Status_Speed));
 }
 
 /// @brief 武器アタッチメント位置のデバッグ球体描画を行う
 void Player3D::DrawAttachmentDebug()
 {
-	if (Master::debug_ == nullptr || !Master::debug_->Getdebug()) return;
+	if (Master::m_Debug == nullptr || !Master::m_Debug->Getdebug()) return;
 
-	DrawSphere3D(model_->GetAttachmentPosition(), 30.0f, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
+	DrawSphere3D(m_Model->GetAttachmentPosition(), 30.0f, 8, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
 }
 
 /// @brief キー入力に基づいた移動処理および向きの補間計算を行う
 /// @details 入力に基づくプレイヤーの座標と向きの更新を行う
 void Player3D::MoveEx()
 {
-	AnimationState state = model_->GetNowState();
+	AnimationState state = m_Model->GetNowState();
 	// 攻撃モーション中や回避中は不自然な滑り移動を防ぐためWASD入力をブロックする
-	if (state == ANIMATION_ATTACKJUMP || state == ANIMATION_ATTACK || state == ANIMATION_JUMP_OUT || state == ANIMATION_SLIDE || state == ANIMATION_ATTACKSLIDE || Master::is_stat_shop_on_)
+	if (state == ANIMATION_ATTACKJUMP || state == ANIMATION_ATTACK || state == ANIMATION_JUMP_OUT || state == ANIMATION_SLIDE || state == ANIMATION_ATTACKSLIDE || Master::m_IsStatShopOn)
 	{
 		return;
 	}
 
-	move_vec_ = VGet(0.0f, 0.0f, 0.0f);
-	VECTOR forwardMoveVector = VSub(Master::camera_->GetlookAtPosition(), Master::camera_->GetPosition());
-	VECTOR left_move_vector_ = VCross(forwardMoveVector, VGet(0.0f, 1.0f, 0.0f));
+	m_MoveVec = VGet(0.0f, 0.0f, 0.0f);
+	VECTOR forwardMoveVector = VSub(Master::m_Camera->GetlookAtPosition(), Master::m_Camera->GetPosition());
+	VECTOR m_LeftMoveVector = VCross(forwardMoveVector, VGet(0.0f, 1.0f, 0.0f));
 
-	bool isMove = (move_vec_.x != 0.0f || move_vec_.z != 0.0f);
+	bool isMove = (m_MoveVec.x != 0.0f || m_MoveVec.z != 0.0f);
 
 	if (CheckHitKey(KEY_INPUT_A))
 	{
-		move_vec_ = VAdd(move_vec_, left_move_vector_);
+		m_MoveVec = VAdd(m_MoveVec, m_LeftMoveVector);
 		isMove = true;
 	}
 	if (CheckHitKey(KEY_INPUT_D))
 	{
-		move_vec_ = VAdd(move_vec_, VScale(left_move_vector_, -1.0f));
+		m_MoveVec = VAdd(m_MoveVec, VScale(m_LeftMoveVector, -1.0f));
 		isMove = true;
 	}
 	if (CheckHitKey(KEY_INPUT_W))
 	{
-		move_vec_ = VAdd(move_vec_, forwardMoveVector);
+		m_MoveVec = VAdd(m_MoveVec, forwardMoveVector);
 		isMove = true;
 	}
 	if (CheckHitKey(KEY_INPUT_S))
 	{
-		move_vec_ = VAdd(move_vec_, VScale(forwardMoveVector, -1.0f));
+		m_MoveVec = VAdd(m_MoveVec, VScale(forwardMoveVector, -1.0f));
 		isMove = true;
 	}
 
 	if (state != ANIMATION_JUMP_IN && state != ANIMATION_JUMP_LOOP)
 	{
-		if (isMove) model_->ChangeAnimation(ANIMATION_RUN);
-		else model_->ChangeAnimation(ANIMATION_NEUTRAL);
+		if (isMove) m_Model->ChangeAnimation(ANIMATION_RUN);
+		else m_Model->ChangeAnimation(ANIMATION_NEUTRAL);
 	}
 
-	old_position_ = position_;
+	m_OldPosition = m_Position;
 
 	if (isMove)
 	{
 		forwardMoveVector = VNorm(forwardMoveVector);
-		left_move_vector_ = VNorm(left_move_vector_);
-		move_vec_ = VNorm(move_vec_);
+		m_LeftMoveVector = VNorm(m_LeftMoveVector);
+		m_MoveVec = VNorm(m_MoveVec);
 
-		target_angle_ = atan2f(move_vec_.x, move_vec_.z);
-		previous_move_vec_ = move_vec_;
-		position_ = VAdd(position_, VScale(move_vec_, GetAllStatusState(Object3D::Status_Speed)));
+		m_TargetAngle = atan2f(m_MoveVec.x, m_MoveVec.z);
+		m_PreviousMoveVec = m_MoveVec;
+		m_Position = VAdd(m_Position, VScale(m_MoveVec, GetAllStatusState(Object3D::Status_Speed)));
 	}
 
 	TerrainFollow();
 	CheckStageOut();
 
-	model_->SetPosition(position_);
-	model_->SetRotation(rotation_);
+	m_Model->SetPosition(m_Position);
+	m_Model->SetRotation(m_Rotation);
 }
 
 /// @brief プレイヤーへのダメージ計算および適用処理を行う
@@ -380,13 +380,13 @@ void Player3D::MoveEx()
 /// @details HPの減算処理および0以下時の死亡処理発火を行う
 void Player3D::Damage(float damage)
 {
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 	// 無敵時間中、または回避モーション中はダメージ判定を無効化する
-	if (invincible_timer_ > 0) return;
+	if (m_InvincibleTimer > 0) return;
 	if (now == ANIMATION_SLIDE || now == ANIMATION_ATTACKSLIDE) return;
 
-	hp_ -= (damage - equipment_manager_->GetDamage());
-	if (hp_ <= 0.0f)
+	m_Hp -= (damage - m_EquipmentManager->GetDamage());
+	if (m_Hp <= 0.0f)
 	{
 		StartDeath();
 	}
@@ -400,32 +400,32 @@ void Player3D::CheckStageOut()
 	float radiusZ = Config::StageRadius_z;
 	VECTOR centerPos = VGet(Config::GetStageCenter().x, 0.0f, Config::GetStageCenter().z);
 
-	SceneGame* game = Master::scene_manager_->GetSceneGame();
-	if (game != nullptr && game->game_manager_ != nullptr &&
-		game->game_manager_->GetCurrentPhase() == GameManager::Phase::kBoss)
+	SceneGame* game = Master::m_SceneManager->GetSceneGame();
+	if (game != nullptr && game->m_GameManager != nullptr &&
+		game->m_GameManager->GetCurrentPhase() == GameManager::Phase::kBoss)
 	{
 		centerPos = Config::GetStageBossCenter();
 		radiusX = Config::BossStageRadius;
 		radiusZ = Config::BossStageRadius;
 	}
 
-	float dx = position_.x - centerPos.x;
-	float dz = position_.z - centerPos.z;
+	float dx = m_Position.x - centerPos.x;
+	float dz = m_Position.z - centerPos.z;
 	float normX = dx / radiusX;
 	float normZ = dz / radiusZ;
 	float distance = sqrtf(normX * normX + normZ * normZ);
 
 	if (distance <= 1.0f)
 	{
-		is_stage_out_ = false;
+		m_IsStageOut = false;
 		return;
 	}
 
 	// 境界外への脱出バグを防ぐため、円形境界の縁へ座標を強制補正する
 	float scale = 1.0f / distance;
-	position_.x = centerPos.x + dx * scale;
-	position_.z = centerPos.z + dz * scale;
-	is_stage_out_ = true;
+	m_Position.x = centerPos.x + dx * scale;
+	m_Position.z = centerPos.z + dz * scale;
+	m_IsStageOut = true;
 }
 
 /// @brief 回避行動を実行する
@@ -434,24 +434,24 @@ void Player3D::Evasion()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_SPACE))
 	{
-		if (model_->GetIsSeparate()) model_->separate_animation_->SetAnimationCount(1.2f);
-		else model_->animation_->SetAnimationCount(1.2f);
-		model_->ChangeAnimation(ANIMATION_SLIDE);
-		model_->SetLoop(false);
-		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+		if (m_Model->GetIsSeparate()) m_Model->m_SeparateAnimation->SetAnimationCount(1.2f);
+		else m_Model->m_Animation->SetAnimationCount(1.2f);
+		m_Model->ChangeAnimation(ANIMATION_SLIDE);
+		m_Model->SetLoop(false);
+		m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-		invincible_timer_ = 30 + upgrade_evasion_invincibility_;
+		m_InvincibleTimer = 30 + m_UpgradeEvasionInvincibility;
 	}
 
-	if (model_->GetNowState() == ANIMATION_SLIDE)
+	if (m_Model->GetNowState() == ANIMATION_SLIDE)
 	{
-		VECTOR evasionDir = previous_move_vec_;
+		VECTOR evasionDir = m_PreviousMoveVec;
 		evasionDir.y = 0.0f; // y軸方向への移動をキャンセル
 		if (VSquareSize(evasionDir) > 0.0001f) {
 			evasionDir = VNorm(evasionDir);
 		}
-		position_ = VAdd(position_, VScale(evasionDir, evasion_speed_ + upgrade_evasion_speed_));
-		model_->SetPosition(position_);
+		m_Position = VAdd(m_Position, VScale(evasionDir, m_EvasionSpeed + m_UpgradeEvasionSpeed));
+		m_Model->SetPosition(m_Position);
 	}
 }
 
@@ -459,25 +459,25 @@ void Player3D::Evasion()
 /// @details 移動方向へ向けたモデルの滑らかな回転処理を行う
 void Player3D::RotationByMove()
 {
-	float subAngle = target_angle_ - angle_;
+	float subAngle = m_TargetAngle - m_Angle;
 
 	if (subAngle < -DX_PI_F) subAngle += DX_TWO_PI_F;
 	if (subAngle > DX_PI_F) subAngle -= DX_TWO_PI_F;
 
 	if (subAngle > 0.0f)
 	{
-		subAngle -= kRotateSpeed;
+		subAngle -= RotateSpeed;
 		if (subAngle < 0.0f) subAngle = 0.0f;
 	}
 	else if (subAngle < 0.0f)
 	{
-		subAngle += kRotateSpeed;
+		subAngle += RotateSpeed;
 		if (subAngle > 0.0f) subAngle = 0.0f;
 	}
 
-	angle_ = target_angle_ - subAngle;
-	rotation_.y = angle_ + DX_PI_F;
-	model_->SetRotation(rotation_);
+	m_Angle = m_TargetAngle - subAngle;
+	m_Rotation.y = m_Angle + DX_PI_F;
+	m_Model->SetRotation(m_Rotation);
 }
 
 /// @brief ジャンプ処理を実行する
@@ -486,9 +486,9 @@ void Player3D::Jump()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_SPACE))
 	{
-		position_.y += 300.0f;
-		is_jumping_ = true;
-		jump_power_ = kJumpPower;
+		m_Position.y += 300.0f;
+		m_IsJumping = true;
+		m_JumpPower = JumpPower;
 	}
 }
 
@@ -496,28 +496,28 @@ void Player3D::Jump()
 /// @details 通常攻撃の実行と敵のヒット判定リセットを行う
 void Player3D::Attack()
 {
-	AnimationState now = model_->GetNowState();
-	int mouse_input_ = GetMouseInput();
+	AnimationState now = m_Model->GetNowState();
+	int m_MouseInput = GetMouseInput();
 
-	if (mouse_input_ & MOUSE_INPUT_LEFT && attack_count_ >= attack_cooldown_ && now != ANIMATION_ATTACK)
+	if (m_MouseInput & MOUSE_INPUT_LEFT && m_AttackCount >= m_AttackCooldown && now != ANIMATION_ATTACK)
 	{
-		attack_count_ = 0;
-		Master::sound_manager_->PlaySE(SoundManager::SE_SLASH);
+		m_AttackCount = 0;
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SLASH);
 
-		model_->ChangeAnimation(ANIMATION_ATTACK);
-		model_->SetLoop(false);
-		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+		m_Model->ChangeAnimation(ANIMATION_ATTACK);
+		m_Model->SetLoop(false);
+		m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-		if (model_->GetIsSeparate() == true) model_->separate_animation_->SetAnimationCount(0.9f);
-		else model_->animation_->SetAnimationCount(0.35f);
+		if (m_Model->GetIsSeparate() == true) m_Model->m_SeparateAnimation->SetAnimationCount(0.9f);
+		else m_Model->m_Animation->SetAnimationCount(0.35f);
 	}
 
-	const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+	const auto& pObjList = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 	if (now == ANIMATION_ATTACK)
 	{
-		attack_state_ = kAttackNormal;
+		m_AttackState = kAttackNormal;
 
-		if (attack_count_ == 0)
+		if (m_AttackCount == 0)
 		{
 			// 1回の攻撃モーションで多段ヒットしすぎるのを防ぐため、一定フレームごとにヒットフラグをリセットする
 			for (int i = 0; i < pObjList.size(); i++)
@@ -534,48 +534,48 @@ void Player3D::Attack()
 /// @details ジャンプ攻撃の軌道計算と着地時のエフェクト生成を行う
 void Player3D::AttackJump()
 {
-	int mouse_input_ = GetMouseInput();
+	int m_MouseInput = GetMouseInput();
 
-	if (mouse_input_ & MOUSE_INPUT_LEFT && attack_jump_count_ >= attack_jump_cooldown_ && !is_jumping_)
+	if (m_MouseInput & MOUSE_INPUT_LEFT && m_AttackJumpCount >= m_AttackJumpCooldown && !m_IsJumping)
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_JUMP);
-		is_jumping_ = true;
-		attack_jump_count_ = 0;
-		jump_power_ = kJumpPower;
+		Master::m_SoundManager->PlaySE(SoundManager::SE_JUMP);
+		m_IsJumping = true;
+		m_AttackJumpCount = 0;
+		m_JumpPower = JumpPower;
 
-		model_->ChangeAnimation(ANIMATION_ATTACKJUMP);
-		model_->SetLoop(false);
-		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+		m_Model->ChangeAnimation(ANIMATION_ATTACKJUMP);
+		m_Model->SetLoop(false);
+		m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-		if (model_->GetIsSeparate() == true) model_->separate_animation_->SetAnimationCount(1.0f);
-		else model_->animation_->SetAnimationCount(1.0f);
+		if (m_Model->GetIsSeparate() == true) m_Model->m_SeparateAnimation->SetAnimationCount(1.0f);
+		else m_Model->m_Animation->SetAnimationCount(1.0f);
 	}
 
-	if (is_jumping_ && attack_state_ == kAttackJump)
+	if (m_IsJumping && m_AttackState == kAttackJump)
 	{
-		if (jump_power_ >= position_.y && !has_reached_jump_peak_)
+		if (m_JumpPower >= m_Position.y && !m_HasReachedJumpPeak)
 		{
-			position_ = VAdd(position_, VGet(0.0f, 5.0f, 0.0f));
+			m_Position = VAdd(m_Position, VGet(0.0f, 5.0f, 0.0f));
 		}
-		if (jump_power_ <= position_.y)
+		if (m_JumpPower <= m_Position.y)
 		{
-			has_reached_jump_peak_ = true;
-			is_jump_falling_ = true;
+			m_HasReachedJumpPeak = true;
+			m_IsJumpFalling = true;
 		}
-		if (has_reached_jump_peak_)
+		if (m_HasReachedJumpPeak)
 		{
-			position_ = VAdd(position_, VGet(0.0f, jump_power_, 0.0f));
-			jump_power_ -= 1.0f;
+			m_Position = VAdd(m_Position, VGet(0.0f, m_JumpPower, 0.0f));
+			m_JumpPower -= 1.0f;
 		}
 
 		float groundY = -10000.0f;
-		const auto& stageList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
+		const auto& stageList = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Stage);
 		for (int i = 0; i < stageList.size(); i++)
 		{
 			Stage* pStage = stageList.at(i)->CastTo<Stage>();
 			if (pStage != nullptr)
 			{
-				VECTOR hit = pStage->CheckHit_Line(VAdd(position_, VGet(0.0f, 1000.0f, 0.0f)), VAdd(position_, VGet(0.0f, -1000.0f, 0.0f)));
+				VECTOR hit = pStage->CheckHit_Line(VAdd(m_Position, VGet(0.0f, 1000.0f, 0.0f)), VAdd(m_Position, VGet(0.0f, -1000.0f, 0.0f)));
 				if (hit.x != 0.0f || hit.y != 0.0f || hit.z != 0.0f)
 				{
 					if (hit.y > groundY) groundY = hit.y;
@@ -585,14 +585,14 @@ void Player3D::AttackJump()
 		if (groundY == -10000.0f) groundY = 0.0f;
 
 		// 着地判定時のみコライダーをアクティブにし、空中で敵に触れてもダメージが発生しない仕様にする
-		if (position_.y <= groundY)
+		if (m_Position.y <= groundY)
 		{
-			if (!is_jump_collider_active_)
+			if (!m_IsJumpColliderActive)
 			{
-				is_jump_collider_active_ = true;
-				new EffekseerObject("JumpAttack", "Resource/effect/jump_attack/01_jump_attack.efk", position_, this, false);
+				m_IsJumpColliderActive = true;
+				new EffekseerObject("JumpAttack", "Resource/effect/jump_attack/01_jump_attack.efk", m_Position, this, false);
 
-				const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+				const auto& pObjList = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 				for (int i = 0; i < (int)pObjList.size(); i++)
 				{
 					Enemy* pEne = pObjList.at(i)->CastTo<Enemy>();
@@ -600,19 +600,19 @@ void Player3D::AttackJump()
 					pEne->SetHitJudgmentFlagPlayer(false);
 				}
 			}
-			position_.y = groundY;
-			is_jumping_ = false;
-			is_jump_falling_ = false;
-			has_reached_jump_peak_ = false;
+			m_Position.y = groundY;
+			m_IsJumping = false;
+			m_IsJumpFalling = false;
+			m_HasReachedJumpPeak = false;
 		}
-		model_->SetPosition(position_);
+		m_Model->SetPosition(m_Position);
 	}
 	else
 	{
-		is_jump_collider_active_ = false;
-		has_reached_jump_peak_ = false;
-		is_jumping_ = false;
-		is_jump_falling_ = false;
+		m_IsJumpColliderActive = false;
+		m_HasReachedJumpPeak = false;
+		m_IsJumping = false;
+		m_IsJumpFalling = false;
 	}
 }
 
@@ -620,27 +620,27 @@ void Player3D::AttackJump()
 /// @details ターゲットに向かってのスライド攻撃と座標更新を行う
 void Player3D::AttackSlide()
 {
-	AnimationState now = model_->GetNowState();
-	int mouse_input_ = GetMouseInput();
+	AnimationState now = m_Model->GetNowState();
+	int m_MouseInput = GetMouseInput();
 
-	if (mouse_input_ & MOUSE_INPUT_LEFT && attack_slide_count_ >= attack_slide_cooldown_)
+	if (m_MouseInput & MOUSE_INPUT_LEFT && m_AttackSlideCount >= m_AttackSlideCooldown)
 	{
-		if (target_ != nullptr)
+		if (m_Target != nullptr)
 		{
-			Master::sound_manager_->PlaySE(SoundManager::SE_SLIDE_ATTACK);
-			if (model_->GetIsSeparate()) model_->separate_animation_->SetAnimationCount(1.2f);
-			else model_->animation_->SetAnimationCount(1.2f);
+			Master::m_SoundManager->PlaySE(SoundManager::SE_SLIDE_ATTACK);
+			if (m_Model->GetIsSeparate()) m_Model->m_SeparateAnimation->SetAnimationCount(1.2f);
+			else m_Model->m_Animation->SetAnimationCount(1.2f);
 
-			attack_slide_count_ = 0;
-			attack_slide_direction_ = (VSub(target_->GetPosition(), position_));
-			attack_slide_step_ = VScale(attack_slide_direction_, 2.5f / 30.0f);
+			m_AttackSlideCount = 0;
+			m_AttackSlideDirection = (VSub(m_Target->GetPosition(), m_Position));
+			m_AttackSlideStep = VScale(m_AttackSlideDirection, 2.5f / 30.0f);
 		}
 
-		model_->ChangeAnimation(ANIMATION_ATTACKSLIDE);
-		model_->SetLoop(false);
-		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
+		m_Model->ChangeAnimation(ANIMATION_ATTACKSLIDE);
+		m_Model->SetLoop(false);
+		m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-		const auto& pObjListSlide = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+		const auto& pObjListSlide = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		for (int i = 0; i < (int)pObjListSlide.size(); i++)
 		{
 			Enemy* pEneSlide = pObjListSlide.at(i)->CastTo<Enemy>();
@@ -648,20 +648,20 @@ void Player3D::AttackSlide()
 			pEneSlide->SetHitJudgmentFlagPlayer(false);
 		}
 
-		new EffekseerObject("Slash", "Resource/effect/slide_attack/02_slide_attack_effect_playback.efk", position_, this, true);
+		new EffekseerObject("Slash", "Resource/effect/slide_attack/02_slide_attack_effect_playback.efk", m_Position, this, true);
 	}
 
-	if (now == ANIMATION_ATTACKSLIDE && attack_state_ == kAttackSlide)
+	if (now == ANIMATION_ATTACKSLIDE && m_AttackState == kAttackSlide)
 	{
-		attack_slide_direction_ = VNorm(attack_slide_direction_);
-		target_angle_ = atan2f(attack_slide_direction_.x, attack_slide_direction_.z);
+		m_AttackSlideDirection = VNorm(m_AttackSlideDirection);
+		m_TargetAngle = atan2f(m_AttackSlideDirection.x, m_AttackSlideDirection.z);
 
-		if (attack_slide_count_ < 30)
+		if (m_AttackSlideCount < 30)
 		{
-			position_ = VAdd(position_, attack_slide_step_);
-			Master::camera_->AddHorizontalAngle(90.0f / 30.0f);
+			m_Position = VAdd(m_Position, m_AttackSlideStep);
+			Master::m_Camera->AddHorizontalAngle(90.0f / 30.0f);
 		}
-		model_->SetPosition(position_);
+		m_Model->SetPosition(m_Position);
 	}
 }
 
@@ -671,9 +671,9 @@ void Player3D::DrawStatusBars()
 {
 	float maxHp = GetAllStatusState(Object3D::Status_Hp);
 	if (maxHp <= 0.0f) maxHp = 1.0f;
-	hp_ = hp_ < 0.0f ? 0.0f : hp_;
-	hp_ = hp_ > maxHp ? maxHp : hp_;
-	float hpRatio = hp_ / maxHp;
+	m_Hp = m_Hp < 0.0f ? 0.0f : m_Hp;
+	m_Hp = m_Hp > maxHp ? maxHp : m_Hp;
+	float hpRatio = m_Hp / maxHp;
 	hpRatio = hpRatio < 0.0f ? 0.0f : hpRatio;
 	hpRatio = hpRatio > 1.0f ? 1.0f : hpRatio;
 
@@ -714,12 +714,12 @@ void Player3D::DrawStatusBars()
 	DrawLine(48, 49, 382, 49, white, 1);
 	DrawLine(48, 76, 382, 76, iron, 1);
 	DrawFormatString(48, 24, GetColor(245, 226, 174), "HP");
-	DrawFormatString(314, 24, GetColor(232, 225, 215), "%d / %d", (int)hp_, (int)maxHp);
+	DrawFormatString(314, 24, GetColor(232, 225, 215), "%d / %d", (int)m_Hp, (int)maxHp);
 
-	float slideRatio = attack_slide_cooldown_ > 0 ? (float)attack_slide_count_ / (float)attack_slide_cooldown_ : 1.0f;
+	float slideRatio = m_AttackSlideCooldown > 0 ? (float)m_AttackSlideCount / (float)m_AttackSlideCooldown : 1.0f;
 	slideRatio = slideRatio < 0.0f ? 0.0f : slideRatio;
 	slideRatio = slideRatio > 1.0f ? 1.0f : slideRatio;
-	float jumpRatio = attack_jump_cooldown_ > 0 ? (float)attack_jump_count_ / (float)attack_jump_cooldown_ : 1.0f;
+	float jumpRatio = m_AttackJumpCooldown > 0 ? (float)m_AttackJumpCount / (float)m_AttackJumpCooldown : 1.0f;
 	jumpRatio = jumpRatio < 0.0f ? 0.0f : jumpRatio;
 	jumpRatio = jumpRatio > 1.0f ? 1.0f : jumpRatio;
 
@@ -759,8 +759,8 @@ void Player3D::DrawStatusBars()
 	DrawLine(slotX + 22, baseY + 56, slotX + 22 + (int)((slotW - 44) * jumpRatio), baseY + 56, GetColor(242, 170, 255), 1);
 	if (jumpRatio >= 1.0f) DrawFormatString(slotX + slotW - 76, baseY + 14, GetColor(255, 238, 156), "READY");
 
-	if (have_money_) have_money_->Draw();
-	short_inventory_->Draw();
+	if (m_HaveMoney) m_HaveMoney->Draw();
+	m_ShortInventory->Draw();
 }
 
 /// @brief 視点・表示モードの切り替え更新を行う
@@ -779,34 +779,34 @@ void Player3D::SearchEnemy()
 /// @details 索敵範囲に入った敵のターゲット登録、または障害物との衝突補正を行う
 void Player3D::OnEnter(Collider* collider, Collider* check)
 {
-	if (collider == search_enemy_collider_ && check->parent_object_->GetTag() == Object3D::Tag3D_Enemy3D)
+	if (collider == m_SearchEnemyCollider && check->m_ParentObject->GetTag() == Object3D::Tag3D_Enemy3D)
 	{
-		auto pEne = check->parent_object_->CastTo<Enemy>();
+		auto pEne = check->m_ParentObject->CastTo<Enemy>();
 		if (pEne == nullptr) return;
-		VECTOR enemyDistance = VSub(pEne->GetPosition(), position_);
+		VECTOR enemyDistance = VSub(pEne->GetPosition(), m_Position);
 
 		if (check == pEne->GetEnemyCollider())
 		{
-			is_attack_slide_target_found_ = true;
+			m_IsAttackSlideTargetFound = true;
 			float enemyDistanceSize = VSize(enemyDistance);
-			target_search_count_++;
-			if (target_search_count_ == 1)
+			m_TargetSearchCount++;
+			if (m_TargetSearchCount == 1)
 			{
-				nearest_target_distance_ = enemyDistanceSize;
+				m_NearestTargetDistance = enemyDistanceSize;
 			}
 
-			if (nearest_target_distance_ <= enemyDistanceSize)
+			if (m_NearestTargetDistance <= enemyDistanceSize)
 			{
-				nearest_target_distance_ = enemyDistanceSize;
-				target_ = pEne;
+				m_NearestTargetDistance = enemyDistanceSize;
+				m_Target = pEne;
 			}
 		}
 	}
 
 	// 障害物にめり込んだ際、直前の座標に巻き戻すことで壁抜けを防ぐ
-	if (collider == capsule_collider_ && check->parent_object_->GetTag() == Tag3D_Obj)
+	if (collider == m_CapsuleCollider && check->m_ParentObject->GetTag() == Tag3D_Obj)
 	{
-		position_ = old_position_;
+		m_Position = m_OldPosition;
 	}
 
 	ApplyJumpAttackHit(collider, check);
@@ -818,24 +818,24 @@ void Player3D::OnEnter(Collider* collider, Collider* check)
 /// @details 各種攻撃コライダーが敵にヒットした際のダメージ計算とエフェクト生成を行う
 void Player3D::OnTrigger(Collider* collider, Collider* check)
 {
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 
 	if (now == ANIMATION_ATTACK)
 	{
-		if (collider == attach_collider_ && check->parent_object_->GetTag() == Object3D::Tag3D_Enemy3D)
+		if (collider == m_AttachCollider && check->m_ParentObject->GetTag() == Object3D::Tag3D_Enemy3D)
 		{
-			Enemy* pEne = check->parent_object_->CastTo<Enemy>();
+			Enemy* pEne = check->m_ParentObject->CastTo<Enemy>();
 			if (pEne == nullptr) return;
 
 			if (check == pEne->GetEnemyCollider())
 			{
 				// 多段ヒットを防ぐため、既にこの攻撃がヒットした敵は除外する
-				if (now == ANIMATION_ATTACK && attack_state_ == kAttackNormal && !is_jumping_ && !pEne->IsHitJudgmentFlagPlayer())
+				if (now == ANIMATION_ATTACK && m_AttackState == kAttackNormal && !m_IsJumping && !pEne->IsHitJudgmentFlagPlayer())
 				{
 					pEne->SetHitJudgmentFlagPlayer(true);
 					pEne->Damage(GetAllStatusState(Object3D::Status_Attack));
 
-					Master::camera_->SetupShake(2.0f, 6.0f, 2.0f);
+					Master::m_Camera->SetupShake(2.0f, 6.0f, 2.0f);
 					EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/image/battle/01_damage.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
 				}
 			}
@@ -844,19 +844,19 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 
 	ApplyJumpAttackHit(collider, check);
 
-	if (collider == attack_slide_collider_ && check->parent_object_->GetTag() == Tag3D_Enemy3D)
+	if (collider == m_AttackSlideCollider && check->m_ParentObject->GetTag() == Tag3D_Enemy3D)
 	{
-		Enemy* pEne = check->parent_object_->CastTo<Enemy>();
+		Enemy* pEne = check->m_ParentObject->CastTo<Enemy>();
 		if (pEne == nullptr) return;
 		if (check == pEne->GetEnemyCollider())
 		{
-			if (now == ANIMATION_ATTACKSLIDE && attack_state_ == kAttackSlide && !pEne->IsHitJudgmentFlagPlayer())
+			if (now == ANIMATION_ATTACKSLIDE && m_AttackState == kAttackSlide && !pEne->IsHitJudgmentFlagPlayer())
 			{
-				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + slide_attack_);
+				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + m_SlideAttack);
 				pEne->SetHitJudgmentFlagPlayer(true);
 
-				Master::camera_->SetupShake(6.0f, 12.0f, 6.0f);
-				if (Master::hit_stop_timer_ == 0) Master::hit_stop_timer_ = 3; // 最初のヒットのみストップ
+				Master::m_Camera->SetupShake(6.0f, 12.0f, 6.0f);
+				if (Master::m_HitStopTimer == 0) Master::m_HitStopTimer = 3; // 最初のヒットのみストップ
 				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/image/battle/01_damage.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
 			}
 		}
@@ -868,22 +868,22 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 /// @param check 接触した相手のコライダー
 void Player3D::ApplyJumpAttackHit(Collider* collider, Collider* check)
 {
-	if (collider != attack_jump_collider_) return;
-	if (!is_jump_collider_active_) return;
-	if (attack_state_ != kAttackJump) return;
-	if (check == nullptr || check->parent_object_ == nullptr) return;
-	if (check->parent_object_->GetTag() != Tag3D_Enemy3D) return;
+	if (collider != m_AttackJumpCollider) return;
+	if (!m_IsJumpColliderActive) return;
+	if (m_AttackState != kAttackJump) return;
+	if (check == nullptr || check->m_ParentObject == nullptr) return;
+	if (check->m_ParentObject->GetTag() != Tag3D_Enemy3D) return;
 
-	Enemy* pEne = check->parent_object_->CastTo<Enemy>();
+	Enemy* pEne = check->m_ParentObject->CastTo<Enemy>();
 	if (pEne == nullptr) return;
 	if (check != pEne->GetEnemyCollider()) return;
 	if (pEne->IsHitJudgmentFlagPlayer()) return;
 
 	pEne->SetHitJudgmentFlagPlayer(true);
-	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_, false);
+	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + m_JumpAttack, false);
 
-	Master::camera_->SetupShake(8.0f, 15.0f, 8.0f);
-	if (Master::hit_stop_timer_ == 0) Master::hit_stop_timer_ = 4; // 最初の大ダメージ時のみストップ
+	Master::m_Camera->SetupShake(8.0f, 15.0f, 8.0f);
+	if (Master::m_HitStopTimer == 0) Master::m_HitStopTimer = 4; // 最初の大ダメージ時のみストップ
 	EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/image/battle/01_damage.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
 }
 
@@ -891,13 +891,13 @@ void Player3D::ApplyJumpAttackHit(Collider* collider, Collider* check)
 /// @details ターゲットした敵が消滅した際のロックオン解除を行う
 void Player3D::UpdateTargetLock()
 {
-	if (target_ != nullptr)
+	if (m_Target != nullptr)
 	{
 		bool isTargetValid = false;
-		const auto& ene_list_ = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
-		for (int i = 0; i < ene_list_.size(); i++)
+		const auto& m_EneList = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+		for (int i = 0; i < m_EneList.size(); i++)
 		{
-			if (target_ == ene_list_.at(i) && !target_->IsDeleteFlag())
+			if (m_Target == m_EneList.at(i) && !m_Target->IsDeleteFlag())
 			{
 				isTargetValid = true;
 				break;
@@ -905,7 +905,7 @@ void Player3D::UpdateTargetLock()
 		}
 		if (!isTargetValid)
 		{
-			target_ = nullptr;
+			m_Target = nullptr;
 		}
 	}
 }
@@ -922,43 +922,43 @@ void Player3D::OnExit(Collider* collider, Collider* check)
 void Player3D::SelectAttack()
 {
 	UpdateAttackCooldowns();
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 	if (InputManager::CheckDownKey(KEY_INPUT_E) && now != ANIMATION_ATTACK)
 	{
-		attack_selection_index_++;
-		if (attack_selection_index_ > 2)
+		m_AttackSelectionIndex++;
+		if (m_AttackSelectionIndex > 2)
 		{
-			attack_selection_index_ = 0;
+			m_AttackSelectionIndex = 0;
 		}
 	}
 
-	switch (attack_selection_index_)
+	switch (m_AttackSelectionIndex)
 	{
 	case 0:
-		attack_state_ = kAttackNormal;
+		m_AttackState = kAttackNormal;
 		Attack();
 		break;
 	case 1:
-		attack_state_ = kAttackSlide;
+		m_AttackState = kAttackSlide;
 		AttackSlide();
 		break;
 	case 2:
-		attack_state_ = kAttackJump;
+		m_AttackState = kAttackJump;
 		AttackJump();
 		break;
 	default:
 		break;
 	}
 
-	if (Master::debug_ != nullptr && Master::debug_->Getdebug())
+	if (Master::m_Debug != nullptr && Master::m_Debug->Getdebug())
 	{
-		DrawFormatString(300, 300, GetColor(255, 255, 255), "%d", attack_selection_index_);
+		DrawFormatString(300, 300, GetColor(255, 255, 255), "%d", m_AttackSelectionIndex);
 	}
 
 	// 攻撃モーション終了時にヒット判定フラグをリセットし、次回の攻撃が当たるようにする
 	if (now != ANIMATION_ATTACK && now != ANIMATION_ATTACKJUMP && now != ANIMATION_ATTACKSLIDE)
 	{
-		const auto& mpEne = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
+		const auto& mpEne = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 		for (int i = 0; i < mpEne.size(); i++)
 		{
 			Enemy* pEne = mpEne.at(i)->CastTo<Enemy>();
@@ -972,37 +972,37 @@ void Player3D::SelectAttack()
 /// @details 各種攻撃のクールタイムカウント進行を行う
 void Player3D::UpdateAttackCooldowns()
 {
-	attack_count_++;
-	attack_slide_count_++;
-	attack_jump_count_++;
+	m_AttackCount++;
+	m_AttackSlideCount++;
+	m_AttackJumpCount++;
 }
 
 /// @brief アニメーションやプレイヤー座標に合わせてコライダー位置を同期・更新する
 /// @details プレイヤーの現在座標やモーションに応じた各種コライダーの位置更新を行う
 void Player3D::UpdateColliderPosition()
 {
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 
-	capsule_collider_->position_ = position_;
-	capsule_collider_->position2_ = VAdd(position_, VGet(0.0f, 150.0f, 0.0f));
+	m_CapsuleCollider->m_Position = m_Position;
+	m_CapsuleCollider->m_Position2 = VAdd(m_Position, VGet(0.0f, 150.0f, 0.0f));
 
 	// 非アクティブなコライダーの誤判定を防ぐため、画面外の座標へ退避させる
-	attach_collider_->position_ = VGet(1000, 10000, 1000);
-	search_enemy_collider_->position_ = position_;
-	attack_slide_collider_->position_ = VGet(1000, 10000, 1000);
-	attack_jump_collider_->position_ = VGet(1000, 10000, 1000);
+	m_AttachCollider->m_Position = VGet(1000, 10000, 1000);
+	m_SearchEnemyCollider->m_Position = m_Position;
+	m_AttackSlideCollider->m_Position = VGet(1000, 10000, 1000);
+	m_AttackJumpCollider->m_Position = VGet(1000, 10000, 1000);
 
-	if (now == ANIMATION_ATTACKSLIDE && attack_state_ == kAttackSlide)
+	if (now == ANIMATION_ATTACKSLIDE && m_AttackState == kAttackSlide)
 	{
-		attack_slide_collider_->position_ = position_;
+		m_AttackSlideCollider->m_Position = m_Position;
 	}
-	else if (attack_state_ == kAttackJump && is_jump_collider_active_)
+	else if (m_AttackState == kAttackJump && m_IsJumpColliderActive)
 	{
-		attack_jump_collider_->position_ = position_;
+		m_AttackJumpCollider->m_Position = m_Position;
 	}
 	else if (now == ANIMATION_ATTACK)
 	{
-		attach_collider_->position_ = model_->GetAttachmentPosition();
+		m_AttachCollider->m_Position = m_Model->GetAttachmentPosition();
 	}
 }
 
@@ -1012,20 +1012,20 @@ void Player3D::UpdateColliderPosition()
 /// @details バフや装備補正を含めた最終ステータス値を計算して返す
 float Player3D::GetAllStatusState(Object3D::StatusState state)
 {
-	if (buff_manager_ == nullptr) return 0;
+	if (m_BuffManager == nullptr) return 0;
 
 	// バフや装備品による補正値を加算し、実ダメージ計算等に用いる最終的なステータス値を返す
 	if (state == Status_Attack)
 	{
-		return normal_attack_ + buff_manager_->GetBuff(state) + upgrade_attack_;
+		return m_NormalAttack + m_BuffManager->GetBuff(state) + m_UpgradeAttack;
 	}
 	if (state == Status_Speed)
 	{
-		return speed_ + buff_manager_->GetBuff(state) + upgrade_speed_;
+		return m_Speed + m_BuffManager->GetBuff(state) + m_UpgradeSpeed;
 	}
 	if (state == Status_Hp)
 	{
-		return max_hp_ + upgrade_max_hp_;
+		return m_MaxHp + m_UpgradeMaxHp;
 	}
 	return 0.0f;
 }
@@ -1035,29 +1035,29 @@ float Player3D::GetAllStatusState(Object3D::StatusState state)
 void Player3D::CollDelete()
 {
 	// メモリリーク防止のため、インスタンス破棄時に紐づくコライダーも破棄する
-	if (capsule_collider_ != nullptr)
+	if (m_CapsuleCollider != nullptr)
 	{
-		capsule_collider_->SetDeleteFlag(true);
-		capsule_collider_ = nullptr;
+		m_CapsuleCollider->SetDeleteFlag(true);
+		m_CapsuleCollider = nullptr;
 	}
-	if (attach_collider_ != nullptr)
+	if (m_AttachCollider != nullptr)
 	{
-		attach_collider_->SetDeleteFlag(true);
-		attach_collider_ = nullptr;
+		m_AttachCollider->SetDeleteFlag(true);
+		m_AttachCollider = nullptr;
 	}
-	if (attack_jump_collider_ != nullptr)
+	if (m_AttackJumpCollider != nullptr)
 	{
-		attack_jump_collider_->SetDeleteFlag(true);
-		attack_jump_collider_ = nullptr;
+		m_AttackJumpCollider->SetDeleteFlag(true);
+		m_AttackJumpCollider = nullptr;
 	}
-	if (attack_slide_collider_ != nullptr)
+	if (m_AttackSlideCollider != nullptr)
 	{
-		attack_slide_collider_->SetDeleteFlag(true);
-		attack_slide_collider_ = nullptr;
+		m_AttackSlideCollider->SetDeleteFlag(true);
+		m_AttackSlideCollider = nullptr;
 	}
-	if (search_enemy_collider_ != nullptr)
+	if (m_SearchEnemyCollider != nullptr)
 	{
-		search_enemy_collider_->SetDeleteFlag(true);
-		search_enemy_collider_ = nullptr;
+		m_SearchEnemyCollider->SetDeleteFlag(true);
+		m_SearchEnemyCollider = nullptr;
 	}
 }

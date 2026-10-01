@@ -28,54 +28,54 @@
 /// @param Serch2 攻撃開始用範囲半径
 /// @param Serch3 接近停止用範囲半径
 /// @param money 倒した際に獲得できる資金
-/// @param is_separate_anim_ アニメーションを分離読み込みするかのフラグ
-Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
+/// @param m_IsSeparateAnim アニメーションを分離読み込みするかのフラグ
+Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool m_IsSeparateAnim)
 	: Object3D(initPos)
-	, hp_(hp)
-	, speed_(speed)
-	, is_invisible_(false)
-	, angle_(0.0f)
-	, target_angle_(0.0f)
-	, size_(HitSize)
-	, hit_search_(Serch1)
-	, hit_attack_search_(Serch2)
-	, hit_stop_search_(Serch3)
-	, alg_hit_(20)
-	, attack_(attack)
-	, no_position_(VGet(0, 0, 0))
-	, is_attack_hit_judgment_flag_(false)
-	, is_hit_attack_search_flag_(false)
-	, is_hit_search_stop_flag_(false)
-	, is_hit_attack_flag_(false)
-	, is_hit_search_flag_(false)
-	, is_hit_judgment_flag_player_(false)
-	, walk_count_(0)
-	, walk_timer_(0)
-	, is_dead_(false)
-	, max_hp_(hp)
-	, have_money_(money)
+	, m_Hp(hp)
+	, m_Speed(speed)
+	, m_IsInvisible(false)
+	, m_Angle(0.0f)
+	, m_TargetAngle(0.0f)
+	, m_Size(HitSize)
+	, m_HitSearch(Serch1)
+	, m_HitAttackSearch(Serch2)
+	, m_HitStopSearch(Serch3)
+	, m_AlgHit(20)
+	, m_Attack(attack)
+	, m_NoPosition(VGet(0, 0, 0))
+	, m_IsAttackHitJudgmentFlag(false)
+	, m_IsHitAttackSearchFlag(false)
+	, m_IsHitSearchStopFlag(false)
+	, m_IsHitAttackFlag(false)
+	, m_IsHitSearchFlag(false)
+	, m_IsHitJudgmentFlagPlayer(false)
+	, m_WalkCount(0)
+	, m_WalkTimer(0)
+	, m_IsDead(false)
+	, m_MaxHp(hp)
+	, m_HaveMoney(money)
 {
 	SetTag(Object3D::Tag3D_Enemy3D);
-	model_ = new Model(filename, initPos, is_separate_anim_);
-	model_->SetScale(VGet(1.3f, 1.3f, 1.3f));
-	init_position_ = initPos;
-	max_hp_ = hp_;
-	normal_speed_ = speed_;
+	m_Model = new Model(filename, initPos, m_IsSeparateAnim);
+	m_Model->SetScale(VGet(1.3f, 1.3f, 1.3f));
+	m_InitPosition = initPos;
+	m_MaxHp = m_Hp;
+	m_NormalSpeed = m_Speed;
 
-	capsule_collider_ = new CapsuleCollider(this, position_, VAdd(position_, VGet(0.0f, size_ / 2, 0.0f)), size_);
-	attach_collider_ = new SphereCollider(this, model_->GetAttachmentPosition(), 50.0f);
-	serch_collider_ = new SphereCollider(this, position_, hit_search_);
-	attack_collider_ = new SphereCollider(this, position_, hit_attack_search_);
-	stop_collider_ = new SphereCollider(this, position_, hit_stop_search_);
+	m_CapsuleCollider = new CapsuleCollider(this, m_Position, VAdd(m_Position, VGet(0.0f, m_Size / 2, 0.0f)), m_Size);
+	m_AttachCollider = new SphereCollider(this, m_Model->GetAttachmentPosition(), 50.0f);
+	m_SerchCollider = new SphereCollider(this, m_Position, m_HitSearch);
+	m_AttackCollider = new SphereCollider(this, m_Position, m_HitAttackSearch);
+	m_StopCollider = new SphereCollider(this, m_Position, m_HitStopSearch);
 }
 
 /// @brief Enemyクラスのデストラクタ
 Enemy::~Enemy()
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
-		delete model_;
-		model_ = nullptr;
+		delete m_Model;
+		m_Model = nullptr;
 	}
 }
 
@@ -83,7 +83,7 @@ Enemy::~Enemy()
 /// @details 死亡判定、攻撃動作、各コライダー座標同期、移動および回転制御を実行する
 void Enemy::Update()
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
 		DeathEnemy();
 		Attack();
@@ -91,7 +91,7 @@ void Enemy::Update()
 		RotationByMove();
 		Move();
 
-		model_->Update();
+		m_Model->Update();
 	}
 }
 
@@ -99,9 +99,9 @@ void Enemy::Update()
 /// @details モデルの描画およびデバッグフラグ有効時のワイヤーフレーム描画を行う
 void Enemy::Draw()
 {
-	if (model_ != nullptr)
+	if (m_Model != nullptr)
 	{
-		model_->Draw();
+		m_Model->Draw();
 	}
 }
 
@@ -113,66 +113,66 @@ void Enemy::AttackList()
 /// @brief 攻撃アニメーションの開始判定およびタイマー制御を行う
 void Enemy::Attack()
 {
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 
-	if (attack_count_ >= attack_interval_ && is_hit_attack_search_flag_)
+	if (m_AttackCount >= m_AttackInterval && m_IsHitAttackSearchFlag)
 	{
-		Master::sound_manager_->PlaySE(SoundManager::SE_ATTACKSLIDE);
-		attack_count_ = 0;
-		model_->ChangeAnimation(ANIMATION_ATTACK);
-		model_->SetLoop(false);
-		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
-		is_hit_attack_search_flag_ = false;
+		Master::m_SoundManager->PlaySE(SoundManager::SE_ATTACKSLIDE);
+		m_AttackCount = 0;
+		m_Model->ChangeAnimation(ANIMATION_ATTACK);
+		m_Model->SetLoop(false);
+		m_Model->SetLoopFinishState(ANIMATION_NEUTRAL);
+		m_IsHitAttackSearchFlag = false;
 	}
 
 	if (!(now == ANIMATION_ATTACK))
 	{
-		is_attack_hit_judgment_flag_ = false;
-		attack_count_++;
+		m_IsAttackHitJudgmentFlag = false;
+		m_AttackCount++;
 	}
 }
 
 /// @brief プレイヤー追従移動および壁・地形との衝突スライド計算を行う
 void Enemy::Move()
 {
-	AnimationState now = model_->GetNowState();
+	AnimationState now = m_Model->GetNowState();
 	if (now == ANIMATION_ATTACK || now == ANIMATION_ATTACKMAGIC || now == ANIMATION_ATTACKJUMP) return;
-	if (Master::is_safe_point_on_) position_ = init_position_;
+	if (Master::m_IsSafePointOn) m_Position = m_InitPosition;
 
-	Player3D* pPlayer = Master::player_;
-	move_vec_ = VGet(0.0f, 0.0f, 0.0f);
+	Player3D* pPlayer = Master::m_Player;
+	m_MoveVec = VGet(0.0f, 0.0f, 0.0f);
 
 	{
-		if (is_hit_search_stop_flag_)
+		if (m_IsHitSearchStopFlag)
 		{
-			speed_ = 0;
+			m_Speed = 0;
 		}
 		else
 		{
-			speed_ = normal_speed_;
+			m_Speed = m_NormalSpeed;
 		}
 
-		go_position_ = VSub(pPlayer->GetPosition(), position_);
-		go_position_.y = 0.0f;
-		if (VSquareSize(go_position_) > 0.0001f) go_position_ = VNorm(go_position_);
-		move_vec_ = go_position_;
+		m_GoPosition = VSub(pPlayer->GetPosition(), m_Position);
+		m_GoPosition.y = 0.0f;
+		if (VSquareSize(m_GoPosition) > 0.0001f) m_GoPosition = VNorm(m_GoPosition);
+		m_MoveVec = m_GoPosition;
 
-		bool isMove = (move_vec_.x != 0.0f || move_vec_.z != 0.0f);
+		bool isMove = (m_MoveVec.x != 0.0f || m_MoveVec.z != 0.0f);
 		if (isMove)
 		{
-			model_->ChangeAnimation(ANIMATION_RUN);
-			target_angle_ = atan2f(move_vec_.x, move_vec_.z);
+			m_Model->ChangeAnimation(ANIMATION_RUN);
+			m_TargetAngle = atan2f(m_MoveVec.x, m_MoveVec.z);
 		}
 		else
 		{
-			model_->ChangeAnimation(ANIMATION_NEUTRAL);
+			m_Model->ChangeAnimation(ANIMATION_NEUTRAL);
 		}
 
-		VECTOR old_position_ = position_;
-		position_ = VAdd(position_, VScale(move_vec_, speed_));
+		VECTOR m_OldPosition = m_Position;
+		m_Position = VAdd(m_Position, VScale(m_MoveVec, m_Speed));
 
 		TerrainFollow(0.0f, 150.0f, 40.0f, 150.0f, -40.0f, 4.0f);
-		const auto& walls = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
+		const auto& walls = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Wall3D);
 
 		if (!walls.empty())
 		{
@@ -185,36 +185,36 @@ void Enemy::Move()
 					std::vector<VERTEX3D> vertex = wall->GetVertex();
 
 					if (HitCheck_Capsule_Triangle(
-						position_,
-						VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
+						m_Position,
+						VAdd(m_Position, VGet(0.0f, 200.0f, 0.0f)),
 						80.0f,
 						vertex.at(0).pos, vertex.at(1).pos, vertex.at(2).pos) ||
 						HitCheck_Capsule_Triangle(
-							position_,
-							VAdd(position_, VGet(0.0f, 200.0f, 0.0f)),
+							m_Position,
+							VAdd(m_Position, VGet(0.0f, 200.0f, 0.0f)),
 							80.0f,
 							vertex.at(3).pos, vertex.at(1).pos, vertex.at(2).pos)
 						)
 					{
 						VECTOR slide = VGet(0.0f, 0.0f, 0.0f);
-						float a = VDot(VScale(move_vec_, -1.0f), vertex.at(0).norm);
-						slide = VAdd(move_vec_, VScale(vertex.at(0).norm, a));
+						float a = VDot(VScale(m_MoveVec, -1.0f), vertex.at(0).norm);
+						slide = VAdd(m_MoveVec, VScale(vertex.at(0).norm, a));
 
-						position_ = old_position_;
-						position_ = VAdd(position_, VScale(slide, speed_));
+						m_Position = m_OldPosition;
+						m_Position = VAdd(m_Position, VScale(slide, m_Speed));
 					}
 				}
 			}
 		}
 
-		model_->SetPosition(position_);
+		m_Model->SetPosition(m_Position);
 	}
 }
 
 /// @brief 移動方向に応じた段階的回転補間処理を行う
 void Enemy::RotationByMove()
 {
-	float subAngle = target_angle_ - angle_;
+	float subAngle = m_TargetAngle - m_Angle;
 
 	if (subAngle < -DX_PI_F)
 	{
@@ -241,78 +241,78 @@ void Enemy::RotationByMove()
 			subAngle = 0.0f;
 		}
 	}
-	angle_ = target_angle_ - subAngle;
+	m_Angle = m_TargetAngle - subAngle;
 
-	rotation_.y = angle_ + DX_PI_F;
-	model_->SetRotation(rotation_);
+	m_Rotation.y = m_Angle + DX_PI_F;
+	m_Model->SetRotation(m_Rotation);
 }
 
 /// @brief ダメージ適用処理
 /// @param damage 減少させるHP量
 void Enemy::Damage(float damage, bool play_sound)
 {
-	VECTOR pop_pos = position_;
-	pop_pos.y += size_;
+	VECTOR pop_pos = m_Position;
+	pop_pos.y += m_Size;
 	DamageUIManager::GetInstance()->AddDamage((int)damage, pop_pos, damage >= 100.0f);
 	if (play_sound) {
-		Master::sound_manager_->PlaySE(SoundManager::SE_HIT_SLASH);
+		Master::m_SoundManager->PlaySE(SoundManager::SE_HIT_SLASH);
 	}
-	hp_ -= damage;
-	if (hp_ <= 0)
+	m_Hp -= damage;
+	if (m_Hp <= 0)
 	{
-		if (!is_dead_ && Master::score_manager_ != nullptr)
+		if (!m_IsDead && Master::m_ScoreManager != nullptr)
 		{
-			Master::score_manager_->AddDefeatedEnemy();
+			Master::m_ScoreManager->AddDefeatedEnemy();
 		}
-		hp_ = 0;
-		is_dead_ = true;
+		m_Hp = 0;
+		m_IsDead = true;
 	}
 }
 
 /// @brief 死亡時の演出再生およびオブジェクト削除予約を行う
 void Enemy::DeathEnemy()
 {
-	if (!is_dead_) return;
+	if (!m_IsDead) return;
 
-	model_->ChangeAnimation(ANIMATION_DYING);
-	model_->SetLoop(false);
-	model_->SetLoopFinishState(ANIMATION_MAX);
+	m_Model->ChangeAnimation(ANIMATION_DYING);
+	m_Model->SetLoop(false);
+	m_Model->SetLoopFinishState(ANIMATION_MAX);
 
 	Delete();
-	if (model_->IsAnimationLoopFinish())
+	if (m_Model->IsAnimationLoopFinish())
 	{
 		GiveRewards();
 		SetDeleteFlag(true);
 	}
 
-	model_->Update();
+	m_Model->Update();
 }
 
 /// @brief 死亡時に各種コライダーを画面外遥か遠くへ移動させて無効化する
 void Enemy::DeathColliderPosition()
 {
 	VECTOR pos = VGet(10000, 10000, 10000);
-	if (capsule_collider_ != nullptr)
+	if (m_CapsuleCollider != nullptr)
 	{
-		capsule_collider_->position_ = pos;
-		capsule_collider_->position2_ = pos;
+		m_CapsuleCollider->m_Position = pos;
+		m_CapsuleCollider->m_Position2 = pos;
 	}
-	if (attach_collider_ != nullptr)
+	if (m_AttachCollider != nullptr)
 	{
-		attach_collider_->position_ = pos;
+		m_AttachCollider->m_Position = pos;
 	}
-	if (serch_collider_ != nullptr)
+	if (m_SerchCollider != nullptr)
 	{
-		serch_collider_->position_ = pos;
+		m_SerchCollider->m_Position = pos;
 	}
-	if (stop_collider_ != nullptr)
+	if (m_StopCollider != nullptr)
 	{
-		stop_collider_->SetDeleteFlag(true);
-		stop_collider_->position_ = pos;
+		m_StopCollider->SetDeleteFlag(true);
+		m_StopCollider->m_Position = pos;
 	}
-	if (attack_collider_ != nullptr)
+	if (m_AttackCollider != nullptr)
 	{
-		attack_collider_->position_ = pos;
+		m_AttackCollider->m_Position = pos;
 	}
 }
 
@@ -321,28 +321,28 @@ void Enemy::DeathColliderPosition()
 /// @param check 相手のコライダー
 void Enemy::OnEnter(Collider* collider, Collider* check)
 {
-	if (hp_ <= 0) return;
-	if (collider == capsule_collider_ && check->parent_object_->GetTag() == Tag3D_Obj)
+	if (m_Hp <= 0) return;
+	if (collider == m_CapsuleCollider && check->m_ParentObject->GetTag() == Tag3D_Obj)
 	{
-		position_ = init_position_;
+		m_Position = m_InitPosition;
 	}
 
-	if (check->parent_object_->GetTag() == Tag3D_Player3D)
+	if (check->m_ParentObject->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* player = Master::player_;
+		Player3D* player = Master::m_Player;
 		if (player == nullptr) return;
 
-		if (collider == serch_collider_ && player->GetCollisionCollider() == check)
+		if (collider == m_SerchCollider && player->GetCollisionCollider() == check)
 		{
-			is_hit_search_flag_ = true;
+			m_IsHitSearchFlag = true;
 		}
-		if (collider == attack_collider_ && player->GetCollisionCollider() == check)
+		if (collider == m_AttackCollider && player->GetCollisionCollider() == check)
 		{
-			is_hit_attack_search_flag_ = true;
+			m_IsHitAttackSearchFlag = true;
 		}
-		if (collider == stop_collider_ && player->GetCollisionCollider() == check)
+		if (collider == m_StopCollider && player->GetCollisionCollider() == check)
 		{
-			is_hit_search_stop_flag_ = true;
+			m_IsHitSearchStopFlag = true;
 		}
 	}
 }
@@ -352,20 +352,20 @@ void Enemy::OnEnter(Collider* collider, Collider* check)
 /// @param check 相手のコライダー
 void Enemy::OnTrigger(Collider* collider, Collider* check)
 {
-	if (hp_ <= 0) return;
-	AnimationState now = model_->GetNowState();
+	if (m_Hp <= 0) return;
+	AnimationState now = m_Model->GetNowState();
 
-	if (collider == attach_collider_ && check->parent_object_->GetTag() == Tag3D_Player3D)
+	if (collider == m_AttachCollider && check->m_ParentObject->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* player = Master::player_;
+		Player3D* player = Master::m_Player;
 		if (player == nullptr) return;
 
 		if (check == player->GetCollisionCollider())
 		{
-			if (now == ANIMATION_ATTACK && !is_attack_hit_judgment_flag_)
+			if (now == ANIMATION_ATTACK && !m_IsAttackHitJudgmentFlag)
 			{
-				player->Damage(attack_);
-				is_attack_hit_judgment_flag_ = true;
+				player->Damage(m_Attack);
+				m_IsAttackHitJudgmentFlag = true;
 			}
 		}
 	}
@@ -376,24 +376,24 @@ void Enemy::OnTrigger(Collider* collider, Collider* check)
 /// @param check 相手のコライダー
 void Enemy::OnExit(Collider* collider, Collider* check)
 {
-	if (hp_ <= 0) return;
+	if (m_Hp <= 0) return;
 
-	if (check->parent_object_->GetTag() == Tag3D_Player3D)
+	if (check->m_ParentObject->GetTag() == Tag3D_Player3D)
 	{
-		Player3D* player = Master::player_;
+		Player3D* player = Master::m_Player;
 		if (player == nullptr) return;
 
-		if (collider == serch_collider_ && player->GetCollisionCollider() == check)
+		if (collider == m_SerchCollider && player->GetCollisionCollider() == check)
 		{
-			is_hit_search_flag_ = false;
+			m_IsHitSearchFlag = false;
 		}
-		if (collider == attack_collider_ && player->GetCollisionCollider() == check)
+		if (collider == m_AttackCollider && player->GetCollisionCollider() == check)
 		{
-			is_hit_attack_search_flag_ = false;
+			m_IsHitAttackSearchFlag = false;
 		}
-		if (collider == stop_collider_ && player->GetCollisionCollider() == check)
+		if (collider == m_StopCollider && player->GetCollisionCollider() == check)
 		{
-			is_hit_search_stop_flag_ = false;
+			m_IsHitSearchStopFlag = false;
 		}
 	}
 }
@@ -401,65 +401,65 @@ void Enemy::OnExit(Collider* collider, Collider* check)
 /// @brief 各コライダーの追従位置座標を毎フレーム同期更新する
 void Enemy::UpdateColliderPosition()
 {
-	if (capsule_collider_ != nullptr)
+	if (m_CapsuleCollider != nullptr)
 	{
-		capsule_collider_->position_ = position_;
-		capsule_collider_->position2_ = VAdd(position_, VGet(0.0f, 150.0f, 0.0f));
+		m_CapsuleCollider->m_Position = m_Position;
+		m_CapsuleCollider->m_Position2 = VAdd(m_Position, VGet(0.0f, 150.0f, 0.0f));
 	}
-	if (attach_collider_ != nullptr)
+	if (m_AttachCollider != nullptr)
 	{
-		attach_collider_->position_ = model_->GetAttachmentPosition();
+		m_AttachCollider->m_Position = m_Model->GetAttachmentPosition();
 	}
-	if (serch_collider_ != nullptr)
+	if (m_SerchCollider != nullptr)
 	{
-		serch_collider_->position_ = position_;
+		m_SerchCollider->m_Position = m_Position;
 	}
-	if (stop_collider_ != nullptr)
+	if (m_StopCollider != nullptr)
 	{
-		stop_collider_->position_ = VAdd(position_, VGet(0.0f, size_ / 2, 0.0f));
+		m_StopCollider->m_Position = VAdd(m_Position, VGet(0.0f, m_Size / 2, 0.0f));
 	}
-	if (attack_collider_ != nullptr)
+	if (m_AttackCollider != nullptr)
 	{
-		attack_collider_->position_ = VAdd(position_, VGet(0.0f, size_ / 2, 0.0f));
+		m_AttackCollider->m_Position = VAdd(m_Position, VGet(0.0f, m_Size / 2, 0.0f));
 	}
 }
 
 /// @brief 全ての登録済みコライダーを削除マークし解放準備をする
 void Enemy::Delete()
 {
-	if (capsule_collider_ != nullptr)
+	if (m_CapsuleCollider != nullptr)
 	{
-		capsule_collider_->SetDeleteFlag(true);
-		capsule_collider_ = nullptr;
+		m_CapsuleCollider->SetDeleteFlag(true);
+		m_CapsuleCollider = nullptr;
 	}
-	if (attach_collider_ != nullptr)
+	if (m_AttachCollider != nullptr)
 	{
-		attach_collider_->SetDeleteFlag(true);
-		attach_collider_ = nullptr;
+		m_AttachCollider->SetDeleteFlag(true);
+		m_AttachCollider = nullptr;
 	}
-	if (serch_collider_ != nullptr)
+	if (m_SerchCollider != nullptr)
 	{
-		serch_collider_->SetDeleteFlag(true);
-		serch_collider_ = nullptr;
+		m_SerchCollider->SetDeleteFlag(true);
+		m_SerchCollider = nullptr;
 	}
-	if (stop_collider_ != nullptr)
+	if (m_StopCollider != nullptr)
 	{
-		stop_collider_->SetDeleteFlag(true);
-		stop_collider_ = nullptr;
+		m_StopCollider->SetDeleteFlag(true);
+		m_StopCollider = nullptr;
 	}
-	if (attack_collider_ != nullptr)
+	if (m_AttackCollider != nullptr)
 	{
-		attack_collider_->SetDeleteFlag(true);
-		attack_collider_ = nullptr;
+		m_AttackCollider->SetDeleteFlag(true);
+		m_AttackCollider = nullptr;
 	}
 }
 
 /// @brief 撃破時にプレイヤーへ報酬資金を加算付与する
 void Enemy::GiveRewards()
 {
-	Player3D* player = Master::player_;
+	Player3D* player = Master::m_Player;
 	if (player != nullptr)
 	{
-		player->have_money_->AddMoney(have_money_);
+		player->m_HaveMoney->AddMoney(m_HaveMoney);
 	}
 }

@@ -18,7 +18,7 @@ public:
 	void Reset();
 
 private:
-	Texture* texture_; ///< 会話ウィンドウ背景枠等のテクスチャポインタ
-	int first_font_;    ///< 描画に使用するフォントハンドル
+	Texture* m_Texture; ///< 会話ウィンドウ背景枠等のテクスチャポインタ
+	int m_FirstFont;    ///< 描画に使用するフォントハンドル
 	int fontsize;       ///< フォントサイズ
 };

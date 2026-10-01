@@ -27,5 +27,5 @@ private:
 	static constexpr int kHpBarHeight = 10;
 
 	/// @brief 遅延HP（アニメーション用）を管理するマップ
-	std::map<Enemy*, float> delayed_hp_map_;
+	std::map<Enemy*, float> m_DelayedHpMap;
 };

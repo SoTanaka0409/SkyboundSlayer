@@ -25,20 +25,20 @@ public:
     std::vector<VERTEX3D> GetVertex()
     {
         std::vector<VERTEX3D> result;
-        result.push_back(vertex_[0]);
-        result.push_back(vertex_[1]);
-        result.push_back(vertex_[2]);
+        result.push_back(m_Vertex[0]);
+        result.push_back(m_Vertex[1]);
+        result.push_back(m_Vertex[2]);
         return result;
     }
 
 private:
-    int graph_handle_;         // 面に貼り付けるテクスチャハンドル
-    VERTEX3D vertex_[3];       // 円の姿勢や基準面を定義するための3頂点（配列外アクセス防止のため要素数に準拠）
+    int m_GraphHandle;         // 面に貼り付けるテクスチャハンドル
+    VERTEX3D m_Vertex[3];       // 円の姿勢や基準面を定義するための3頂点（配列外アクセス防止のため要素数に準拠）
     float radius;              // 現在の描画半径（Updateで毎フレーム拡張される）
     float Maxradius;           // 拡張アニメーションの限界値（演出の終了判定に使用）
     const int div = 48;        // 円の滑らかさと頂点計算負荷のバランスを取るための固定分割数
     std::vector<VERTEX3D> vtx; // 毎フレーム計算される描画用の動的頂点バッファ
     int color = GetColor(255, 0, 0); // 円のベースカラー（デフォルトは警告用の赤）
-    VECTOR center_;            // 円展開の基準となる3Dワールド座標
+    VECTOR m_Center;            // 円展開の基準となる3Dワールド座標
     VECTOR OldPosition;        // 前フレームの座標（追従処理や移動差分計算に使用）
 };

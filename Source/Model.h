@@ -50,11 +50,11 @@ public:
     VECTOR GetAttachmentPosition();
     VECTOR GetAttachmentPosition_None(std::string attachFrameName);
 
-    VECTOR GetPosition() { return position_; }
-    void SetPosition(VECTOR pos) { position_ = pos; }
+    VECTOR GetPosition() { return m_Position; }
+    void SetPosition(VECTOR pos) { m_Position = pos; }
 
-    VECTOR GetRotation() { return rotation_; }
-    void SetRotation(VECTOR rot) { rotation_ = rot; }
+    VECTOR GetRotation() { return m_Rotation; }
+    void SetRotation(VECTOR rot) { m_Rotation = rot; }
 
     void SetScale(VECTOR scale);
 
@@ -62,23 +62,23 @@ public:
 /// @details 被ダメージ時の点滅や、状態異常時の色変えなどを行うため、指定マテリアルのテクスチャを動的に差し替える
     void SetTexture(std::string filename, int index = 0);
 
-    bool GetIsSeparate() { return is_separate_; }
+    bool GetIsSeparate() { return m_IsSeparate; }
 
 /// @param state(割り当てる状態), filename(モーションファイルのパス)
 /// @details 分離アニメーション形式の場合、指定した外部モーションファイル(.mv1)を読み込みステートに紐付ける
     void AddAnimation(AnimationState state, std::string filename);
 
-    SeparateModelAnimation* separate_animation_; // モーションが別ファイルに分離されている場合のアニメーション管理クラス
-    ModelAnimation* animation_;                  // モデル本体にモーションが同梱されている場合のアニメーション管理クラス
+    SeparateModelAnimation* m_SeparateAnimation; // モーションが別ファイルに分離されている場合のアニメーション管理クラス
+    ModelAnimation* m_Animation;                  // モデル本体にモーションが同梱されている場合のアニメーション管理クラス
 
 private:
-    int handle_;                   // DxLib側でロードされた3Dモデルの実体ハンドル
-    VECTOR position_;              // ワールド空間上でのモデルの中心座標
-    VECTOR rotation_;              // モデルのY軸などを基準とした回転（姿勢）
+    int m_Handle;                   // DxLib側でロードされた3Dモデルの実体ハンドル
+    VECTOR m_Position;              // ワールド空間上でのモデルの中心座標
+    VECTOR m_Rotation;              // モデルのY軸などを基準とした回転（姿勢）
     VECTOR mvScale;                // モデルの描画スケール（初期サイズ調整や演出での拡縮に使用）
-    int change_texture_handle_;    // 動的差し替え用にロードされたテクスチャのハンドル（破棄管理用）
+    int m_ChangeTextureHandle;    // 動的差し替え用にロードされたテクスチャのハンドル（破棄管理用）
 
-    bool is_separate_;             // アニメーションデータが別ファイルに分かれているモデルかどうかのフラグ
+    bool m_IsSeparate;             // アニメーションデータが別ファイルに分かれているモデルかどうかのフラグ
 
-    AttachmentModel* attachment_;  // 武器など、特定のボーンに追従させる別モデル（現状単一だが拡張時はvectorを推奨）
+    AttachmentModel* m_Attachment;  // 武器など、特定のボーンに追従させる別モデル（現状単一だが拡張時はvectorを推奨）
 };

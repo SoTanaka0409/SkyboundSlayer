@@ -25,12 +25,12 @@ public:
 /// @details デバッグ表示として、現在の当たり判定範囲をスクリーン上に可視化する
     virtual void Draw();
 
-    CollisionTag GetTag() const { return coll_tag_; }
-    void SetTag(CollisionTag tag) { coll_tag_ = tag; }
+    CollisionTag GetTag() const { return m_CollTag; }
+    void SetTag(CollisionTag tag) { m_CollTag = tag; }
 
-    std::list<float> size_list_; // 判定範囲のパラメータ（複数判定を持つ場合等に使用）
+    std::list<float> m_SizeList; // 判定範囲のパラメータ（複数判定を持つ場合等に使用）
 
 private:
-    CollisionTag coll_tag_;
+    CollisionTag m_CollTag;
 };
 

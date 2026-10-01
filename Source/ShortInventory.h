@@ -7,7 +7,7 @@
 class ShortInventory
 {
 public:
-/// @details 選択カーソルの初期位置(selected_index_)など、UIの内部状態を安全な値にセットアップする
+/// @details 選択カーソルの初期位置(m_SelectedIndex)など、UIの内部状態を安全な値にセットアップする
     ShortInventory();
 
 /// @details なし（ポインタ等の動的リソースを持たないため、特殊な破棄処理は行わずデフォルトに任せる）
@@ -29,7 +29,7 @@ private:
     void ClampSelectedIndex(int itemCount);
 
 /// @param itemCount(現在のアイテム総数)
-/// @details 十字キーやマウスホイールなどの入力を検知し、選択インデックス(selected_index_)を増減させてカーソルを移動する
+/// @details 十字キーやマウスホイールなどの入力を検知し、選択インデックス(m_SelectedIndex)を増減させてカーソルを移動する
     void HandleSelectionInput(int itemCount);
 
 /// @details 現在選択されているアイテムの効果（HP回復など）をプレイヤーに適用し、インベントリ内の該当アイテム所持数を1減らす
@@ -43,5 +43,5 @@ private:
 /// @details 指定された単一アイテムのアイコン、枠線、残量テキストをスクリーン上の適切なパネル座標へ描画する
     void DrawItemPanel(const Item::ItemInformation* info);
 
-    int selected_index_; // 現在UI上でハイライト（選択）されており、使用キー押下時に消費される対象のインデックス
+    int m_SelectedIndex; // 現在UI上でハイライト（選択）されており、使用キー押下時に消費される対象のインデックス
 };

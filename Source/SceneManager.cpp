@@ -11,9 +11,9 @@
 /// @brief SceneManagerのコンストラクタ
 /// @details 各種メンバ変数およびシーンタイプの初期化を行う
 SceneManager::SceneManager()
-	: scene_type_(SceneType::kSceneNone)
-	, next_scene_type_(SceneType::kSceneNone)
-	, current_scene_(nullptr)
+	: m_SceneType(SceneType::kSceneNone)
+	, m_NextSceneType(SceneType::kSceneNone)
+	, m_CurrentScene(nullptr)
 {
 }
 
@@ -27,7 +27,7 @@ SceneManager::~SceneManager()
 /// @details 初期シーン（タイトル画面）を設定し、最初のシーン生成と初期化を実行する
 void SceneManager::Initialize()
 {
-	next_scene_type_ = SceneType::kSceneTitle;
+	m_NextSceneType = SceneType::kSceneTitle;
 	ChangeSceneIfNeeded();
 }
 
@@ -35,7 +35,7 @@ void SceneManager::Initialize()
 /// @details 現在アクティブなシーンおよびフェード処理の更新を毎フレーム実行する
 void SceneManager::Update()
 {
-	current_scene_->Update();
+	m_CurrentScene->Update();
 	Fade::GetInstance()->Update();
 }
 
@@ -43,7 +43,7 @@ void SceneManager::Update()
 /// @details 現在アクティブなシーンおよび画面上のフェード効果を描画する
 void SceneManager::Draw()
 {
-	current_scene_->Draw();
+	m_CurrentScene->Draw();
 	Fade::GetInstance()->Draw();
 }
 
@@ -57,12 +57,12 @@ void SceneManager::Finalize()
 /// @details フェードアウト・フェードインを制御し、古いシーンの破棄と新しいシーンの生成・初期化を行う
 void SceneManager::ChangeSceneIfNeeded()
 {
-	if (scene_type_ == next_scene_type_)
+	if (m_SceneType == m_NextSceneType)
 	{
 		return;
 	}
 
-	if (scene_type_ != SceneType::kSceneNone)
+	if (m_SceneType != SceneType::kSceneNone)
 	{
 		if (!Fade::GetInstance()->IsFading())
 		{
@@ -76,43 +76,43 @@ void SceneManager::ChangeSceneIfNeeded()
 		}
 	}
 
-	if (current_scene_ != nullptr)
+	if (m_CurrentScene != nullptr)
 	{
-		current_scene_->Finalize();
-		delete current_scene_;
-		current_scene_ = nullptr;
+		m_CurrentScene->Finalize();
+		delete m_CurrentScene;
+		m_CurrentScene = nullptr;
 
 		ColliderManager::GetInstance()->DeleteAllCollider();
 	}
 
-	scene_type_ = next_scene_type_;
+	m_SceneType = m_NextSceneType;
 
-	switch (scene_type_)
+	switch (m_SceneType)
 	{
 	case SceneType::kSceneTitle:
-		current_scene_ = new TitleScene();
+		m_CurrentScene = new TitleScene();
 		break;
 	case SceneType::kSceneRule:
-		current_scene_ = new Rule();
+		m_CurrentScene = new Rule();
 		break;
 	case SceneType::kSceneSettings:
-		current_scene_ = new SettingsScene();
+		m_CurrentScene = new SettingsScene();
 		break;
 	case SceneType::kGameScene:
-		current_scene_ = new GameScene();
+		m_CurrentScene = new GameScene();
 		break;
 	case SceneType::kSceneResultScene:
-		current_scene_ = new ResultScene();
+		m_CurrentScene = new ResultScene();
 		break;
 	default:
-		current_scene_ = new TitleScene();
-		scene_type_ = SceneType::kSceneTitle;
+		m_CurrentScene = new TitleScene();
+		m_SceneType = SceneType::kSceneTitle;
 		break;
 	}
 
-	current_scene_->Initialize();
+	m_CurrentScene->Initialize();
 
-	if (scene_type_ != SceneType::kSceneNone)
+	if (m_SceneType != SceneType::kSceneNone)
 	{
 		Fade::GetInstance()->StartFadeIn();
 	}
@@ -123,5 +123,5 @@ void SceneManager::ChangeSceneIfNeeded()
 /// @details 現在のシーンがゲーム本編であればポインタを返し、それ以外ではnullptrを返す
 SceneGame* SceneManager::GetSceneGame()
 {
-	return dynamic_cast<SceneGame*>(current_scene_);
+	return dynamic_cast<SceneGame*>(m_CurrentScene);
 }

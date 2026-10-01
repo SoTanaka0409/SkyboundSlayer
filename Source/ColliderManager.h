@@ -13,19 +13,19 @@ public:
 
     static ColliderManager* GetInstance()
     {
-        if (instance_ == nullptr)
+        if (m_Instance == nullptr)
         {
-            instance_ = new ColliderManager();
+            m_Instance = new ColliderManager();
         }
 
-        return instance_;
+        return m_Instance;
     }
 
     static void Finalize()
     {
-        if (instance_ != nullptr)
+        if (m_Instance != nullptr)
         {
-            delete instance_;
+            delete m_Instance;
         }
     }
 
@@ -47,7 +47,7 @@ public:
     //// note: 該当するオブジェクトが複数ある場合、リスト化して全てのオブジェクトを返す
 
 private:
-    std::list<Collider*> collider_list_;    // コライダーを管理するリスト
+    std::list<Collider*> m_ColliderList;    // コライダーを管理するリスト
 
-    static ColliderManager* instance_;
+    static ColliderManager* m_Instance;
 };

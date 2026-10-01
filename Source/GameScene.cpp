@@ -19,28 +19,28 @@
 
 /// @details 非同期ロード進行用フラグとタイマーの初期化
 GameScene::GameScene()
-	: load_timer_(500)     // ロード待機フレーム数
-	, load_count_(0)       // ロード完了アセット数
-	, is_load_flag_(true)  // ロード中判定フラグ
+	: m_LoadTimer(500)     // ロード待機フレーム数
+	, m_LoadCount(0)       // ロード完了アセット数
+	, m_IsLoadFlag(true)  // ロード中判定フラグ
 {
 }
 
 GameScene::~GameScene()
 {
-	delete pause_menu_;
+	delete m_PauseMenu;
 }
 
 /// @details 3D環境の設定、アクター生成、ステージ情報のパース処理の実行
 void GameScene::Initialize()
 {
 	SceneGame::Initialize();
-	pause_menu_ = new PauseMenu();
+	m_PauseMenu = new PauseMenu();
 	SetupEnvironment();
 	CreateInitialActors();
 	CreateStage();
 	LoadStageObjectsFromCsv();
 	CreateSkyBox();
-	Master::sound_manager_->PlayBGM(SoundManager::BGM_GAME);
+	Master::m_SoundManager->PlayBGM(SoundManager::BGM_GAME);
 
 	SetMouseDispFlag(false);
 }
@@ -148,50 +148,50 @@ void GameScene::Update()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_P) != 0)
 	{
-		Master::is_pause_on_ = !Master::is_pause_on_;
-		Master::sound_manager_->PlaySE(SoundManager::SE_SELECT);
-		SetMouseDispFlag(Master::is_pause_on_ ? TRUE : FALSE);
+		Master::m_IsPauseOn = !Master::m_IsPauseOn;
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
+		SetMouseDispFlag(Master::m_IsPauseOn ? TRUE : FALSE);
 	}
 
-	if (Master::is_pause_on_)
+	if (Master::m_IsPauseOn)
 	{
-		if (pause_menu_) pause_menu_->Update();
+		if (m_PauseMenu) m_PauseMenu->Update();
 		return;
 	}
 
 	SceneGame::Update();
-	Master::save_->Update();
-	Player3D* player = Master::player_;
+	Master::m_Save->Update();
+	Player3D* player = Master::m_Player;
 
 	if (player != nullptr && player->GetHp() <= 0.0f)
 	{
 		player->StartDeath();
 		if (player->IsDeathAnimationFinished())
 		{
-			if (Master::score_manager_ != nullptr)
+			if (Master::m_ScoreManager != nullptr)
 			{
-				Master::score_manager_->SetResultVictory(false);
-				Master::score_manager_->SetFinalStats(0.0f, player->GetAllStatusState(Object3D::Status_Attack), player->GetAllStatusState(Object3D::Status_Speed));
+				Master::m_ScoreManager->SetResultVictory(false);
+				Master::m_ScoreManager->SetFinalStats(0.0f, player->GetAllStatusState(Object3D::Status_Attack), player->GetAllStatusState(Object3D::Status_Speed));
 			}
-			Master::scene_manager_->SetNextScene(SceneManager::kSceneResultScene);
+			Master::m_SceneManager->SetNextScene(SceneManager::kSceneResultScene);
 		}
 		return;
 	}
 
-	if (game_manager_->GetCurrentPhase() == GameManager::Phase::kClear)
+	if (m_GameManager->GetCurrentPhase() == GameManager::Phase::kClear)
 	{
-		Master::game_clear_count_ = 2;
+		Master::m_GameClearCount = 2;
 	}
 
-	if (Master::game_clear_count_ == 2)
+	if (Master::m_GameClearCount == 2)
 	{
 		// クリア時の最終ステータスをリザルト画面へ引き継ぐためスコアマネージャーに保存
-		if (player != nullptr && Master::score_manager_ != nullptr)
+		if (player != nullptr && Master::m_ScoreManager != nullptr)
 		{
-			Master::score_manager_->SetResultVictory(true);
-			Master::score_manager_->SetFinalStats(player->GetAllStatusState(Object3D::Status_Hp), player->GetAllStatusState(Object3D::Status_Attack), player->GetAllStatusState(Object3D::Status_Speed));
+			Master::m_ScoreManager->SetResultVictory(true);
+			Master::m_ScoreManager->SetFinalStats(player->GetAllStatusState(Object3D::Status_Hp), player->GetAllStatusState(Object3D::Status_Attack), player->GetAllStatusState(Object3D::Status_Speed));
 		}
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneResultScene);
+		Master::m_SceneManager->SetNextScene(SceneManager::kSceneResultScene);
 	}
 }
 
@@ -201,7 +201,7 @@ void GameScene::Draw()
 	SceneGame::Draw();
 
 	// ピンチ演出（HP 30%以下で赤い画面点滅）
-	if (Master::player_ && Master::player_->GetHp() > 0 && Master::player_->GetHp() <= Master::player_->GetMaxHp() * 0.3f)
+	if (Master::m_Player && Master::m_Player->GetHp() > 0 && Master::m_Player->GetHp() <= Master::m_Player->GetMaxHp() * 0.3f)
 	{
 		int alpha = (int)(60 + sin(GetNowCount() * 0.01f) * 40); // 脈打つ赤いエフェクト
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
@@ -209,11 +209,11 @@ void GameScene::Draw()
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
-	Master::save_->Draw();
+	Master::m_Save->Draw();
 
-	if (Master::is_pause_on_ && pause_menu_)
+	if (Master::m_IsPauseOn && m_PauseMenu)
 	{
-		pause_menu_->Draw();
+		m_PauseMenu->Draw();
 	}
 
 }
@@ -245,7 +245,7 @@ void GameScene::DrawDebugGrid()
 /// @details BGM停止と描画設定の初期化
 void GameScene::Finalize()
 {
-	Master::sound_manager_->StopBGM();
+	Master::m_SoundManager->StopBGM();
 	SceneGame::Finalize();
 
 	// 次のシーン（UIや2D画面）にフォグ効果が残留して画面が白濁するのを防ぐため明示的にOFFにする

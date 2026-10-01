@@ -36,7 +36,7 @@ public:
 	static void GetMousePos(int& x, int& y);
 
 private:
-	static int mouse_down_buffer_;    ///< 前回フレームのマウス左ボタン押下状態バッファ
-	static int down_buffer_[256];     ///< 各キーの押下瞬間判定用状態バッファ
-	static int up_buffer_[256];       ///< 各キーの離脱瞬間判定用状態バッファ
+	static int m_MouseDownBuffer;    ///< 前回フレームのマウス左ボタン押下状態バッファ
+	static int m_DownBuffer[256];     ///< 各キーの押下瞬間判定用状態バッファ
+	static int m_UpBuffer[256];       ///< 各キーの離脱瞬間判定用状態バッファ
 };

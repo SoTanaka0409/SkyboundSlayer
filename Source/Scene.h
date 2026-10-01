@@ -34,13 +34,13 @@ public:
 
 	/// @brief シーンに紐づくObjectManagerのポインタを取得する
 	/// @return ObjectManager* オブジェクト管理クラスへのポインタ
-	ObjectManager* GetObjectManager() { return object_manager_; }
+	ObjectManager* GetObjectManager() { return m_ObjectManager; }
 
 	/// @brief シーンに紐づくColliderManagerのポインタを取得する
 	/// @return ColliderManager* コライダー管理クラスへのポインタ
-	ColliderManager* GetCollisionManager() { return collider_manager_; }
+	ColliderManager* GetCollisionManager() { return m_ColliderManager; }
 
 private:
-	ObjectManager* object_manager_;     ///< このシーンに所属する3D/2Dオブジェクトを一括管理するマネージャー
-	ColliderManager* collider_manager_; ///< このシーンの衝突判定を一括管理するマネージャー
+	ObjectManager* m_ObjectManager;     ///< このシーンに所属する3D/2Dオブジェクトを一括管理するマネージャー
+	ColliderManager* m_ColliderManager; ///< このシーンの衝突判定を一括管理するマネージャー
 };

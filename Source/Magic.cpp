@@ -19,24 +19,24 @@
 /// @details 描画用テクスチャの読み込みおよび球体当たり判定（SphereCollider）の生成を行う
 Magic::Magic(std::string filename, VECTOR initPos, float r, float damage, float speed, VECTOR movevec, int count, int time)
 	: Object3D(initPos)
-	, speed_(speed)
+	, m_Speed(speed)
 	, mfAttack_chara(damage)
-	, magic_size_(r)
-	, move_vec_(movevec)
+	, m_MagicSize(r)
+	, m_MoveVec(movevec)
 	, DeleteCount(count)
 	, DeleteTime(time)
 	, Filename(filename)
-	, attack_(0)
+	, m_Attack(0)
 {
-	graph_handle_ = LoadGraph(filename.c_str());
-	hit_collider_ = new SphereCollider(this, position_, magic_size_);
+	m_GraphHandle = LoadGraph(filename.c_str());
+	m_HitCollider = new SphereCollider(this, m_Position, m_MagicSize);
 }
 
 /// @brief Magicクラスのデストラクタ
 /// @details ロードしたテクスチャグラフィックハンドルの解放処理を行う
 Magic::~Magic()
 {
-	DeleteGraph(graph_handle_);
+	DeleteGraph(m_GraphHandle);
 }
 
 /// @brief 魔法弾の3Dビルボード描画処理を行う
@@ -44,7 +44,7 @@ Magic::~Magic()
 void Magic::Draw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
-	DrawBillboard3D(position_, 0.5f, 0.5f, magic_size_, 0.0f, graph_handle_, TRUE);
+	DrawBillboard3D(m_Position, 0.5f, 0.5f, m_MagicSize, 0.0f, m_GraphHandle, TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
@@ -61,13 +61,13 @@ void Magic::Update()
 }
 
 /// @brief 魔法弾の移動処理を行う
-/// @details 移動方向ベクトル（move_vec_）と速度（speed_）に基づき座標を加算更新する
+/// @details 移動方向ベクトル（m_MoveVec）と速度（m_Speed）に基づき座標を加算更新する
 void Magic::Move()
 {
-	position_ = VAdd(position_, VScale(move_vec_, speed_));
-	if (hit_collider_ != nullptr)
+	m_Position = VAdd(m_Position, VScale(m_MoveVec, m_Speed));
+	if (m_HitCollider != nullptr)
 	{
-		hit_collider_->position_ = position_;
+		m_HitCollider->m_Position = m_Position;
 	}
 }
 
@@ -75,9 +75,9 @@ void Magic::Move()
 /// @details 消滅時エフェクトの再生、オブジェクト自身の破棄フラグおよびコライダー破棄フラグを有効化する
 void Magic::Death()
 {
-	EffectPool::GetInstance()->Play(position_, Filename, GetColorU8(255, 0, 0, 0), magic_size_, 0.1f);
+	EffectPool::GetInstance()->Play(m_Position, Filename, GetColorU8(255, 0, 0, 0), m_MagicSize, 0.1f);
 	SetDeleteFlag(true);
-	hit_collider_->SetDeleteFlag(true);
+	m_HitCollider->SetDeleteFlag(true);
 }
 
 /// @brief 他のコライダーと接触した瞬間のイベント処理

@@ -8,9 +8,9 @@
 
 /// @brief Ruleの初期化（コンストラクタ）
 Rule::Rule()
-	: page_(1)
-	, bg_handle1_(-1)
-	, bg_handle2_(-1)
+	: m_Page(1)
+	, m_BgHandle1(-1)
+	, m_BgHandle2(-1)
 {
 }
 
@@ -23,9 +23,9 @@ Rule::~Rule()
 /// @brief Ruleの初期化処理
 void Rule::Initialize()
 {
-	page_ = 1;
-	bg_handle1_ = LoadGraph("Resource/image/rule/01_rule_bg_1.png");
-	bg_handle2_ = LoadGraph("Resource/image/rule/02_rule_bg_2.png");
+	m_Page = 1;
+	m_BgHandle1 = LoadGraph("Resource/image/rule/01_rule_bg_1.png");
+	m_BgHandle2 = LoadGraph("Resource/image/rule/02_rule_bg_2.png");
 }
 
 
@@ -44,22 +44,22 @@ void Rule::HandlePageInput()
 {
 	if (InputManager::CheckDownKey(KEY_INPUT_RIGHT) || InputManager::CheckDownKey(KEY_INPUT_D))
 	{
-		if (page_ == 1)
+		if (m_Page == 1)
 		{
-			page_ = 2;
+			m_Page = 2;
 		}
 	}
 	else if (InputManager::CheckDownKey(KEY_INPUT_LEFT) || InputManager::CheckDownKey(KEY_INPUT_A))
 	{
-		if (page_ == 2)
+		if (m_Page == 2)
 		{
-			page_ = 1;
+			m_Page = 1;
 		}
 	}
 
 	if (InputManager::CheckDownKey(KEY_INPUT_BACK) )
 	{
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneTitle);
+		Master::m_SceneManager->SetNextScene(SceneManager::kSceneTitle);
 	}
 }
 
@@ -71,7 +71,7 @@ void Rule::Draw()
 	Scene::Draw();
 	DrawRuleBackground();
 
-	if (page_ == 1)
+	if (m_Page == 1)
 	{
 		DrawRulePage1();
 	}
@@ -89,7 +89,7 @@ void Rule::Draw()
 /// @brief RuleのDrawRuleBackground処理
 void Rule::DrawRuleBackground()
 {
-	int handle = (page_ == 1) ? bg_handle1_ : bg_handle2_;
+	int handle = (m_Page == 1) ? m_BgHandle1 : m_BgHandle2;
 	if (handle != -1)
 	{
 		DrawExtendGraph(0, 0, 1980, 1080, handle, TRUE);
@@ -166,14 +166,14 @@ void Rule::DrawRuleFooter()
 /// @brief RuleのFinalize処理
 void Rule::Finalize()
 {
-	if (bg_handle1_ != -1)
+	if (m_BgHandle1 != -1)
 	{
-		DeleteGraph(bg_handle1_);
-		bg_handle1_ = -1;
+		DeleteGraph(m_BgHandle1);
+		m_BgHandle1 = -1;
 	}
-	if (bg_handle2_ != -1)
+	if (m_BgHandle2 != -1)
 	{
-		DeleteGraph(bg_handle2_);
-		bg_handle2_ = -1;
+		DeleteGraph(m_BgHandle2);
+		m_BgHandle2 = -1;
 	}
 }

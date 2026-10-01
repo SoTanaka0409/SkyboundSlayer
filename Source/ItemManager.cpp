@@ -13,11 +13,11 @@ ItemManager::ItemManager()
 /// @brief ItemManagerクラスのデストラクタ
 ItemManager::~ItemManager()
 {
-	for (auto item : item_list_)
+	for (auto item : m_ItemList)
 	{
 		delete item;
 	}
-	item_list_.clear();
+	m_ItemList.clear();
 }
 
 /// @brief アイテム状態やタイマー等の毎フレーム更新処理を行う
@@ -30,9 +30,9 @@ void ItemManager::Update()
 void ItemManager::AddItem(Item::ItemInformation* mItem)
 {
 	if (mItem == nullptr) return;
-	if (Master::inf_class_manager_ == nullptr) return;
+	if (Master::m_InfClassManager == nullptr) return;
 
-	get_itemflag_ = true;
+	m_GetItemflag = true;
 
 	// アイテムIDに応じた名称および基本価格の設定
 	switch (mItem->ID)
@@ -60,15 +60,15 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 	}
 
 	// 既存の所持アイテムリスト内に同種アイテムが存在するか確認
-	for (auto itr = item_list_.begin(); itr != item_list_.end(); ++itr)
+	for (auto itr = m_ItemList.begin(); itr != m_ItemList.end(); ++itr)
 	{
 		if ((*itr)->ID == mItem->ID)
 		{
 			(*itr)->Count += mItem->Count;
 
-			if (mItem->is_log_)
+			if (mItem->m_IsLog)
 			{
-				Master::inf_class_manager_->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
+				Master::m_InfClassManager->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
 			}
 
 			// 重複追加時はメモリリーク防止のため引数のオブジェクトを解放
@@ -77,47 +77,47 @@ void ItemManager::AddItem(Item::ItemInformation* mItem)
 		}
 	}
 
-	if (mItem->is_log_)
+	if (mItem->m_IsLog)
 	{
-		Master::inf_class_manager_->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
+		Master::m_InfClassManager->LogList.push_back(new InfClass(400, mItem->Name.c_str(), 1));
 	}
 
-	item_list_.push_back(mItem);
+	m_ItemList.push_back(mItem);
 }
 
 /// @brief 指定したIDのアイテムを消費・使用する
 /// @param id 使用するアイテムの識別ID
 void ItemManager::UseItem(Item::ItemID id)
 {
-	Player3D* player = Master::player_;
+	Player3D* player = Master::m_Player;
 	if (player == nullptr) return;
 
-	for (auto itr = item_list_.begin(); itr != item_list_.end(); ++itr)
+	for (auto itr = m_ItemList.begin(); itr != m_ItemList.end(); ++itr)
 	{
 		if ((*itr)->ID == id)
 		{
 			if ((*itr)->Count <= 0)
 			{
-				Master::inf_class_manager_->LogList.push_back(new InfClass(400, (*itr)->Name.c_str(), 4));
+				Master::m_InfClassManager->LogList.push_back(new InfClass(400, (*itr)->Name.c_str(), 4));
 				return;
 			}
 
 			if (id == Item::HIGHHEAL || id == Item::HEAL)
 			{
-				Master::sound_manager_->PlaySE(SoundManager::SE_HEAL);
-				if (Master::score_manager_ != nullptr)
+				Master::m_SoundManager->PlaySE(SoundManager::SE_HEAL);
+				if (Master::m_ScoreManager != nullptr)
 				{
-					Master::score_manager_->AddUsedPotion();
+					Master::m_ScoreManager->AddUsedPotion();
 				}
 			}
 
 			if (id == Item::POWER || id == Item::SPEED)
 			{
-				Master::sound_manager_->PlaySE(SoundManager::SE_POWER);
+				Master::m_SoundManager->PlaySE(SoundManager::SE_POWER);
 			}
 
 			(*itr)->Count -= 1;
-			(*itr)->use_ = true;
+			(*itr)->m_Use = true;
 			Effect(id);
 		}
 	}
@@ -127,7 +127,7 @@ void ItemManager::UseItem(Item::ItemID id)
 /// @param id 効果を適用するアイテムの識別ID
 void ItemManager::Effect(Item::ItemID id)
 {
-	Player3D* player = Master::player_;
+	Player3D* player = Master::m_Player;
 	if (player == nullptr) return;
 
 	if (id == Item::HEAL)
@@ -136,7 +136,7 @@ void ItemManager::Effect(Item::ItemID id)
 	}
 	if (id == Item::POWER)
 	{
-		Master::buff_manager_->AddBuff(new Buff(600, 1.5f, Object3D::StatusState::Status_Attack));
+		Master::m_BuffManager->AddBuff(new Buff(600, 1.5f, Object3D::StatusState::Status_Attack));
 	}
 	if (id == Item::HIGHHEAL)
 	{
@@ -144,6 +144,6 @@ void ItemManager::Effect(Item::ItemID id)
 	}
 	if (id == Item::SPEED)
 	{
-		Master::buff_manager_->AddBuff(new Buff(600, 2.0f, Object3D::StatusState::Status_Speed));
+		Master::m_BuffManager->AddBuff(new Buff(600, 2.0f, Object3D::StatusState::Status_Speed));
 	}
 }

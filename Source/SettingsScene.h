@@ -59,14 +59,14 @@ private:
 	int GetVolumeFromMouseX(const Rect& rect, int mouseX) const;
 
 	/// @brief 各UI操作領域の定義
-	Rect bgm_toggle_rect_;
-	Rect bgm_bar_rect_;
-	Rect se_toggle_rect_;
-	Rect se_bar_rect_;
-	Rect debug_toggle_rect_;
-	Rect back_rect_;
+	Rect m_BgmToggleRect;
+	Rect m_BgmBarRect;
+	Rect m_SeToggleRect;
+	Rect m_SeBarRect;
+	Rect m_DebugToggleRect;
+	Rect m_BackRect;
 
 	/// @brief 演出：画面明滅等のブリンク処理用パラメータ
-	int color_fade_;
-	bool color_flag_;
+	int m_ColorFade;
+	bool m_ColorFlag;
 };

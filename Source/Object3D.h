@@ -36,14 +36,14 @@ public:
 
 public:
 /// @param distance (カメラからの距離)
-/// @details ソート用の基準値(current_camera_distance_)を更新する
+/// @details ソート用の基準値(m_CurrentCameraDistance)を更新する
     /// @brief 半透明オブジェクトの描画順序を制御し、アルファブレンドのZテスト破綻を防ぐために毎フレーム計算する
-    void SetCameraDistance(float distance) { current_camera_distance_ = distance; }
+    void SetCameraDistance(float distance) { m_CurrentCameraDistance = distance; }
 
     /// @brief std::sort等で使用する比較用関数オブジェクト。半透明の描画破綻を防ぐため、カメラから遠いオブジェクトを先に描画させる
     struct CompareZOrder {
         bool operator()(Object3D* a, Object3D* b) const {
-            return a->current_camera_distance_ > b->current_camera_distance_;
+            return a->m_CurrentCameraDistance > b->m_CurrentCameraDistance;
         }
     };
 
@@ -76,35 +76,35 @@ public:
     void TerrainFollow(float capsuleBottomY = -150.0f, float capsuleTopY = 150.0f, float capsuleRadius = 40.0f, float lineTopY = 1000.0f, float lineBottomY = -1000.0f, float gravity = 8.0f);
 
 public:
-    void SetPosition(VECTOR pos) { position_ = pos; };
-    VECTOR GetPosition() { return position_; }
+    void SetPosition(VECTOR pos) { m_Position = pos; };
+    VECTOR GetPosition() { return m_Position; }
 
-    void SetOldPosition(VECTOR pos) { old_position_ = pos; }
-    VECTOR GetOldPosition() { return old_position_; }
+    void SetOldPosition(VECTOR pos) { m_OldPosition = pos; }
+    VECTOR GetOldPosition() { return m_OldPosition; }
 
-    void SetRotation(VECTOR rot) { rotation_ = rot; }
-    VECTOR GetRotation() { return rotation_; } // タイポ（GETRotation）を修正し命名規則を統一
+    void SetRotation(VECTOR rot) { m_Rotation = rot; }
+    VECTOR GetRotation() { return m_Rotation; } // タイポ（GETRotation）を修正し命名規則を統一
 
-    void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
-    bool IsDeleteFlag() { return delete_flag_; }
+    void SetDeleteFlag(bool flag) { m_DeleteFlag = flag; }
+    bool IsDeleteFlag() { return m_DeleteFlag; }
 
 /// @param flag (描画可否)
-/// @details 内部の描画フラグ(draw_flag_)の更新
+/// @details 内部の描画フラグ(m_DrawFlag)の更新
     /// @brief カメラの視錐台カリングや、透明化スキル発動時に、当たり判定や更新処理を残したまま描画だけをスキップする
-    void SetDrawFlag(bool flag) { draw_flag_ = flag; }
-    bool IsDrawFlag() { return draw_flag_; }
+    void SetDrawFlag(bool flag) { m_DrawFlag = flag; }
+    bool IsDrawFlag() { return m_DrawFlag; }
 
-    void SetTag(Tag3D tag) { tag_ = tag; }
-    Tag3D GetTag() { return tag_; }
+    void SetTag(Tag3D tag) { m_Tag = tag; }
+    Tag3D GetTag() { return m_Tag; }
 
 protected:
-    VECTOR position_;      // 3Dワールド空間上での現在座標
-    VECTOR rotation_;      // オブジェクトの回転姿勢（ラジアン）
-    VECTOR old_position_;  // 前フレームの座標。壁との衝突判定時の押し出し（めり込み解消）計算などに使用する
+    VECTOR m_Position;      // 3Dワールド空間上での現在座標
+    VECTOR m_Rotation;      // オブジェクトの回転姿勢（ラジアン）
+    VECTOR m_OldPosition;  // 前フレームの座標。壁との衝突判定時の押し出し（めり込み解消）計算などに使用する
 
 private:
-    bool delete_flag_;               // true時、オブジェクトマネージャーの終端処理にて安全にメモリから解放される
-    Tag3D tag_;                      // 衝突相手の判別やオブジェクトのグルーピングに使用する識別用タグ
-    bool draw_flag_;                 // 描画パイプラインへ送るかどうかの制御フラグ（表示/非表示の切り替え）
-    float current_camera_distance_;  // Zソート計算用に毎フレーム更新される、アクティブカメラからの直線距離
+    bool m_DeleteFlag;               // true時、オブジェクトマネージャーの終端処理にて安全にメモリから解放される
+    Tag3D m_Tag;                      // 衝突相手の判別やオブジェクトのグルーピングに使用する識別用タグ
+    bool m_DrawFlag;                 // 描画パイプラインへ送るかどうかの制御フラグ（表示/非表示の切り替え）
+    float m_CurrentCameraDistance;  // Zソート計算用に毎フレーム更新される、アクティブカメラからの直線距離
 };

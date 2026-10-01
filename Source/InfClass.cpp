@@ -10,7 +10,7 @@ InfClass::InfClass(int Log_timer,std::string Inf,int num)
 	
 {
 	LogCount = 0;
-	elase_flag_ = false;
+	m_ElaseFlag = false;
 	LogTime = Log_timer;
 	LogDate = Inf;
 }
@@ -19,8 +19,8 @@ InfClass::InfClass(int Log_timer,std::string Inf,int num)
 /// @brief InfClassの描画処理
 void InfClass::Draw()
 {
-	int drawX = static_cast<int>(position_.x);
-	int drawY = static_cast<int>(position_.y);
+	int drawX = static_cast<int>(m_Position.x);
+	int drawY = static_cast<int>(m_Position.y);
 	
 	// フェードアウト処理
 	int alpha = 255;
@@ -67,7 +67,7 @@ void InfClass::Update()
 	LogCount++;
 	if (LogTime < LogCount)
 	{
-		elase_flag_ = true;
+		m_ElaseFlag = true;
 		SetDeleteFlag(true);
 		SetDrawFlag(false);
 	}

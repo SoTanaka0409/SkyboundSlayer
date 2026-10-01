@@ -54,9 +54,9 @@ private:
 	bool IsHoverSettings(int mx, int my) const;
 
 	/// @brief カメラ演出用：自動旋回アニメーションの現在の回転角
-	float camera_angle_;
+	float m_CameraAngle;
 
 	/// @brief UI演出用：点滅処理のためのアルファ値（fade）と、明滅方向を制御するトグルフラグ
-	int color_fade_;
-	bool color_flag_;
+	int m_ColorFade;
+	bool m_ColorFlag;
 };

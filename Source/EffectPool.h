@@ -6,7 +6,7 @@
 class EffectPool {
 private:
     static const int POOL_SIZE = 50; // 同時表示可能なエフェクト上限数（これを超える演出は古いものから上書き、または無視する）
-    Effect* pool_[POOL_SIZE];        // 事前に確保したエフェクトインスタンスのメモリ領域
+    Effect* m_Pool[POOL_SIZE];        // 事前に確保したエフェクトインスタンスのメモリ領域
 
     static EffectPool* sInstance;
 

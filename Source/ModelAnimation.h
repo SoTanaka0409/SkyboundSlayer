@@ -24,11 +24,11 @@ public:
 
 	/// @brief モーションのループ再生の有効/無効を設定する
 	/// @param isLoop ループ再生を行う場合はtrue
-	void SetLoop(bool isLoop) { loop_ = isLoop; }
+	void SetLoop(bool isLoop) { m_Loop = isLoop; }
 
 	/// @brief 非ループアニメーションの再生終了時に自動移行するアニメーションステートを設定する
 	/// @param state 移行先のアニメーションステート
-	void SetLoopFinishState(AnimationState state) { loop_finish_state_ = state; }
+	void SetLoopFinishState(AnimationState state) { m_LoopFinishState = state; }
 
 	/// @brief モーション切り替え時のブレンド（補間）処理の有効/無効を設定する
 	/// @param isBlend ブレンドを行う場合はtrue
@@ -36,31 +36,31 @@ public:
 
 	/// @brief 現在再生中のアニメーションステートを取得する
 	/// @return AnimationState 現在のアニメーションステート
-	AnimationState GetNowState() { return state_; }
+	AnimationState GetNowState() { return m_State; }
 
 	/// @brief アニメーションの再生（または1ループ）が終了したか判定する
 	/// @return bool 再生完了した場合はtrue
-	bool IsLoopFinish() { return loop_finish_; }
+	bool IsLoopFinish() { return m_LoopFinish; }
 
 	/// @brief アニメーションの進行速度（コマ送り・カウントの加算量）を設定する
 	/// @param count 再生時間の進行倍率・速度
-	void SetAnimationCount(float count) { animation_count_ = count; }
+	void SetAnimationCount(float count) { m_AnimationCount = count; }
 
 private:
-	int model_handle_;                   ///< 制御対象となる3Dモデルのグラフィックハンドル
+	int m_ModelHandle;                   ///< 制御対象となる3Dモデルのグラフィックハンドル
 
-	float animation_time_;               ///< 現在再生中のアニメーションの経過時間
-	float animation_count_;              ///< アニメーション再生速度の進行カウント係数
-	int animation_index_;                ///< 現在再生中のアニメーションインデックス番号
+	float m_AnimationTime;               ///< 現在再生中のアニメーションの経過時間
+	float m_AnimationCount;              ///< アニメーション再生速度の進行カウント係数
+	int m_AnimationIndex;                ///< 現在再生中のアニメーションインデックス番号
 
-	float old_animation_time_;           ///< 切り替え前のアニメーション経過時間（ブレンド用）
-	int old_animation_index_;            ///< 切り替え前のアニメーションインデックス番号（ブレンド用）
+	float m_OldAnimationTime;           ///< 切り替え前のアニメーション経過時間（ブレンド用）
+	int m_OldAnimationIndex;            ///< 切り替え前のアニメーションインデックス番号（ブレンド用）
 
-	float anim_blend_rate_;              ///< 前のモーションから現在のモーションへの補間ブレンド率（0.0f〜1.0f）
+	float m_AnimBlendRate;              ///< 前のモーションから現在のモーションへの補間ブレンド率（0.0f〜1.0f）
 
-	AnimationState state_;               ///< 現在再生されているアニメーションステート識別番号
+	AnimationState m_State;               ///< 現在再生されているアニメーションステート識別番号
 
-	bool loop_;                          ///< アニメーションをループ再生させるかどうかの判定フラグ
-	AnimationState loop_finish_state_;   ///< 非ループアニメーション終了時に移行するアニメーションステート
-	bool loop_finish_;                   ///< モーションの再生が最終フレームまで到達・終了したかを示すフラグ
+	bool m_Loop;                          ///< アニメーションをループ再生させるかどうかの判定フラグ
+	AnimationState m_LoopFinishState;   ///< 非ループアニメーション終了時に移行するアニメーションステート
+	bool m_LoopFinish;                   ///< モーションの再生が最終フレームまで到達・終了したかを示すフラグ
 };

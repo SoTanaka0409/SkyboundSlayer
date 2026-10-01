@@ -16,19 +16,19 @@ public:
 	virtual void OnTrigger();
 	virtual void OnExit();
 	void HitCheck(Collider* check, bool isHit);
-	void SetDeleteFlag(bool flag) { delete_flag_ = flag; }
-	bool IsDeleteFlag() { return delete_flag_; }
+	void SetDeleteFlag(bool flag) { m_DeleteFlag = flag; }
+	bool IsDeleteFlag() { return m_DeleteFlag; }
 
 public:
-	Object3D* parent_object_;
+	Object3D* m_ParentObject;
 
-	VECTOR position_;
-	VECTOR position2_;
-	float radius_;
+	VECTOR m_Position;
+	VECTOR m_Position2;
+	float m_Radius;
 
-	bool delete_flag_;
+	bool m_DeleteFlag;
 
 protected:
-	std::vector<Collider*> collision_list_;	// 衝突しているColliderのリスト
+	std::vector<Collider*> m_CollisionList;	// 衝突しているColliderのリスト
 	
 };

@@ -11,20 +11,20 @@ Save::Save()
 	, SelectMax(0)
 	, SelectMin(0)
 {
-	texture_ = new Texture("Resource/image/UI/02_save.png", VGet(500, 500, 0), true);
+	m_Texture = new Texture("Resource/image/UI/02_save.png", VGet(500, 500, 0), true);
 }
 
 Save::~Save()
 {
 }
 
-/// @details セーブメニュー展開時（is_save_ == true）の専用テクスチャレイヤー描画
+/// @details セーブメニュー展開時（m_IsSave == true）の専用テクスチャレイヤー描画
 void Save::Draw()
 {
 	// UI仕様：ゲームの進行状況（本編の描画）を背景に残したまま、画面最前面にセーブUIをオーバーレイ表示させるためのステート監視
-	if (Master::is_save_)
+	if (Master::m_IsSave)
 	{
-		texture_->Draw();
+		m_Texture->Draw();
 	}
 }
 
@@ -34,14 +34,14 @@ void Save::Update()
 	// UX仕様：プレイヤーがゲームプレイ中にいつでもシームレスに進行状況を記録できるよう、Lキーによる即時展開とBACKキーによる直感的なキャンセル（離脱）のトグルフローを提供する
 	if (InputManager::CheckDownKey(KEY_INPUT_L))
 	{
-		Master::is_save_ = true;
+		Master::m_IsSave = true;
 	}
 
-	if (Master::is_save_)
+	if (Master::m_IsSave)
 	{
 		if (InputManager::CheckDownKey(KEY_INPUT_BACK))
 		{
-			Master::is_save_ = false;
+			Master::m_IsSave = false;
 		}
 	}
 }

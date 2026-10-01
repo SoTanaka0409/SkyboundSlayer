@@ -9,19 +9,19 @@
 
 Tree::Tree(std::string filename, VECTOR initPos,float Size,float getSize,bool HitFlag)
 	:Object3D(initPos)
-	,size_(getSize)
+	,m_Size(getSize)
 {
-	model_ = new Model(filename, initPos);
-	model_->SetScale(VGet(Size, Size, Size));
+	m_Model = new Model(filename, initPos);
+	m_Model->SetScale(VGet(Size, Size, Size));
 	SetTag(Object3D::Tag3D_Obj);
 
-	position_ = initPos;
-	is_hit_flag_ = HitFlag;
-	capsule_collider_ = new CapsuleCollider(this, position_, VAdd(position_, VGet(0.0f, size_, 0.0f)), size_);
+	m_Position = initPos;
+	m_IsHitFlag = HitFlag;
+	m_CapsuleCollider = new CapsuleCollider(this, m_Position, VAdd(m_Position, VGet(0.0f, m_Size, 0.0f)), m_Size);
 }
 Tree::~Tree()
 {
-	delete model_;
+	delete m_Model;
 }
 
 void Tree::Update()
@@ -34,14 +34,14 @@ void Tree::Update()
 void Tree::Draw()
 {
 	
-	/*DrawCapsule3D(position_, VAdd(position_, VGet(0.0f, mnSize, 0.0f)),
+	/*DrawCapsule3D(m_Position, VAdd(m_Position, VGet(0.0f, mnSize, 0.0f)),
 		mnSize,
 		8,
 		GetColor(255, 255, 255),
 		GetColor(255, 255, 255),
 		false
 	);*/
-	model_->Draw();
+	m_Model->Draw();
 }
 
 void Tree::OnEnter(Collider* collider, Collider* check)

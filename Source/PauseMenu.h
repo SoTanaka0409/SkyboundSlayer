@@ -31,14 +31,14 @@ private:
 	bool IsMouseInRect(const Rect& rect, int mouseX, int mouseY) const;
 	int GetVolumeFromMouseX(const Rect& rect, int mouseX) const;
 
-	Rect bgm_toggle_rect_;
-	Rect bgm_bar_rect_;
-	Rect se_toggle_rect_;
-	Rect se_bar_rect_;
-	Rect debug_toggle_rect_;
-	Rect resume_rect_;
-	Rect quit_rect_;
+	Rect m_BgmToggleRect;
+	Rect m_BgmBarRect;
+	Rect m_SeToggleRect;
+	Rect m_SeBarRect;
+	Rect m_DebugToggleRect;
+	Rect m_ResumeRect;
+	Rect m_QuitRect;
 
-	int color_fade_;
-	bool color_flag_;
+	int m_ColorFade;
+	bool m_ColorFlag;
 };

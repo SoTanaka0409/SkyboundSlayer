@@ -9,13 +9,13 @@ TextureAnimation::TextureAnimation(
     int yNum,
     int interval
 )
-: position_(position)
-, counter_(0)
-, interval_(interval)
-, current_num_(0)
-, all_num_(allNum)
+: m_Position(position)
+, m_Counter(0)
+, m_Interval(interval)
+, m_CurrentNum(0)
+, m_AllNum(allNum)
 {
-    handle_list_ = new int[allNum];
+    m_HandleList = new int[allNum];
 
     // 画像ファイル読み込み
     int handle = LoadGraph(filename.c_str());
@@ -36,7 +36,7 @@ TextureAnimation::TextureAnimation(
         yNum,
         sizeX / xNum,
         sizeY / yNum,
-        handle_list_
+        m_HandleList
     );
 }
 
@@ -48,20 +48,20 @@ TextureAnimation::~TextureAnimation()
 void TextureAnimation::Update()
 {
     // カウンタをインクリメント
-    counter_++;
-    if (counter_ % interval_ == 0)
+    m_Counter++;
+    if (m_Counter % m_Interval == 0)
     {
-        counter_ = 0;  // カウンタを戻す
-        current_num_++; // テクスチャ番号を進める
-        if (current_num_ >= all_num_)   // 分割数を超えるならループさせる
+        m_Counter = 0;  // カウンタを戻す
+        m_CurrentNum++; // テクスチャ番号を進める
+        if (m_CurrentNum >= m_AllNum)   // 分割数を超えるならループさせる
         {
-            current_num_ = 0;   // ループさせる
+            m_CurrentNum = 0;   // ループさせる
         }
     }
 }
 
 void TextureAnimation::Draw()
 {
-    DrawGraph(static_cast<int>(position_.x), static_cast<int>(position_.y), handle_list_[current_num_], true);
+    DrawGraph(static_cast<int>(m_Position.x), static_cast<int>(m_Position.y), m_HandleList[m_CurrentNum], true);
 }
 

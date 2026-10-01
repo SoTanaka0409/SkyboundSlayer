@@ -29,10 +29,10 @@ public:
 	void Update() override;
 
 	
-	float GetSize() { return size_; }
+	float GetSize() { return m_Size; }
 
 
-	bool GetHitFlag() { return is_hit_flag_; }
+	bool GetHitFlag() { return m_IsHitFlag; }
 
 	/// @brief 他のコライダーと接触した瞬間のイベント処理
 	/// @param collider 自身のコライダー
@@ -50,9 +50,9 @@ public:
 	virtual void OnExit(Collider* collider, Collider* check) override;
 
 private:
-	CapsuleCollider* capsule_collider_; ///< 幹部分の物理衝突判定用カプセルコライダー
-	Model* model_;                      ///< 3Dモデルデータへのポインタ
-	float size_;                        ///< モデルおよび判定の拡大スケール
-	int model_handle_;                  ///< 3Dモデルのグラフィックハンドル
-	bool is_hit_flag_;                  ///< 衝突判定が有効かどうかの判定フラグ
+	CapsuleCollider* m_CapsuleCollider; ///< 幹部分の物理衝突判定用カプセルコライダー
+	Model* m_Model;                      ///< 3Dモデルデータへのポインタ
+	float m_Size;                        ///< モデルおよび判定の拡大スケール
+	int m_ModelHandle;                  ///< 3Dモデルのグラフィックハンドル
+	bool m_IsHitFlag;                  ///< 衝突判定が有効かどうかの判定フラグ
 };

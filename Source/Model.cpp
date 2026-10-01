@@ -8,23 +8,23 @@
 /// @param isSeparateAnimation アニメーションを分離して読み込むかどうかのフラグ
 /// @details 3Dモデルリソースのロードおよびアニメーション制御クラス（ModelAnimationまたはSeparateModelAnimation）の初期化を行う
 Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
-	: position_(initPos)
-	, attachment_(nullptr)
+	: m_Position(initPos)
+	, m_Attachment(nullptr)
 	, mvScale(VGet(1.0f, 1.0f, 1.0f))
-	, change_texture_handle_(-1)
-	, is_separate_(isSeparateAnimation)
+	, m_ChangeTextureHandle(-1)
+	, m_IsSeparate(isSeparateAnimation)
 {
-	handle_ = Master::resource_manager_->LoadModel(filename.c_str());
+	m_Handle = Master::m_ResourceManager->LoadModel(filename.c_str());
 
 	if (isSeparateAnimation)
 	{
-		separate_animation_ = new SeparateModelAnimation(handle_);
-		animation_ = nullptr;
+		m_SeparateAnimation = new SeparateModelAnimation(m_Handle);
+		m_Animation = nullptr;
 	}
 	else
 	{
-		animation_ = new ModelAnimation(handle_);
-		separate_animation_ = nullptr;
+		m_Animation = new ModelAnimation(m_Handle);
+		m_SeparateAnimation = nullptr;
 	}
 }
 
@@ -32,32 +32,32 @@ Model::Model(std::string filename, VECTOR initPos, bool isSeparateAnimation)
 /// @details 動的確保したアニメーションオブジェクト、アタッチメントモデル、差分テクスチャ、3Dモデル本体の解放処理を行う
 Model::~Model()
 {
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		delete separate_animation_;
-		separate_animation_ = nullptr;
+		delete m_SeparateAnimation;
+		m_SeparateAnimation = nullptr;
 	}
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		delete animation_;
-		animation_ = nullptr;
-	}
-
-	if (attachment_ != nullptr)
-	{
-		attachment_->SetDeleteFlag(true);
+		delete m_Animation;
+		m_Animation = nullptr;
 	}
 
-	if (change_texture_handle_ != -1)
+	if (m_Attachment != nullptr)
 	{
-		DeleteGraph(change_texture_handle_);
-		change_texture_handle_ = -1;
+		m_Attachment->SetDeleteFlag(true);
 	}
 
-	if (handle_ != -1)
+	if (m_ChangeTextureHandle != -1)
 	{
-		MV1DeleteModel(handle_);
-		handle_ = -1;
+		DeleteGraph(m_ChangeTextureHandle);
+		m_ChangeTextureHandle = -1;
+	}
+
+	if (m_Handle != -1)
+	{
+		MV1DeleteModel(m_Handle);
+		m_Handle = -1;
 	}
 }
 
@@ -66,9 +66,9 @@ Model::~Model()
 /// @param filename アニメーションファイルパス
 void Model::AddAnimation(AnimationState state, std::string filename)
 {
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		separate_animation_->AddAnimation(state, filename);
+		m_SeparateAnimation->AddAnimation(state, filename);
 	}
 }
 
@@ -76,37 +76,37 @@ void Model::AddAnimation(AnimationState state, std::string filename)
 /// @details アニメーションの進行更新およびDxLibのモデル位置・回転パラメータの再設定を行う
 void Model::Update()
 {
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		animation_->Update();
+		m_Animation->Update();
 	}
 
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		separate_animation_->Update();
+		m_SeparateAnimation->Update();
 	}
 
-	MV1SetPosition(handle_, position_);
-	MV1SetRotationXYZ(handle_, rotation_);
+	MV1SetPosition(m_Handle, m_Position);
+	MV1SetRotationXYZ(m_Handle, m_Rotation);
 }
 
 /// @brief 3Dモデルの描画処理を行う
 void Model::Draw()
 {
-	MV1DrawModel(handle_);
+	MV1DrawModel(m_Handle);
 }
 
 /// @brief 再生するアニメーションを変更する
 /// @param state 移行先のアニメーションステート
 void Model::ChangeAnimation(AnimationState state)
 {
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		animation_->ChangeAnimation(state);
+		m_Animation->ChangeAnimation(state);
 	}
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		separate_animation_->ChangeAnimation(state);
+		m_SeparateAnimation->ChangeAnimation(state);
 	}
 }
 
@@ -114,13 +114,13 @@ void Model::ChangeAnimation(AnimationState state)
 /// @param loop ループ再生を行う場合はtrue
 void Model::SetLoop(bool loop)
 {
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		animation_->SetLoop(loop);
+		m_Animation->SetLoop(loop);
 	}
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		separate_animation_->SetLoop(loop);
+		m_SeparateAnimation->SetLoop(loop);
 	}
 }
 
@@ -128,13 +128,13 @@ void Model::SetLoop(bool loop)
 /// @param state アニメーション再生終了時に移行するステート
 void Model::SetLoopFinishState(AnimationState state)
 {
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		animation_->SetLoopFinishState(state);
+		m_Animation->SetLoopFinishState(state);
 	}
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		separate_animation_->SetLoopFinishState(state);
+		m_SeparateAnimation->SetLoopFinishState(state);
 	}
 }
 
@@ -142,13 +142,13 @@ void Model::SetLoopFinishState(AnimationState state)
 /// @param isBlend ブレンドを行う場合はtrue
 void Model::SetAnimationBlend(bool isBlend)
 {
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		animation_->SetAnimationBlend(isBlend);
+		m_Animation->SetAnimationBlend(isBlend);
 	}
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		separate_animation_->SetAnimationBlend(isBlend);
+		m_SeparateAnimation->SetAnimationBlend(isBlend);
 	}
 }
 
@@ -158,13 +158,13 @@ AnimationState Model::GetNowState()
 {
 	AnimationState ret = AnimationState::ANIMATION_MAX;
 
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		ret = animation_->GetNowState();
+		ret = m_Animation->GetNowState();
 	}
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		ret = separate_animation_->GetNowState();
+		ret = m_SeparateAnimation->GetNowState();
 	}
 
 	return ret;
@@ -176,13 +176,13 @@ bool Model::IsAnimationLoopFinish()
 {
 	bool ret = false;
 
-	if (animation_ != nullptr)
+	if (m_Animation != nullptr)
 	{
-		ret = animation_->IsLoopFinish();
+		ret = m_Animation->IsLoopFinish();
 	}
-	if (separate_animation_ != nullptr)
+	if (m_SeparateAnimation != nullptr)
 	{
-		ret = separate_animation_->IsLoopFinish();
+		ret = m_SeparateAnimation->IsLoopFinish();
 	}
 
 	return ret;
@@ -195,15 +195,15 @@ bool Model::IsAnimationLoopFinish()
 /// @param offsetRot ボーンからのオフセット回転角
 void Model::AddAttachment(std::string filename, std::string attachFrameName, VECTOR offsetPos, VECTOR offsetRot)
 {
-	if (attachment_ != nullptr)
+	if (m_Attachment != nullptr)
 	{
-		attachment_->SetDeleteFlag(true);
-		attachment_ = nullptr;
+		m_Attachment->SetDeleteFlag(true);
+		m_Attachment = nullptr;
 	}
-	int frameIndex = MV1SearchFrame(handle_, attachFrameName.c_str());
+	int frameIndex = MV1SearchFrame(m_Handle, attachFrameName.c_str());
 	if (frameIndex != -1)
 	{
-		attachment_ = new AttachmentModel(filename, handle_, frameIndex, offsetPos, offsetRot);
+		m_Attachment = new AttachmentModel(filename, m_Handle, frameIndex, offsetPos, offsetRot);
 	}
 }
 
@@ -212,10 +212,10 @@ void Model::AddAttachment(std::string filename, std::string attachFrameName, VEC
 /// @return VECTOR ボーンのワールド座標（見つからない場合は初期高さ座標）
 VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 {
-	int frameIndex = MV1SearchFrame(handle_, attachFrameName.c_str());
+	int frameIndex = MV1SearchFrame(m_Handle, attachFrameName.c_str());
 	if (frameIndex != -1)
 	{
-		return MV1GetFramePosition(handle_, frameIndex);
+		return MV1GetFramePosition(m_Handle, frameIndex);
 	}
 	return VGet(0.0f, 30.0f, 0.0f);
 }
@@ -224,11 +224,11 @@ VECTOR Model::GetAttachmentPosition_None(std::string attachFrameName)
 /// @return VECTOR 計算されたアタッチメントのワールド座標
 VECTOR Model::GetAttachmentPosition()
 {
-	if (attachment_ != nullptr)
+	if (m_Attachment != nullptr)
 	{
 		VECTOR vec = VGet(0.0f, -50.0f, 0.0f);
 
-		MATRIX matrix = MV1GetFrameLocalWorldMatrix(attachment_->GetHandle(), 0);
+		MATRIX matrix = MV1GetFrameLocalWorldMatrix(m_Attachment->GetHandle(), 0);
 
 		vec = VTransform(vec, matrix);
 
@@ -242,7 +242,7 @@ VECTOR Model::GetAttachmentPosition()
 /// @param scale 各軸の倍率ベクトル
 void Model::SetScale(VECTOR scale)
 {
-	MV1SetScale(handle_, scale);
+	MV1SetScale(m_Handle, scale);
 }
 
 /// @brief モデルのテクスチャを動的に差し替える
@@ -250,12 +250,12 @@ void Model::SetScale(VECTOR scale)
 /// @param index 差し替えるテクスチャのインデックス番号
 void Model::SetTexture(std::string filename, int index)
 {
-	if (change_texture_handle_ != -1)
+	if (m_ChangeTextureHandle != -1)
 	{
-		DeleteGraph(change_texture_handle_);
+		DeleteGraph(m_ChangeTextureHandle);
 	}
 
-	change_texture_handle_ = Master::resource_manager_->LoadGraphics(filename);
+	m_ChangeTextureHandle = Master::m_ResourceManager->LoadGraphics(filename);
 
-	MV1SetTextureGraphHandle(handle_, index, change_texture_handle_, FALSE);
+	MV1SetTextureGraphHandle(m_Handle, index, m_ChangeTextureHandle, FALSE);
 }

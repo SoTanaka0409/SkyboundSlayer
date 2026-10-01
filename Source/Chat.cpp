@@ -6,9 +6,9 @@
 
 /// @brief Chatの初期化（コンストラクタ）
 Chat::Chat()
-    :first_font_(0)
+    :m_FirstFont(0)
 {
-    texture_= new Texture("Resource/image/UI/01_dialog.png", VGet(500, 200, 0), true);
+    m_Texture= new Texture("Resource/image/UI/01_dialog.png", VGet(500, 200, 0), true);
 }
 
 Chat::~Chat()
@@ -23,10 +23,10 @@ void Chat::Draw(std::string chatdate)
     static int font24 = -1;
     if (font24 == -1) font24 = CreateFontToHandle("源界明朝", 24, -1);
 
-    if (Master::is_stat_shop_on_) { return; }
+    if (Master::m_IsStatShopOn) { return; }
     
     // 背景テクスチャの上に半透明の黒帯を敷いて文字を読みやすくする
-    texture_->Draw();
+    m_Texture->Draw();
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
     DrawBox(280, 180, 700, 240, GetColor(0, 0, 0), true);
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

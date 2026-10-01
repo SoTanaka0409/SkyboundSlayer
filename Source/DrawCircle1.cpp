@@ -12,16 +12,16 @@ DrawCircle1::DrawCircle1(std::string filename, VECTOR centerPos)
 	:Object3D(centerPos)
     ,radius(600)
     ,Maxradius(400)
-    ,center_(centerPos)
+    ,m_Center(centerPos)
 {
 	// ^O
 	SetTag(Object3D::Tag3D_Object);
 
     
-	graph_handle_ = LoadGraph(filename.c_str());
+	m_GraphHandle = LoadGraph(filename.c_str());
 
-    auto player_ = Master::player_;
-    auto pPlayer = Master::player_;
+    auto m_Player = Master::m_Player;
+    auto pPlayer = Master::m_Player;
     OldPosition = pPlayer->GetPosition();
 
     
@@ -33,7 +33,7 @@ DrawCircle1::DrawCircle1(std::string filename, VECTOR centerPos)
 DrawCircle1::~DrawCircle1()
 {
 
-	DeleteGraph(graph_handle_);
+	DeleteGraph(m_GraphHandle);
 }
 
 

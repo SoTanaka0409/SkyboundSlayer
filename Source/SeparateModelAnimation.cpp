@@ -5,33 +5,33 @@
 /// @param modelHandle (対象の3Dモデルハンドル)
 /// @details アニメーション管理用変数の初期化、および不正アクセスを防ぐための無効値(-1)セット
 SeparateModelAnimation::SeparateModelAnimation(int modelHandle)
-    : model_handle_(modelHandle)
-    , animation_time_(0.0f)
-    , animation_index_(-1)
-    , old_animation_time_(0.0f)
-    , old_animation_index_(-1)
-    , anim_blend_rate_(1.0f)
-    , state_(AnimationState::ANIMATION_MAX)
-    , loop_(true)
-    , loop_finish_state_(AnimationState::ANIMATION_MAX)
-    , loop_finish_(false)
-    , animation_info_list_()
-    , animation_count_(0.5f)
+    : m_ModelHandle(modelHandle)
+    , m_AnimationTime(0.0f)
+    , m_AnimationIndex(-1)
+    , m_OldAnimationTime(0.0f)
+    , m_OldAnimationIndex(-1)
+    , m_AnimBlendRate(1.0f)
+    , m_State(AnimationState::ANIMATION_MAX)
+    , m_Loop(true)
+    , m_LoopFinishState(AnimationState::ANIMATION_MAX)
+    , m_LoopFinish(false)
+    , m_AnimationInfoList()
+    , m_AnimationCount(0.5f)
 {
 }
 
 /// @details 動的確保したアニメーション情報およびDxLibの追加モデルハンドルの完全破棄（メモリリーク回避）
 SeparateModelAnimation::~SeparateModelAnimation()
 {
-    if (!animation_info_list_.empty())
+    if (!m_AnimationInfoList.empty())
     {
-        for (auto itr = animation_info_list_.begin(); itr != animation_info_list_.end(); )
+        for (auto itr = m_AnimationInfoList.begin(); itr != m_AnimationInfoList.end(); )
         {
             auto temp = *itr;
-            itr = animation_info_list_.erase(itr);
-            if (temp->animation_handle_ != -1) {
-                MV1DeleteModel(temp->animation_handle_);
-                temp->animation_handle_ = -1;
+            itr = m_AnimationInfoList.erase(itr);
+            if (temp->m_AnimationHandle != -1) {
+                MV1DeleteModel(temp->m_AnimationHandle);
+                temp->m_AnimationHandle = -1;
             }
 
             delete temp;
@@ -44,59 +44,59 @@ SeparateModelAnimation::~SeparateModelAnimation()
 void SeparateModelAnimation::Update()
 {
     // モーション切り替え時の不自然なカクつきを防ぐため、徐々にブレンド率を上げる
-    if (anim_blend_rate_ < 1.0f)
+    if (m_AnimBlendRate < 1.0f)
     {
-        anim_blend_rate_ += 0.1f;
-        if (anim_blend_rate_ > 1.0f)
+        m_AnimBlendRate += 0.1f;
+        if (m_AnimBlendRate > 1.0f)
         {
-            anim_blend_rate_ = 1.0f;
+            m_AnimBlendRate = 1.0f;
         }
     }
 
     float fAnimTotalTime = 0.0f;
-    if (animation_index_ != -1)
+    if (m_AnimationIndex != -1)
     {
-        fAnimTotalTime = MV1GetAttachAnimTotalTime(model_handle_, animation_index_);
-        animation_time_ += animation_count_;
+        fAnimTotalTime = MV1GetAttachAnimTotalTime(m_ModelHandle, m_AnimationIndex);
+        m_AnimationTime += m_AnimationCount;
 
         // アニメーションが終端に達した場合のループ処理、または指定された次状態への自動遷移
-        if (animation_time_ > fAnimTotalTime)
+        if (m_AnimationTime > fAnimTotalTime)
         {
-            if (!loop_)
+            if (!m_Loop)
             {
                 // 次の遷移先が未指定の場合は現在位置でアニメーションを停止させる
-                if (loop_finish_state_ == ANIMATION_MAX)
+                if (m_LoopFinishState == ANIMATION_MAX)
                 {
-                    loop_finish_ = true;
+                    m_LoopFinish = true;
                     return;
                 }
 
                 // 待機モーション等へ自動遷移させるため、即時切り替え（ブレンド無効）で適用する
-                ChangeAnimation(loop_finish_state_);
+                ChangeAnimation(m_LoopFinishState);
                 SetAnimationBlend(false);
-                fAnimTotalTime = MV1GetAttachAnimTotalTime(model_handle_, animation_index_);
+                fAnimTotalTime = MV1GetAttachAnimTotalTime(m_ModelHandle, m_AnimationIndex);
             }
 
-            animation_time_ = 0.0f;
+            m_AnimationTime = 0.0f;
         }
 
-        MV1SetAttachAnimTime(model_handle_, animation_index_, animation_time_);
-        MV1SetAttachAnimBlendRate(model_handle_, animation_index_, anim_blend_rate_);
+        MV1SetAttachAnimTime(m_ModelHandle, m_AnimationIndex, m_AnimationTime);
+        MV1SetAttachAnimBlendRate(m_ModelHandle, m_AnimationIndex, m_AnimBlendRate);
     }
 
     // ブレンド中の破綻を防ぐため、フェードアウトしていく旧モーション側も並行して時間を進める
-    if (old_animation_index_ != -1)
+    if (m_OldAnimationIndex != -1)
     {
-        fAnimTotalTime = MV1GetAttachAnimTotalTime(model_handle_, old_animation_index_);
-        old_animation_time_ += animation_count_;
+        fAnimTotalTime = MV1GetAttachAnimTotalTime(m_ModelHandle, m_OldAnimationIndex);
+        m_OldAnimationTime += m_AnimationCount;
 
-        if (old_animation_time_ > fAnimTotalTime)
+        if (m_OldAnimationTime > fAnimTotalTime)
         {
-            old_animation_time_ = 0.0f;
+            m_OldAnimationTime = 0.0f;
         }
 
-        MV1SetAttachAnimTime(model_handle_, old_animation_index_, old_animation_time_);
-        MV1SetAttachAnimBlendRate(model_handle_, old_animation_index_, 1.0f - anim_blend_rate_);
+        MV1SetAttachAnimTime(m_ModelHandle, m_OldAnimationIndex, m_OldAnimationTime);
+        MV1SetAttachAnimBlendRate(m_ModelHandle, m_OldAnimationIndex, 1.0f - m_AnimBlendRate);
     }
 }
 
@@ -105,32 +105,32 @@ void SeparateModelAnimation::Update()
 void SeparateModelAnimation::ChangeAnimation(AnimationState state, int index)
 {
     // 重複切り替えによるモーションの初期化（巻き戻り）を防ぐための早期リターン
-    if (state_ == state)
+    if (m_State == state)
     {
         return;
     }
 
-    state_ = state;
-    loop_ = true;
-    loop_finish_state_ = AnimationState::ANIMATION_MAX;
-    loop_finish_ = false;
+    m_State = state;
+    m_Loop = true;
+    m_LoopFinishState = AnimationState::ANIMATION_MAX;
+    m_LoopFinish = false;
 
     // DxLibのアタッチ上限超過を防ぐため、既に用済みの「1つ前の旧モーション」は確実にデタッチする
-    if (old_animation_index_ != -1)
+    if (m_OldAnimationIndex != -1)
     {
-        MV1DetachAnim(model_handle_, old_animation_index_);
-        old_animation_index_ = -1;
+        MV1DetachAnim(m_ModelHandle, m_OldAnimationIndex);
+        m_OldAnimationIndex = -1;
     }
 
     // ブレンド用に現在のモーションを「旧モーション」として退避させる
-    old_animation_index_ = animation_index_;
-    old_animation_time_ = animation_time_;
+    m_OldAnimationIndex = m_AnimationIndex;
+    m_OldAnimationTime = m_AnimationTime;
 
-    animation_index_ = MV1AttachAnim(model_handle_, index, GetAnimationHandle(state), TRUE);
-    animation_time_ = 0.0f;
+    m_AnimationIndex = MV1AttachAnim(m_ModelHandle, index, GetAnimationHandle(state), TRUE);
+    m_AnimationTime = 0.0f;
 
     // 初回設定時など旧モーションが存在しない場合は、ブレンド不要のため即時1.0fをセットする
-    anim_blend_rate_ = (old_animation_index_ == -1 ? 1.0f : 0.0f);
+    m_AnimBlendRate = (m_OldAnimationIndex == -1 ? 1.0f : 0.0f);
 }
 
 /// @param isBlend (ブレンド有効化フラグ)
@@ -139,17 +139,17 @@ void SeparateModelAnimation::SetAnimationBlend(bool isBlend)
 {
     if (isBlend)
     {
-        anim_blend_rate_ = (old_animation_index_ == -1 ? 1.0f : 0.0f);
+        m_AnimBlendRate = (m_OldAnimationIndex == -1 ? 1.0f : 0.0f);
     }
     else
     {
-        anim_blend_rate_ = 1.0f;
+        m_AnimBlendRate = 1.0f;
 
         // ブレンドを行わないため、不要になった旧モーションは即座にメモリから切り離す
-        if (old_animation_index_ != -1)
+        if (m_OldAnimationIndex != -1)
         {
-            MV1DetachAnim(model_handle_, old_animation_index_);
-            old_animation_index_ = -1;
+            MV1DetachAnim(m_ModelHandle, m_OldAnimationIndex);
+            m_OldAnimationIndex = -1;
         }
     }
 }
@@ -158,7 +158,7 @@ void SeparateModelAnimation::SetAnimationBlend(bool isBlend)
 /// @details 外部ファイルからモーションをロードし、NEUTRAL指定時は初期モーションとして自動適用する
 void SeparateModelAnimation::AddAnimation(AnimationState state, std::string filename)
 {
-    int handle = Master::resource_manager_->LoadModel(filename.c_str());
+    int handle = Master::m_ResourceManager->LoadModel(filename.c_str());
 
     if (handle == -1)
     {
@@ -166,9 +166,9 @@ void SeparateModelAnimation::AddAnimation(AnimationState state, std::string file
     }
 
     AnimationInfo* pInfo = new AnimationInfo();
-    pInfo->state_ = state;
-    pInfo->animation_handle_ = handle;
-    animation_info_list_.push_back(pInfo);
+    pInfo->m_State = state;
+    pInfo->m_AnimationHandle = handle;
+    m_AnimationInfoList.push_back(pInfo);
 
     // キャラクター生成直後にTポーズ等の無効状態が描画されるのを防ぐため、待機状態をデフォルト設定する
     if (state == AnimationState::ANIMATION_NEUTRAL)
@@ -182,18 +182,18 @@ void SeparateModelAnimation::AddAnimation(AnimationState state, std::string file
 /// @details なし（状態とハンドルの紐付けリストからの単なる検索処理）
 int SeparateModelAnimation::GetAnimationHandle(AnimationState state)
 {
-    if (animation_info_list_.empty())
+    if (m_AnimationInfoList.empty())
     {
         return -1;
     }
 
-    for (auto itr = animation_info_list_.begin(); itr != animation_info_list_.end(); itr++)
+    for (auto itr = m_AnimationInfoList.begin(); itr != m_AnimationInfoList.end(); itr++)
     {
         auto temp = *itr;
 
-        if (temp->state_ == state)
+        if (temp->m_State == state)
         {
-            return temp->animation_handle_;
+            return temp->m_AnimationHandle;
         }
     }
 

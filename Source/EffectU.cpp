@@ -3,9 +3,9 @@
 
 EffectU::~EffectU()
 {
-    if (playing_handle_ != -1) {
-        EffekseerManager::GetInstance()->StopEffect(playing_handle_);
-        playing_handle_ = -1;
+    if (m_PlayingHandle != -1) {
+        EffekseerManager::GetInstance()->StopEffect(m_PlayingHandle);
+        m_PlayingHandle = -1;
     }
 }
 
@@ -18,40 +18,40 @@ bool EffectU::Load()
 
 void EffectU::StartHold(const VECTOR& playerPos)
 {
-    if (playing_handle_ != -1) {
-        EffekseerManager::GetInstance()->StopEffect(playing_handle_);
+    if (m_PlayingHandle != -1) {
+        EffekseerManager::GetInstance()->StopEffect(m_PlayingHandle);
     }
-    is_holding_ = true;
+    m_IsHolding = true;
 
     VECTOR pos = playerPos;
-    pos.y += y_offset_;
+    pos.y += m_YOffset;
 
-    playing_handle_ = EffekseerManager::GetInstance()->PlayEffect("Mahoujin", pos);
+    m_PlayingHandle = EffekseerManager::GetInstance()->PlayEffect("Mahoujin", pos);
 }
 
 void EffectU::ReleaseAndShatter()
 {
-    if (!is_holding_) return;
+    if (!m_IsHolding) return;
 
-    if (playing_handle_ != -1) {
-        EffekseerManager::GetInstance()->StopEffect(playing_handle_);
-        playing_handle_ = -1;
+    if (m_PlayingHandle != -1) {
+        EffekseerManager::GetInstance()->StopEffect(m_PlayingHandle);
+        m_PlayingHandle = -1;
     }
-    is_holding_ = false;
+    m_IsHolding = false;
 }
 
 void EffectU::UpdateFollow(const VECTOR& playerPos)
 {
-    if (is_holding_ && playing_handle_ != -1)
+    if (m_IsHolding && m_PlayingHandle != -1)
     {
         VECTOR pos = playerPos;
-        pos.y += y_offset_;
+        pos.y += m_YOffset;
 
-        if (EffekseerManager::GetInstance()->IsPlaying(playing_handle_)) {
-            EffekseerManager::GetInstance()->SetEffectPosition(playing_handle_, pos);
+        if (EffekseerManager::GetInstance()->IsPlaying(m_PlayingHandle)) {
+            EffekseerManager::GetInstance()->SetEffectPosition(m_PlayingHandle, pos);
         }
         else {
-            playing_handle_ = -1;
+            m_PlayingHandle = -1;
         }
     }
 }

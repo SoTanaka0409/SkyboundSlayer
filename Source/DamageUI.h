@@ -16,9 +16,9 @@ struct DamagePopUp {
 /// @brief ダメージUIを管理するクラス（シングルトン推奨）
 class DamageUIManager {
 private:
-    std::vector<DamagePopUp> popups_;
-    int font_graph_handles_[10]; // 0~9の数字画像ハンドル
-    bool is_image_loaded_;
+    std::vector<DamagePopUp> m_Popups;
+    int m_FontGraphHandles[10]; // 0~9の数字画像ハンドル
+    bool m_IsImageLoaded;
 
     DamageUIManager();
     ~DamageUIManager();

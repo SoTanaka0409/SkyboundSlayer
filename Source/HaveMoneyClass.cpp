@@ -7,7 +7,7 @@
 
 /// @brief HaveMoneyClassの初期化（コンストラクタ）
 HaveMoneyClass::HaveMoneyClass(int money)
-	:money_(money)
+	:m_Money(money)
 	
 {
 	
@@ -23,7 +23,7 @@ HaveMoneyClass::~HaveMoneyClass()
 /// @brief HaveMoneyClassのAddMoney処理
 void HaveMoneyClass::AddMoney(int money)
 {
-	money_ += money;
+	m_Money += money;
 }
 
 
@@ -54,15 +54,15 @@ void HaveMoneyClass::Draw()
 	DrawLine(panelX, panelY, panelX, panelY + panelH, goldDark, 1);
 	DrawLine(panelX + panelW, panelY, panelX + panelW, panelY + panelH, gold, 1);
 	DrawFormatString(panelX + 18, panelY + 17, GetColor(245, 226, 174), "MONEY");
-	DrawFormatString(panelX + 186, panelY + 17, GetColor(238, 238, 238), "%d", money_);
+	DrawFormatString(panelX + 186, panelY + 17, GetColor(238, 238, 238), "%d", m_Money);
 }
 
 /// @brief HaveMoneyClassのPullMoney処理
 void HaveMoneyClass::PullMoney(int money)
 {
-	auto player_ = Master::player_;
-	auto player = Master::player_;
-	player->have_money_->AddMoney(-money);
+	auto m_Player = Master::m_Player;
+	auto player = Master::m_Player;
+	player->m_HaveMoney->AddMoney(-money);
 	
 
 }

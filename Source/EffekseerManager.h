@@ -66,5 +66,5 @@ private:
     EffekseerManager();
     ~EffekseerManager();
 
-    std::unordered_map<std::string, int> effects_; // 文字列比較による検索負荷をハッシュ計算で軽減するエフェクトキャッシュ
+    std::unordered_map<std::string, int> m_Effects; // 文字列比較による検索負荷をハッシュ計算で軽減するエフェクトキャッシュ
 };

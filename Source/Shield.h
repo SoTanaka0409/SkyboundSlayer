@@ -25,15 +25,15 @@ public:
 
 	/// @brief 現在のシールドの耐久値（HP）を取得する
 	/// @return int 現在のHP
-	int GetHp() { return hp_; }
+	int GetHp() { return m_Hp; }
 
 	/// @brief シールドの耐久値（HP）を設定する
 	/// @param hp 設定するHP値
-	void SetHp(int hp) { hp_ = hp; }
+	void SetHp(int hp) { m_Hp = hp; }
 
 	/// @brief シールドの判定サイズ（半径等）を取得する
 	/// @return float シールドのサイズ値
-	float GetSize() { return size_s_; }
+	float GetSize() { return m_SizeS; }
 
 	/// @brief 新しく生成された直後のシールドかどうかの判定フラグを取得する
 	/// @return bool 新規生成シールドであればtrue
@@ -44,8 +44,8 @@ public:
 	void SetNew(bool New) { NewShield = New; }
 
 private:
-	Model* model_;   ///< シールドの3Dモデル管理ポインタ
-	int hp_;         ///< シールドの耐久値（HP）
-	float size_s_;   ///< シールドの衝突判定用サイズ
+	Model* m_Model;   ///< シールドの3Dモデル管理ポインタ
+	int m_Hp;         ///< シールドの耐久値（HP）
+	float m_SizeS;   ///< シールドの衝突判定用サイズ
 	bool NewShield;  ///< 新しく生成された状態かを示すフラグ
 };

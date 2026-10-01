@@ -19,17 +19,17 @@ namespace {
 /// @brief Cameraのコンストラクタ
 /// @details メンバ変数の初期化を行う
 Camera::Camera()
-	: horizontal_angle_(0.0f)
-	, vertical_angle_(0.0f)
-	, position_(VGet(0.0f, 0.0f, 0.0f))
+	: m_HorizontalAngle(0.0f)
+	, m_VerticalAngle(0.0f)
+	, m_Position(VGet(0.0f, 0.0f, 0.0f))
 	, mvLookAtPosition(VGet(0.0f, 0.0f, 0.0f))
-	, target_(nullptr)
-	, shake_angle_(0.0f)
-	, shake_time_counter_(0.0f)
-	, shake_time_(0.0f)
-	, shake_width_(0.0f)
-	, shake_angle_speed_(0.0f)
-	, step_time_(0.0f)
+	, m_Target(nullptr)
+	, m_ShakeAngle(0.0f)
+	, m_ShakeTimeCounter(0.0f)
+	, m_ShakeTime(0.0f)
+	, m_ShakeWidth(0.0f)
+	, m_ShakeAngleSpeed(0.0f)
+	, m_StepTime(0.0f)
 	, mvShakePosition(VGet(0.0f, 0.0f, 0.0f))
 {
 }
@@ -43,12 +43,12 @@ Camera::~Camera()
 /// @details 初期座標および回転のリセット、描画クリッピング距離の設定を行う
 void Camera::Initialize()
 {
-	target_ = nullptr;
+	m_Target = nullptr;
 	SetCameraNearFar(100.0f, Config::CameraFar);
 
 	SetBackgroundColor(0, 0, 0);
 
-	SetCameraPositionAndTarget_UpVecY(position_, mvLookAtPosition);
+	SetCameraPositionAndTarget_UpVecY(m_Position, mvLookAtPosition);
 
 	Update();
 }
@@ -65,18 +65,18 @@ void Camera::Update()
 void Camera::UpdateThirdPersonCamera()
 {
 	VECTOR targetPos = VGet(0, 0, 0);
-	if (is_cutscene_mode_)
+	if (m_IsCutsceneMode)
 	{
 		targetPos = mCutsceneTargetPos;
 	}
-	else if (target_ != nullptr)
+	else if (m_Target != nullptr)
 	{
-		targetPos = target_->GetPosition();
+		targetPos = m_Target->GetPosition();
 	}
 
-	if (target_ == nullptr)
+	if (m_Target == nullptr)
 	{
-		target_ = Master::player_;
+		m_Target = Master::m_Player;
 	}
 
 	UpdateRotation();
@@ -89,7 +89,7 @@ void Camera::UpdateThirdPersonCamera()
 /// @param targetPos 基準となるターゲット座標
 void Camera::UpdateLookAtPosition(VECTOR targetPos)
 {
-	if (is_cutscene_mode_ || target_ != nullptr)
+	if (m_IsCutsceneMode || m_Target != nullptr)
 	{
 		mvLookAtPosition = targetPos;
 		mvLookAtPosition.y += kTargetOffsetY;
@@ -105,35 +105,35 @@ void Camera::UpdateLookAtPosition(VECTOR targetPos)
 void Camera::UpdateCameraPosition()
 {
 	VECTOR temp; // 計算用一時変数
-	temp.x = kCameraCalcRadius * cosf(vertical_angle_ / 180.0f * (3.1415926535897932384626433832795f)) * sinf(horizontal_angle_ / 180.0f * DX_PI_F);
-	temp.y = kCameraCalcRadius * sinf(-vertical_angle_ / 180.0f * (3.1415926535897932384626433832795f));
-	temp.z = -(kCameraDistance * cosf(vertical_angle_ / 180.0f * DX_PI_F) * cosf(horizontal_angle_ / 180.0f * DX_PI_F));
-	position_ = VAdd(temp, mvLookAtPosition);
+	temp.x = kCameraCalcRadius * cosf(m_VerticalAngle / 180.0f * (3.1415926535897932384626433832795f)) * sinf(m_HorizontalAngle / 180.0f * DX_PI_F);
+	temp.y = kCameraCalcRadius * sinf(-m_VerticalAngle / 180.0f * (3.1415926535897932384626433832795f));
+	temp.z = -(kCameraDistance * cosf(m_VerticalAngle / 180.0f * DX_PI_F) * cosf(m_HorizontalAngle / 180.0f * DX_PI_F));
+	m_Position = VAdd(temp, mvLookAtPosition);
 
-	SetCameraPositionAndTarget_UpVecY(VAdd(position_, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
+	SetCameraPositionAndTarget_UpVecY(VAdd(m_Position, mvShakePosition), VAdd(mvLookAtPosition, mvShakePosition));
 }
 
 /// @brief マウス入力によるカメラの角度更新処理を行う
 /// @details 水平・垂直角度のクランプ処理およびマウス差分による回転加算を行う
 void Camera::UpdateRotation()
 {
-	if (horizontal_angle_ >= 180.0f)
+	if (m_HorizontalAngle >= 180.0f)
 	{
-		horizontal_angle_ -= 360.0f;
+		m_HorizontalAngle -= 360.0f;
 	}
-	if (horizontal_angle_ <= -180.0f)
+	if (m_HorizontalAngle <= -180.0f)
 	{
-		horizontal_angle_ += 360.0f;
-	}
-
-	if (vertical_angle_ >= 80.0f)
-	{
-		vertical_angle_ = 80.0f;
+		m_HorizontalAngle += 360.0f;
 	}
 
-	if (vertical_angle_ <= -80.0f)
+	if (m_VerticalAngle >= 80.0f)
 	{
-		vertical_angle_ = -80.0f;
+		m_VerticalAngle = 80.0f;
+	}
+
+	if (m_VerticalAngle <= -80.0f)
+	{
+		m_VerticalAngle = -80.0f;
 	}
 
 	int mouseX, mouseY;
@@ -142,15 +142,15 @@ void Camera::UpdateRotation()
 	int centerX = 640;
 	int centerY = 360;
 
-	auto sceneType = Master::scene_manager_->GetCurrentSceneType();
-	if (sceneType == SceneManager::kGameScene && !Master::is_pause_on_) {
+	auto sceneType = Master::m_SceneManager->GetCurrentSceneType();
+	if (sceneType == SceneManager::kGameScene && !Master::m_IsPauseOn) {
 		SetMousePoint(centerX, centerY);
 
 		int deltaX = mouseX - centerX;
 		int deltaY = mouseY - centerY;
 
-		horizontal_angle_ -= deltaX * kMouseSensitivity;
-		vertical_angle_ -= deltaY * kMouseSensitivity;
+		m_HorizontalAngle -= deltaX * kMouseSensitivity;
+		m_VerticalAngle -= deltaY * kMouseSensitivity;
 	}
 }
 
@@ -158,15 +158,15 @@ void Camera::UpdateRotation()
 /// @details 一時的なカメラ座標のオフセット（mvShakePosition）を算出する
 void Camera::Shake()
 {
-	if (shake_time_counter_ < shake_time_)
+	if (m_ShakeTimeCounter < m_ShakeTime)
 	{
-		mvShakePosition.y = sinf(shake_angle_) * (1.0f - (shake_time_counter_ / shake_time_)) * shake_width_;
+		mvShakePosition.y = sinf(m_ShakeAngle) * (1.0f - (m_ShakeTimeCounter / m_ShakeTime)) * m_ShakeWidth;
 		mvShakePosition.x = 0.0f;
 		mvShakePosition.z = 0.0f;
 
-		shake_angle_ += shake_angle_speed_ * step_time_;
+		m_ShakeAngle += m_ShakeAngleSpeed * m_StepTime;
 
-		shake_time_counter_ += step_time_;
+		m_ShakeTimeCounter += m_StepTime;
 	}
 	else
 	{
@@ -181,11 +181,11 @@ void Camera::Shake()
 /// @param stepTime 時間経過ステップ量
 void Camera::SetupShake(float time, float width, float angleSpeed, float stepTime)
 {
-	shake_time_counter_ = 0.0f;
-	shake_time_ = time;
-	shake_width_ = width;
-	shake_angle_speed_ = angleSpeed;
-	step_time_ = stepTime;
+	m_ShakeTimeCounter = 0.0f;
+	m_ShakeTime = time;
+	m_ShakeWidth = width;
+	m_ShakeAngleSpeed = angleSpeed;
+	m_StepTime = stepTime;
 }
 
 /// @brief カメラの終了処理を行う

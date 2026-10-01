@@ -41,7 +41,7 @@ public:
 
 	/// @brief エフェクトが現在アクティブ（再生中）かどうかを取得する
 	/// @return bool 再生中ならtrue
-	bool IsActive() const { return active_; }
+	bool IsActive() const { return m_Active; }
 
 	/// @brief パーティクルの移動・減衰・タイマー等の更新処理を行う
 	void Update();
@@ -50,9 +50,9 @@ public:
 	void Draw();
 
 private:
-	bool active_;             ///< エフェクトが有効・再生中かどうかを示すフラグ
-	int graph_handle_;        ///< パーティクル描画用画像グラフィックハンドル
-	EffectInfo* effect_;      ///< 動的確保されたエフェクトデータ構造体へのポインタ
+	bool m_Active;             ///< エフェクトが有効・再生中かどうかを示すフラグ
+	int m_GraphHandle;        ///< パーティクル描画用画像グラフィックハンドル
+	EffectInfo* m_Effect;      ///< 動的確保されたエフェクトデータ構造体へのポインタ
 
 	const int SPEED_RAND_MAX = 550;        ///< 移動速度計算用の最大乱数値
 	const int SPEED_RAND_MIN = 200;        ///< 移動速度計算用の最小乱数値

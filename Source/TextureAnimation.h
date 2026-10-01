@@ -21,10 +21,10 @@ public:
     void Draw();    // 描画
 
 private:
-    VECTOR position_;  // ポジション
-    int counter_;      // アニメーションカウンタ
-    int interval_;     // テクスチャ切り替えのフレーム数
-    int current_num_;   // 何番目のテクスチャを表示するか
-    int* handle_list_;  // 分割されたテクスチャのハンドルリスト
-    int all_num_;       // テクスチャ分割数
+    VECTOR m_Position;  // ポジション
+    int m_Counter;      // アニメーションカウンタ
+    int m_Interval;     // テクスチャ切り替えのフレーム数
+    int m_CurrentNum;   // 何番目のテクスチャを表示するか
+    int* m_HandleList;  // 分割されたテクスチャのハンドルリスト
+    int m_AllNum;       // テクスチャ分割数
 };

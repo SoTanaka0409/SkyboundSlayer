@@ -32,7 +32,7 @@ void EnemyManager::Update()
 /// @param date 生成する敵のパラメータ構造体（タグ、出現位置、HP、モデルパス等）
 void EnemyManager::NewEnemyList(enemydate date)
 {
-	auto pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
+	auto pObjList = Master::m_SceneManager->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Object);
 
 	// 障害物オブジェクト（Tag3D_Object）の周り500 unit以内を避けて安全なスポーン座標を返すラムダ式
 	auto GetSafeSpawnPos = [&](VECTOR center, VECTOR range) -> VECTOR {
@@ -73,7 +73,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			ene_list_.push_back(new Enemy3D_AT(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.attack, date.money, date.is_separate_anim_));
+			m_EneList.push_back(new Enemy3D_AT(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.attack, date.money, date.m_IsSeparateAnim));
 		}
 	}
 
@@ -82,18 +82,18 @@ void EnemyManager::NewEnemyList(enemydate date)
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			ene_list_.push_back(new Enemy3D(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.is_separate_anim_));
+			m_EneList.push_back(new Enemy3D(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.m_IsSeparateAnim));
 		}
 	}
 
 	if (date.tag == boss_stage1)
 	{
-		ene_list_.push_back(new EnemyBoss_1(date.filename, date.initPos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.is_separate_anim_));
+		m_EneList.push_back(new EnemyBoss_1(date.filename, date.initPos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.m_IsSeparateAnim));
 	}
 
 	if (date.tag == night_Defo)
 	{
-		ene_list_.push_back(new Enemy3D_AT("Resource/model/character/01_human.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, date.money, true));
+		m_EneList.push_back(new Enemy3D_AT("Resource/model/character/01_human.mv1", date.initPos, 20, 5.0f, 60.0f, 1000, 100, 100, 3, date.money, true));
 	}
 
 	if (date.tag == monster_stage1)
@@ -101,7 +101,7 @@ void EnemyManager::NewEnemyList(enemydate date)
 		for (int i = 0; i < date.Count; i++)
 		{
 			VECTOR initpos = GetSafeSpawnPos(date.spawnCenter, date.initPos);
-			ene_list_.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.is_separate_anim_));
+			m_EneList.push_back(new EnemyMonster(date.filename, initpos, date.hp, date.speed, date.HitSize, date.Serch1, date.Serch2, date.Serch3, date.money, date.m_IsSeparateAnim));
 		}
 	}
 }

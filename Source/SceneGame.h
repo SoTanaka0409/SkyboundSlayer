@@ -39,9 +39,9 @@ public:
 	bool IsBattlePhase() const;
 
 public:
-	GameManager* game_manager_;   ///< フェーズ進行やルール判定を統括するマネージャーポインタ
-	EnemyManager* enemy_manager_; ///< 敵オブジェクトの生成・管理を担当するマネージャーポインタ
+	GameManager* m_GameManager;   ///< フェーズ進行やルール判定を統括するマネージャーポインタ
+	EnemyManager* m_EnemyManager; ///< 敵オブジェクトの生成・管理を担当するマネージャーポインタ
 
 protected:
-	GameManager::Difficulty initial_difficulty_; ///< シーン生成時に指定された選択難易度設定
+	GameManager::Difficulty m_InitialDifficulty; ///< シーン生成時に指定された選択難易度設定
 };

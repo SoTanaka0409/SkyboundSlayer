@@ -104,7 +104,7 @@ namespace
 
 /// @details 演出進行用タイマーの初期化
 ResultScene::ResultScene()
-	: all_timer_(0)
+	: m_AllTimer(0)
 {
 }
 
@@ -115,8 +115,8 @@ ResultScene::~ResultScene()
 /// @details スコア保存処理の実行と、リザルト専用BGM・環境光・カメラの適用
 void ResultScene::Initialize()
 {
-	Master::sound_manager_->PlayBGM(SoundManager::BGM_RESULT);
-	Master::score_manager_->SaveHighScore(); // アプリ強制終了時にスコアが失われるのを防ぐため早期保存
+	Master::m_SoundManager->PlayBGM(SoundManager::BGM_RESULT);
+	Master::m_ScoreManager->SaveHighScore(); // アプリ強制終了時にスコアが失われるのを防ぐため早期保存
 
 	LoadResultStage();
 	SetLightEnable(TRUE);
@@ -129,7 +129,7 @@ void ResultScene::Initialize()
 /// @details アニメーションタイマーの加算と画面遷移入力の監視
 void ResultScene::Update()
 {
-	all_timer_++;
+	m_AllTimer++;
 	SetResultCamera();
 	Scene::Update();
 	HandleReturnInput();
@@ -139,14 +139,14 @@ void ResultScene::Update()
 void ResultScene::HandleReturnInput()
 {
 	// 演出のスキップによるUX低下や、ロード直後の誤操作を防ぐため入力を一定時間ブロック
-	if (all_timer_ < 100)
+	if (m_AllTimer < 100)
 	{
 		return;
 	}
 
 	if (InputManager::CheckMouseClickLeft() || InputManager::CheckDownKey(KEY_INPUT_BACK))
 	{
-		Master::scene_manager_->SetNextScene(SceneManager::kSceneTitle);
+		Master::m_SceneManager->SetNextScene(SceneManager::kSceneTitle);
 	}
 }
 
@@ -190,10 +190,10 @@ void ResultScene::DrawResultPanel()
 /// @details タイマーに依存したイージング計算によるヘッダーテキストの描画
 void ResultScene::DrawResultHeader()
 {
-	float ease1 = EaseOutCubic(all_timer_ / 30.0f); // 30フレームかけて完了するスライドイン補間
+	float ease1 = EaseOutCubic(m_AllTimer / 30.0f); // 30フレームかけて完了するスライドイン補間
 	int titleX = (int)(PanelX - 620 + (620 * ease1));
 
-	const bool isWin = Master::score_manager_ == nullptr || Master::score_manager_->IsResultVictory();
+	const bool isWin = Master::m_ScoreManager == nullptr || Master::m_ScoreManager->IsResultVictory();
 	const char* title = isWin ? "QUEST CLEARED" : "QUEST FAILED";
 	const char* subtitle = isWin ? "FLOATING STAGE SECURED" : "QUEST FAILED";
 
@@ -208,45 +208,45 @@ void ResultScene::DrawResultHeader()
 void ResultScene::DrawResultStats()
 {
 	// 段階的な演出仕様を満たすため、ヘッダー描画完了(30フレーム)まで処理を待機
-	if (all_timer_ < 30)
+	if (m_AllTimer < 30)
 	{
 		return;
 	}
 
-	float ease2 = EaseOutCubic((all_timer_ - 30) / 28.0f);
+	float ease2 = EaseOutCubic((m_AllTimer - 30) / 28.0f);
 	int contentX = (int)(PanelX - 620 + (620 * ease2));
 
 	SetFontSize(28);
 	DrawFormatString(contentX + 34, PanelY + 218, GetColor(255, 225, 160), "BATTLE RESULT");
 	SetFontSize(30);
 	DrawFormatString(contentX + 54, PanelY + 270, GetColor(236, 239, 242), "Defeated Enemies");
-	DrawFormatString(contentX + 390, PanelY + 270, GetColor(255, 255, 255), "%3d", Master::score_manager_->GetDefeatedEnemies());
+	DrawFormatString(contentX + 390, PanelY + 270, GetColor(255, 255, 255), "%3d", Master::m_ScoreManager->GetDefeatedEnemies());
 	DrawFormatString(contentX + 54, PanelY + 326, GetColor(236, 239, 242), "Potions Used");
-	DrawFormatString(contentX + 390, PanelY + 326, GetColor(255, 255, 255), "%3d", Master::score_manager_->GetUsedPotions());
+	DrawFormatString(contentX + 390, PanelY + 326, GetColor(255, 255, 255), "%3d", Master::m_ScoreManager->GetUsedPotions());
 
 	DrawLine(PanelX + 34, PanelY + 410, PanelX + PanelW - 34, PanelY + 410, GetColor(86, 72, 45), 1);
 	SetFontSize(28);
 	DrawFormatString(contentX + 34, PanelY + 458, GetColor(255, 190, 190), "FINAL STATUS");
 	SetFontSize(30);
 	DrawFormatString(contentX + 54, PanelY + 512, GetColor(180, 255, 178), "Max HP");
-	DrawFormatString(contentX + 390, PanelY + 512, GetColor(255, 255, 255), "%3.0f", Master::score_manager_->GetFinalHp());
+	DrawFormatString(contentX + 390, PanelY + 512, GetColor(255, 255, 255), "%3.0f", Master::m_ScoreManager->GetFinalHp());
 	DrawFormatString(contentX + 54, PanelY + 568, GetColor(255, 150, 150), "Attack");
-	DrawFormatString(contentX + 390, PanelY + 568, GetColor(255, 255, 255), "%3.0f", Master::score_manager_->GetFinalAttack());
+	DrawFormatString(contentX + 390, PanelY + 568, GetColor(255, 255, 255), "%3.0f", Master::m_ScoreManager->GetFinalAttack());
 	DrawFormatString(contentX + 54, PanelY + 624, GetColor(158, 214, 255), "Speed");
-	DrawFormatString(contentX + 390, PanelY + 624, GetColor(255, 255, 255), "%3.0f", Master::score_manager_->GetFinalSpeed());
+	DrawFormatString(contentX + 390, PanelY + 624, GetColor(255, 255, 255), "%3.0f", Master::m_ScoreManager->GetFinalSpeed());
 }
 
 /// @details プレイヤーに画面遷移の操作が可能であることを示す、透過度計算を用いた点滅UIの描画
 void ResultScene::DrawResultFooter()
 {
 /// @param ブロック期間中はナビゲーションUIを非表示にする
-	if (all_timer_ < 100)
+	if (m_AllTimer < 100)
 	{
 		return;
 	}
 
 	const int gold = GetColor(218, 178, 86);
-	int alpha = (all_timer_ % 60 < 30) ? 255 : 105; // 60フレーム周期の明滅アニメーション
+	int alpha = (m_AllTimer % 60 < 30) ? 255 : 105; // 60フレーム周期の明滅アニメーション
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	SetFontSize(30);
 	DrawBox(PanelX + 74, PanelY + 744, PanelX + PanelW - 74, PanelY + 806, GetColor(38, 34, 26), TRUE);
@@ -257,5 +257,5 @@ void ResultScene::DrawResultFooter()
 
 void ResultScene::Finalize()
 {
-	Master::sound_manager_->StopBGM();
+	Master::m_SoundManager->StopBGM();
 }

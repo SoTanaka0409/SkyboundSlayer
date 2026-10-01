@@ -23,17 +23,17 @@ public:
 	void HitAddCombo();
 
 private:
-	int combo_;          ///< 現在の連続ヒット（コンボ）数
+	int m_Combo;          ///< 現在の連続ヒット（コンボ）数
 	int handle;          ///< コンボ表示用グラフィックハンドル
 
-	Texture* texture0_; 
-	Texture* texture1_; 
-	Texture* texture2_; 
-	Texture* texture3_; 
-	Texture* texture4_; 
-	Texture* texture5_; 
-	Texture* texture6_; 
-	Texture* texture7_; 
-	Texture* texture8_; 
-	Texture* texture9_; 
+	Texture* m_Texture0; 
+	Texture* m_Texture1; 
+	Texture* m_Texture2; 
+	Texture* m_Texture3; 
+	Texture* m_Texture4; 
+	Texture* m_Texture5; 
+	Texture* m_Texture6; 
+	Texture* m_Texture7; 
+	Texture* m_Texture8; 
+	Texture* m_Texture9; 
 };

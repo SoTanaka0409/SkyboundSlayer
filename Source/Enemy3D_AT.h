@@ -25,8 +25,8 @@ public:
 	/// @param Serch3 接近停止判定の半径
 	/// @param Attack 攻撃力
 	/// @param money 倒した際の所持金（獲得スコア）
-	/// @param is_separate_anim_ アニメーション分離処理を行うかどうかのフラグ
-	Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float Attack, int money, bool is_separate_anim_);
+	/// @param m_IsSeparateAnim アニメーション分離処理を行うかどうかのフラグ
+	Enemy3D_AT(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, float Attack, int money, bool m_IsSeparateAnim);
 
 	/// @brief Enemy3D_ATクラスのデストラクタ
 	~Enemy3D_AT();

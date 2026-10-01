@@ -11,9 +11,9 @@
 class GameScene : public SceneGame
 {
 private:
-    PauseMenu* pause_menu_;
-    Texture* texture_;  // ロード画面や警告UIなどで使用する2Dテクスチャ（汎用背景等）
-    Texture* texture2_; // 汎用UIやエフェクト用のサブテクスチャ
+    PauseMenu* m_PauseMenu;
+    Texture* m_Texture;  // ロード画面や警告UIなどで使用する2Dテクスチャ（汎用背景等）
+    Texture* m_Texture2; // 汎用UIやエフェクト用のサブテクスチャ
 
 public:
 /// @details 3Dゲームシーン固有のタイマーや状態フラグを安全な初期値にセットアップする
@@ -31,7 +31,7 @@ public:
 /// @details 3D空間（地形・キャラ）の描画パスを実行後、Zバッファを無視して手前に2D UI（ロードバー等）を描画する
     void Draw();
 
-/// @details ロード完了フラグ(is_load_flag_)を監視し、完了後は各アクターやゲームマネージャーのロジックを進行させる
+/// @details ロード完了フラグ(m_IsLoadFlag)を監視し、完了後は各アクターやゲームマネージャーのロジックを進行させる
     void Update();
 
 private:
@@ -48,13 +48,13 @@ private:
 /// @details デバッグビルド時のみ、XZ平面に距離感把握用のグリッド線を描画バッファへ登録する
     void DrawDebugGrid();
 
-    float warning_radius_; // ボス出現時など、特定エリアの接近警告エフェクトを描画するための現在の半径
-    float max_radius_ = 520.0f; // 警告エフェクトが広がる最大範囲（この値に達すると点滅等の演出へ移行）
+    float m_WarningRadius; // ボス出現時など、特定エリアの接近警告エフェクトを描画するための現在の半径
+    float m_MaxRadius = 520.0f; // 警告エフェクトが広がる最大範囲（この値に達すると点滅等の演出へ移行）
 
-    float load_timer_;     // アセットの非同期読み込み中にプログレスバーやロード演出を進行させるためのタイマー
-    float load_count_;     // 読み込みが完了したアセットの数（ロード進捗率の計算用）
-    bool is_load_flag_;    // 全リソースの準備が完了し、Updateによるメインロジックを開始してよいかを示すフラグ
+    float m_LoadTimer;     // アセットの非同期読み込み中にプログレスバーやロード演出を進行させるためのタイマー
+    float m_LoadCount;     // 読み込みが完了したアセットの数（ロード進捗率の計算用）
+    bool m_IsLoadFlag;    // 全リソースの準備が完了し、Updateによるメインロジックを開始してよいかを示すフラグ
 
-    VECTOR pos_ = { 200, 400 }; // 画面ロード時や警告UI表示時の基準となるスクリーン2D座標
-    VECTOR size_ = { 600, 100 }; // UI要素（プログレスバーや背景パネル）のピクセルサイズ
+    VECTOR m_Pos = { 200, 400 }; // 画面ロード時や警告UI表示時の基準となるスクリーン2D座標
+    VECTOR m_Size = { 600, 100 }; // UI要素（プログレスバーや背景パネル）のピクセルサイズ
 };

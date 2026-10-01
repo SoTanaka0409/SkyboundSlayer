@@ -33,27 +33,27 @@ public:
 	/// @brief シーンマネージャーの終了処理および現在シーンのメモリ解放を行う
 	void Finalize();
 
-	/// @brief 次のシーンへの遷移要求（next_scene_type_）がある場合、シーンの切り替えを実行する
+	/// @brief 次のシーンへの遷移要求（m_NextSceneType）がある場合、シーンの切り替えを実行する
 	void ChangeSceneIfNeeded();
 
 	/// @brief 次に遷移するシーンの種類を設定する
 	/// @param next 遷移先のSceneType
-	void SetNextScene(SceneType next) { next_scene_type_ = next; }
+	void SetNextScene(SceneType next) { m_NextSceneType = next; }
 
 	/// @brief 現在アクティブなシーンのポインタを取得する
 	/// @return Scene* 現在のシーンポインタ
-	Scene* GetCurrentScene() { return current_scene_; }
+	Scene* GetCurrentScene() { return m_CurrentScene; }
 
 	/// @brief 現在のシーンの種類（SceneType）を取得する
 	/// @return SceneType 現在のシーン識別タイプ
-	SceneType GetCurrentSceneType() { return scene_type_; }
+	SceneType GetCurrentSceneType() { return m_SceneType; }
 
 	/// @brief ゲーム本編シーン（SceneGame）のポインタを取得する
 	/// @return SceneGame* ゲーム本編シーンポインタ（他シーンの場合はnullptr）
 	SceneGame* GetSceneGame();
 
 private:
-	SceneType scene_type_;        ///< 現在実行中のシーン識別タイプ
-	SceneType next_scene_type_;   ///< 次フレームで遷移予約されているシーン識別タイプ
-	Scene* current_scene_;        ///< 現在アクティブなシーンオブジェクトへのポインタ
+	SceneType m_SceneType;        ///< 現在実行中のシーン識別タイプ
+	SceneType m_NextSceneType;   ///< 次フレームで遷移予約されているシーン識別タイプ
+	Scene* m_CurrentScene;        ///< 現在アクティブなシーンオブジェクトへのポインタ
 };
