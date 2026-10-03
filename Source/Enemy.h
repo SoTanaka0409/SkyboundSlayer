@@ -74,7 +74,7 @@ public:
 	/// @brief 敵にダメージを与える
 	/// @param damage 被ダメージ量
 	/// @details HPの減算処理および、0以下になった際の死亡ステート（is_dead_）への移行発火を行う
-	virtual void Damage(float damage);
+	virtual void Damage(float damage, bool play_sound = true);
 
 	/// @brief 攻撃パターンのリスト処理を行う
 	virtual void AttackList();

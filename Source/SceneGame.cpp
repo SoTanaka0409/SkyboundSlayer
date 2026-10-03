@@ -1,8 +1,8 @@
-#include "SceneGame.h"
+ï»¿#include "SceneGame.h"
 
 
 
-/// @brief SceneGame‚Ì‰Šú‰»iƒRƒ“ƒXƒgƒ‰ƒNƒ^j
+/// @brief SceneGameã®åˆæœŸåŒ–ï¼ˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ï¼‰
 SceneGame::SceneGame(GameManager::Difficulty diff)
 	: initial_difficulty_(diff)
 	, game_manager_(nullptr)
@@ -16,7 +16,7 @@ SceneGame::~SceneGame()
 
 
 
-/// @brief SceneGame‚Ì‰Šú‰»ˆ—
+/// @brief SceneGameã®åˆæœŸåŒ–å‡¦ç†
 void SceneGame::Initialize()
 {
 	if (enemy_manager_ == nullptr)
@@ -31,7 +31,7 @@ void SceneGame::Initialize()
 
 
 
-/// @brief SceneGame‚Ìó‘ÔXVˆ—
+/// @brief SceneGameã®çŠ¶æ…‹æ›´æ–°å‡¦ç†
 void SceneGame::Update()
 {
 	if (Master::hit_stop_timer_ > 0)
@@ -51,7 +51,7 @@ void SceneGame::Update()
 
 
 
-/// @brief SceneGame‚Ì•`‰æˆ—
+/// @brief SceneGameã®æç”»å‡¦ç†
 void SceneGame::Draw()
 {
 	Scene::Draw();
@@ -63,7 +63,7 @@ void SceneGame::Draw()
 
 
 
-/// @brief SceneGame‚ÌFinalizeˆ—
+/// @brief SceneGameã®Finalizeå‡¦ç†
 void SceneGame::Finalize()
 {
 	if (game_manager_)
@@ -80,7 +80,7 @@ void SceneGame::Finalize()
 
 
 
-/// @brief SceneGame‚ÌIsShopPhaseˆ—
+/// @brief SceneGameã®IsShopPhaseå‡¦ç†
 bool SceneGame::IsShopPhase() const
 {
 	if (!game_manager_) return false;
@@ -92,7 +92,7 @@ bool SceneGame::IsShopPhase() const
 
 
 
-/// @brief SceneGame‚ÌIsBattlePhaseˆ—
+/// @brief SceneGameã®IsBattlePhaseå‡¦ç†
 bool SceneGame::IsBattlePhase() const
 {
 	if (!game_manager_) return false;

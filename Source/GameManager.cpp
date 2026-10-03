@@ -9,6 +9,7 @@
 #include "Tree.h"
 #include "InputManager.h"
 #include "EffekseerObject.h"
+#include "DamageUI.h"
 
 namespace
 {
@@ -80,6 +81,7 @@ GameManager::GameManager(EnemyManager* enemyManager, Difficulty diff)
 /// @brief GameManagerのデストラクタ
 GameManager::~GameManager()
 {
+	DamageUIManager::GetInstance()->Unload();
 }
 
 /// @brief 毎フレームの更新処理を行う
@@ -106,6 +108,8 @@ void GameManager::Update()
 	{
 		UpdateBattlePhase();
 	}
+
+	DamageUIManager::GetInstance()->Update();
 }
 
 /// @brief ボスカットシーン中のカメラ座標やタイマーを更新する
@@ -463,6 +467,7 @@ void GameManager::Draw()
 	DrawShopBanner();
 	DrawBossFade();
 	DrawDebugPanel();
+	DamageUIManager::GetInstance()->Draw();
 }
 
 /// @brief デバッグ用操作パネルおよびボタンを画面上に描画する
@@ -485,7 +490,7 @@ void GameManager::DrawDebugPanel()
 	const DebugButton bossButton = { 202, 104, 132, 40, "GO BOSS" };
 
 	static int font18 = -1;
-	if (font18 == -1) font18 = CreateFontToHandle(NULL, 18, -1);
+	if (font18 == -1) font18 = CreateFontToHandle("源界明朝", 18, -1);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 165);
 	DrawBox(panelX, panelY, panelX + panelW, panelY + panelH, GetColor(0, 0, 0), true);
@@ -560,7 +565,7 @@ int GameManager::GetEnemyCount() const
 void GameManager::DrawPhaseHud()
 {
 	static int font24 = -1;
-	if (font24 == -1) font24 = CreateFontToHandle(NULL, 24, -1);
+	if (font24 == -1) font24 = CreateFontToHandle("源界明朝", 24, -1);
 
 	const int panelX = Config::ScreenWidth - 356;
 	const int panelY = 28;
@@ -595,7 +600,7 @@ void GameManager::DrawShopBanner()
 	}
 
 	static int font28 = -1;
-	if (font28 == -1) font28 = CreateFontToHandle(NULL, 28, -1);
+	if (font28 == -1) font28 = CreateFontToHandle("源界明朝", 28, -1);
 
 	const int bannerW = 700;
 	const int bannerX = Config::ScreenWidth / 2 - bannerW / 2;
@@ -700,7 +705,7 @@ void GameManager::SpawnPhase1Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/01_player.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(3000.0f, 100.0f, 3000.0f),
 		20,
@@ -721,7 +726,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 {
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/model/character/01_player.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(8000.0f, 100.0f, 8000.0f),
 		20,
@@ -737,7 +742,7 @@ void GameManager::SpawnPhase2Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/01_player.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(2000.0f, 100.0f, 2000.0f),
 		20,
@@ -774,7 +779,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::archerl_stage1,
-		"Resource/model/character/01_player.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,
@@ -790,7 +795,7 @@ void GameManager::SpawnPhase3Enemies(const VECTOR& centerPos)
 
 	AddEnemy(MakeEnemyData(
 		EnemyManager::night_stage1,
-		"Resource/model/character/01_player.mv1",
+		"Resource/model/character/02_enemy.mv1",
 		centerPos,
 		VGet(6000.0f, 100.0f, 6000.0f),
 		20,

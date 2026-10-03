@@ -24,10 +24,10 @@
 EnemyBoss_1::EnemyBoss_1(std::string filename, VECTOR initPos, float hp, float speed, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	:Enemy(filename, initPos, hp, speed, 2, HitSize, Serch1, Serch2, Serch3, money, is_separate_anim_)
 {
-	mfjumpPower = 150.0f;       // ジャンプ攻撃時の最大到達高度
+	mfjumpPower = 150.0f;       // ジャンプ攻撃の最大到達高度
 	HighPositionFlag = false;   // ジャンプの頂点到達状態の管理
 	attack_type_ = BossAttackType::kCombo;           // 現在の攻撃パターンの種類
-	attack1_combo_count_ = 0;   // 連続魔法攻撃の残り発動回数
+	attack1_combo_count_ = 0;   // 騾｣邯夐ｭ疲ｳ墓判謦・・谿九ｊ逋ｺ蜍募屓謨ｰ
 	chance_ = kAttackChanceThreshold;               // 攻撃頻度の重み付けパラメータ
 	attack_interval_ = 60;      // 連続攻撃を防ぐためのクールタイム（フレーム）
 	attack_count_ = 0;          // クールタイム計測用カウンタ
@@ -59,7 +59,7 @@ void EnemyBoss_1::Update()
 	SceneGame* game = Master::scene_manager_->GetSceneGame();
 	if (game && game->game_manager_) {
 		auto phase = game->game_manager_->GetCurrentPhase();
-		// 画面遷移中に予期せぬ攻撃や座標移動が発生するバグを防ぐため処理を停止
+		// 画面遷移中に予期せぬ攻撃・座標移動が発生するバグを防ぐため処理を停止
 		if (phase == GameManager::Phase::kFadeOutToBoss || phase == GameManager::Phase::kFadeInBoss) {
 			return;
 		}
@@ -75,7 +75,7 @@ void EnemyBoss_1::Update()
 		{
 
 			Attack();
-			// 攻撃モーション中の不自然な滑り移動を防ぐため座標更新を停止
+		// 攻撃モーション中の不自然な滑り移動を防ぐため座標更新を停止
 			if (model_->GetNowState() != ANIMATION_ATTACK && model_->GetNowState() != ANIMATION_ATTACKJUMP)
 			{
 				RotationByMove();
@@ -84,14 +84,14 @@ void EnemyBoss_1::Update()
 
 			UpdateJumpPhysics();
 
-			// 攻撃中（Move()が呼ばれない間）もモデルの座標を物理座標に同期させる
+		// 攻撃中などMove()が呼ばれない時もモデルの座標を物理座標に同期させる
 			model_->SetPosition(position_);
 
 			model_->Update();
 			UpdateColliderPosition();
 			jump_attack_coiider_->position_ = position_;
 
-			// 地面抜けバグを防ぐためのY座標の下限補正
+		// 地面抜けバグを防ぐためのY座標の下限補正
 			if (position_.y < init_position_.y)
 			{
 				position_.y = init_position_.y;
@@ -116,7 +116,7 @@ void EnemyBoss_1::Attack()
 {
 	AnimationState now = model_->GetNowState();
 
-	// クールタイム消化済みかつターゲットを捕捉している場合のみ攻撃開始
+			// クールタイム消化済みかつターゲットを捕捉している場合のみ攻撃開始
 	if (attack_count_ >= attack_interval_ && is_hit_attack_search_flag_)
 	{
 		attack_count_ = 0;
@@ -181,7 +181,7 @@ void EnemyBoss_1::Attack()
 	}
 }
 
-/// @param 自身のコライダー、衝突対象のコライダー
+/// @param collider 自身のコライダー、check 衝突対象のコライダー
 /// @details プレイヤーのHP減少と、ヒット済みフラグの設定
 void EnemyBoss_1::OnTrigger(Collider* collider, Collider* check)
 {
@@ -292,9 +292,12 @@ void EnemyBoss_1::UpdateJumpPhysics()
 			position_.z += jump_target_dir_.z * forward_speed_;
 			jump_velocity_ -= gravity_;
 
-			// 着地判定
+			// 逹蝨ｰ蛻､螳・
 			if (position_.y <= init_position_.y)
 			{
+				if (jump_velocity_ < 0.0f) {
+					Master::sound_manager_->PlaySE(SoundManager::SE_BOSS_JUMP);
+				}
 				position_.y = init_position_.y;
 				// 着地したら横滑り（水平移動）を停止
 				forward_speed_ = 0.0f;
@@ -307,3 +310,4 @@ void EnemyBoss_1::UpdateJumpPhysics()
 		jump_charge_timer_ = 0;
 	}
 }
+

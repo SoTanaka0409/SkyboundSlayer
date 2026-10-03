@@ -39,6 +39,11 @@ void SoundManager::Initialize()
 	LoadSE(SOUND_SE::SE_SHOP, "Resource/sound/SE/09_buy.mp3");
 	LoadSE(SOUND_SE::SE_SELECT, "Resource/sound/SE/10_decide.mp3");
 	LoadSE(SOUND_SE::SE_WINDOW, "Resource/sound/SE/11_menu.mp3");
+	LoadSE(SOUND_SE::SE_BOSS_JUMP, "Resource/sound/SE/12_boss_jump.mp3");
+	LoadSE(SOUND_SE::SE_SLASH, "Resource/sound/SE/13_slash.mp3");
+	LoadSE(SOUND_SE::SE_SLIDE_ATTACK, "Resource/sound/SE/14_slide_attack.mp3");
+	LoadSE(SOUND_SE::SE_WALK, "Resource/sound/SE/15_walk.mp3");
+	LoadSE(SOUND_SE::SE_HIT_SLASH, "Resource/sound/SE/16_hit_slash.mp3");
 }
 
 /// @details メモリ上に確保されたすべてのサウンドハンドルの安全な破棄
@@ -235,4 +240,28 @@ void SoundManager::ToggleBgmEnabled()
 void SoundManager::ToggleSeEnabled()
 {
 	SetSeEnabled(!is_se_enabled_);
+}
+
+void SoundManager::StopSE(SOUND_SE se)
+{
+	for (auto it = se_handle_list_.begin(); it != se_handle_list_.end(); it++)
+	{
+		if (it->first == se)
+		{
+			StopSoundMem(it->second);
+			break;
+		}
+	}
+}
+
+bool SoundManager::CheckSE(SOUND_SE se)
+{
+	for (auto it = se_handle_list_.begin(); it != se_handle_list_.end(); it++)
+	{
+		if (it->first == se)
+		{
+			return CheckSoundMem(it->second) == 1;
+		}
+	}
+	return false;
 }

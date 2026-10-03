@@ -21,7 +21,7 @@ Chat::~Chat()
 void Chat::Draw(std::string chatdate)
 {
     static int font24 = -1;
-    if (font24 == -1) font24 = CreateFontToHandle(NULL, 24, -1);
+    if (font24 == -1) font24 = CreateFontToHandle("源界明朝", 24, -1);
 
     if (Master::is_stat_shop_on_) { return; }
     

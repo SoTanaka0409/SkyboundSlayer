@@ -1,4 +1,5 @@
 ﻿#include "Enemy.h"
+#include "DamageUI.h"
 #include "Model.h"
 #include "Master.h"
 #include "Player3D.h"
@@ -27,7 +28,7 @@
 /// @param Serch2 攻撃開始用範囲半径
 /// @param Serch3 接近停止用範囲半径
 /// @param money 倒した際に獲得できる資金
-/// @param is_separate_anim_ アニメーションを分離読み込みするかどうかのフラグ
+/// @param is_separate_anim_ アニメーションを分離読み込みするかのフラグ
 Enemy::Enemy(std::string filename, VECTOR initPos, float hp, float speed, float attack, float HitSize, float Serch1, float Serch2, float Serch3, int money, bool is_separate_anim_)
 	: Object3D(initPos)
 	, hp_(hp)
@@ -248,8 +249,14 @@ void Enemy::RotationByMove()
 
 /// @brief ダメージ適用処理
 /// @param damage 減少させるHP量
-void Enemy::Damage(float damage)
+void Enemy::Damage(float damage, bool play_sound)
 {
+	VECTOR pop_pos = position_;
+	pop_pos.y += size_;
+	DamageUIManager::GetInstance()->AddDamage((int)damage, pop_pos, damage >= 100.0f);
+	if (play_sound) {
+		Master::sound_manager_->PlaySE(SoundManager::SE_HIT_SLASH);
+	}
 	hp_ -= damage;
 	if (hp_ <= 0)
 	{

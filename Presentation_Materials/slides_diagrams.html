@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang='ja'>
+<head>
+<meta charset='UTF-8'>
+<title>SkyboundSlayer プレゼン資料画像</title>
+<script src='https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js'></script>
+<script>mermaid.initialize({startOnLoad:true, theme: 'dark'});</script>
+<style>
+  body { background-color: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; }
+  .slide { background-color: #181825; border-radius: 12px; margin-bottom: 40px; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 1px solid #313244; }
+  h1 { color: #89b4fa; border-bottom: 2px solid #89b4fa; padding-bottom: 10px; }
+  .note { background-color: #313244; padding: 15px; border-left: 5px solid #f38ba8; margin: 20px 0; font-size: 1.2em; font-weight: bold; }
+  .diagram-container { background-color: #1e1e2e; padding: 20px; border-radius: 8px; text-align: center; }
+  .csv-mock { font-family: monospace; background: #11111b; padding: 15px; border-radius: 8px; color: #a6e3a1; text-align: left; }
+</style>
+</head>
+<body>
+
+<div class='slide'>
+  <h1>P.1：作品概要 (SkyboundSlayer)</h1>
+  <div class='note'>
+    <ul>
+      <li>制作人数：1名</li>
+      <li>制作期間：2ヶ月</li>
+      <li>担当箇所：プログラム全般・ゲームデザイン・UI含む全て</li>
+      <li>使用言語・ツール：C++ / DXLib / Effekseer</li>
+    </ul>
+  </div>
+  <p>※メイン画像は生成したAI画像（presentation_p1_main）を大きく配置してください。</p>
+</div>
+
+<div class='slide'>
+  <h1>P.2：当たり判定の設計</h1>
+  <div class='diagram-container'>
+    <div class='mermaid'>
+    graph TD
+        subgraph 高速移動時のすり抜け防止（スイープ判定概念）
+        A[前フレームの座標] -->|移動ベクトル| B[現在の座標]
+        C{カプセルスイープ / 線分交差判定}
+        A --> C
+        B --> C
+        C -->|衝突検知| D[めり込み防止ベクトルの算出]
+        D --> E[押し戻し座標補正]
+        end
+        
+        classDef default fill:#89b4fa,stroke:#1e1e2e,stroke-width:2px,color:#1e1e2e;
+        classDef check fill:#f9e2af,stroke:#1e1e2e,color:#1e1e2e;
+        class C check;
+    </div>
+  </div>
+  <div class='note'>一言解説：「高速移動時のすり抜けを防止するスイープ判定を実装」</div>
+</div>
+
+<div class='slide'>
+  <h1>P.3：全体クラス構造 (Component / Manager)</h1>
+  <div class='diagram-container'>
+    <div class='mermaid'>
+    classDiagram
+        class Master {
+            +SceneManager* scene_manager_
+            +SoundManager* sound_manager_
+        }
+        class Scene {
+            +ObjectManager* object_manager_
+            +ColliderManager* collider_manager_
+        }
+        class SceneGame
+        class ObjectManager {
+            +list~Object3D*~ object_3d_list_
+            +Update()
+            +Draw()
+        }
+        class GameManager {
+            +EnemyManager* enemy_manager_
+        }
+        class Object3D {
+            +Collider* collider_
+        }
+        
+        Master --> SceneManager
+        SceneManager --> Scene : 現在のシーン
+        Scene <|-- SceneGame : 継承
+        SceneGame --> GameManager
+        Scene --> ObjectManager
+        Scene --> ColliderManager
+        ObjectManager o-- Object3D : リスト管理
+        Object3D <|-- Player3D
+        Object3D <|-- Enemy3D
+    </div>
+  </div>
+  <div class='note'>一言解説：「コンポーネント指向による拡張性の高い設計」</div>
+</div>
+
+<div class='slide'>
+  <h1>P.4：Stateパターンの設計</h1>
+  <div class='diagram-container'>
+    <div class='mermaid'>
+    stateDiagram-v2
+        [*] --> 待機State
+        待機State --> 移動State : 移動キー入力
+        移動State --> 待機State : 入力停止
+        待機State --> AttackNormal : 通常攻撃入力
+        移動State --> AttackSlide : ダッシュ攻撃入力
+        AttackNormal --> 待機State : アニメーション終了
+        AttackSlide --> 待機State : アニメーション終了
+        待機State --> AttackJump : ジャンプ攻撃入力
+        AttackJump --> 待機State : 着地判定
+    </div>
+  </div>
+  <div class='note'>一言解説：「基底Stateクラスを継承し、各行動をカプセル化」</div>
+</div>
+
+<div class='slide'>
+  <h1>P.5：メモリ・リソース管理</h1>
+  <div class='diagram-container'>
+    <div class='mermaid'>
+    graph LR
+        subgraph Object Pool (Ring Buffer)
+            A[使用中 Object] 
+            B[使用中 Object]
+            C[待機中 (Free)]
+            D[待機中 (Free)]
+            E[待機中 (Free)]
+            A --> B --> C --> D --> E --> A
+        end
+        Manager -->|メモリ確保なし O(1)| C
+        A -->|破棄せずにフラグオフ| D
+        
+        classDef used fill:#f38ba8,stroke:#1e1e2e,color:#1e1e2e;
+        classDef free fill:#a6e3a1,stroke:#1e1e2e,color:#1e1e2e;
+        class A,B used;
+        class C,D,E free;
+    </div>
+  </div>
+  <div class='note'>一言解説：「生成・破棄のオーバーヘッドをゼロにするリングバッファ構造」</div>
+</div>
+
+<div class='slide'>
+  <h1>P.6：CSVデータ連携</h1>
+  <div class='diagram-container' style='display: flex; gap: 20px; align-items: center; justify-content: center;'>
+    <div class='csv-mock'>
+      <b>01_stage_layout.csv</b><br>
+      ID, PosX, PosY, PosZ, Type<br>
+      1, 1500.0, 0.0, 1000.0, Tree<br>
+      2, -500.0, 0.0, 2000.0, Rock<br>
+      3, 0.0, 0.0, -1000.0, Wall
+    </div>
+    <div class='mermaid'>
+    graph LR
+        A[CSVファイル] -->|std::ifstream| B(CSVパーサー)
+        B -->|パラメータ反映| C[ゲーム内即時反映]
+    </div>
+  </div>
+  <div class='note'>一言解説：「ビルドなしで挙動数値を即時調整可能なデータ駆動設計」</div>
+</div>
+
+</body>
+</html>

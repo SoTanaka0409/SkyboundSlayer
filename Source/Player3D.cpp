@@ -71,7 +71,7 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	model_ = new Model(filename, initPos, is_separate_anim_);
 	have_money_ = new HaveMoneyClass(0);
 
-	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand");
+	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand", VGet(1.5f, -6.0f, 1.0f), VGet(-DX_PI_F / 3.0f, DX_PI_F / 6.0f, -DX_PI_F / 6.0f));
 	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
 	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
 	model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
@@ -502,7 +502,7 @@ void Player3D::Attack()
 	if (mouse_input_ & MOUSE_INPUT_LEFT && attack_count_ >= attack_cooldown_ && now != ANIMATION_ATTACK)
 	{
 		attack_count_ = 0;
-		Master::sound_manager_->PlaySE(SoundManager::SE_ATTACK);
+		Master::sound_manager_->PlaySE(SoundManager::SE_SLASH);
 
 		model_->ChangeAnimation(ANIMATION_ATTACK);
 		model_->SetLoop(false);
@@ -627,7 +627,7 @@ void Player3D::AttackSlide()
 	{
 		if (target_ != nullptr)
 		{
-			Master::sound_manager_->PlaySE(SoundManager::SE_ATTACKSLIDE);
+			Master::sound_manager_->PlaySE(SoundManager::SE_SLIDE_ATTACK);
 			if (model_->GetIsSeparate()) model_->separate_animation_->SetAnimationCount(1.2f);
 			else model_->animation_->SetAnimationCount(1.2f);
 
@@ -880,7 +880,7 @@ void Player3D::ApplyJumpAttackHit(Collider* collider, Collider* check)
 	if (pEne->IsHitJudgmentFlagPlayer()) return;
 
 	pEne->SetHitJudgmentFlagPlayer(true);
-	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_);
+	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_, false);
 
 	Master::camera_->SetupShake(8.0f, 15.0f, 8.0f);
 	if (Master::hit_stop_timer_ == 0) Master::hit_stop_timer_ = 4; // 最初の大ダメージ時のみストップ
