@@ -9,8 +9,15 @@ public:
 	~Magic_Ene();
 
 	void Update();
+	virtual void Draw() override;
 
 	virtual void OnEnter(Collider* collider, Collider* check) override;
 	virtual void OnTrigger(Collider* collider, Collider* check) override;
 	virtual void OnExit(Collider* collider, Collider* check) override;
+
+private:
+	// === パラメータ定数 ===
+	static constexpr float kMagicScaleMax = 1.8f;
+	static constexpr float kMagicScaleMid = 1.3f;
+	static constexpr float kMagicScaleMin = 0.7f;
 };

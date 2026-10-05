@@ -65,6 +65,10 @@ void Magic::Update()
 void Magic::Move()
 {
 	position_ = VAdd(position_, VScale(move_vec_, speed_));
+	if (hit_collider_ != nullptr)
+	{
+		hit_collider_->position_ = position_;
+	}
 }
 
 /// @brief 魔法弾の着弾・消滅処理を行う

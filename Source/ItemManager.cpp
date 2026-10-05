@@ -13,6 +13,11 @@ ItemManager::ItemManager()
 /// @brief ItemManagerクラスのデストラクタ
 ItemManager::~ItemManager()
 {
+	for (auto item : item_list_)
+	{
+		delete item;
+	}
+	item_list_.clear();
 }
 
 /// @brief アイテム状態やタイマー等の毎フレーム更新処理を行う

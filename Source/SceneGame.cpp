@@ -34,6 +34,12 @@ void SceneGame::Initialize()
 /// @brief SceneGameの状態更新処理
 void SceneGame::Update()
 {
+	if (Master::hit_stop_timer_ > 0)
+	{
+		Master::hit_stop_timer_--;
+		return;
+	}
+
 	if (!Master::is_cutscene_playing_) {
 		Scene::Update();
 	}

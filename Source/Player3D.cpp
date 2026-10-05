@@ -71,14 +71,14 @@ Player3D::Player3D(std::string filename, VECTOR initPos, float jumppower, float 
 	model_ = new Model(filename, initPos, is_separate_anim_);
 	have_money_ = new HaveMoneyClass(0);
 
-	model_->AddAttachment("Resource/3Dモデル/武器/01_剣モデル.mv1", "mixamorig:RightHand");
-	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/3Dモデル/キャラクターとアニメーション/11_待機アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_RUN, "Resource/3Dモデル/キャラクターとアニメーション/12_走りアニメーション.mv1");
-	model_->AddAnimation(ANIMATION_DYING, "Resource/3Dモデル/キャラクターとアニメーション/13_死亡アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_ATTACK, "Resource/3Dモデル/キャラクターとアニメーション/16_通常攻撃アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKSLIDE, "Resource/3Dモデル/キャラクターとアニメーション/15_攻撃アニメーション１.mv1");
-	model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/3Dモデル/キャラクターとアニメーション/17_ジャンプ攻撃アニメーション.mv1");
-	model_->AddAnimation(ANIMATION_SLIDE, "Resource/3Dモデル/キャラクターとアニメーション/18_回避アニメーション.mv1");
+	model_->AddAttachment("Resource/model/props/sword/01_sword.mv1", "mixamorig:RightHand", VGet(1.5f, -6.0f, 1.0f), VGet(-DX_PI_F / 3.0f, DX_PI_F / 6.0f, -DX_PI_F / 6.0f));
+	model_->AddAnimation(ANIMATION_NEUTRAL, "Resource/model/character/11_idle.mv1");
+	model_->AddAnimation(ANIMATION_RUN, "Resource/model/character/12_run.mv1");
+	model_->AddAnimation(ANIMATION_DYING, "Resource/model/character/13_die.mv1");
+	model_->AddAnimation(ANIMATION_ATTACK, "Resource/model/character/16_normal_attack.mv1");
+	model_->AddAnimation(ANIMATION_ATTACKSLIDE, "Resource/model/character/15_attack_1.mv1");
+	model_->AddAnimation(ANIMATION_ATTACKJUMP, "Resource/model/character/17_jump_attack.mv1");
+	model_->AddAnimation(ANIMATION_SLIDE, "Resource/model/character/18_evade.mv1");
 
 	Master::camera_->Initialize();
 	item_manager_ = Master::item_manager_;
@@ -114,6 +114,9 @@ Player3D::~Player3D()
 	if (Master::player_ == this) Master::player_ = nullptr;
 	delete model_;
 	delete short_inventory_;
+	delete buff_manager_;
+	delete equipment_manager_;
+	delete have_money_;
 	CollDelete();
 }
 
@@ -499,14 +502,14 @@ void Player3D::Attack()
 	if (mouse_input_ & MOUSE_INPUT_LEFT && attack_count_ >= attack_cooldown_ && now != ANIMATION_ATTACK)
 	{
 		attack_count_ = 0;
-		Master::sound_manager_->PlaySE(SoundManager::SE_ATTACK);
+		Master::sound_manager_->PlaySE(SoundManager::SE_SLASH);
 
 		model_->ChangeAnimation(ANIMATION_ATTACK);
 		model_->SetLoop(false);
 		model_->SetLoopFinishState(ANIMATION_NEUTRAL);
 
-		if (model_->GetIsSeparate() == true) model_->separate_animation_->SetAnimationCount(1.3f);
-		else model_->animation_->SetAnimationCount(0.5f);
+		if (model_->GetIsSeparate() == true) model_->separate_animation_->SetAnimationCount(0.9f);
+		else model_->animation_->SetAnimationCount(0.35f);
 	}
 
 	const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
@@ -514,7 +517,7 @@ void Player3D::Attack()
 	{
 		attack_state_ = kAttackNormal;
 
-		if (attack_count_ % 5 == 0)
+		if (attack_count_ == 0)
 		{
 			// 1回の攻撃モーションで多段ヒットしすぎるのを防ぐため、一定フレームごとにヒットフラグをリセットする
 			for (int i = 0; i < pObjList.size(); i++)
@@ -587,7 +590,7 @@ void Player3D::AttackJump()
 			if (!is_jump_collider_active_)
 			{
 				is_jump_collider_active_ = true;
-				new EffekseerObject("JumpAttack", "Resource/エフェクト/ジャンプ攻撃/01_ジャンプ攻撃エフェクト.efk", position_, this, false);
+				new EffekseerObject("JumpAttack", "Resource/effect/jump_attack/01_jump_attack.efk", position_, this, false);
 
 				const auto& pObjList = Master::scene_manager_->GetCurrentScene()->GetObjectManager()->GetObject3DListByTag(Object3D::Tag3D_Enemy3D);
 				for (int i = 0; i < (int)pObjList.size(); i++)
@@ -624,7 +627,7 @@ void Player3D::AttackSlide()
 	{
 		if (target_ != nullptr)
 		{
-			Master::sound_manager_->PlaySE(SoundManager::SE_ATTACKSLIDE);
+			Master::sound_manager_->PlaySE(SoundManager::SE_SLIDE_ATTACK);
 			if (model_->GetIsSeparate()) model_->separate_animation_->SetAnimationCount(1.2f);
 			else model_->animation_->SetAnimationCount(1.2f);
 
@@ -645,7 +648,7 @@ void Player3D::AttackSlide()
 			pEneSlide->SetHitJudgmentFlagPlayer(false);
 		}
 
-		new EffekseerObject("Slash", "Resource/エフェクト/スライド攻撃/02_スライド攻撃エフェクト再生用.efk", position_, this, true);
+		new EffekseerObject("Slash", "Resource/effect/slide_attack/02_slide_attack_effect_playback.efk", position_, this, true);
 	}
 
 	if (now == ANIMATION_ATTACKSLIDE && attack_state_ == kAttackSlide)
@@ -829,10 +832,11 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				// 多段ヒットを防ぐため、既にこの攻撃がヒットした敵は除外する
 				if (now == ANIMATION_ATTACK && attack_state_ == kAttackNormal && !is_jumping_ && !pEne->IsHitJudgmentFlagPlayer())
 				{
+					pEne->SetHitJudgmentFlagPlayer(true);
 					pEne->Damage(GetAllStatusState(Object3D::Status_Attack));
 
-					Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
-					EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
+					Master::camera_->SetupShake(2.0f, 6.0f, 2.0f);
+					EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/image/battle/01_damage.png", GetColorU8(255, 0, 30, 0), 30.0f, 0.1f);
 				}
 			}
 		}
@@ -851,8 +855,9 @@ void Player3D::OnTrigger(Collider* collider, Collider* check)
 				pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + slide_attack_);
 				pEne->SetHitJudgmentFlagPlayer(true);
 
-				Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
-				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
+				Master::camera_->SetupShake(6.0f, 12.0f, 6.0f);
+				if (Master::hit_stop_timer_ == 0) Master::hit_stop_timer_ = 3; // 最初のヒットのみストップ
+				EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/image/battle/01_damage.png", GetColorU8(35, 0, 255, 0), 60.0f, 1.0f);
 			}
 		}
 	}
@@ -875,10 +880,11 @@ void Player3D::ApplyJumpAttackHit(Collider* collider, Collider* check)
 	if (pEne->IsHitJudgmentFlagPlayer()) return;
 
 	pEne->SetHitJudgmentFlagPlayer(true);
-	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_);
+	pEne->Damage(GetAllStatusState(Object3D::Status_Attack) + jump_attack_, false);
 
-	Master::camera_->SetupShake(5.0f, 10.0f, 5.0f);
-	EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/画像/戦闘/01_ダメージ表示画像.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
+	Master::camera_->SetupShake(8.0f, 15.0f, 8.0f);
+	if (Master::hit_stop_timer_ == 0) Master::hit_stop_timer_ = 4; // 最初の大ダメージ時のみストップ
+	EffectPool::GetInstance()->Play(VAdd(pEne->GetPosition(), VGet(0.0f, 60.0f, 0.0f)), "Resource/image/battle/01_damage.png", GetColorU8(255, 100, 0, 0), 45.0f, 0.5f);
 }
 
 /// @brief ロックオンしているターゲットの生存確認と自動解除を行う

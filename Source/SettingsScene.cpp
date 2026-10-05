@@ -11,7 +11,7 @@ SettingsScene::SettingsScene()
 	, bgm_bar_rect_{ 920, 320, 420, 30 }
 	, se_toggle_rect_{ 720, 432, 150, 48 }
 	, se_bar_rect_{ 920, 440, 420, 30 }
-	, debug_toggle_rect_{ 720, 552, 150, 48 }
+	, debug_toggle_rect_{ 820, 552, 150, 48 }
 	, back_rect_{ 80, 860, 260, 62 }
 	, color_fade_(0)
 	, color_flag_(false)
@@ -129,11 +129,11 @@ void SettingsScene::DrawSettingRows()
 	DrawVolumeRow(400, "SE", Master::sound_manager_->IsSeEnabled(), Master::sound_manager_->GetSeVolume());
 
 	SetFontSize(34);
-	DrawFormatString(594, 560, GetColor(222, 236, 248), "DEBUG");
+	DrawFormatString(594, 564, GetColor(222, 236, 248), "DEBUG");
 	DrawToggle(debug_toggle_rect_, Master::debug_->Getdebug(), "MODE");
 
 	SetFontSize(22);
-	DrawFormatString(920, 564, GetColor(150, 164, 180), "Shows collider and debug controls in game");
+	DrawFormatString(990, 568, GetColor(150, 164, 180), "ON/OFF: debug display & controls");
 	SetFontSize(24);
 }
 
@@ -202,7 +202,7 @@ void SettingsScene::DrawVolumeRow(int y, const char* label, bool enabled, int vo
 	DrawLine(barRect.x, barRect.y + barRect.h, barRect.x + barRect.w, barRect.y + barRect.h, GetColor(98, 73, 32), 1);
 
 	SetFontSize(24);
-	DrawFormatString(barRect.x + barRect.w + 30, barRect.y - 2, enabled ? GetColor(245, 246, 248) : GetColor(130, 136, 146), "%3d%%", percent);
+	DrawFormatString(barRect.x + barRect.w + 14, barRect.y - 2, enabled ? GetColor(245, 246, 248) : GetColor(130, 136, 146), "%3d%%", percent);
 }
 
 /// @param rect = 領域, label = ボタン名, hover = ホバー中か

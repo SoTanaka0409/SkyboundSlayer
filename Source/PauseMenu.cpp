@@ -18,13 +18,13 @@ PauseMenu::~PauseMenu()
 
 void PauseMenu::Initialize()
 {
-	bgm_toggle_rect_ = { 594, 276, 172, 48 };
-	bgm_bar_rect_ = { 800, 290, 520, 24 };
+	bgm_toggle_rect_ = { 720, 312, 150, 48 };
+	bgm_bar_rect_ = { 920, 320, 380, 24 };
 
-	se_toggle_rect_ = { 594, 396, 172, 48 };
-	se_bar_rect_ = { 800, 410, 520, 24 };
+	se_toggle_rect_ = { 720, 432, 150, 48 };
+	se_bar_rect_ = { 920, 440, 380, 24 };
 
-	debug_toggle_rect_ = { 720, 550, 172, 48 };
+	debug_toggle_rect_ = { 820, 552, 150, 48 };
 
 	resume_rect_ = { 600, 750, 300, 60 };
 	quit_rect_ = { 1020, 750, 300, 60 };
@@ -118,6 +118,10 @@ void PauseMenu::DrawSettingRows()
 	SetFontSize(34);
 	DrawFormatString(594, 560, GetColor(222, 236, 248), "DEBUG");
 	DrawToggle(debug_toggle_rect_, Master::debug_->Getdebug(), "MODE");
+
+	SetFontSize(18);
+	DrawFormatString(990, 568, GetColor(150, 164, 180), "ON/OFF: debug display & controls");
+	SetFontSize(24);
 }
 
 void PauseMenu::DrawFooter()
@@ -162,19 +166,22 @@ void PauseMenu::DrawVolumeRow(int y, const char* label, bool enabled, int volume
 	DrawLine(barRect.x, barRect.y + barRect.h, barRect.x + barRect.w, barRect.y + barRect.h, GetColor(98, 73, 32), 1);
 
 	SetFontSize(24);
-	DrawFormatString(barRect.x + barRect.w + 30, barRect.y - 2, enabled ? GetColor(245, 246, 248) : GetColor(130, 136, 146), "%3d%%", percent);
+	DrawFormatString(barRect.x + barRect.w + 14, barRect.y - 2, enabled ? GetColor(245, 246, 248) : GetColor(130, 136, 146), "%3d%%", percent);
 }
 
 void PauseMenu::DrawButton(const Rect& rect, const char* label, bool hover)
 {
-	const int fill = hover ? GetColor(48, 39, 18) : GetColor(20, 24, 32);
-	const int text = hover ? GetColor(255, 246, 184) : GetColor(222, 236, 248);
+	const int fill = hover ? GetColor(60, 50, 20) : GetColor(20, 24, 32);
+	const int text_color = hover ? GetColor(255, 255, 200) : GetColor(222, 236, 248);
+	int expand = hover ? 6 : 0; // ホバー時に枠を拡大して強調
 
-	DrawBox(rect.x, rect.y, rect.x + rect.w, rect.y + rect.h, fill, TRUE);
-	DrawLine(rect.x, rect.y, rect.x + rect.w, rect.y, hover ? GetColor(218, 178, 86) : GetColor(98, 73, 32), 2);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 240);
+	DrawBox(rect.x - expand, rect.y - expand, rect.x + rect.w + expand, rect.y + rect.h + expand, fill, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	DrawLine(rect.x - expand, rect.y - expand, rect.x + rect.w + expand, rect.y - expand, hover ? GetColor(255, 215, 100) : GetColor(98, 73, 32), 2);
 
-	SetFontSize(30);
-	DrawFormatString(rect.x + 48, rect.y + 17, text, "%s%s", hover ? "> " : "  ", label);
+	SetFontSize(hover ? 32 : 30);
+	DrawFormatString(rect.x + 48 - expand, rect.y + 17 - expand/2, text_color, "%s%s", hover ? "> " : "  ", label);
 	SetFontSize(24);
 }
 

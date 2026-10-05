@@ -12,13 +12,12 @@ EffectU::~EffectU()
 bool EffectU::Load()
 {
     // Load the hold effect resource.
-    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/エフェクト/魔法陣/02_魔法陣エフェクト再生用.efk", 1.0f);
+    EffekseerManager::GetInstance()->LoadEffect("Mahoujin", "Resource/effect/magic/02_magic_effect_playback.efk", 1.0f);
     return true;
 }
 
 void EffectU::StartHold(const VECTOR& playerPos)
 {
-
     if (playing_handle_ != -1) {
         EffekseerManager::GetInstance()->StopEffect(playing_handle_);
     }
@@ -38,7 +37,6 @@ void EffectU::ReleaseAndShatter()
         EffekseerManager::GetInstance()->StopEffect(playing_handle_);
         playing_handle_ = -1;
     }
-    
     is_holding_ = false;
 }
 
@@ -51,7 +49,8 @@ void EffectU::UpdateFollow(const VECTOR& playerPos)
 
         if (EffekseerManager::GetInstance()->IsPlaying(playing_handle_)) {
             EffekseerManager::GetInstance()->SetEffectPosition(playing_handle_, pos);
-        } else {
+        }
+        else {
             playing_handle_ = -1;
         }
     }
