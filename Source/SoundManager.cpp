@@ -1,4 +1,4 @@
-﻿#include"SoundManager.h"
+#include"SoundManager.h"
 #include"DxLib.h"
 
 /// @details 音量、有効化フラグ、および再生中トラックの初期状態のセットアップ
@@ -28,11 +28,9 @@ void SoundManager::Initialize()
 	// SEの読み込み
 	LoadSE(SOUND_SE::SE_FIRE, "Resource/sound/SE/01_fire_magic.mp3");
 	LoadSE(SOUND_SE::SE_ATTACK, "Resource/sound/SE/02_normal_attack.mp3");
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/sound/SE/03_slide_attack.mp3");
+	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/sound/SE/14_slide_attack.mp3");
 	LoadSE(SOUND_SE::SE_SLIDE, "Resource/sound/SE/04_slide_move.mp3");
 	LoadSE(SOUND_SE::SE_HEAL, "Resource/sound/SE/05_heal.mp3");
-	
-	LoadSE(SOUND_SE::SE_ATTACKSLIDE, "Resource/sound/SE/03_slide_attack.mp3");
 	LoadSE(SOUND_SE::SE_JUMP, "Resource/sound/SE/06_jump.mp3");
 	LoadSE(SOUND_SE::SE_WARP, "Resource/sound/SE/07_warp.mp3");
 	LoadSE(SOUND_SE::SE_POWER, "Resource/sound/SE/08_powerup.mp3");
