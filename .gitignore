@@ -103,9 +103,6 @@ __pycache__/
 # Intermediate build output
 DxLesson/x64/
 
-# Allow DxLib and Effekseer libs
-!DxLib_VC/**/*.lib
-!EFKforDxLib/**/*.lib
 
 # 企業提出時に不要なファイル（変換前の生モデルデータなど）
 *.x
@@ -117,3 +114,7 @@ DxLesson/x64/
 
 # AIツールへの指示書（GitHub には送らない。手元には残す）
 .cursorrules
+
+# 他の人が作ったライブラリ（DxLib / Effekseer）。各自で用意する（README の「ビルド方法」参照）
+/DxLib_VC/
+/EFKforDxLib/
