@@ -1,4 +1,4 @@
-#include"SoundManager.h"
+﻿#include"SoundManager.h"
 #include"DxLib.h"
 
 /// @details 音量、有効化フラグ、および再生中トラックの初期状態のセットアップ
