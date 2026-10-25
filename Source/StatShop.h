@@ -62,7 +62,18 @@ private:
 
 /// @details 選択中の強化項目(m_Select)に対し、所持金とコストを照合して購入処理を実行する
     void SelectClass();
+/// @details マウスやキーボードによる購入確定を検知し、購入処理を呼び分ける
     void BuyClass();
+/// @return マウスが乗っている項目の番号。どの項目の上にもなければ -1
+    int GetOptionIndexAt(int mx, int my) const;
+/// @details マウスが動いたときだけ、乗っている項目を選択する
+    void UpdateHoverSelect(int mx, int my);
+/// @return 購入の合図（項目の上での左クリック、または Enter キー）があったか(bool)
+    bool IsBuyRequested(bool isMouseClick, int mx, int my);
+/// @details 所持金が足りれば回復アイテムを1つ付与する
+    void BuyHealItem(Player3D* player);
+/// @details 選択中のステータスを、強化回数に応じたコストで強化する
+    void BuyUpgrade(Player3D* player);
 /// @param upgradeCount(強化回数)
 /// @return 必要金額(int)
     int GetCost(int upgradeCount);

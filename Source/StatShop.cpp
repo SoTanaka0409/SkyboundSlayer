@@ -467,46 +467,74 @@ void StatShop::BuyClass()
 	bool isMouseClick = (isMouseDown && !m_OldMouseDown);
 	m_OldMouseDown = isMouseDown;
 
-
 	int mx, my;
 	GetMousePoint(&mx, &my);
 
+	UpdateHoverSelect(mx, my);
+
+	if (!IsBuyRequested(isMouseClick, mx, my)) return;
+
+	if (m_Select == 4)
+	{
+		BuyHealItem(player);
+	}
+	else
+	{
+		BuyUpgrade(player);
+	}
+}
+
+/// @param mx, my(マウスの座標)
+/// @return マウスが乗っている項目の番号。どの項目の上にもなければ -1
+int StatShop::GetOptionIndexAt(int mx, int my) const
+{
+	for (int i = 0; i <= m_SelectMax; i++)
+	{
+		int optY = 250 + i * 60;
+		if (mx >= 350 && mx <= 1500 && my >= optY && my <= optY + 50)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+/// @param mx, my(マウスの座標)
+/// @details マウスが動いたときだけ、乗っている項目を選択し、選択が変わったら効果音を鳴らす
+void StatShop::UpdateHoverSelect(int mx, int my)
+{
 	static int oldMx = 0, oldMy = 0;
 	if (mx != oldMx || my != oldMy)
 	{
-		for (int i = 0; i <= m_SelectMax; i++)
+		int index = GetOptionIndexAt(mx, my);
+		if (index >= 0 && m_Select != index)
 		{
-			int optY = 250 + i * 60;
-			if (mx >= 350 && mx <= 1500 && my >= optY && my <= optY + 50)
-			{
-				if (m_Select != i)
-				{
-					m_Select = i;
-					Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
-				}
-				break;
-			}
+			m_Select = index;
+			Master::m_SoundManager->PlaySE(SoundManager::SE_SELECT);
 		}
 		oldMx = mx;
 		oldMy = my;
 	}
+}
 
-
+/// @param isMouseClick(このフレームで左クリックされたか), mx, my(マウスの座標)
+/// @return 購入の合図があったか(bool)
+/// @details 項目の上での左クリック、または Enter キーを押した瞬間を購入の合図とする。クリックした項目は選択状態にする
+bool StatShop::IsBuyRequested(bool isMouseClick, int mx, int my)
+{
 	bool doBuy = false;
 
 	if (isMouseClick)
 	{
-		for (int i = 0; i <= m_SelectMax; i++)
+		int index = GetOptionIndexAt(mx, my);
+		if (index >= 0)
 		{
-			int optY = 250 + i * 60;
-			if (mx >= 350 && mx <= 1500 && my >= optY && my <= optY + 50)
-			{
-				m_Select = i;
-				doBuy = true;
-			}
+			m_Select = index;
+			doBuy = true;
 		}
 	}
 
+	// クリックで購入が決まっても、Enter キーの前回の状態は毎フレーム記録する
 	static int oldReturn = 0;
 	int currentReturn = CheckHitKey(KEY_INPUT_RETURN);
 	if (currentReturn && !oldReturn)
@@ -515,58 +543,61 @@ void StatShop::BuyClass()
 	}
 	oldReturn = currentReturn;
 
-	if (doBuy)
+	return doBuy;
+}
+
+/// @param player(購入するプレイヤー)
+/// @details 所持金が足りれば回復アイテムを1つ付与する。足りなければエラー音を鳴らす
+void StatShop::BuyHealItem(Player3D* player)
+{
+	int cost = 100;
+	if (player->m_HaveMoney->HaveMoney() >= cost)
 	{
-		if (m_Select == 4)
-		{
-			int cost = 100;
-			if (player->m_HaveMoney->HaveMoney() >= cost)
-			{
-				player->m_HaveMoney->PullMoney(cost);
+		player->m_HaveMoney->PullMoney(cost);
 
-				Item::ItemInformation* info = new Item::ItemInformation();
-				info->ID = Item::ItemID::HEAL;
-				info->Count = 1;
-				info->m_IsLog = true;
-				Master::m_ItemManager->AddItem(info);
+		Item::ItemInformation* info = new Item::ItemInformation();
+		info->ID = Item::ItemID::HEAL;
+		info->Count = 1;
+		info->m_IsLog = true;
+		Master::m_ItemManager->AddItem(info);
 
-				Master::m_SoundManager->PlaySE(SoundManager::SE_SHOP);
-			}
-			else
-			{
-				Master::m_SoundManager->PlaySE(SoundManager::SE_WINDOW); // as error sound
-			}
-		}
-		else
-		{
-			int* targetUpgradeCount = nullptr;
-			if (m_Select == 0) targetUpgradeCount = &m_UpgradeMaxHpCount;
-			else if (m_Select == 1) targetUpgradeCount = &m_UpgradeAttackCount;
-			else if (m_Select == 2) targetUpgradeCount = &m_UpgradeSpeedCount;
-			else if (m_Select == 3) targetUpgradeCount = &m_UpgradeEvasionSpeedCount;
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SHOP);
+	}
+	else
+	{
+		Master::m_SoundManager->PlaySE(SoundManager::SE_WINDOW); // as error sound
+	}
+}
 
-			if (targetUpgradeCount)
-			{
-				int cost = GetCost(*targetUpgradeCount);
-				if (player->m_HaveMoney->HaveMoney() >= cost)
-				{
-					player->m_HaveMoney->PullMoney(cost);
-					(*targetUpgradeCount)++;
+/// @param player(購入するプレイヤー)
+/// @details 選択中のステータス(m_Select)の強化回数に応じたコストを払い、ステータスを強化する。足りなければエラー音を鳴らす
+void StatShop::BuyUpgrade(Player3D* player)
+{
+	int* targetUpgradeCount = nullptr;
+	if (m_Select == 0) targetUpgradeCount = &m_UpgradeMaxHpCount;
+	else if (m_Select == 1) targetUpgradeCount = &m_UpgradeAttackCount;
+	else if (m_Select == 2) targetUpgradeCount = &m_UpgradeSpeedCount;
+	else if (m_Select == 3) targetUpgradeCount = &m_UpgradeEvasionSpeedCount;
 
-					// ステータスボーナスを適用
-					if (m_Select == 0) player->AddUpgradeMaxHp(10.0f); // HP +10
-					else if (m_Select == 1) player->AddUpgradeAttack(1.0f); // Attack +1
-					else if (m_Select == 2) player->AddUpgradeSpeed(0.5f); // Speed +0.5
-					else if (m_Select == 3) player->AddUpgradeEvasionSpeed(2.0f); // Evasion Speed +2
+	if (!targetUpgradeCount) return;
 
-					Master::m_SoundManager->PlaySE(SoundManager::SE_SHOP);
-				}
-				else
-				{
-					Master::m_SoundManager->PlaySE(SoundManager::SE_WINDOW); // as error sound
-				}
-			}
-		}
+	int cost = GetCost(*targetUpgradeCount);
+	if (player->m_HaveMoney->HaveMoney() >= cost)
+	{
+		player->m_HaveMoney->PullMoney(cost);
+		(*targetUpgradeCount)++;
+
+		// ステータスボーナスを適用
+		if (m_Select == 0) player->AddUpgradeMaxHp(10.0f); // HP +10
+		else if (m_Select == 1) player->AddUpgradeAttack(1.0f); // Attack +1
+		else if (m_Select == 2) player->AddUpgradeSpeed(0.5f); // Speed +0.5
+		else if (m_Select == 3) player->AddUpgradeEvasionSpeed(2.0f); // Evasion Speed +2
+
+		Master::m_SoundManager->PlaySE(SoundManager::SE_SHOP);
+	}
+	else
+	{
+		Master::m_SoundManager->PlaySE(SoundManager::SE_WINDOW); // as error sound
 	}
 }
 
