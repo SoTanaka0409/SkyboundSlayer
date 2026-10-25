@@ -114,3 +114,6 @@ DxLesson/x64/
 *.mqo
 *.pmx
 *.pmd
+
+# AIツールへの指示書（GitHub には送らない。手元には残す）
+.cursorrules
